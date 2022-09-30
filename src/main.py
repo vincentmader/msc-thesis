@@ -9,7 +9,6 @@ from tqdm import tqdm
 from config import X_MIN, X_MAX, GRID_RESOLUTION
 from config import PATH_TO_FIGURES
 from config import DT, NR_OF_TIMESTEPS
-from interactive_plot import interactive_plot
 
 
 def gaussian(x, mu, sigma):

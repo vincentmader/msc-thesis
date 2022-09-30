@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
+import os
+
 import matplotlib.pyplot as plt
 import numpy as np
 
 from config import X_MIN, X_MAX, GRID_RESOLUTION
+from config import PATH_TO_FIGURES
 
 
 def initialize_state():
@@ -17,6 +20,8 @@ def plot_state(x, n):
     plt.xlabel("mass $x$")
     plt.ylabel("abundancy $n(x)$")
     plt.xlim(X_MIN-1, X_MAX+1)
+    path = os.path.join(PATH_TO_FIGURES, "particle_mass_distribution.png")
+    plt.savefig(path)
     plt.show()
 
 

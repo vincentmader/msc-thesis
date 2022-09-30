@@ -1,2 +1,4 @@
 GRID_RESOLUTION = 500
 X_MIN, X_MAX = 1, 100
+
+PATH_TO_FIGURES = "./figures"

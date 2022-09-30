@@ -1,0 +1,10 @@
+#+title: M.Sc. Thesis - Implicit Integration of Smoluchowski Coagulation Equations
+- carried out by Vincent C. Mader under supervision of Prof. Dr. Cornelis Dullemond at the Institute for Theoretical Astrophysics Heidelberg
+
+_Goals_:
+- Numerically solve the Smoluchowski coagulation equation(s) via implicit integration.
+- Increase performance by running computes in parallel on the GPU, as well as by stochastically sampling the coagulation kernel (which is mostly $0$ anyways).
+
+_Usage_:
+  1. Run `make setup`.
+  2. Run `make`.

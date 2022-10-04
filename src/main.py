@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
+from datetime import datetime as dt
 import enum
 import os
 
 import matplotlib.pyplot as plt
+from numpy.typing import NDArray
+import numba
+from numba import float64 as f64
+from numba import jit
 import numpy as np
 from tqdm import tqdm
 
@@ -11,13 +16,29 @@ from config import PATH_TO_FIGURES
 from config import DT, NR_OF_TIMESTEPS
 
 
-def gaussian(x, mu, sigma):
-    return np.exp(-((x-mu)/sigma)**2) / ((2*np.pi)**.5 * sigma)
+def gaussian(x, mu, sigma) -> f64[:]:
+    y = np.exp(-((x-mu)/sigma)**2) / ((2*np.pi)**.5 * sigma)
+    return y
 
 
-def initialize_state():
+def dirac_delta(x, i_x0) -> f64[:]:
+    # y = np.zeros(len(x))
+    # y[i_x0] = 1
+    # return y
+    return np.array([0, 1] + [0] * (GRID_RESOLUTION-2))
+
+
+def record_execution_time(f):
+    start = dt.now()
+    res = f()
+    end = dt.now()
+    duration = (end - start)
+    return duration, res
+
+
+def initialize_state() -> f64[:]:
     x = np.linspace(X_MIN, X_MAX, GRID_RESOLUTION)
-    n = np.array([0, 1] + [0] * (GRID_RESOLUTION-2))
+    n: numba.float64[:] = np.array([0, 1] + [0] * (GRID_RESOLUTION-2))
     # n = gaussian(x, 3, 1)
     return x, n
 
@@ -36,28 +57,30 @@ def save_plot():
     path = os.path.join(PATH_TO_FIGURES, "particle_mass_distribution.png")
     plt.savefig(path)
 
+# =============================================================================
 
+
+@jit(nopython=True)
 def K(x, y):
-    # return 0.5
-    return 1
+    return 1  # 0.5
 
 
+@jit(nopython=True)
+def empty(N):
+    return np.empty(N, f64)
+
+
+# @jit(nopython=True, parallel=True, cache=True)
+@jit(nopython=True)
 def forward_state(t, x, n):
-    dn = np.array([])
+    dn: f64[:] = empty(len(x))
     for i, n_i in enumerate(n):
-        # Determine contribution of associative processes.
-        A = 1/2 * sum([K(i, j) * n[j] * n[i-j] for j in range(i)])
-        # Determine contribution of disassociative processes.
-        D = sum([K(i, j) * n_i * n_j for j, n_j in enumerate(n)])
-
-        # if i == t+1:
-        #     print(f"t={t}, x={i}, A={A}")
-        #     print(f"t={t}, x={i}, D=-{D}")
-
+        # Determine contribution of associative & disassociative processes, respectively.
+        A: f64 = 1/2 * sum([K(i, j) * n[j] * n[i-j] for j in range(i)])
+        D: f64 = sum([K(i, j) * n_i * n_j for j, n_j in enumerate(n)])
         # Calculate total temporal derivative.
-        dn = np.append(dn, A-D)
-    # print(max(n))
-    return n + dn * DT
+        dn[i] = A-D
+    return n + dn*DT
 
 
 def main():
@@ -73,8 +96,10 @@ def main():
 
     plt.legend()
     save_plot()
-    plt.show()
+    # plt.show()
 
 
 if __name__ == "__main__":
-    main()
+    d, r = record_execution_time(main)
+
+    print(d)

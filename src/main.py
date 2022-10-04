@@ -23,6 +23,7 @@ def initialize_state():
 
 
 def plot_state(t, x, n):
+    plt.style.use('~/.config/matplotlib/dark.mplstyle')
     # plt.bar(x, n)
     plt.plot(x, n, label=f"$t={t}$")
     plt.title("particle mass distribution")

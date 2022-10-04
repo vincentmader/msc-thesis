@@ -22,10 +22,9 @@ def gaussian(x, mu, sigma) -> f64[:]:
 
 
 def dirac_delta(x, i_x0) -> f64[:]:
-    # y = np.zeros(len(x))
-    # y[i_x0] = 1
-    # return y
-    return np.array([0, 1] + [0] * (GRID_RESOLUTION-2))
+    y = np.zeros(len(x))
+    y[i_x0] = 1
+    return y
 
 
 def record_execution_time(f):
@@ -96,7 +95,7 @@ def main():
 
     plt.legend()
     save_plot()
-    # plt.show()
+    plt.show()
 
 
 if __name__ == "__main__":

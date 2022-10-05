@@ -17,6 +17,15 @@ def forward_state(t, x, n):
         # Determine contribution of assoc. & disassoc. processes, respectively.
         A = 1/2 * sum([K(i, j) * n[j] * n[i-j] for j in range(i)])
         D = sum([K(i, j) * n_i * n_j for j, n_j in enumerate(n)])
+
+        # TODO: remove factor 1/2 from assoc. contribution.
+        # A_2 = sum([K(i, j) * n[j] * n[i-j] for j in range(i/2)])
+        # A_2 = sum([K(i, j) * n[j] * n[i-j] for j in range(i/2+1)])
+        # A_2 = sum([K(i, j) * n[j] * n[i-j] for j in range(int(i/2))])
+        # A_2 = sum([K(i, j) * n[j] * n[i-j] for j in range(int(i/2)+1)])
+        # if A != A_2:
+        #     print(i, "\t", A, A_2)
+
         # Calculate total temporal derivative.
         dn[i] = A-D
     return n + dn*DT
@@ -33,7 +42,7 @@ def main():
         # Forward state to next time-step.
         ns.append(forward_state(t, x, ns[t]))
     # Save (& show) plot.
-    plotting.save_plot()
+    plotting.save_plot(show=True)
 
 
 if __name__ == "__main__":

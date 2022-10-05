@@ -1,10 +1,19 @@
 import numpy as np
 
-from config import X_MIN, X_MAX, GRID_RESOLUTION
+from config import INITIAL_STATE, X_MIN, X_MAX, GRID_RESOLUTION
 import utils
 
 
 def initialize_state():
     x = np.linspace(X_MIN, X_MAX, GRID_RESOLUTION)
-    n = utils.dirac_delta(x, 1)
+
+    if INITIAL_STATE == "gaussian":
+        mu = 5
+        sigma = 2
+        n = utils.gaussian(x, mu, sigma)
+    elif INITIAL_STATE == "dirac-delta":
+        x0 = 1
+        n = utils.dirac_delta(x, x0)
+    else:
+        raise f"ERROR: Initial state {INITIAL_STATE} is not defined."
     return x, n

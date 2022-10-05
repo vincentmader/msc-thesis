@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# Create new virtual environment for python.
+    python3 -m venv ./venv
+# Enter virtual environment.
+    source ./venv/bin/activate;
 # Install python-pip3 dependencies.
     pip3 install -r requirements.txt
 

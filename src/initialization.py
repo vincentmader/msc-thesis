@@ -15,5 +15,5 @@ def initialize_state():
         x0 = 1
         n = utils.dirac_delta(x, x0)
     else:
-        raise f"ERROR: Initial state {INITIAL_STATE} is not defined."
+        raise Exception(f"ERROR: Initial state {INITIAL_STATE} is not defined.")
     return x, n

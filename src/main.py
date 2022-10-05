@@ -34,6 +34,7 @@ def main():
         ns.append(forward_state(t, x, ns[t]))
     # Save (& show) plot.
     plotting.save_plot(show=True)
+    utils.save_data(x, ns)
 
 
 if __name__ == "__main__":

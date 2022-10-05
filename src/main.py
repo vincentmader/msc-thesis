@@ -10,8 +10,7 @@ import utils
 from coagulation_kernel import coagulation_kernel as K
 
 
-# @jit(nopython=True, parallel=True, cache=True)
-@jit(nopython=True)
+@jit(nopython=True, cache=True)
 def forward_state(t, x, n):
     dn = np.empty(len(x))
     for i, n_i in enumerate(n):

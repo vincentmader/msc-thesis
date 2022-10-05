@@ -18,7 +18,7 @@ def forward_state(t, x, n):
         A = 1/2 * sum([K(i, j) * n[j] * n[i-j] for j in range(i)])
         D = sum([K(i, j) * n_i * n_j for j, n_j in enumerate(n)])
         # Calculate total temporal derivative.
-        dn[i] = A-D
+        dn[i] = A - D
     return n + dn*DT
 
 

@@ -8,12 +8,14 @@ def initialize_state():
     x = np.linspace(X_MIN, X_MAX, GRID_RESOLUTION)
 
     if INITIAL_STATE == "gaussian":
-        mu = 5
-        sigma = 2
+        mu, sigma = 5, 2
         n = utils.gaussian(x, mu, sigma)
+
     elif INITIAL_STATE == "dirac-delta":
         x0 = 1
         n = utils.dirac_delta(x, x0)
+
     else:
-        raise Exception(f"ERROR: Initial state {INITIAL_STATE} is not defined.")
+        raise Exception(
+            f"ERROR: Initial state {INITIAL_STATE} is not defined.")
     return x, n

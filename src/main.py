@@ -3,21 +3,11 @@ from numba import jit
 import numpy as np
 from tqdm import tqdm
 
-from config import X_MIN, X_MAX, GRID_RESOLUTION
 from config import DT, NR_OF_TIMESTEPS
-import utils
+import initialization
 import plotting
-
-
-def initialize_state():
-    x = np.linspace(X_MIN, X_MAX, GRID_RESOLUTION)
-    n = utils.dirac_delta(x, 1)
-    return x, n
-
-
-@jit(nopython=True)
-def K(x, y):
-    return 1  # 0.5
+import utils
+from coagulation_kernel import coagulation_kernel as K
 
 
 # @jit(nopython=True, parallel=True, cache=True)
@@ -35,7 +25,7 @@ def forward_state(t, x, n):
 
 def main():
     # Define initial state.
-    x, n0 = initialize_state()
+    x, n0 = initialization.initialize_state()
     ns = [n0]
     # Start forward-loop.
     for t in tqdm(range(NR_OF_TIMESTEPS)):

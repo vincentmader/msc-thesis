@@ -8,4 +8,6 @@
     pip3 install -r requirements.txt
 
 # Create `./figures` directory, if it does not yet exist.
-    [ -d figures ] || mkdir -p ./figures
+    [ -d ./figures ] || mkdir -p ./figures
+# Create `./data` directory, if it does not yet exist.
+    [ -d ./data    ] || mkdir -p ./data

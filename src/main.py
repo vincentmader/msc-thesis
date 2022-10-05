@@ -14,7 +14,7 @@ from coagulation_kernel import coagulation_kernel as K
 def forward_state(t, x, n):
     dn = np.empty(len(x))
     for i, n_i in enumerate(n):
-        # Determine contribution of associative & disassociative processes, respectively.
+        # Determine contribution of assoc. & disassoc. processes, respectively.
         A = 1/2 * sum([K(i, j) * n[j] * n[i-j] for j in range(i)])
         D = sum([K(i, j) * n_i * n_j for j, n_j in enumerate(n)])
         # Calculate total temporal derivative.
@@ -38,4 +38,4 @@ def main():
 
 if __name__ == "__main__":
     duration, _ = utils.record_execution_time(main)
-    print(f"Execution time: {duration}")
+    print(f"\nExecution time: {duration}")

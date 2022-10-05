@@ -22,21 +22,25 @@ def forward_state(t, x, n):
     return n + dn*DT
 
 
-def main():
-    # Define initial state.
-    x, n0 = initialization.initialize_state()
+def run(x, n0):
     ns = [n0]
-    # Start forward-loop.
     for t in tqdm(range(NR_OF_TIMESTEPS)):
         # Plot current state.
         plotting.plot_state(t, x, ns[-1])
         # Forward state to next time-step.
         ns.append(forward_state(t, x, ns[t]))
+    return ns
+
+def main():
+    # Define initial state.
+    x, n0 = initialization.initialize_state()
+    # Start forward-loop.
+    duration, ns = utils.record_execution_time(run, x, n0)
+    print(f"\nExecution time: {duration}")
     # Save (& show) plot.
     plotting.save_plot(show=True)
     utils.save_data(x, ns)
 
 
 if __name__ == "__main__":
-    duration, _ = utils.record_execution_time(main)
-    print(f"\nExecution time: {duration}")
+    main()

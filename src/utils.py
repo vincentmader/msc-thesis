@@ -18,9 +18,9 @@ def dirac_delta(x, i_x0):
     return y
 
 
-def record_execution_time(f):
+def record_execution_time(f, *args):
     start = dt.now()
-    res = f()
+    res = f(*args)
     end = dt.now()
     duration = (end - start)
     return duration, res

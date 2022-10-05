@@ -10,12 +10,15 @@ plt.style.use('~/.config/matplotlib/dark.mplstyle')
 
 
 def plot_state(t, x, n):
+    # Calculate total mass & show together with time-step in plot label.
     m_tot = utils.calc_total_mass(x, n)
     label = f"$t={t},\ M={m_tot}$"
 
-    # plt.bar(x, n, label=label)
+    # Plot mass distribution.
     plt.plot(x, n, label=label)
+    #   plt.bar(x, n, label=label)
 
+    # Prettify plot.
     plt.title("particle mass distribution")
     plt.xlabel("mass $x$")
     plt.ylabel("abundancy $n(x)$")

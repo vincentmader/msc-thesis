@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# If a virtual environment exists already, remove it.
+    [ -d ./venv ] && rm -r ./venv
 # Create new virtual environment for python.
     python3 -m venv ./venv
 # Enter virtual environment.

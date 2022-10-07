@@ -4,7 +4,7 @@ from config import INITIAL_STATE, X_MIN, X_MAX, GRID_RESOLUTION
 import utils
 
 
-def initialize_state():
+def get_initial_state():
     x = np.linspace(X_MIN, X_MAX, GRID_RESOLUTION)
 
     if INITIAL_STATE == "gaussian":

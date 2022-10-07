@@ -46,8 +46,8 @@ def plot_state(t, x, n):
 
     # Plot mass distribution.
     plt.semilogx(x, n*x**2, label=label)
-        # plt.plot(x, n, label=label)
-        # plt.bar(x, n, label=label)
+    # plt.plot(x, n, label=label)
+    # plt.bar(x, n, label=label)
 
 
 def save_plot(savefile_name, show_plot=False):
@@ -55,3 +55,4 @@ def save_plot(savefile_name, show_plot=False):
     plt.savefig(path)
     if show_plot is True:
         plt.show()
+    plt.close()

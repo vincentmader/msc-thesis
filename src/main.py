@@ -10,7 +10,7 @@ from coagulation_kernel import coagulation_kernel as K
 from config import DT, NR_OF_TIMESTEPS, X, GRID_RESOLUTION
 
 
-def run(x, n0):
+def run(n0):
     ns = [n0]
     for t in tqdm(range(NR_OF_TIMESTEPS)):
         n_old = ns[t]
@@ -19,7 +19,8 @@ def run(x, n0):
     return ns
 
 
-@jit(nopython=True, cache=True)
+# @jit(nopython=True, cache=True)
+@jit(nopython=True)
 def forward_state(t, n):
     # Initialize mass-distribution vector.
     dn = np.empty(GRID_RESOLUTION)
@@ -31,12 +32,13 @@ def forward_state(t, n):
         dn[i] = A - D
     return n + dn*DT
 
+
 if __name__ == "__main__":
     # Instantiate initial state.
     n0 = initialization.get_initial_state()
 
     # Run forward-loop & get time-evolution of mass distribution.
-    ns, _ = utils.record_execution_time(run, *[X, n0])
+    ns, _ = utils.record_execution_time(run, *[n0])
 
     # Save mass distributions to file.
     savefile_name = utils.save_data(X, ns)

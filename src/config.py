@@ -14,10 +14,10 @@ DT              = 1
 
 # Define minumum & maximum x-value.
 X_MIN           = 0
-X_MAX           = 100
+X_MAX           = 200
 
 # Define number of points in mass-grid.
-GRID_RESOLUTION = 100
+GRID_RESOLUTION = 200
 
 # Use the above to define the mass-axis.
 X               = np.linspace(X_MIN, X_MAX, GRID_RESOLUTION)

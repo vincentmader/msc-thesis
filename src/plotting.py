@@ -16,6 +16,7 @@ def plot_state(t, x, n):
 
     # Plot mass distribution.
     plt.plot(x, n, label=label)
+    #   plt.semilogx(x, n*x**2, label=label)
     #   plt.bar(x, n, label=label)
 
     # Prettify plot.

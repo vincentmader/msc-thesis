@@ -19,9 +19,6 @@ X_MAX           = 200
 # Define number of points in mass-grid.
 GRID_RESOLUTION = 200
 
-# Use the above to define the mass-axis.
-X               = np.linspace(X_MIN, X_MAX, GRID_RESOLUTION)
-
 # Define the initial state.
 # -----------------------------------------------------------------------------
 
@@ -30,7 +27,7 @@ X               = np.linspace(X_MIN, X_MAX, GRID_RESOLUTION)
 #   - "dirac-delta".
 INITIAL_STATE   = "gaussian"  
 
-# Define path to directories on disk.
+# Define paths to directories on disk.
 # -----------------------------------------------------------------------------
 
 # Define path to directory where simulation-data shall be saved.

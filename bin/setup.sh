@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Setup virtual environment for python.
+# -----------------------------------------------------------------------------
+
 # If a virtual environment exists already, remove it.
     [ -d ./venv ] && rm -r ./venv
 # Create new virtual environment for python.
@@ -8,6 +11,10 @@
     source ./venv/bin/activate;
 # Install python-pip3 dependencies.
     pip3 install -r requirements.txt
+
+
+# Create needed directories.
+# -----------------------------------------------------------------------------
 
 # Create `./figures` directory, if it does not yet exist.
     [ -d ./figures ] || mkdir -p ./figures

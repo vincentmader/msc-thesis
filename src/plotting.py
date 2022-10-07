@@ -45,9 +45,9 @@ def plot_state(t, x, n):
     label = f"$t={t},\ M={m_tot}$"
 
     # Plot mass distribution.
-    plt.plot(x, n, label=label)
-    # plt.semilogx(x, n*x**2, label=label)
-    # plt.bar(x, n, label=label)
+    plt.semilogx(x, n*x**2, label=label)
+        # plt.plot(x, n, label=label)
+        # plt.bar(x, n, label=label)
 
 
 def save_plot(savefile_name, show_plot=False):

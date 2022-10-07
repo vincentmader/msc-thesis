@@ -23,7 +23,8 @@ def record_execution_time(f, *args):
     res = f(*args)
     end = dt.now()
     duration = (end - start)
-    return duration, res
+    print(f"\nExecution time: {duration}")
+    return res, duration
 
 
 def calc_total_mass(x, n):

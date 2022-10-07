@@ -31,16 +31,14 @@ def run(x, n0):
         ns.append(forward_state(t, x, ns[t]))
     return ns
 
-def main():
-    # Define initial state.
+
+if __name__ == "__main__":
+    # Instantiate initial state.
     x, n0 = initialization.initialize_state()
+
     # Start forward-loop.
-    duration, ns = utils.record_execution_time(run, x, n0)
-    print(f"\nExecution time: {duration}")
+    ns, _ = utils.record_execution_time(run, *[x, n0])
+
     # Save (& show) plot.
     plotting.save_plot(show=True)
     utils.save_data(x, ns)
-
-
-if __name__ == "__main__":
-    main()

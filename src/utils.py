@@ -37,12 +37,16 @@ def save_data(x, ns):
     content = ",".join([str(i) for i in x]) + "\n"
     for n in ns:
         content += ",".join([str(i) for i in n]) + "\n"
+
     # Define name of save-file.
     sim_id = len([i for i in os.listdir(PATH_TO_DATA) if i.endswith(".txt")])
     time_str = dt.now().strftime("%Y-%m-%d_%H:%M:%S")
-    filename = f"simulation_{sim_id}_from_{time_str}.txt"
+    filename = f"simulation_{sim_id}_from_{time_str}"
+
     # Define path to save-file.
-    path_to_savefile = os.path.join(PATH_TO_DATA, filename)
-    # Save to file.
+    path_to_savefile = os.path.join(PATH_TO_DATA, f"{filename}.txt")
+
+    # Save to file & return the name (so that plots are named the same).
     with open(path_to_savefile, 'w') as fp:
         fp.write(content)
+    return filename

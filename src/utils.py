@@ -2,6 +2,7 @@ from datetime import datetime as dt
 import os
 
 import numpy as np
+from numba import jit
 from numba import float64 as f64
 
 from config import PATH_TO_DATA
@@ -16,6 +17,11 @@ def dirac_delta(x, i_x0):
     y = np.zeros(len(x))
     y[i_x0] = 1
     return y
+
+
+@jit(nopython=True)
+def kronecker_delta(i, j):
+    return 1 if i == j else 0
 
 
 def record_execution_time(f, *args):

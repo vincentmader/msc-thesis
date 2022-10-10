@@ -2,8 +2,8 @@ import numpy as np
 from numba import jit
 from tqdm import tqdm
 
-from coagulation_kernel import K
 from config import NR_OF_TIMESTEPS
+from .coagulation_kernel import K
 
 
 @jit(nopython=True, cache=True)

@@ -2,7 +2,7 @@ import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 import numpy as np
 
-from coagulation_kernel import K
+from solver.coagulation_kernel import K
 from config import GRID_RESOLUTION
 
 VMIN, VCEN, VMAX = -1, 0, 1

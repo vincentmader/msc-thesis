@@ -53,6 +53,6 @@ if __name__ == "__main__":
     # Run forward-loop & get time-evolution of mass distribution.
     ns, _ = utils.record_execution_time(run, *[x, n0])
     # Save mass distributions to file.
-    savefile_name = utils.save_data(x, ns)
+    run_id = utils.save_data(x, ns)
     # Create, save (& show) plot(s).
-    plotting.plot_states(savefile_name, show_plot=True)
+    plotting.plot_states(run_id, show_plot=True)

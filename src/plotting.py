@@ -9,9 +9,9 @@ from config import X_MIN, X_MAX
 import utils
 
 
-def plot_states(savefile_name, show_plot=False):
+def plot_states(run_id, show_plot=False):
     # Load simulation-data from save-file into string.
-    path_to_savefile = os.path.join(PATH_TO_DATA, f"{savefile_name}.txt")
+    path_to_savefile = os.path.join(PATH_TO_DATA, run_id, "mass-distribution n(m).txt")
     with open(path_to_savefile, 'r') as fp:
         content = fp.readlines()
 
@@ -34,7 +34,7 @@ def plot_states(savefile_name, show_plot=False):
     plt.legend(loc="best")
 
     # Save plot to file.
-    save_plot(savefile_name, show_plot=show_plot)
+    save_plot(run_id, show_plot=show_plot)
 
 
 def plot_state(t, x, n):
@@ -49,9 +49,17 @@ def plot_state(t, x, n):
         # plt.bar(x, n, label=label)
 
 
-def save_plot(savefile_name, show_plot=False):
-    path = os.path.join(PATH_TO_FIGURES, f"{savefile_name}.png")
-    plt.savefig(path)
+def save_plot(run_id, show_plot=False):
+    # Define path to directory where plots should be saved to.
+    path_to_savedir = os.path.join(PATH_TO_FIGURES, run_id)
+    # Make sure the save-directory exists.
+    os.mkdir(path_to_savedir)
+    # Define path to file that plot should be written to.
+    path_to_savefile = os.path.join(path_to_savedir, "mass-distribution n(m).png")
+    # Save the figure.
+    plt.savefig(path_to_savefile)
+    # Show the plot (optional).
     if show_plot is True:
         plt.show()
+    # Make sure pyplot does not fill up RAM with unclosed figures.
     plt.close()

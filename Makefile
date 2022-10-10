@@ -12,5 +12,5 @@ setup:
 	./bin/setup.sh
 
 clean:
-	rm ./data/*
-	rm ./figures/*
+	rm -r ./data/*
+	rm -r ./figures/*

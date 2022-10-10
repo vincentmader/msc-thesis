@@ -56,3 +56,5 @@ if __name__ == "__main__":
     run_id = utils.save_data(x, ns)
     # Create, save (& show) plot(s).
     plotting.plot_states(run_id, show_plot=True)
+
+    plotting.plot_kernel()

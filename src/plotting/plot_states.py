@@ -11,7 +11,8 @@ import utils
 
 def plot_states(run_id, show_plot=False):
     # Load simulation-data from save-file into string.
-    path_to_savefile = os.path.join(PATH_TO_DATA, run_id, "mass-distribution n(m).txt")
+    path_to_savefile = os.path.join(
+        PATH_TO_DATA, run_id, "mass-distribution n(m).txt")
     with open(path_to_savefile, 'r') as fp:
         content = fp.readlines()
 
@@ -45,8 +46,8 @@ def plot_state(t, x, n):
 
     # Plot mass distribution.
     plt.semilogx(x, n*x**2, label=label)
-        # plt.plot(x, n, label=label)
-        # plt.bar(x, n, label=label)
+    # plt.plot(x, n, label=label)
+    # plt.bar(x, n, label=label)
 
 
 def save_plot(run_id, show_plot=False):
@@ -55,7 +56,8 @@ def save_plot(run_id, show_plot=False):
     # Make sure the save-directory exists.
     os.mkdir(path_to_savedir)
     # Define path to file that plot should be written to.
-    path_to_savefile = os.path.join(path_to_savedir, "mass-distribution n(m).png")
+    path_to_savefile = os.path.join(
+        path_to_savedir, "mass-distribution n(m).png")
     # Save the figure.
     plt.savefig(path_to_savefile)
     # Show the plot (optional).

@@ -11,6 +11,7 @@ def main():
 
     # Define coagulation kernel.
     K = solver.coagulation_kernel.create_coagulation_kernel()
+    # K = solver.coagulation_kernel.create_coagulation_kernel_2()
 
     # Run forward-loop & get time-evolution of mass distribution.
     ns, _ = utils.record_execution_time(solver.run, *[K, x, n0])

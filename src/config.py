@@ -10,8 +10,8 @@ NR_OF_TIMESTEPS = 4
 # -----------------------------------------------------------------------------
 
 # Define minumum & maximum x-value.
-X_MIN           = 0
-X_MAX           = 30
+X_MIN = 0
+X_MAX = 30
 
 # Define number of points in mass-grid.
 GRID_RESOLUTION = 30
@@ -20,15 +20,15 @@ GRID_RESOLUTION = 30
 # -----------------------------------------------------------------------------
 
 # At the moment, this could be either
-#   - "gaussian" or 
+#   - "gaussian" or
 #   - "dirac-delta".
-INITIAL_STATE   = "gaussian"
+INITIAL_STATE = "gaussian"
 
 # Define paths to directories on disk.
 # -----------------------------------------------------------------------------
 
 # Define path to directory where simulation-data shall be saved.
-PATH_TO_DATA    = "./data"
+PATH_TO_DATA = "./data"
 
 # Define path to directory where figures shall be saved.
 PATH_TO_FIGURES = "./figures"
@@ -37,17 +37,17 @@ PATH_TO_FIGURES = "./figures"
 # -----------------------------------------------------------------------------
 
 # Define matplotlib theme & apply.
-MPL_THEME       = "~/.config/matplotlib/dark.mplstyle"
+MPL_THEME = "~/.config/matplotlib/dark.mplstyle"
 plt.style.use(MPL_THEME)
 
 # Define plot size.
-FIG_SIZE        = (12, 8)
+FIG_SIZE = (12, 8)
 
 # Various (as of yet unused).
 # -----------------------------------------------------------------------------
 
 # Define plot variants.
 # PLOT_VARIANTS   = [
-#     "lin-x", 
+#     "lin-x",
 #     "log-x",
 # ]

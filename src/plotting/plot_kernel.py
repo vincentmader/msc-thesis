@@ -15,6 +15,8 @@ def plot_kernel_layer(K, k, show_plot=False):
         raise Exception("ERROR: Kernel is not normalized to [-1, 1].")
 
     # Create plot.
+    plt.figure()
+    plt.title("$K_{kij}$ " + "for $k={}$".format(k))
     plt.pcolor(K[k], norm=CMAP_NORM)
     plt.set_cmap("bwr")
     plt.colorbar()

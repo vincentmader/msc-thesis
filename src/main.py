@@ -11,10 +11,12 @@ def main():
     # Run forward-loop & get time-evolution of mass distribution.
     ns, _ = utils.record_execution_time(solver.run, *[x, n0])
 
-    # Save mass distributions to file.
+    # Save mass distributions to file. 
+    # Also, define this simulation-run's ID, which will
+    # be used for the filename of the output-plot as well.
     run_id = utils.save_data(x, ns)
 
-    # Create, save (& show) plot(s).
+    # Create, save (& show) plots.
     plotting.plot_states(run_id, show_plot=True)
     plotting.plot_kernel(run_id, show_plot=True)
 

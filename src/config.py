@@ -6,18 +6,15 @@ import numpy as np
 # Define number of forward-steps.
 NR_OF_TIMESTEPS = 4
 
-# Define size of a single time-step.
-DT              = 1
-
 # Define Discretization of Mass-Axis (Ordinate).
 # -----------------------------------------------------------------------------
 
 # Define minumum & maximum x-value.
 X_MIN           = 0
-X_MAX           = 200
+X_MAX           = 300
 
 # Define number of points in mass-grid.
-GRID_RESOLUTION = 200
+GRID_RESOLUTION = 300
 
 # Define the initial state.
 # -----------------------------------------------------------------------------

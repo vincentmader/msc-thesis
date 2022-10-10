@@ -49,7 +49,7 @@ def run(x, n0):
 
 if __name__ == "__main__":
     # Define initial state.
-    x, n0 = initialization.get_initial_state()
+    x, n0 = initialization.initial_state()
     # Run forward-loop & get time-evolution of mass distribution.
     ns, _ = utils.record_execution_time(run, *[x, n0])
     # Save mass distributions to file.

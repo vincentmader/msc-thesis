@@ -1,5 +1,7 @@
+from config import GRID_EXP_MIN, GRID_EXP_MAX, GRID_STEPSIZE
 import numpy as np
 from numba import jit
+from numpy import float64 as f64
 from utils import kronecker_delta
 
 from config import GRID_RESOLUTION as RES
@@ -29,13 +31,11 @@ def create_coagulation_kernel():
 
             m_l = mass_from_index(k_l)
             m_h = mass_from_index(k_h)
-            # assert m_l == m_i+m_j
 
-            K_l = K_ij_loss(i, j)  # * kronecker_delta(k, i)
+            K_l = K_ij_loss(i, j)
             eps = (m_i + m_j - m_l) / (m_h - m_l)
             K_g_l = K_l * (1 - eps)
             K_g_h = K_l * eps
-            # assert (K_g_l, K_g_h) == (1, 0)
 
             K[k_l][i][j] += 1/2 * K_g_l
             K[k_h][i][j] += 1/2 * K_g_h
@@ -71,11 +71,12 @@ def K_ij_loss(i, j):
 
 @jit(nopython=True)
 def mass_from_index(idx):
-    # TODO adjust for log-grid
-    return idx
+    return (10**GRID_EXP_MIN) * (GRID_STEPSIZE**idx)
 
 
 @jit(nopython=True)
 def index_from_mass(mass):
-    # TODO determine index from mass value
-    return mass
+    return int(
+        (np.log(mass) - GRID_EXP_MIN*np.log(10)) /
+        (np.log(GRID_STEPSIZE))
+    )

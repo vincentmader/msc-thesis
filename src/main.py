@@ -23,7 +23,7 @@ def main():
 
     # Create, save (& show) plots.
     plotting.plot_states(run_id, show_plot=True)
-    plotting.plot_kernel(K, run_id, show_plot=True)
+    #   plotting.plot_kernel(K, run_id, show_plot=True)
 
 
 if __name__ == "__main__":

@@ -3,12 +3,10 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
+from config import FIG_SIZE
 from config import PATH_TO_FIGURES, PATH_TO_DATA
-from config import MPL_THEME, FIG_SIZE
 from config import X_MIN, X_MAX
 import utils
-
-plt.style.use(MPL_THEME)
 
 
 def plot_states(savefile_name, show_plot=False):
@@ -32,7 +30,7 @@ def plot_states(savefile_name, show_plot=False):
     plt.title("particle mass distribution")
     plt.xlabel("mass $x$")
     plt.ylabel("abundancy $n(x)$")
-    plt.xlim(X_MIN-1, X_MAX+1)  # X_MAX+1)
+    plt.xlim(X_MIN-1, X_MAX+1)
     plt.legend(loc="best")
 
     # Save plot to file.
@@ -47,8 +45,8 @@ def plot_state(t, x, n):
 
     # Plot mass distribution.
     plt.semilogx(x, n*x**2, label=label)
-    # plt.plot(x, n, label=label)
-    # plt.bar(x, n, label=label)
+        # plt.plot(x, n, label=label)
+        # plt.bar(x, n, label=label)
 
 
 def save_plot(savefile_name, show_plot=False):

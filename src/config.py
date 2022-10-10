@@ -1,4 +1,4 @@
-import numpy as np
+import matplotlib.pyplot as plt
 
 # Define Discretization of Time-Axis (Abscissa).
 # -----------------------------------------------------------------------------
@@ -11,10 +11,10 @@ NR_OF_TIMESTEPS = 4
 
 # Define minumum & maximum x-value.
 X_MIN           = 0
-X_MAX           = 300
+X_MAX           = 30
 
 # Define number of points in mass-grid.
-GRID_RESOLUTION = 300
+GRID_RESOLUTION = 30
 
 # Define the initial state.
 # -----------------------------------------------------------------------------
@@ -22,7 +22,7 @@ GRID_RESOLUTION = 300
 # At the moment, this could be either
 #   - "gaussian" or 
 #   - "dirac-delta".
-INITIAL_STATE   = "gaussian"  
+INITIAL_STATE   = "gaussian"
 
 # Define paths to directories on disk.
 # -----------------------------------------------------------------------------
@@ -36,8 +36,9 @@ PATH_TO_FIGURES = "./figures"
 # Configure plotting.
 # -----------------------------------------------------------------------------
 
-# Define matplotlib theme.
+# Define matplotlib theme & apply.
 MPL_THEME       = "~/.config/matplotlib/dark.mplstyle"
+plt.style.use(MPL_THEME)
 
 # Define plot size.
 FIG_SIZE        = (12, 8)

@@ -9,7 +9,7 @@ VMIN, VCEN, VMAX = -1, 0, 1
 CMAP_NORM = colors.TwoSlopeNorm(vmin=VMIN, vcenter=VCEN, vmax=VMAX)
 
 
-def plot_kernel_layer(k):
+def plot_kernel_layer(k, show_plot=False):
     # Calculate entries of kernel at given k-value.
     kernel = np.zeros((GRID_RESOLUTION, GRID_RESOLUTION))
     for i in range(GRID_RESOLUTION):
@@ -27,10 +27,11 @@ def plot_kernel_layer(k):
     plt.colorbar()
     plt.xlabel("$j$")
     plt.ylabel("$i$")
-    plt.show()
+    if show_plot:
+        plt.show()
     plt.close()
 
 
-def plot_kernel(ks=range(GRID_RESOLUTION)):
+def plot_kernel(run_id, show_plot=False, ks=range(GRID_RESOLUTION)):
     for k in ks:
-        plot_kernel_layer(k)
+        plot_kernel_layer(k, show_plot=show_plot)

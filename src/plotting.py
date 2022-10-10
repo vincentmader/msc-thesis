@@ -42,6 +42,7 @@ def plot_states(savefile_name, show_plot=False):
 def plot_state(t, x, n):
     # Calculate total mass (to show together with time-step in plot-label).
     m_tot = utils.calc_total_mass(x, n)
+    m_tot = round(m_tot, 3)
     label = f"$t={t},\ M={m_tot}$"
 
     # Plot mass distribution.

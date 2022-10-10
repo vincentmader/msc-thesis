@@ -10,3 +10,6 @@ setup:
 clean:
 	rm -r ./data/*
 	rm -r ./figures/*
+
+recompile:
+	rm -r ./src/__pycache__

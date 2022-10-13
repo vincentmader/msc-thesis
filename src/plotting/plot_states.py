@@ -9,14 +9,17 @@ def plot_states(run_id, show_plot=False):
     # Load simulation-data from save-file into string.
     m, Ns = utils.file_io.load_simulation_data(run_id)
 
+    # Calculate total mass in the disk at t=0.
+    M_0 = utils.calc_total_mass(m, Ns[0])
+
     # Create figure.
     _ = plt.figure(figsize=FIG_SIZE)
 
+    # Plot mass distribution n against mass x for several points in time.
     for t, N in enumerate(Ns):
         if t % STEPS_BETWEEN_PLOT != 0:
             continue
-        # Plot mass distribution n against mass x.
-        plot_state(t, m, N)
+        plot_state(t, m, N, M_0)
 
     # Prettify plot.
     plt.title("particle mass distribution")
@@ -30,12 +33,18 @@ def plot_states(run_id, show_plot=False):
     utils.file_io.save_plot(run_id, show_plot=show_plot)
 
 
-def plot_state(t, m, N):
+def plot_state(t, m, N, M_0):
     # Calculate total mass (to show together with time-step in plot-label).
-    m_tot = utils.calc_total_mass(m, N)
+    M = utils.calc_total_mass(m, N)
+
+    # Calculate relative mass error with respect to initial disk mass.
+    err = round((M / M_0 - 1) * 100, 2)
 
     # Define label: Show time, & area under curve (i.e. total mass).
-    label = f"$t={t},\ M={m_tot}$"
+    a = 2*" " if t != 0 else 6*" "
+    b = r"\Delta M/M_0"
+    c = err
+    label = f"${t=}$,{a}${b}={c}$ %"
 
     # Plot mass distribution.
     plt.loglog(m, N*m, label=label)

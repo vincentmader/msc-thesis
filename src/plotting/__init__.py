@@ -1,2 +1,3 @@
 from .plot_kernel import plot_kernel
 from .plot_mass_distribution_over_time import plot_mass_distribution_over_time
+from .plot_error_vs_time import plot_error_vs_time

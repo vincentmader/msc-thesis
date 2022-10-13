@@ -31,7 +31,7 @@ def save_simulation_data(x, ns):
     os.mkdir(path_to_savedir)
 
     # Define path to save-file.
-    filename = "{MASS_DISTRIBUTION_FILENAME}.txt"
+    filename = f"{MASS_DISTRIBUTION_FILENAME}.txt"
     path_to_savefile = os.path.join(path_to_savedir, filename)
 
     # Save to file & return run-id (so that plots can be named the same).
@@ -42,7 +42,7 @@ def save_simulation_data(x, ns):
 
 def load_simulation_data(run_id):
     # Define path to save-file.
-    filename = "{MASS_DISTRIBUTION_FILENAME}.txt"
+    filename = f"{MASS_DISTRIBUTION_FILENAME}.txt"
     path_to_savefile = os.path.join(PATH_TO_DATA, run_id, filename)
 
     # Load file contents into string.
@@ -69,7 +69,7 @@ def save_plot(run_id, show_plot=False):
     os.mkdir(path_to_savedir)
 
     # Define path to file that plot should be written to.
-    filename = "{MASS_DISTRIBUTION_FILENAME}.png"
+    filename = f"{MASS_DISTRIBUTION_FILENAME}.png"
     path_to_savefile = os.path.join(path_to_savedir, filename)
 
     # Save the figure.

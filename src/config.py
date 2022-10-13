@@ -5,7 +5,7 @@ from numpy import float64 as f64
 # -----------------------------------------------------------------------------
 
 # Define number of forward-steps.
-NR_OF_TIMESTEPS = 70
+NR_OF_TIMESTEPS = 700
 
 # Define Discretization of Mass-Axis (Ordinate).
 # -----------------------------------------------------------------------------
@@ -41,7 +41,7 @@ PATH_TO_FIGURES = "./figures"
 # -----------------------------------------------------------------------------
 
 # Define nr. of time-steps between plotting.
-STEPS_BETWEEN_PLOT = 10
+STEPS_BETWEEN_PLOT = 100
 
 # Define matplotlib theme & apply.
 MPL_THEME = "~/.config/matplotlib/dark.mplstyle"

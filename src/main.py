@@ -19,7 +19,7 @@ def main():
     # Save mass distributions to file.
     # Also, define this simulation-run's ID, which will
     # be used for the filename of the output-plot as well.
-    run_id = utils.save_data(x, ns)
+    run_id = utils.file_io.save_simulation_data(x, ns)
 
     # Create, save (& show) plots.
     plotting.plot_states(run_id, show_plot=True)

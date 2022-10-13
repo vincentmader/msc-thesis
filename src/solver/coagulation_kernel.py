@@ -20,16 +20,20 @@ def create_coagulation_kernel():
     # Determine gain contribution.
     for i in range(RES):
         for j in range(RES):
+            # Determine masses before & after hit-and-stick collision.
             m_i = mass_from_index(i)
             m_j = mass_from_index(j)
             m = m_i + m_j
 
+            # Determine index of bins adjacent to combined mass.
             k_l = index_from_mass(m)
             k_h = k_l + 1
 
+            # Get mass corresponding to these indices.
             m_l = mass_from_index(k_l)
             m_h = mass_from_index(k_h)
 
+            # Use linear ansatz to split kernel between lower/upper bins.
             K_l = K_ij_loss(i, j)
             eps = (m_i + m_j - m_l) / (m_h - m_l)
             K_g_l = K_l * (1 - eps)
@@ -37,6 +41,7 @@ def create_coagulation_kernel():
 
             K[k_l][i][j] += 1/2 * K_g_l
             K[k_h][i][j] += 1/2 * K_g_h
+
     # Return total kernel.
     return K
 

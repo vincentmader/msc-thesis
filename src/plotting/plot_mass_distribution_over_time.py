@@ -5,7 +5,7 @@ from config import GRID_EXP_MIN, GRID_EXP_MAX
 import utils
 
 
-def plot_states(run_id, show_plot=False):
+def plot_mass_distribution_over_time(run_id, show_plot=False):
     # Load simulation-data from save-file into string.
     m, Ns = utils.file_io.load_simulation_data(run_id)
 
@@ -19,7 +19,7 @@ def plot_states(run_id, show_plot=False):
     for t, N in enumerate(Ns):
         if t % STEPS_BETWEEN_PLOT != 0:
             continue
-        plot_state(t, m, N, M_0)
+        plot_mass_distribution(t, m, N, M_0)
 
     # Prettify plot.
     plt.title("particle mass distribution")
@@ -33,7 +33,7 @@ def plot_states(run_id, show_plot=False):
     utils.file_io.save_plot(run_id, show_plot=show_plot)
 
 
-def plot_state(t, m, N, M_0):
+def plot_mass_distribution(t, m, N, M_0):
     # Calculate total mass (to show together with time-step in plot-label).
     M = utils.calc_total_mass(m, N)
 

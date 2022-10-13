@@ -1,11 +1,9 @@
-from config import GRID_EXP_MIN, GRID_EXP_MAX, GRID_STEPSIZE
 import numpy as np
 from numba import jit
-from numpy import float64 as f64
 from utils import kronecker_delta
 
+from config import GRID_EXP_MIN, GRID_STEPSIZE
 from config import GRID_RESOLUTION as RES
-import utils
 
 
 @jit(nopython=True)
@@ -41,22 +39,6 @@ def create_coagulation_kernel():
             K[k_h][i][j] += 1/2 * K_g_h
     # Return total kernel.
     return K
-
-
-def create_coagulation_kernel_2():
-    K = np.zeros(shape=(RES, RES, RES))
-    for k in range(RES):
-        for i in range(RES):
-            for j in range(RES):
-                K[k][i][j] += K_kij(k, i, j)
-    return K
-
-
-@jit(nopython=True)
-def K_kij(k, i, j):
-    K_l = K_ij_loss(i, j) * utils.kronecker_delta(k, i)
-    K_g = K_kij_gain(k, i, j) * utils.kronecker_delta(k, i+j)
-    return K_g/2 - K_l
 
 
 @jit(nopython=True)

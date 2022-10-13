@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from config import GRID_RESOLUTION as GRES
 import initialization
 import plotting
 import utils
@@ -22,8 +23,8 @@ def main():
     run_id = utils.file_io.save_simulation_data(x, ns)
 
     # Create, save (& show) plots.
-    #   plotting.plot_mass_distribution_over_time(run_id, show_plot=True)
-    #   plotting.plot_kernel(K, run_id, show_plot=True)
+    plotting.plot_mass_distribution_over_time(run_id, show_plot=True)
+    plotting.plot_kernel(K, run_id, show_plot=True, ks=[int(GRES/2)])
     plotting.plot_error_vs_time(run_id, show_plot=True)
 
 

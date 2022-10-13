@@ -27,3 +27,6 @@ def plot_error_vs_time(run_id, show_plot=False):
     # Show plot (optional).
     if show_plot is True:
         plt.show()
+
+    # Save plot to file.
+    # TODO

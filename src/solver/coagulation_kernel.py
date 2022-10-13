@@ -3,23 +3,23 @@ from numba import jit
 from utils import kronecker_delta
 
 from config import GRID_EXP_MIN, GRID_STEPSIZE
-from config import GRID_RESOLUTION as RES
+from config import GRID_RESOLUTION as GRES
 
 
 @jit(nopython=True)
 def create_coagulation_kernel():
-    K = np.zeros((RES, RES, RES))
+    K = np.zeros((GRES, GRES, GRES))
 
     # Determine loss contribution.
-    for k in range(RES):
-        for i in range(RES):
-            for j in range(RES):
+    for k in range(GRES):
+        for i in range(GRES):
+            for j in range(GRES):
                 K_l = K_ij_loss(i, j) * kronecker_delta(k, i)
                 K[k][i][j] -= K_l
 
     # Determine gain contribution.
-    for i in range(RES):
-        for j in range(RES):
+    for i in range(GRES):
+        for j in range(GRES):
             # Determine masses before & after hit-and-stick collision.
             m_i = mass_from_index(i)
             m_j = mass_from_index(j)

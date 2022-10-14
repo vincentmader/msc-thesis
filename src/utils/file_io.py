@@ -9,9 +9,6 @@ from config import PATH_TO_DATA
 from config import PATH_TO_FIGURES
 
 
-MASS_DISTRIBUTION_FILENAME = "mass-distribution N(m)"
-
-
 def save_simulation_data(x, ns):
     # Define content of save-file.
     content = ",".join([str(i) for i in x]) + "\n"
@@ -31,7 +28,7 @@ def save_simulation_data(x, ns):
     os.mkdir(path_to_savedir)
 
     # Define path to save-file.
-    filename = f"{MASS_DISTRIBUTION_FILENAME}.txt"
+    filename = "mass-distribution N(m).txt"
     path_to_savefile = os.path.join(path_to_savedir, filename)
 
     # Save to file & return run-id (so that plots can be named the same).
@@ -42,7 +39,7 @@ def save_simulation_data(x, ns):
 
 def load_simulation_data(run_id):
     # Define path to save-file.
-    filename = f"{MASS_DISTRIBUTION_FILENAME}.txt"
+    filename = "mass-distribution N(m).txt"
     path_to_savefile = os.path.join(PATH_TO_DATA, run_id, filename)
 
     # Load file contents into string.
@@ -61,23 +58,3 @@ def load_simulation_data(run_id):
     return m, Ns
 
 
-def save_plot(run_id, show_plot=False):
-    # Define path to directory where plots should be saved to.
-    path_to_savedir = os.path.join(PATH_TO_FIGURES, run_id)
-
-    # Make sure the save-directory exists.
-    os.mkdir(path_to_savedir)
-
-    # Define path to file that plot should be written to.
-    filename = f"{MASS_DISTRIBUTION_FILENAME}.png"
-    path_to_savefile = os.path.join(path_to_savedir, filename)
-
-    # Save the figure.
-    plt.savefig(path_to_savefile)
-
-    # Show the plot (optional).
-    if show_plot is True:
-        plt.show()
-
-    # Make sure pyplot does not fill up RAM with unclosed figures.
-    plt.close()

@@ -1,6 +1,8 @@
+import os 
+
 import matplotlib.pyplot as plt
 
-from config import FIG_SIZE, STEPS_BETWEEN_PLOT
+from config import FIG_SIZE, STEPS_BETWEEN_PLOT, PATH_TO_FIGURES
 from config import GRID_EXP_MIN, GRID_EXP_MAX
 import utils
 
@@ -30,7 +32,15 @@ def plot_mass_distribution_over_time(run_id, show_plot=False):
     plt.ylim(10**(-9), 10**(-3))
 
     # Save plot to file.
-    utils.file_io.save_plot(run_id, show_plot=show_plot)
+    save_plot_to_file(run_id)
+
+    # Show the plot (optional).
+    if show_plot is True:
+        plt.show()
+
+    # Make sure pyplot does not fill up RAM with unclosed figures.
+    plt.close()
+
 
 
 def plot_mass_distribution(t, m, N, M_0):
@@ -48,3 +58,13 @@ def plot_mass_distribution(t, m, N, M_0):
 
     # Plot mass distribution.
     plt.loglog(m, N*m, label=label)
+
+
+def save_plot_to_file(run_id):
+    # Define path to file that plot should be written to.
+    filename = "mass-distribution N(m).png"
+    path_to_savefile = os.path.join(PATH_TO_FIGURES, run_id, filename)
+
+    # Save the figure.
+    plt.savefig(path_to_savefile)
+

@@ -1,9 +1,13 @@
+import os
+
 import matplotlib.pyplot as plt
 
 import config
+from config import PATH_TO_FIGURES
 import utils
 
-def plot_error_vs_time(run_id, show_plot=False):
+
+def plot_error_vs_time(run_id, show_plot=False, save_plot=True):
     # Load simulation-data from save-file into string.
     m, Ns = utils.file_io.load_simulation_data(run_id)
 
@@ -16,6 +20,9 @@ def plot_error_vs_time(run_id, show_plot=False):
     # Calculate relative error.
     err = [(M[t] / M[0] - 1) * 100 for t in t]
 
+    # Create new figure.
+    _ = plt.figure()
+
     # Plot error vs. time.
     plt.plot(t, err)
 
@@ -25,8 +32,18 @@ def plot_error_vs_time(run_id, show_plot=False):
     plt.ylabel(r"relative error $\frac{\Delta M}{M_0}$ [%]")
 
     # Show plot (optional).
-    if show_plot is True:
-        plt.show()
+    # if show_plot is True:
+    #     plt.show()
 
     # Save plot to file.
-    # TODO
+    if save_plot:
+        save_plot_to_file(run_id)
+
+    # Close the figure to save RAM.
+    plt.close()
+
+
+def save_plot_to_file(run_id):
+    filename = "total-disk-mass relative-error.png"
+    path_to_savefile = os.path.join(config.PATH_TO_FIGURES, run_id, filename)
+    plt.savefig(path_to_savefile)

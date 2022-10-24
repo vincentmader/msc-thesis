@@ -12,8 +12,8 @@ def initial_state():
     if INITIAL_STATE == "gaussian":
         # TODO how to appropriately do in log-representation
         raise Exception("TODO implement Gaussian in log-representation")
-        mu, sigma = 5, 2
-        n = utils.gaussian(x, mu, sigma)
+        # mu, sigma = 10**(-5), 10**(-7)
+        # n = utils.gaussian(x, mu, sigma)
 
     elif INITIAL_STATE == "dirac-delta":
         idx0 = 10

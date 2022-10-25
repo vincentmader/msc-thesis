@@ -33,7 +33,7 @@ def create_coagulation_kernel():
             m_l = mass_from_index(k_l)
             m_h = mass_from_index(k_h)
 
-            # Use linear ansatz to split kernel between lower/upper bins.
+            # Use linear ansatz to split kernel between next-lower/higher bins.
             K_l = K_ij_loss(i, j)
             eps = (m_i + m_j - m_l) / (m_h - m_l)
             K_g_l = K_l * (1 - eps)

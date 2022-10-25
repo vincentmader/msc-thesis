@@ -32,7 +32,7 @@ def main():
     # Create, save (& show) plots.
     plotting.plot_mass_distribution_over_time(run_id, show_plot=True)
     plotting.plot_kernel(K, run_id, show_plot=True, ks=[int(GRES/2)])
-    plotting.plot_error_vs_time(run_id, show_plot=True)
+    plotting.plot_error_vs_time(run_id, show_plot=False)
 
 
 if __name__ == "__main__":

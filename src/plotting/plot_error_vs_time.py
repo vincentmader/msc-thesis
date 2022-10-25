@@ -32,8 +32,8 @@ def plot_error_vs_time(run_id, show_plot=False, save_plot=True):
     plt.ylabel(r"relative error $\frac{\Delta M}{M_0}$ [%]")
 
     # Show plot (optional).
-    # if show_plot is True:
-    #     plt.show()
+    if show_plot is True:
+        plt.show()
 
     # Save plot to file.
     if save_plot:

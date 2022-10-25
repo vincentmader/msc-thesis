@@ -25,8 +25,8 @@ def plot_kernel_layer(K, run_id, k, show_plot=False, save_plot=True):
     plt.ylabel("$i$")
 
     # Show plot (optional).
-    # if show_plot:
-    #     plt.show()
+    if show_plot:
+        plt.show()
 
     # Save plot (optional).
     if save_plot:

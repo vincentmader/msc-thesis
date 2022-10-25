@@ -39,7 +39,9 @@ def create_coagulation_kernel():
             K_g_l = K_l * (1 - eps)
             K_g_h = K_l * eps
 
+            # Add gain-term to adjacent "next-lower" cell.
             K[k_l][i][j] += 1/2 * K_g_l
+            # Add gain-term to adjacent "next-higher" cell.
             K[k_h][i][j] += 1/2 * K_g_h
 
     # Return total kernel.

@@ -13,8 +13,9 @@ def main():
     x, n0 = initialization.initial_state()
 
     # Define coagulation kernel.
-    K = solver.coagulation_kernel.create_coagulation_kernel()
-    # K = solver.coagulation_kernel.create_coagulation_kernel_2()
+    K_gain = solver.coagulation_kernel.K_gain()
+    K_loss = solver.coagulation_kernel.K_loss()
+    K = 1/2*K_gain + K_loss
 
     # Run forward-loop & get time-evolution of mass distribution.
     ns, _ = utils.record_execution_time(solver.run, *[K, x, n0])
@@ -30,6 +31,7 @@ def main():
     os.mkdir(path_to_savedir)
 
     # Create, save (& show) plots.
+    K = K_gain + K_loss
     plotting.plot_mass_distribution_over_time(run_id, show_plot=True)
     plotting.plot_kernel(K, run_id, show_plot=True, ks=[int(GRES/2)])
     plotting.plot_error_vs_time(run_id, show_plot=False)

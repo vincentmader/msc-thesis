@@ -7,11 +7,6 @@ from config import GRID_RESOLUTION as GRES
 
 
 @jit(nopython=True)
-def create_coagulation_kernel():
-    return 1/2 * K_gain() + K_loss()
-
-
-@jit(nopython=True)
 def K_gain():
     K = np.zeros((GRES, GRES, GRES))
     for i in range(GRES):

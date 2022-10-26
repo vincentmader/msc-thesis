@@ -8,16 +8,12 @@ from config import GRID_RESOLUTION as GRES
 
 @jit(nopython=True)
 def create_coagulation_kernel():
+    return 1/2 * K_gain() + K_loss()
+
+
+@jit(nopython=True)
+def K_gain():
     K = np.zeros((GRES, GRES, GRES))
-
-    # Determine loss contribution.
-    for k in range(GRES):
-        for i in range(GRES):
-            for j in range(GRES):
-                K_l = K_ij_loss(i, j) * kronecker_delta(k, i)
-                K[k][i][j] -= K_l
-
-    # Determine gain contribution.
     for i in range(GRES):
         for j in range(GRES):
             # Determine masses before & after hit-and-stick collision.
@@ -33,7 +29,7 @@ def create_coagulation_kernel():
             m_l = mass_from_index(k_l)
             m_h = mass_from_index(k_h)
 
-            # Use linear ansatz to split kernel between 
+            # Use linear ansatz to split kernel between
             # adjacent "next-lower"/"next-higher" bins.
             K_l = K_ij_loss(i, j)
             eps = (m_i + m_j - m_l) / (m_h - m_l)
@@ -41,11 +37,22 @@ def create_coagulation_kernel():
             K_g_h = K_l * eps
 
             # Add gain-term to adjacent "next-lower" bin.
-            K[k_l][i][j] += 1/2 * K_g_l
+            K[k_l][i][j] += K_g_l
             # Add gain-term to adjacent "next-higher" bin.
-            K[k_h][i][j] += 1/2 * K_g_h
+            K[k_h][i][j] += K_g_h
 
-    # Return total kernel.
+    return K
+
+
+@jit(nopython=True)
+def K_loss():
+    K = np.zeros((GRES, GRES, GRES))
+    for k in range(GRES):
+        for i in range(GRES):
+            for j in range(GRES):
+                K_l = K_ij_loss(i, j) * kronecker_delta(k, i)
+                K[k][i][j] -= K_l
+
     return K
 
 

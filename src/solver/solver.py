@@ -19,7 +19,7 @@ def forward_state(K, x, n):
     # Initialize mass-distribution derivative vector.
     dn = np.zeros(len(x))
     # Calulcate entries of derivative vector.
-    for k in range(len(n)):
+    for k, _ in enumerate(n):
         dn[k] = dn_k(K, n, k)
     return n + dn
 

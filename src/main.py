@@ -15,10 +15,9 @@ def main():
     # Define coagulation kernel.
     K_gain = solver.coagulation_kernel.K_gain()
     K_loss = solver.coagulation_kernel.K_loss()
-    K = 1/2*K_gain + K_loss
 
     # Run forward-loop & get time-evolution of mass distribution.
-    ns, _ = utils.record_execution_time(solver.run, *[K, x, n0])
+    ns, _ = utils.record_execution_time(solver.run, *[K_gain, K_loss, x, n0])
 
     # Save mass distributions to file.
     # Also, define this simulation-run's ID, which will

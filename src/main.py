@@ -21,8 +21,6 @@ def run_plotter():
 
 
 if __name__ == "__main__":
-    print("Running project...")
-
     # Load configuration file.
     cfg = toml.load("./config.toml")
     # Load solver version.

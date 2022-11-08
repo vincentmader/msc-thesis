@@ -1,4 +1,5 @@
 from tqdm import tqdm
+from termcolor import colored
 
 import coagulation
 from config import NR_OF_TIMESTEPS
@@ -25,7 +26,7 @@ def run(K_gain, K_loss, x, n0):
 
 
 def main():
-    print("Running solver v01_py...")
+    print(colored("\nRunning solver v01_py...", "blue"))
 
     # Initialize kernel & state.
     # ─────────────────────────────────────────────────────────────────────────

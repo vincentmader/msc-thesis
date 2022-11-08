@@ -1,5 +1,6 @@
 import os
 
+from termcolor import colored
 import matplotlib.pyplot as plt
 
 from config import PATH_TO_DATA, GRID_RESOLUTION, MPL_THEME
@@ -20,7 +21,7 @@ def get_run_ids():
 
 
 def main():
-    print("Running plotter...")
+    print(colored("\nRunning plotter...", "blue"))
 
     k = int(GRID_RESOLUTION/2)
     ks = range(k, k+1)
@@ -31,7 +32,7 @@ def main():
 
     run_ids = get_run_ids()
     for run_id in run_ids:
-        print(f"\tPlotting for {run_id}")
+        print(colored(f"\tPlotting for {run_id}", "cyan"))
 
         # Make sure the directory for saving plots exists.
         utils.file_io.setup_plot_savedir(run_id)

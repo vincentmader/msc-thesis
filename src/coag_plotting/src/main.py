@@ -22,7 +22,7 @@ def get_run_ids():
     elif CREATE_PLOTS_FOR == "last":
         out.append(run_ids[-1])
     else:
-        raise Exception(f"ERROR: create_plots_for \"{CREATE_PLOTS_FOR}\" is not defined.")
+        raise Exception(f"ERROR: plot_which_runs \"{CREATE_PLOTS_FOR}\" is not defined.")
     return out
 
 

@@ -75,5 +75,5 @@ else:
     MPL_THEME = None
 
 # Define which simulations plots should be created for.
-CREATE_PLOTS_FOR = CONFIG["plotting"]["create_plots_for"]
+CREATE_PLOTS_FOR = CONFIG["plotting"]["plot_which_runs"]
 

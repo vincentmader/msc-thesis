@@ -2,8 +2,11 @@ import os
 
 import matplotlib.pyplot as plt
 
-from config import PATH_TO_DATA, PATH_TO_FIGURES, GRID_RESOLUTION, MPL_THEME
-import plotting
+from config import PATH_TO_DATA, GRID_RESOLUTION, MPL_THEME
+from plotting import plot_error_vs_time
+from plotting import plot_kernel
+from plotting import plot_mass_distribution_over_time
+import utils
 
 
 def get_run_ids():
@@ -16,29 +19,29 @@ def get_run_ids():
     return sorted(out)
 
 
-def create_plot_dir(run_id):
-    print("\t\tCreating directory for plots...")
-    path = os.path.join(PATH_TO_FIGURES, run_id)
-    os.system(f"mkdir -p \"{path}\"")
-
-
 def main():
     print("Running plotter...")
 
     k = int(GRID_RESOLUTION/2)
     ks = range(k, k+1)
 
-    # Define matplotlib theme & apply.
+    # Define matplotlib theme & apply (if specified in config).
     if MPL_THEME:
         plt.style.use(MPL_THEME)
 
     run_ids = get_run_ids()
     for run_id in run_ids:
         print(f"\tPlotting for {run_id}")
-        create_plot_dir(run_id)
-        plotting.plot_mass_distribution_over_time(run_id)
-        plotting.plot_kernel(run_id, ks=ks)
-        plotting.plot_error_vs_time(run_id)
+
+        # Make sure the directory for saving plots exists.
+        utils.file_io.setup_plot_savedir(run_id)
+
+        # Plot the coagulation kernel.
+        plot_kernel(run_id, ks=ks)
+        # Plot the disk mass distribution over time.
+        plot_mass_distribution_over_time(run_id)
+        # Plot the relative error of the disk mass over time.
+        plot_error_vs_time(run_id)
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@ import os
 
 import matplotlib.pyplot as plt
 
-from config import PATH_TO_DATA, PATH_TO_FIGURES, GRID_RESOLUTION
+from config import PATH_TO_DATA, PATH_TO_FIGURES, GRID_RESOLUTION, MPL_THEME
 import plotting
 
 
@@ -29,8 +29,8 @@ def main():
     ks = range(k, k+1)
 
     # Define matplotlib theme & apply.
-    MPL_THEME = "~/.config/matplotlib/dark.mplstyle"
-    plt.style.use(MPL_THEME)
+    if MPL_THEME:
+        plt.style.use(MPL_THEME)
 
     run_ids = get_run_ids()
     for run_id in run_ids:

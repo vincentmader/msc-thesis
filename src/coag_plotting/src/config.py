@@ -57,3 +57,9 @@ FIG_SIZE = CONFIG["plotting"]["fig_size"]
 
 # Define number of simulation-steps between each plot.
 STEPS_BETWEEN_PLOT = CONFIG["plotting"]["steps_between_plot"]
+
+MPL_THEME = CONFIG["plotting"]["theme"]
+if MPL_THEME == "dark":
+    MPL_THEME = "~/.config/matplotlib/dark.mplstyle"
+else:
+    MPL_THEME = None

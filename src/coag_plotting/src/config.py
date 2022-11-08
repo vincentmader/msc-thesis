@@ -42,6 +42,9 @@ NR_OF_TIMESTEPS = CONFIG["simulation"]["nr_of_timesteps"]
 # │ File-IO                                                                   │
 # ╰───────────────────────────────────────────────────────────────────────────╯
 
+# Define path to directory where figures shall be saved.
+PATH_TO_CONFIG = CONFIG["file_io"]["path_to_config"]
+
 # Define path to directory where simulation-data shall be saved.
 PATH_TO_DATA = CONFIG["file_io"]["path_to_data"]
 

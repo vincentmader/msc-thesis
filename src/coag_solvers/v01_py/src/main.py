@@ -42,6 +42,8 @@ def main():
     utils.file_io.save_simulation_data(run_id, x, ns)
     # Save kernel(s) to file.
     utils.file_io.save_coagulation_kernel(run_id, K_gain, K_loss)
+    # Copy over configuration file (for reference later on).
+    utils.file_io.save_config(run_id)
 
 
 if __name__ == "__main__":

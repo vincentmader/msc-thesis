@@ -4,7 +4,7 @@ import os
 
 import numpy as np
 
-from config import PATH_TO_DATA, PATH_TO_FIGURES
+from config import PATH_TO_DATA, PATH_TO_FIGURES, PATH_TO_CONFIG
 
 
 def get_run_id():
@@ -65,6 +65,12 @@ def save_coagulation_kernel(run_id, K_gain, K_loss):
     path_to_kernel = os.path.join(PATH_TO_DATA, run_id, "kernel_loss.txt")
     with open(path_to_kernel, "w", encoding="utf-8") as fp:
         json.dump(K_loss.tolist(), fp)
+
+
+def save_config(run_id):
+    path_i = PATH_TO_CONFIG
+    path_f = os.path.join(PATH_TO_DATA, run_id, "config.toml")
+    os.system(f"cp \"{path_i}\" \"{path_f}\"")
 
 
 def load_simulation_data(run_id):

@@ -3,15 +3,15 @@ from numba import jit
 from utils import kronecker_delta
 
 from config import GRID_EXP_MIN, GRID_STEPSIZE
-from config import GRID_RESOLUTION as GRES
+from config import GRID_RESOLUTION
 from config import KERNEL_VARIANT
 
 
 @jit(nopython=True)
 def K_gain():
-    K = np.zeros((GRES, GRES, GRES))
-    for i in range(GRES):
-        for j in range(GRES):
+    K = np.zeros((GRID_RESOLUTION, GRID_RESOLUTION, GRID_RESOLUTION))
+    for i in range(GRID_RESOLUTION):
+        for j in range(GRID_RESOLUTION):
             # Determine masses before & after hit-and-stick collision.
             m_i = mass_from_index(i)
             m_j = mass_from_index(j)
@@ -20,7 +20,7 @@ def K_gain():
             # Determine index of bins adjacent to combined mass.
             k_l = index_from_mass(m)
             k_h = k_l + 1
-            # TODO Make sure that k_h <= GRES at all times.
+            # TODO Make sure that k_h <= GRID_RESOLUTION at all times.
 
             # Get mass corresponding to these indices.
             m_l = mass_from_index(k_l)
@@ -43,10 +43,10 @@ def K_gain():
 
 @jit(nopython=True)
 def K_loss():
-    K = np.zeros((GRES, GRES, GRES))
-    for k in range(GRES):
-        for i in range(GRES):
-            for j in range(GRES):
+    K = np.zeros((GRID_RESOLUTION, GRID_RESOLUTION, GRID_RESOLUTION))
+    for k in range(GRID_RESOLUTION):
+        for i in range(GRID_RESOLUTION):
+            for j in range(GRID_RESOLUTION):
                 K_l = K_ij_loss(i, j) * kronecker_delta(k, i)
                 K[k][i][j] -= K_l
 
@@ -60,7 +60,8 @@ def K_kij_gain(k, i, j):
     elif KERNEL_VARIANT == "linear":
         K_kij = mass_from_index(i) + mass_from_index(j)
     else:
-        raise Exception(f"ERROR: Kernel variant \"{KERNEL_VARIANT}\" is not defined.")
+        raise Exception(
+            f"ERROR: Kernel variant \"{KERNEL_VARIANT}\" is not defined.")
     return K_kij
 
 
@@ -69,9 +70,10 @@ def K_ij_loss(i, j):
     if KERNEL_VARIANT == "constant":
         K_kij = 1
     elif KERNEL_VARIANT == "linear":
-        K_kij =  mass_from_index(i) + mass_from_index(j)
+        K_kij = mass_from_index(i) + mass_from_index(j)
     else:
-        raise Exception(f"ERROR: Kernel variant \"{KERNEL_VARIANT}\" is not defined.")
+        raise Exception(
+            f"ERROR: Kernel variant \"{KERNEL_VARIANT}\" is not defined.")
     return K_kij
 
 

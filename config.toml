@@ -15,8 +15,8 @@
     theme = "dark"
     plot_which_runs = "last"
 #   Possible values:
-#   - "last"
 #   - "all"
+#   - "last"
 
 # SIMULATION CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────

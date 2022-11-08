@@ -27,21 +27,36 @@ def run(K_gain, K_loss, x, n0):
 def main():
     print("Running solver v01_py...")
 
-    # Define initial state.
-    x, n0 = state_initialization.initial_state()
-    # Define coagulation kernel (gain & loss term, separately).
+    # Initialize kernel & state.
+    # ─────────────────────────────────────────────────────────────────────────
+
+    # Define coagulation kernel (gain & loss terms, separately).
     K_gain = coagulation.kernel.K_gain()
     K_loss = coagulation.kernel.K_loss()
 
-    # Run forward-loop & get time-evolution of mass distribution.
-    ns, _ = utils.record_execution_time(run, *[K_gain, K_loss, x, n0])
+    # Define initial state.
+    x, n0 = state_initialization.initial_state()
+
+    # Run compute-loop.
+    # ─────────────────────────────────────────────────────────────────────────
+
+    # Compute time-evolution of mass distribution (& record execution time).
+    ns, _ = utils.record_execution_time(
+        run, *[K_gain, K_loss, x, n0]
+    )
+
+    # Save to file.
+    # ─────────────────────────────────────────────────────────────────────────
 
     # Define this simulation's run-ID.
     run_id = utils.file_io.get_run_id()
+
     # Save mass distributions to file.
     utils.file_io.save_simulation_data(run_id, x, ns)
+
     # Save kernel(s) to file.
     utils.file_io.save_coagulation_kernel(run_id, K_gain, K_loss)
+
     # Copy over configuration file (for reference later on).
     utils.file_io.save_config(run_id)
 

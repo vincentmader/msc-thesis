@@ -4,6 +4,7 @@ from utils import kronecker_delta
 
 from config import GRID_EXP_MIN, GRID_STEPSIZE
 from config import GRID_RESOLUTION as GRES
+from config import KERNEL_VARIANT
 
 
 @jit(nopython=True)
@@ -54,12 +55,24 @@ def K_loss():
 
 @jit(nopython=True)
 def K_kij_gain(k, i, j):
-    return 1
+    if KERNEL_VARIANT == "constant":
+        K_kij = 1
+    elif KERNEL_VARIANT == "linear":
+        K_kij = mass_from_index(i) + mass_from_index(j)
+    else:
+        raise Exception(f"ERROR: Kernel variant \"{KERNEL_VARIANT}\" is not defined.")
+    return K_kij
 
 
 @jit(nopython=True)
 def K_ij_loss(i, j):
-    return 1
+    if KERNEL_VARIANT == "constant":
+        K_kij = 1
+    elif KERNEL_VARIANT == "linear":
+        K_kij =  mass_from_index(i) + mass_from_index(j)
+    else:
+        raise Exception(f"ERROR: Kernel variant \"{KERNEL_VARIANT}\" is not defined.")
+    return K_kij
 
 
 @jit(nopython=True)

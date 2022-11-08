@@ -28,6 +28,12 @@ GRID_STEPSIZE = (10**(GRID_EXP_MAX-GRID_EXP_MIN))**(1/GRID_RESOLUTION)
 # │ Initialization                                                            │
 # ╰───────────────────────────────────────────────────────────────────────────╯
 
+KERNEL_VARIANT = CONFIG["kernel"]["variant"]
+
+# ╭───────────────────────────────────────────────────────────────────────────╮
+# │ Initialization                                                            │
+# ╰───────────────────────────────────────────────────────────────────────────╯
+
 # Define the initial state.
 INITIAL_STATE = CONFIG["initialization"]["initial_mass_distribution"]
 

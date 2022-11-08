@@ -12,6 +12,12 @@
 #   - "dirac-delta"
 #   - "gaussian"
 
+[kernel]
+    variant = "linear"
+#   Possible values:
+#   - "constant"
+#   - "linear"
+
 [simulation]
     nr_of_timesteps = 100
 

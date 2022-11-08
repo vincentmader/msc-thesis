@@ -21,7 +21,7 @@ def get_run_ids():
 
 
 def main():
-    print(colored("\nRunning plotter...", "blue"))
+    print(colored("\nRunning plotter...", "yellow"))
 
     k = int(GRID_RESOLUTION/2)
     ks = range(k, k+1)
@@ -32,7 +32,7 @@ def main():
 
     run_ids = get_run_ids()
     for run_id in run_ids:
-        print(colored(f"\tPlotting for {run_id}", "cyan"))
+        print(colored(f"\tPlotting for {run_id}", "blue"))
 
         # Make sure the directory for saving plots exists.
         utils.file_io.setup_plot_savedir(run_id)

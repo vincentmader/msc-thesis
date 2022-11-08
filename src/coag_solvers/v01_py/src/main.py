@@ -26,7 +26,7 @@ def run(K_gain, K_loss, x, n0):
 
 
 def main():
-    print(colored("\nRunning solver v01_py...", "blue"))
+    print(colored("\nRunning solver v01_py...", "yellow"))
 
     # Initialize kernel & state.
     # ─────────────────────────────────────────────────────────────────────────

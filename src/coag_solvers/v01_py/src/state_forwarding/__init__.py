@@ -1,8 +1,5 @@
 import numpy as np
 from numba import jit
-from tqdm import tqdm
-
-from config import NR_OF_TIMESTEPS
 
 
 @jit(nopython=True, cache=True)
@@ -30,18 +27,3 @@ def forward_state(K_gain, K_loss, x, n):
     for k, _ in enumerate(n):
         dn[k] = dn_k(K_gain, K_loss, n, k)
     return n + dn
-
-
-def run(K_gain, K_loss, x, n0):
-    # Define vector holding mass-distributions for each time-step.
-    ns = [n0]
-
-    # Start forward-loop.
-    for t in tqdm(range(NR_OF_TIMESTEPS)):
-        # Load current mass-distribution.
-        n_old = ns[t]
-        # Calulcate new mass-distribution.
-        n_new = forward_state(K_gain, K_loss, x, n_old)
-        # Append to vector.
-        ns.append(n_new)
-    return ns

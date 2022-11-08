@@ -1,15 +1,14 @@
-all:
-	make run_solver
-
-run_solver:
-	./venv/bin/python3 ./src/main.py
-
+solver:
+	./bin/run.sh
+v1:
+	./venv/bin/python3 ./src/coag_solvers/v01_py/src/main.py
+v2:
+	cd ./src/coag_solvers/v02_rs && cargo run --release
+both:
+	make v2
+	make v1
 setup:
 	./bin/setup.sh
-
-clean:
-	rm -r ./data/*
-	rm -r ./figures/*
-
-recompile:
-	rm -r ./src/__pycache__
+all:
+	make setup
+	make solver

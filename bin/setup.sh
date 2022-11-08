@@ -1,22 +1,27 @@
 #!/bin/sh
 
-# Setup virtual environment for python.
-# -----------------------------------------------------------------------------
+#   Setup virtual environment for python.
+#   ───────────────────────────────────────────────────────────────────────────
 
-# If a virtual environment exists already, remove it.
+#   If a virtual environment exists already, remove it.
     [ -d ./venv ] && rm -r ./venv
-# Create new virtual environment for python.
+
+#   Create new virtual environment for python.
     python3 -m venv ./venv
-# Enter virtual environment.
+
+#   Enter virtual environment.
     source ./venv/bin/activate;
-# Install python-pip3 dependencies.
+
+#   Install python-pip3 dependencies.
     pip3 install -r requirements.txt
 
 
-# Create needed directories.
-# -----------------------------------------------------------------------------
+#   Create needed directories.
+#   ───────────────────────────────────────────────────────────────────────────
 
-# Create `./figures` directory, if it does not yet exist.
-    [ -d ./figures ] || mkdir -p ./figures
-# Create `./data` directory, if it does not yet exist.
-    [ -d ./data    ] || mkdir -p ./data
+#   Create `./out/figures` directory, if it does not yet exist.
+    [ -d ./out/figures ] || mkdir -p ./out/figures
+
+#   Create `./out/data` directory, if it does not yet exist.
+    [ -d ./out/data    ] || mkdir -p ./out/data
+

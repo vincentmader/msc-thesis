@@ -1,12 +1,9 @@
 from datetime import datetime as dt
 import os
 
-import matplotlib.pyplot as plt
-from numba import float64 as f64
 import numpy as np
 
 from config import PATH_TO_DATA
-from config import PATH_TO_FIGURES
 
 
 def save_simulation_data(x, ns):
@@ -16,7 +13,9 @@ def save_simulation_data(x, ns):
         content += ",".join([str(i) for i in n]) + "\n"
 
     # Define name of save-file.
-    run_id = len([i for i in os.listdir(PATH_TO_DATA) if i.endswith(".txt")])
+    run_id = len([i for i in os.listdir(
+        PATH_TO_DATA) if i not in [".DS_Store"]]
+    )
     date_str = dt.now().strftime("%Y-%m-%d")
     time_str = dt.now().strftime("%H:%M:%S")
     run_id = f"run-id={run_id}, date={date_str}, time={time_str}"
@@ -43,7 +42,7 @@ def load_simulation_data(run_id):
     path_to_savefile = os.path.join(PATH_TO_DATA, run_id, filename)
 
     # Load file contents into string.
-    with open(path_to_savefile, 'r') as fp:
+    with open(path_to_savefile, "r") as fp:
         content = fp.readlines()
 
     # Load m-vector from string.
@@ -56,5 +55,3 @@ def load_simulation_data(run_id):
         Ns.append(N)
 
     return m, Ns
-
-

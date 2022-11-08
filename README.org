@@ -3,8 +3,8 @@
 
 _Goals_:
 - Numerically solve the Smoluchowski coagulation equation(s).
-- Increase performance by integrating implicitly, running computes in parallel on the GPU, as well as by stochastically sampling the coagulation kernel (which is mostly $0$ anyways).
+- Increase performance by integrating implicitly, running computes in parallel on the GPU, as well as by stochastically sampling the coagulation kernel.
 
 _Usage_:
   1. Run `make setup`.
-  2. Run `make`.
+  2. Run `make solver`.

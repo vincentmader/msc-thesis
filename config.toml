@@ -1,0 +1,26 @@
+[solver]
+    version = "v01"
+
+[mass_grid]
+    mass_exponent_min = -5
+    mass_exponent_max = +5
+    mass_grid_resolution = 100
+
+[initialization]
+    initial_mass_distribution = "dirac-delta" 
+#   Possible values:
+#   - "dirac-delta"
+#   - "gaussian"
+
+[simulation]
+    nr_of_timesteps = 100
+
+[file_io]
+    path_to_config = "./config.toml"
+    path_to_figures = "./out/figures"
+    path_to_data = "./out/data"
+
+[plotting]
+    fig_size = [12, 8]
+    steps_between_plot = 10
+    theme = "dark"

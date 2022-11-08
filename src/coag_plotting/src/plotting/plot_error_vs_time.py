@@ -3,29 +3,27 @@ import os
 import matplotlib.pyplot as plt
 
 import config
-from config import PATH_TO_FIGURES
+from config import NR_OF_TIMESTEPS
 import utils
 
 
 def plot_error_vs_time(run_id, show_plot=False, save_plot=True):
+    print("\t\tPlotting error vs. time...")
+
     # Load simulation-data from save-file into string.
     m, Ns = utils.file_io.load_simulation_data(run_id)
-
     # Define time-axis.
-    t = range(config.NR_OF_TIMESTEPS)
+    t = range(NR_OF_TIMESTEPS)
 
     # Calculate total mass in the disk at various times.
     M = [utils.calc_total_mass(m, Ns[t]) for t in t]
-
     # Calculate relative error.
     err = [(M[t] / M[0] - 1) * 100 for t in t]
 
     # Create new figure.
     _ = plt.figure()
-
     # Plot error vs. time.
     plt.plot(t, err)
-
     # Define axis-labels.
     plt.title("Relative error of total disk-mass over time")
     plt.xlabel("time $t$")
@@ -34,7 +32,6 @@ def plot_error_vs_time(run_id, show_plot=False, save_plot=True):
     # Show plot (optional).
     if show_plot is True:
         plt.show()
-
     # Save plot to file.
     if save_plot:
         save_plot_to_file(run_id)

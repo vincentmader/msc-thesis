@@ -1,4 +1,4 @@
-import os 
+import os
 
 import matplotlib.pyplot as plt
 
@@ -8,6 +8,7 @@ import utils
 
 
 def plot_mass_distribution_over_time(run_id, show_plot=False):
+    print("\t\tPlotting mass distribution...")
     # Load simulation-data from save-file into string.
     m, Ns = utils.file_io.load_simulation_data(run_id)
 
@@ -26,7 +27,7 @@ def plot_mass_distribution_over_time(run_id, show_plot=False):
     # Prettify plot.
     plt.title("particle mass distribution")
     plt.xlabel("particle mass $m$")
-    plt.ylabel("abundancy $m\cdot N(m)$")
+    plt.ylabel("particle abundancy $m\cdot N(m)$")
     plt.legend(loc="upper right")
     plt.xlim(10**GRID_EXP_MIN, 10**GRID_EXP_MAX)
     plt.ylim(10**(-9), 10**(-3))
@@ -40,7 +41,6 @@ def plot_mass_distribution_over_time(run_id, show_plot=False):
 
     # Make sure pyplot does not fill up RAM with unclosed figures.
     plt.close()
-
 
 
 def plot_mass_distribution(t, m, N, M_0):
@@ -67,4 +67,3 @@ def save_plot_to_file(run_id):
 
     # Save the figure.
     plt.savefig(path_to_savefile)
-

@@ -1,9 +1,12 @@
+import json
 import os
 
+import matplotlib as mpl
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
+import numpy as np
 
-from config import GRID_RESOLUTION, PATH_TO_FIGURES
+from config import GRID_RESOLUTION, PATH_TO_FIGURES, PATH_TO_DATA
 
 VMIN, VCEN, VMAX = -1, 0, 1
 CMAP_NORM = colors.TwoSlopeNorm(vmin=VMIN, vcenter=VCEN, vmax=VMAX)
@@ -24,7 +27,7 @@ def plot_kernel_layer(K, run_id, k, show_plot=False, save_plot=True):
     plt.xlabel("$j$")
     plt.ylabel("$i$")
 
-    # Show plot (optional).   
+    # Show plot (optional).
     if show_plot:
         plt.show()  # NOTE: Showing before saving may lead to corrupted plot file!
 
@@ -33,15 +36,30 @@ def plot_kernel_layer(K, run_id, k, show_plot=False, save_plot=True):
         save_plot_to_file(run_id, k)
 
     # Close the figure to save RAM.
-    plt.close(run_id)
+    mpl.pyplot.close()
 
 
-def plot_kernel(K, run_id, show_plot=False, ks=range(GRID_RESOLUTION)):
+def plot_kernel(run_id, show_plot=False, ks=range(GRID_RESOLUTION)):
+    print("\t\tPlotting kernel...")
+
+    path_to_kernel = os.path.join(PATH_TO_DATA, run_id, "kernel_gain.txt")
+    with open(path_to_kernel) as fp:
+        K_gain = np.array(json.load(fp))
+    path_to_kernel = os.path.join(PATH_TO_DATA, run_id, "kernel_loss.txt")
+    with open(path_to_kernel) as fp:
+        K_loss = np.array(json.load(fp))
+    K = K_gain + K_loss
+
+    path = os.path.join(PATH_TO_FIGURES, run_id, "kernel")
+    os.system(f"mkdir -p \"{path}\"")
+
     for k in ks:
         plot_kernel_layer(K, run_id, k, show_plot=show_plot)
 
 
 def save_plot_to_file(run_id, k):
     filename = f"kernel K_kij with {k=}.png"
-    path_to_savefile = os.path.join(PATH_TO_FIGURES, run_id, filename)
+    path_to_savefile = os.path.join(
+        PATH_TO_FIGURES, run_id, "kernel", filename
+    )
     plt.savefig(path_to_savefile)

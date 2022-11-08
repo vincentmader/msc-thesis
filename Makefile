@@ -12,3 +12,6 @@ setup:
 all:
 	make setup
 	make solver
+rm:
+	rm -r ./out/data/*
+	rm -r ./out/figures/*

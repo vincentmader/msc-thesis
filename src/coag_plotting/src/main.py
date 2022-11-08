@@ -3,7 +3,7 @@ import os
 from termcolor import colored
 import matplotlib.pyplot as plt
 
-from config import PATH_TO_DATA, GRID_RESOLUTION, MPL_THEME
+from config import PATH_TO_DATA, GRID_RESOLUTION, MPL_THEME, CREATE_PLOTS_FOR
 from plotting import plot_error_vs_time
 from plotting import plot_kernel
 from plotting import plot_mass_distribution_over_time
@@ -12,12 +12,18 @@ import utils
 
 def get_run_ids():
     out = []
-    run_ids = os.listdir(PATH_TO_DATA)
-    for run_id in run_ids:
-        if run_id in [".DS_Store"]:
-            continue
-        out.append(run_id)
-    return sorted(out)
+    run_ids = sorted(os.listdir(PATH_TO_DATA))
+    run_ids = [i for i in run_ids if i.startswith("run-id=")]
+    if CREATE_PLOTS_FOR == "all":
+        for run_id in run_ids:
+            if run_id in [".DS_Store"]:
+                continue
+            out.append(run_id)
+    elif CREATE_PLOTS_FOR == "last":
+        out.append(run_ids[-1])
+    else:
+        raise Exception(f"ERROR: create_plots_for \"{CREATE_PLOTS_FOR}\" is not defined.")
+    return out
 
 
 def main():

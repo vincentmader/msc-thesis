@@ -13,6 +13,10 @@
     fig_size = [12, 8]
     steps_between_plot = 10
     theme = "dark"
+    create_plots_for = "last"
+#   Possible values:
+#   - "last"
+#   - "all"
 
 # SIMULATION CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────

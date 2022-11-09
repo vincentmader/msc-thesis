@@ -19,7 +19,7 @@
 #       Possible values:
 #       - "all"
 #       - "last"
-        plots_to_show = ["mass distribution", "mass error", "coagulation kernel"]  
+        plots_to_show = ["mass distribution"]  
 #       Possible elements:
 #       - "mass error"
 #       - "mass distribution"

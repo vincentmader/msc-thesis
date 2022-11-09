@@ -51,11 +51,13 @@ NR_OF_TIMESTEPS = CONFIG["simulation"]["nr_of_timesteps"]
 # Define path to directory where figures shall be saved.
 PATH_TO_CONFIG = CONFIG["file_io"]["path_to_config"]
 
+PATH_TO_OUTFILES = CONFIG["file_io"]["path_to_outfiles"]
+
 # Define path to directory where simulation-data shall be saved.
-PATH_TO_DATA = CONFIG["file_io"]["path_to_data"]
+# PATH_TO_DATA = CONFIG["file_io"]["path_to_data"]
 
 # Define path to directory where figures shall be saved.
-PATH_TO_FIGURES = CONFIG["file_io"]["path_to_figures"]
+# PATH_TO_FIGURES = CONFIG["file_io"]["path_to_figures"]
 
 # ╭───────────────────────────────────────────────────────────────────────────╮
 # │ Plotting                                                                  │

@@ -17,7 +17,6 @@ all:
 	make setup
 	make solver
 rm:
-	rm -r ./out/data/*
-	rm -r ./out/figures/*
+	rm -r ./out/*
 clean:
 	rm -r ./venv

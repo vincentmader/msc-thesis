@@ -2,7 +2,7 @@ import os
 
 import matplotlib.pyplot as plt
 
-from config import FIG_SIZE, STEPS_BETWEEN_PLOT, PATH_TO_FIGURES
+from config import FIG_SIZE, STEPS_BETWEEN_PLOT, PATH_TO_OUTFILES
 from config import GRID_EXP_MIN, GRID_EXP_MAX
 import utils
 
@@ -63,7 +63,7 @@ def plot_mass_distribution(t, m, N, M_0):
 def save_plot_to_file(run_id):
     # Define path to file that plot should be written to.
     filename = "mass-distribution N(m).png"
-    path_to_savefile = os.path.join(PATH_TO_FIGURES, run_id, filename)
+    path_to_savefile = os.path.join(PATH_TO_OUTFILES, run_id, "figures", filename)
 
     # Save the figure.
     plt.savefig(path_to_savefile)

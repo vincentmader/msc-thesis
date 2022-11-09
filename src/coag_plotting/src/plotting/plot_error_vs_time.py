@@ -2,8 +2,7 @@ import os
 
 import matplotlib.pyplot as plt
 
-import config
-from config import NR_OF_TIMESTEPS
+from config import NR_OF_TIMESTEPS, PATH_TO_OUTFILES
 import utils
 
 
@@ -42,5 +41,5 @@ def plot_error_vs_time(run_id, show_plot=False, save_plot=True):
 
 def save_plot_to_file(run_id):
     filename = "total-disk-mass relative-error.png"
-    path_to_savefile = os.path.join(config.PATH_TO_FIGURES, run_id, filename)
+    path_to_savefile = os.path.join(PATH_TO_OUTFILES, run_id, "figures", filename)
     plt.savefig(path_to_savefile)

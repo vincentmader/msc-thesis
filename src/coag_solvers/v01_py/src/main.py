@@ -8,7 +8,7 @@ import state_forwarding
 import utils
 
 
-def run(K_gain, K_loss, x, n0):
+def run(K, x, n0):
     # Define vector holding mass-distributions for each time-step.
     ns = [n0]
 
@@ -18,7 +18,7 @@ def run(K_gain, K_loss, x, n0):
         n_old = ns[t]
 
         # Calulcate new mass-distribution.
-        n_new = state_forwarding.forward_state(K_gain, K_loss, x, n_old)
+        n_new = state_forwarding.forward_state(K, x, n_old)
 
         # Append to vector.
         ns.append(n_new)
@@ -31,9 +31,8 @@ def main():
     # Initialize kernel & state.
     # ─────────────────────────────────────────────────────────────────────────
 
-    # Define coagulation kernel (gain & loss terms, separately).
-    K_gain = coagulation.kernel.K_gain()
-    K_loss = coagulation.kernel.K_loss()
+    # Define coagulation kernel.
+    K = coagulation.kernel.K()
 
     # Define initial state.
     x, n0 = state_initialization.initial_state()
@@ -43,7 +42,7 @@ def main():
 
     # Compute time-evolution of mass distribution (& record execution time).
     ns, _ = utils.record_execution_time(
-        run, *[K_gain, K_loss, x, n0]
+        run, *[K, x, n0]
     )
 
     # Save to file.
@@ -56,7 +55,7 @@ def main():
     utils.file_io.save_simulation_data(run_id, x, ns)
 
     # Save kernel(s) to file.
-    utils.file_io.save_coagulation_kernel(run_id, K_gain, K_loss)
+    utils.file_io.save_coagulation_kernel(run_id, K)
 
     # Copy over configuration file (for reference later on).
     utils.file_io.save_config(run_id)

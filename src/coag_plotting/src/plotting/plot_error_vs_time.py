@@ -28,14 +28,15 @@ def plot_error_vs_time(run_id, save_plot=True):
     plt.xlabel("time $t$")
     plt.ylabel(r"relative error $\frac{\Delta M}{M_0}$ [%]")
 
+    # Save plot to file.
+    if save_plot:
+        save_plot_to_file(run_id)
+
     # Decide whether to show the plot.
     show_plot = "mass error" in PLOTS_TO_SHOW
     # Show plot (optional).
     if show_plot is True:
         plt.show()
-    # Save plot to file.
-    if save_plot:
-        save_plot_to_file(run_id)
 
     # Close the figure to save RAM.
     plt.close()

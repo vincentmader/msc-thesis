@@ -27,13 +27,13 @@ def plot_kernel_layer(K, run_id, k, show_plot=False, save_plot=True):
     plt.xlabel("$j$")
     plt.ylabel("$i$")
 
-    # Show plot (optional).
-    if show_plot:
-        plt.show()  # NOTE: Showing before saving may lead to corrupted plot file!
-
     # Save plot (optional).
     if save_plot:
         save_plot_to_file(run_id, k)
+
+    # Show plot (optional).
+    if show_plot:
+        plt.show()  # NOTE: Showing before saving may lead to corrupted plot file!
 
     # Close the figure to save RAM.
     mpl.pyplot.close()

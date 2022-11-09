@@ -8,9 +8,18 @@ from config import PATH_TO_DATA, PATH_TO_FIGURES, PATH_TO_CONFIG
 
 
 def get_run_id():
-    run_id = len([i for i in os.listdir(
-        PATH_TO_DATA) if i not in [".DS_Store"]]
-    )
+    run_ids = [i for i in os.listdir(PATH_TO_DATA) if i not in [".DS_Store"]]
+    run_ids = sorted(run_ids, reverse=True)
+    if len(run_ids) == 0:
+        run_id = 0
+    else:
+        run_id = run_ids[0]
+        run_id = run_id.split("=")
+        run_id = run_id[1]
+        run_id = run_id.split(",")
+        run_id = run_id[0]
+        run_id = int(run_id) + 1
+
     date_str = dt.now().strftime("%Y-%m-%d")
     time_str = dt.now().strftime("%H:%M:%S")
     run_id = f"run-id={run_id}, date={date_str}, time={time_str}"
@@ -38,9 +47,6 @@ def save_simulation_data(run_id, x, ns):
     content = ",".join([str(i) for i in x]) + "\n"
     for n in ns:
         content += ",".join([str(i) for i in n]) + "\n"
-
-    # Define run-id.
-    run_id = get_run_id()
 
     # Define (& create, if necessary) save-directory for simulation data.
     path_to_data_savedir = setup_data_savedir(run_id)

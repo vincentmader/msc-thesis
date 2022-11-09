@@ -33,7 +33,7 @@
 #   - "gaussian"
 
 [kernel]
-    variant = "linear"
+    variant = "constant"
 #   Possible values:
 #   - "constant"
 #   - "linear"

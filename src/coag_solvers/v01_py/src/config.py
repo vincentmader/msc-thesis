@@ -8,7 +8,11 @@ CONFIG = toml.load("./config.toml")
 # │ Solver                                                                    │
 # ╰───────────────────────────────────────────────────────────────────────────╯
 
+# Define variant of solver.
 # Trivial: -> Python (v01)
+
+# Define maximum length for run-id. (e.g. 8 -> max. 10^8 runs)
+MAX_RUN_ID_LENGTH = CONFIG["solver"]["max_run_id_length"]
 
 # ╭───────────────────────────────────────────────────────────────────────────╮
 # │ Mass Grid                                                                 │
@@ -28,6 +32,7 @@ GRID_STEPSIZE = (10**(GRID_EXP_MAX-GRID_EXP_MIN))**(1/GRID_RESOLUTION)
 # │ Initialization                                                            │
 # ╰───────────────────────────────────────────────────────────────────────────╯
 
+# Define variant of coagulation kernel.
 KERNEL_VARIANT = CONFIG["kernel"]["variant"]
 
 # ╭───────────────────────────────────────────────────────────────────────────╮

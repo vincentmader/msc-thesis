@@ -17,6 +17,11 @@
 #       Possible values:
 #       - "all"
 #       - "last"
+        plots_to_show = ["mass distribution"]
+#       Possible elements:
+#       - "mass error"
+#       - "mass distribution over time"
+#       - "coagulation kernel"
         fig_size = [12, 8]
         steps_between_plot = 10
 

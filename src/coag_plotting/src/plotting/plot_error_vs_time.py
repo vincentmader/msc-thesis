@@ -2,11 +2,11 @@ import os
 
 import matplotlib.pyplot as plt
 
-from config import NR_OF_TIMESTEPS, PATH_TO_OUTFILES
+from config import NR_OF_TIMESTEPS, PATH_TO_OUTFILES, PLOTS_TO_SHOW
 import utils
 
 
-def plot_error_vs_time(run_id, show_plot=False, save_plot=True):
+def plot_error_vs_time(run_id, save_plot=True):
     print("\t\tPlotting error vs. time...")
 
     # Load simulation-data from save-file into string.
@@ -28,6 +28,8 @@ def plot_error_vs_time(run_id, show_plot=False, save_plot=True):
     plt.xlabel("time $t$")
     plt.ylabel(r"relative error $\frac{\Delta M}{M_0}$ [%]")
 
+    # Decide whether to show the plot.
+    show_plot = "mass error" in PLOTS_TO_SHOW
     # Show plot (optional).
     if show_plot is True:
         plt.show()

@@ -6,7 +6,7 @@ import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 import numpy as np
 
-from config import GRID_RESOLUTION, PATH_TO_OUTFILES
+from config import GRID_RESOLUTION, PATH_TO_OUTFILES, PLOTS_TO_SHOW
 
 VMIN, VCEN, VMAX = -1, 0, 1
 CMAP_NORM = colors.TwoSlopeNorm(vmin=VMIN, vcenter=VCEN, vmax=VMAX)
@@ -39,7 +39,7 @@ def plot_kernel_layer(K, run_id, k, show_plot=False, save_plot=True):
     mpl.pyplot.close()
 
 
-def plot_kernel(run_id, show_plot=False, ks=range(GRID_RESOLUTION)):
+def plot_kernel(run_id, ks=range(GRID_RESOLUTION)):
     print("\t\tPlotting kernel...")
 
     path_to_kernel = os.path.join(PATH_TO_OUTFILES, run_id, "data", "kernel_gain.txt")
@@ -52,6 +52,9 @@ def plot_kernel(run_id, show_plot=False, ks=range(GRID_RESOLUTION)):
 
     path = os.path.join(PATH_TO_OUTFILES, run_id, "figures", "kernel")
     os.system(f"mkdir -p \"{path}\"")
+
+    # Decide whether to show the plot.
+    show_plot = "coagulation kernel" in PLOTS_TO_SHOW
 
     for k in ks:
         plot_kernel_layer(K, run_id, k, show_plot=show_plot)

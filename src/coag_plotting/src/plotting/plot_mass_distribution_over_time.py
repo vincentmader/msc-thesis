@@ -3,11 +3,11 @@ import os
 import matplotlib.pyplot as plt
 
 from config import FIG_SIZE, STEPS_BETWEEN_PLOT, PATH_TO_OUTFILES
-from config import GRID_EXP_MIN, GRID_EXP_MAX
+from config import GRID_EXP_MIN, GRID_EXP_MAX, PLOTS_TO_SHOW
 import utils
 
 
-def plot_mass_distribution_over_time(run_id, show_plot=False):
+def plot_mass_distribution_over_time(run_id):
     print("\t\tPlotting mass distribution...")
     # Load simulation-data from save-file into string.
     m, Ns = utils.file_io.load_simulation_data(run_id)
@@ -35,6 +35,8 @@ def plot_mass_distribution_over_time(run_id, show_plot=False):
     # Save plot to file.
     save_plot_to_file(run_id)
 
+    # Decide whether to show the plot.
+    show_plot = "mass distribution" in PLOTS_TO_SHOW
     # Show the plot (optional).
     if show_plot is True:
         plt.show()

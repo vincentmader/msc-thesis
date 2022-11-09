@@ -9,13 +9,16 @@
         path_to_outfiles = "./out"
     
     [plotting]
-        fig_size = [12, 8]
-        steps_between_plot = 10
         theme = "dark"
+#       Possible values:
+#       - "dark"
+#       - "light"
         plot_which_runs = "last"
 #       Possible values:
 #       - "all"
 #       - "last"
+        fig_size = [12, 8]
+        steps_between_plot = 10
 
 # SIMULATION CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────

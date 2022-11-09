@@ -73,6 +73,8 @@ STEPS_BETWEEN_PLOT = CONFIG["plotting"]["steps_between_plot"]
 MPL_THEME = CONFIG["plotting"]["theme"]
 if MPL_THEME == "dark":
     MPL_THEME = "~/.config/matplotlib/dark.mplstyle"
+elif MPL_THEME == "light":
+    MPL_THEME = None
 else:
     MPL_THEME = None
 

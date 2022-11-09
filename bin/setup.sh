@@ -16,9 +16,6 @@
 #   Create needed directories.
 #   ───────────────────────────────────────────────────────────────────────────
 
-#   Create `../out/figures` directory, if it does not yet exist.
-    [ -d ../out/figures ] || mkdir -p ../out/figures
-
-#   Create `../out/data` directory, if it does not yet exist.
-    [ -d ../out/data    ] || mkdir -p ../out/data
+#   Create `../out` directory, if it does not yet exist.
+    [ -d ../out ] || mkdir -p ../out
 

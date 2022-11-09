@@ -3,6 +3,8 @@
 
     [solver]
         version = "v01"
+#       Define maximum length for run-id. (e.g. 8 -> max. 10^8 runs)
+        max_run_id_length = 8
     
     [file_io]
         path_to_config = "./config.toml"
@@ -17,7 +19,7 @@
 #       Possible values:
 #       - "all"
 #       - "last"
-        plots_to_show = ["mass distribution"]
+        plots_to_show = []  # TODO Fix: Save plots to file when showing interactively.
 #       Possible elements:
 #       - "mass error"
 #       - "mass distribution over time"

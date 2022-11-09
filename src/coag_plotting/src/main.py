@@ -43,12 +43,10 @@ def main():
         # Make sure the directory for saving plots exists.
         utils.file_io.setup_plot_savedir(run_id)
 
-        # Plot the disk mass distribution over time.
-        plot_mass_distribution_over_time(run_id)
-
         # Plot the coagulation kernel.
         plot_kernel(run_id, ks=ks)
-
+        # Plot the disk mass distribution over time.
+        plot_mass_distribution_over_time(run_id)
         # Plot the relative error of the disk mass over time.
         plot_error_vs_time(run_id)
 

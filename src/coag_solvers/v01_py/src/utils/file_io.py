@@ -4,7 +4,14 @@ import os
 
 import numpy as np
 
-from config import PATH_TO_OUTFILES, PATH_TO_CONFIG
+from config import PATH_TO_OUTFILES, PATH_TO_CONFIG, MAX_RUN_ID_LENGTH
+
+
+def zero_pad_int(num: int, nr_of_digits: int) -> str:
+    out = str(num)
+    while len(out) < nr_of_digits:
+        out = f"0{out}"
+    return out
 
 
 def get_run_id():
@@ -21,6 +28,7 @@ def get_run_id():
         run_id = run_id.split(",")
         run_id = run_id[0]
         run_id = int(run_id) + 1
+    run_id = zero_pad_int(run_id, MAX_RUN_ID_LENGTH)
 
     date_str = dt.now().strftime("%Y-%m-%d")
     time_str = dt.now().strftime("%H:%M:%S")

@@ -1,6 +1,6 @@
 solver:
 	clear
-	./bin/run.sh
+	cd ./bin && ./run.sh
 v1:
 	clear
 	./venv/bin/python3 ./src/coag_solvers/v01_py/src/main.py

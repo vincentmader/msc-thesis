@@ -13,7 +13,7 @@ import utils
 def get_run_ids():
     out = []
     run_ids = sorted(os.listdir(PATH_TO_OUTFILES))
-    run_ids = [i for i in run_ids if i.startswith("run-id=")]
+    run_ids = [i for i in run_ids if i.startswith("id=")]
     if CREATE_PLOTS_FOR == "all":
         for run_id in run_ids:
             if run_id in [".DS_Store"]:

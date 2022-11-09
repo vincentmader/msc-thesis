@@ -20,6 +20,8 @@
 #       - "all"
 #       - "last"
         plots_to_show = ["mass distribution"]  
+        # plots_to_show = ["mass distribution", "mass error", "coagulation kernel"]  
+        # plots_to_show = []  
 #       Possible elements:
 #       - "mass error"
 #       - "mass distribution"
@@ -43,6 +45,7 @@
     
     [kernel]
         variant = "constant"
+        # variant = "linear"
 #       Possible values:
 #       - "constant"
 #       - "linear"

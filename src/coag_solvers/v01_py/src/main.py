@@ -42,7 +42,7 @@ def main():
     # ─────────────────────────────────────────────────────────────────────────
 
     # Compute time-evolution of mass distribution (& record execution time).
-    ns, _ = utils.record_execution_time(
+    ns, timing_info = utils.record_execution_time(
         run, *[K_gain, K_loss, x, n0]
     )
 
@@ -60,6 +60,9 @@ def main():
 
     # Copy over configuration file (for reference later on).
     utils.file_io.save_config(run_id)
+
+    # Create info file (containing start- & end-datetime, as well as execution duration).
+    utils.file_io.save_run_info_to_file(run_id, timing_info)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,3 @@
-from datetime import datetime as dt
 import json
 import os
 
@@ -12,6 +11,23 @@ def zero_pad_int(num: int, nr_of_digits: int) -> str:
     while len(out) < nr_of_digits:
         out = f"0{out}"
     return out
+
+
+def save_run_info_to_file(run_id, timing_info):
+    start = timing_info[0]
+    end = timing_info[1]
+
+    start_timestamp_in_mus = int(start.timestamp() * 1e6)
+    end_timestamp_in_mus = int(end.timestamp() * 1e6)
+    duration_in_mus = (end - start).microseconds
+
+    info_file_content = f"start_timestamp_in_mus={start_timestamp_in_mus}\n"
+    info_file_content += f"end_timestamp_in_mus={end_timestamp_in_mus}\n"
+    info_file_content += f"duration_in_mus={duration_in_mus}"
+
+    path_to_info_file = os.path.join(PATH_TO_OUTFILES, run_id, "info.txt")
+    with open(path_to_info_file, "w", encoding="utf-8") as fp:
+        fp.write(info_file_content)
 
 
 def get_run_id():
@@ -30,9 +46,10 @@ def get_run_id():
         run_id = int(run_id) + 1
     run_id = zero_pad_int(run_id, MAX_RUN_ID_LENGTH)
 
-    date_str = dt.now().strftime("%Y-%m-%d")
-    time_str = dt.now().strftime("%H:%M:%S")
-    run_id = f"run-id={run_id}, date={date_str}, time={time_str}"
+    # date_str = dt.now().strftime("%Y-%m-%d")
+    # time_str = dt.now().strftime("%H:%M:%S")
+    # run_id = f"run-id={run_id}, date={date_str}, time={time_str}"
+    run_id = f"id={run_id}"
     return run_id
 
 

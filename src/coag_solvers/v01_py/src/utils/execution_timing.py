@@ -10,4 +10,4 @@ def record_execution_time(f, *args):
 
     duration = end - start
     print(colored(f"\tExecution time: {duration}", "blue"))
-    return res, duration
+    return res, (start, end)

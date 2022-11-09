@@ -12,10 +12,12 @@ both:
 	make v1
 setup:
 	clear
-	./bin/setup.sh
+	cd ./bin && ./setup.sh
 all:
 	make setup
 	make solver
 rm:
 	rm -r ./out/data/*
 	rm -r ./out/figures/*
+clean:
+	rm -r ./venv

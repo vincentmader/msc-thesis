@@ -53,11 +53,13 @@ def K_loss():
 
 
 @jit(nopython=True)
-def K_kij_gain(k, i, j):
+def K_kij_gain(k, i, j):  # NOTE: Unused, calculated instead from K_kij_loss via Koletz-Olund
     if KERNEL_VARIANT == "constant":
         K_kij = 1
     elif KERNEL_VARIANT == "linear":
         K_kij = mass_from_index(i) + mass_from_index(j)
+    elif KERNEL_VARIANT == "quadratic":
+        K_kij = mass_from_index(i) * mass_from_index(j)
     else:
         raise Exception(
             f"ERROR: Kernel variant \"{KERNEL_VARIANT}\" is not defined.")
@@ -70,6 +72,8 @@ def K_ij_loss(i, j):
         K_kij = 1
     elif KERNEL_VARIANT == "linear":
         K_kij = mass_from_index(i) + mass_from_index(j)
+    elif KERNEL_VARIANT == "quadratic":
+        K_kij = mass_from_index(i) * mass_from_index(j)
     else:
         raise Exception(
             f"ERROR: Kernel variant \"{KERNEL_VARIANT}\" is not defined.")

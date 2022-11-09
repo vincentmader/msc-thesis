@@ -44,8 +44,9 @@
 #       - "gaussian"
     
     [kernel]
-        variant = "constant"
+        # variant = "constant"
         # variant = "linear"
+        variant = "quadratic"
 #       Possible values:
 #       - "constant"
 #       - "linear"

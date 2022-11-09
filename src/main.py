@@ -23,10 +23,8 @@ def run_plotter():
 if __name__ == "__main__":
     # Load configuration file.
     cfg = toml.load("./config.toml")
-    # Load solver version.
-    solver_version = cfg["solver"]["version"]
 
     # Run coagulation solver (either written in Python or Rust).
-    run_solver(solver_version=solver_version)
+    run_solver(solver_version=cfg["solver"]["version"])
     # Run python plotter.
     run_plotter()

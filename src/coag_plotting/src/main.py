@@ -12,7 +12,9 @@ import utils
 
 def get_run_ids():
     out = []
-    run_ids = sorted(os.listdir(PATH_TO_OUTFILES))
+    path_to_runs = os.path.join(PATH_TO_OUTFILES, "runs")
+    run_ids = os.listdir(path_to_runs)
+    run_ids = sorted(run_ids)
     run_ids = [i for i in run_ids if i.startswith("id=")]
     if CREATE_PLOTS_FOR == "all":
         for run_id in run_ids:

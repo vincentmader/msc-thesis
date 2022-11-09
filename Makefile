@@ -17,6 +17,6 @@ all:
 	make setup
 	make solver
 rm:
-	rm -r ./out/*
+	rm -r ./out/runs/*
 clean:
 	rm -r ./venv

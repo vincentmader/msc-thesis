@@ -17,5 +17,8 @@
 #   ───────────────────────────────────────────────────────────────────────────
 
 #   Create `../out` directory, if it does not yet exist.
-    [ -d ../out ] || mkdir -p ../out
+    [ -d ../out ] || mkdir ../out
+
+#   Create `../out/runs` directory, if it does not yet exist.
+    [ -d ../out/runs ] || mkdir ../out/runs
 

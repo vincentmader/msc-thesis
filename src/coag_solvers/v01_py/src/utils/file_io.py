@@ -25,13 +25,13 @@ def save_run_info_to_file(run_id, timing_info):
     info_file_content += f"end_timestamp_in_mus={end_timestamp_in_mus}\n"
     info_file_content += f"duration_in_mus={duration_in_mus}"
 
-    path_to_info_file = os.path.join(PATH_TO_OUTFILES, run_id, "info.txt")
+    path_to_info_file = os.path.join(PATH_TO_OUTFILES, "runs", run_id, "info.txt")
     with open(path_to_info_file, "w", encoding="utf-8") as fp:
         fp.write(info_file_content)
 
 
 def get_run_id():
-    path_to_outfiles = os.path.join(PATH_TO_OUTFILES)
+    path_to_outfiles = os.path.join(PATH_TO_OUTFILES, "runs")
     outfiles = os.listdir(path_to_outfiles)
     run_ids = [i for i in outfiles if i not in [".DS_Store"]]
     run_ids = sorted(run_ids, reverse=True)
@@ -55,7 +55,7 @@ def get_run_id():
 
 def setup_data_savedir(run_id):
     # Define path to save-directory.
-    path_to_savedir = os.path.join(PATH_TO_OUTFILES, run_id, "data")
+    path_to_savedir = os.path.join(PATH_TO_OUTFILES, "runs", run_id, "data")
 
     # Make sure that out-directory exists.
     os.system(f"mkdir -p \"{path_to_savedir}\"")
@@ -65,7 +65,7 @@ def setup_data_savedir(run_id):
 
 def setup_plot_savedir(run_id):
     # Define path to save-directory.
-    path_to_savedir = os.path.join(PATH_TO_OUTFILES, run_id, "figures")
+    path_to_savedir = os.path.join(PATH_TO_OUTFILES, "runs", run_id, "figures")
 
     # Make sure that out-directory exists.
     os.system(f"mkdir -p \"{path_to_savedir}\"")
@@ -94,26 +94,26 @@ def save_simulation_data(run_id, x, ns):
 
 def save_coagulation_kernel(run_id, K_gain, K_loss):
     # Save gain-term of kernel to file.
-    path_to_kernel = os.path.join(PATH_TO_OUTFILES, run_id, "data/kernel_gain.txt")
+    path_to_kernel = os.path.join(PATH_TO_OUTFILES, "runs", run_id, "data/kernel_gain.txt")
     with open(path_to_kernel, "w", encoding="utf-8") as fp:
         json.dump(K_gain.tolist(), fp)
 
     # Save loss-term of kernel to file.
-    path_to_kernel = os.path.join(PATH_TO_OUTFILES, run_id, "data/kernel_loss.txt")
+    path_to_kernel = os.path.join(PATH_TO_OUTFILES, "runs", run_id, "data/kernel_loss.txt")
     with open(path_to_kernel, "w", encoding="utf-8") as fp:
         json.dump(K_loss.tolist(), fp)
 
 
 def save_config(run_id):
     path_i = PATH_TO_CONFIG
-    path_f = os.path.join(PATH_TO_OUTFILES, run_id, "config.toml")
+    path_f = os.path.join(PATH_TO_OUTFILES, "runs", run_id, "config.toml")
     os.system(f"cp \"{path_i}\" \"{path_f}\"")
 
 
 def load_simulation_data(run_id):
     # Define path to save-file.
     filename = "mass-distribution N(m).txt"
-    path_to_savefile = os.path.join(PATH_TO_OUTFILES, run_id, "data", filename)
+    path_to_savefile = os.path.join(PATH_TO_OUTFILES, "runs", run_id, "data", filename)
 
     # Load file contents into string.
     with open(path_to_savefile, "r", encoding="utf-8") as fp:

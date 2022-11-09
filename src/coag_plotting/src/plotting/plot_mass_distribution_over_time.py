@@ -65,7 +65,7 @@ def plot_mass_distribution(t, m, N, M_0):
 def save_plot_to_file(run_id):
     # Define path to file that plot should be written to.
     filename = "mass-distribution N(m).png"
-    path_to_savefile = os.path.join(PATH_TO_OUTFILES, run_id, "figures", filename)
+    path_to_savefile = os.path.join(PATH_TO_OUTFILES, "runs", run_id, "figures", filename)
 
     # Save the figure.
     plt.savefig(path_to_savefile)

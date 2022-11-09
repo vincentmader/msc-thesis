@@ -44,5 +44,5 @@ def plot_error_vs_time(run_id, save_plot=True):
 
 def save_plot_to_file(run_id):
     filename = "total-disk-mass relative-error.png"
-    path_to_savefile = os.path.join(PATH_TO_OUTFILES, run_id, "figures", filename)
+    path_to_savefile = os.path.join(PATH_TO_OUTFILES, "runs", run_id, "figures", filename)
     plt.savefig(path_to_savefile)

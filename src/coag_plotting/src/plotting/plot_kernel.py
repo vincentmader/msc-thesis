@@ -42,15 +42,15 @@ def plot_kernel_layer(K, run_id, k, show_plot=False, save_plot=True):
 def plot_kernel(run_id, ks=range(GRID_RESOLUTION)):
     print("\t\tPlotting kernel...")
 
-    path_to_kernel = os.path.join(PATH_TO_OUTFILES, run_id, "data", "kernel_gain.txt")
+    path_to_kernel = os.path.join(PATH_TO_OUTFILES, "runs", run_id, "data", "kernel_gain.txt")
     with open(path_to_kernel, encoding="utf-8") as fp:
         K_gain = np.array(json.load(fp))
-    path_to_kernel = os.path.join(PATH_TO_OUTFILES, run_id, "data", "kernel_loss.txt")
+    path_to_kernel = os.path.join(PATH_TO_OUTFILES, "runs", run_id, "data", "kernel_loss.txt")
     with open(path_to_kernel, encoding="utf-8") as fp:
         K_loss = np.array(json.load(fp))
     K = K_gain + K_loss
 
-    path = os.path.join(PATH_TO_OUTFILES, run_id, "figures", "kernel")
+    path = os.path.join(PATH_TO_OUTFILES, "runs", run_id, "figures", "kernel")
     os.system(f"mkdir -p \"{path}\"")
 
     # Decide whether to show the plot.
@@ -63,6 +63,6 @@ def plot_kernel(run_id, ks=range(GRID_RESOLUTION)):
 def save_plot_to_file(run_id, k):
     filename = f"kernel K_kij with {k=}.png"
     path_to_savefile = os.path.join(
-        PATH_TO_OUTFILES, run_id, "figures", "kernel", filename
+        PATH_TO_OUTFILES, "runs", run_id, "figures", "kernel", filename
     )
     plt.savefig(path_to_savefile)

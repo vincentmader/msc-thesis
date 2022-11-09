@@ -7,8 +7,6 @@
     [file_io]
         path_to_config = "./config.toml"
         path_to_outfiles = "./out"
-        # path_to_figures = "./out/figures"
-        # path_to_data = "./out/data"
     
     [plotting]
         fig_size = [12, 8]

@@ -10,14 +10,7 @@
 
 #       Define maximum length for run-id string. (e.g. 8 -> max. 10^8 runs)
         max_run_id_length = 8
-    
-    [file_io]
-#       Define path to configuration (this file).
-        path_to_config = "./config.toml"
-
-#       Define path to directory where data & figures should be saved to.
-        path_to_outfiles = "./out"
-    
+     
     [plotting]
 #       Specify which plots should be shown in interactive pyplot mode.
 #       Possible elements:
@@ -47,6 +40,13 @@
 
 #       Specify nr. of compute steps between each (mass distribution) plot.
         steps_between_plot = 10
+
+    [file_io]
+#       Define path to configuration (this file).
+        path_to_config = "./config.toml"
+
+#       Define path to directory where data & figures should be saved to.
+        path_to_outfiles = "./out"
 
 # SIMULATION CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────

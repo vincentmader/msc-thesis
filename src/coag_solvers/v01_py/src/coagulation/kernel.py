@@ -8,8 +8,10 @@ from config import KERNEL_VARIANT
 
 
 @jit(nopython=True)
-def K_gain():
-    K = np.zeros((GRID_RESOLUTION, GRID_RESOLUTION, GRID_RESOLUTION))
+def K():
+    K_gain = np.zeros((GRID_RESOLUTION, GRID_RESOLUTION, GRID_RESOLUTION))
+    K_loss = np.zeros((GRID_RESOLUTION, GRID_RESOLUTION, GRID_RESOLUTION))
+
     for i in range(GRID_RESOLUTION):
         for j in range(GRID_RESOLUTION):
             # Determine masses before & after hit-and-stick collision.
@@ -33,22 +35,16 @@ def K_gain():
             K_g_h = K_l * eps
 
             # Add gain-term to adjacent "next-lower" bin.
-            K[k_l][i][j] += K_g_l
+            K_gain[k_l][i][j] += K_g_l
             # Add gain-term to adjacent "next-higher" bin.
-            K[k_h][i][j] += K_g_h
+            K_gain[k_h][i][j] += K_g_h
 
-    return K
-
-
-@jit(nopython=True)
-def K_loss():
-    K = np.zeros((GRID_RESOLUTION, GRID_RESOLUTION, GRID_RESOLUTION))
     for i in range(GRID_RESOLUTION):
         for j in range(GRID_RESOLUTION):
             K_l = K_ij_loss(i, j)
-            K[i][i][j] -= K_l
+            K_loss[i][i][j] -= K_l
 
-    return K
+    return K_gain, K_loss
 
 
 @jit(nopython=True)

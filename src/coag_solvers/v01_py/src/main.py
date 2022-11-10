@@ -32,8 +32,7 @@ def main():
     # ─────────────────────────────────────────────────────────────────────────
 
     # Define coagulation kernel (gain & loss terms, separately).
-    K_gain = coagulation.kernel.K_gain()
-    K_loss = coagulation.kernel.K_loss()
+    K_gain, K_loss = coagulation.kernel.K()
 
     # Define initial state.
     x, n0 = state_initialization.initial_state()

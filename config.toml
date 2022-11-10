@@ -2,54 +2,82 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
     [solver]
+#       Define version of solver.
+#       Possible values:
+#       - "v01" -> Python solver
+#       - "v02" -> Rust solver (might be implemented later)
         version = "v01"
-#       Define maximum length for run-id. (e.g. 8 -> max. 10^8 runs)
+
+#       Define maximum length for run-id string. (e.g. 8 -> max. 10^8 runs)
         max_run_id_length = 8
     
     [file_io]
+#       Define path to configuration (this file).
         path_to_config = "./config.toml"
+
+#       Define path to directory where data & figures should be saved to.
         path_to_outfiles = "./out"
     
     [plotting]
-        plots_to_show = ["mass distribution"]  
-        # plots_to_show = ["mass distribution", "mass error", "coagulation kernel"]  
-        # plots_to_show = []  
+#       Specify which plots should be shown in interactive pyplot mode.
 #       Possible elements:
 #       - "mass error"
 #       - "mass distribution"
 #       - "coagulation kernel"
-        runs_to_plot = "last"
+        plots_to_show = [
+            "mass distribution", 
+            # "mass error", 
+            # "coagulation kernel"
+        ]  
+
+#       Specify which simulation runs should be plotted.
 #       Possible values:
 #       - "all"
 #       - "last"
-        theme = "dark"
+        runs_to_plot = "last"
+
+#       Specify pyplot theme.
 #       Possible values:
 #       - "dark"
 #       - "light"
+        theme = "dark"
+
+#       Specify plot dimensions.
         fig_size = [12, 8]
+
+#       Specify nr. of compute steps between each (mass distribution) plot.
         steps_between_plot = 10
 
 # SIMULATION CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
 
     [mass_grid]
+#       Specify minimum mass exponent.
         mass_exponent_min = -5
+
+#       Specify maximum mass exponent.
         mass_exponent_max = +5
+
+#       Specify mass grid resolution.
         mass_grid_resolution = 100
     
     [initialization]
-        initial_mass_distribution = "dirac-delta" 
+#       Define shape of initial mass distribution.
 #       Possible values:
 #       - "dirac-delta"
 #       - "gaussian"
+        initial_mass_distribution = "dirac-delta" 
     
     [kernel]
-        variant = "constant"
-        # variant = "linear"
-        # variant = "quadratic"
+#       Define coagulation kernel variant.
 #       Possible values:
 #       - "constant"
 #       - "linear"
+#       - "quadratic"
+        variant = "constant"
+      # variant = "linear"
+      # variant = "quadratic"
     
     [simulation]
+#       Specify nr. of time-steps.
         nr_of_timesteps = 100

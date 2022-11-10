@@ -38,7 +38,8 @@ def K():
             K_gain[k_l][i][j] += K_g_l
             # Add gain-term to adjacent "next-higher" bin.
             K_gain[k_h][i][j] += K_g_h
-
+            
+            # Add loss term.
             K_loss[i][i][j] -= K_l
 
     return K_gain, K_loss

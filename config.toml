@@ -11,14 +11,6 @@
         path_to_outfiles = "./out"
     
     [plotting]
-        theme = "dark"
-#       Possible values:
-#       - "dark"
-#       - "light"
-        runs_to_plot = "last"
-#       Possible values:
-#       - "all"
-#       - "last"
         plots_to_show = ["mass distribution"]  
         # plots_to_show = ["mass distribution", "mass error", "coagulation kernel"]  
         # plots_to_show = []  
@@ -26,6 +18,14 @@
 #       - "mass error"
 #       - "mass distribution"
 #       - "coagulation kernel"
+        runs_to_plot = "last"
+#       Possible values:
+#       - "all"
+#       - "last"
+        theme = "dark"
+#       Possible values:
+#       - "dark"
+#       - "light"
         fig_size = [12, 8]
         steps_between_plot = 10
 

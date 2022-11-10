@@ -39,9 +39,6 @@ def K():
             # Add gain-term to adjacent "next-higher" bin.
             K_gain[k_h][i][j] += K_g_h
 
-    for i in range(GRID_RESOLUTION):
-        for j in range(GRID_RESOLUTION):
-            K_l = K_ij_loss(i, j)
             K_loss[i][i][j] -= K_l
 
     return K_gain, K_loss

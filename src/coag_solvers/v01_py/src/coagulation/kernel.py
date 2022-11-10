@@ -1,19 +1,19 @@
 import numpy as np
 from numba import jit
-from utils import kronecker_delta
 
-from config import GRID_EXP_MIN, GRID_STEPSIZE
-from config import GRID_RESOLUTION
+from config import GRID_EXP_MIN
+from config import GRID_STEPSIZE
+from config import GRID_RESOLUTION as GRID_RES
 from config import KERNEL_VARIANT
 
 
 @jit(nopython=True)
 def K():
-    K_gain = np.zeros((GRID_RESOLUTION, GRID_RESOLUTION, GRID_RESOLUTION))
-    K_loss = np.zeros((GRID_RESOLUTION, GRID_RESOLUTION, GRID_RESOLUTION))
+    K_gain = np.zeros((GRID_RES, GRID_RES, GRID_RES))
+    K_loss = np.zeros((GRID_RES, GRID_RES, GRID_RES))
 
-    for i in range(GRID_RESOLUTION):
-        for j in range(GRID_RESOLUTION):
+    for i in range(GRID_RES):
+        for j in range(GRID_RES):
             # Determine masses before & after hit-and-stick collision.
             m_i = mass_from_index(i)
             m_j = mass_from_index(j)
@@ -21,7 +21,7 @@ def K():
 
             # Determine index of bins adjacent to combined mass.
             k_l = index_from_mass(m)
-            k_h = k_l + 1  # TODO Make sure that k_h <= GRID_RESOLUTION at all times.
+            k_h = k_l + 1  # TODO Make sure that k_h <= GRID_RES at all times.
 
             # Get mass corresponding to these indices.
             m_l = mass_from_index(k_l)

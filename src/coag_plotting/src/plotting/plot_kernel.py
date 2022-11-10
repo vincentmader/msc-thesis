@@ -6,7 +6,9 @@ import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 import numpy as np
 
-from config import GRID_RESOLUTION, PATH_TO_OUTFILES, PLOTS_TO_SHOW
+from config import PATH_TO_OUTFILES
+from config import PLOTS_TO_SHOW
+from config import GRID_RESOLUTION as GRID_RES
 
 VMIN, VCEN, VMAX = -1, 0, 1
 CMAP_NORM = colors.TwoSlopeNorm(vmin=VMIN, vcenter=VCEN, vmax=VMAX)
@@ -39,7 +41,7 @@ def plot_kernel_layer(K, run_id, k, show_plot=False, save_plot=True):
     mpl.pyplot.close()
 
 
-def plot_kernel(run_id, ks=range(GRID_RESOLUTION)):
+def plot_kernel(run_id, ks=range(GRID_RES)):
     print("\t\tPlotting kernel...")
 
     path_to_kernel = os.path.join(PATH_TO_OUTFILES, "runs", run_id, "data", "kernel_gain.txt")

@@ -3,7 +3,10 @@ import os
 from termcolor import colored
 import matplotlib.pyplot as plt
 
-from config import PATH_TO_OUTFILES, GRID_RESOLUTION, MPL_THEME, RUNS_TO_PLOT
+from config import RUNS_TO_PLOT
+from config import GRID_RESOLUTION as GRID_RES
+from config import MPL_THEME
+from config import PATH_TO_OUTFILES
 from plotting import plot_error_vs_time
 from plotting import plot_kernel
 from plotting import plot_mass_distribution_over_time
@@ -31,7 +34,7 @@ def get_run_ids():
 def main():
     print(colored("\nRunning plotter...", "yellow"))
 
-    k = int(GRID_RESOLUTION/2)
+    k = int(GRID_RES/2)
     ks = range(k, k+1)
 
     # Define matplotlib theme & apply (if specified in config).

@@ -43,11 +43,10 @@ def K_gain():
 @jit(nopython=True)
 def K_loss():
     K = np.zeros((GRID_RESOLUTION, GRID_RESOLUTION, GRID_RESOLUTION))
-    for k in range(GRID_RESOLUTION):
-        for i in range(GRID_RESOLUTION):
-            for j in range(GRID_RESOLUTION):
-                K_l = K_ij_loss(i, j) * kronecker_delta(k, i)
-                K[k][i][j] -= K_l
+    for i in range(GRID_RESOLUTION):
+        for j in range(GRID_RESOLUTION):
+            K_l = K_ij_loss(i, j)
+            K[i][i][j] -= K_l
 
     return K
 

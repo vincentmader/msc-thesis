@@ -15,7 +15,7 @@
 #       Possible values:
 #       - "dark"
 #       - "light"
-        plot_which_runs = "last"
+        runs_to_plot = "last"
 #       Possible values:
 #       - "all"
 #       - "last"

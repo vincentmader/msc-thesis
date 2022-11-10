@@ -1,20 +1,21 @@
 import numpy as np
 from numba import jit
 
+from config import GRID_RESOLUTION
+from utils.elementary_functions import kronecker_delta
+
 
 @jit(nopython=True, cache=True)
 def dn_k(K_gain, K_loss, n, k):
     out = 0
 
-    for i, _ in enumerate(n):
-        for j, _ in enumerate(n):
-            gain = 1/2 * K_gain[k][i][j] * n[i] * n[j]
-            out += gain
+    for i in range(GRID_RESOLUTION):
+        for j in range(GRID_RESOLUTION):
+            out += 1/2 * K_gain[k][i][j] * n[i] * n[j]
 
-    for j, _ in enumerate(n):
-        i = k
-        loss = K_loss[k][i][j] * n[i] * n[j]
-        out += loss
+    for i in range(GRID_RESOLUTION):
+        for j in range(GRID_RESOLUTION):
+            out += K_loss[k][i][j] * n[i] * n[j] * kronecker_delta(i, k)
 
     return out
 

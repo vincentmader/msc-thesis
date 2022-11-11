@@ -39,7 +39,7 @@
         fig_size = [12, 8]
 
 #       Specify nr. of compute steps between each (mass distribution) plot.
-        steps_between_plot = 10
+        steps_between_plot = 5
 
     [file_io]
 #       Define path to configuration (this file).

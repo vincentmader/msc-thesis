@@ -51,18 +51,17 @@ def main():
     # Define this simulation's run-ID.
     run_id = utils.file_io.get_run_id()
 
-    # Save mass distributions to file.
-    utils.file_io.save_simulation_data(run_id, x, ns)
-
-    # Save kernel(s) to file.
-    utils.file_io.save_coagulation_kernel(run_id, K_gain, K_loss)
-
     # Copy over configuration file (for reference later on).
     utils.file_io.save_config(run_id)
 
     # Create info file (containing start- & end-datetime, as well as execution duration).
     utils.file_io.save_run_info_to_file(run_id, timing_info)
 
+    # Save mass distributions to file.
+    utils.file_io.save_simulation_data(run_id, x, ns)
+
+    # Save kernel(s) to file.
+    utils.file_io.save_coagulation_kernel(run_id, K_gain, K_loss)
 
 if __name__ == "__main__":
     main()

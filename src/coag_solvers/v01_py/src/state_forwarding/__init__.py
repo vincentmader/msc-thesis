@@ -5,7 +5,7 @@ from config import GRID_RESOLUTION as GRID_RES
 from utils.elementary_functions import kronecker_delta
 
 
-@jit(nopython=True, cache=True)
+@jit(nopython=True)
 def dn_k(K_gain, K_loss, n, k):
     out = 0
 
@@ -20,7 +20,7 @@ def dn_k(K_gain, K_loss, n, k):
     return out
 
 
-@jit(nopython=True, cache=True)
+@jit(nopython=True)
 def forward_state(K_gain, K_loss, x, n):
 
     # Initialize mass-distribution derivative vector.

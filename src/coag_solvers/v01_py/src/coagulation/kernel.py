@@ -6,6 +6,10 @@ from config import GRID_STEPSIZE
 from config import GRID_RESOLUTION as GRID_RES
 from config import KERNEL_VARIANT
 
+# TODO Make sure that k_h <= GRID_RES at all times.
+#      Where? -> At definition `k_h = k_l + 1`.
+#             -> Prevent index-out-of-bounds error!
+
 
 @jit(nopython=True)
 def K():
@@ -21,15 +25,16 @@ def K():
 
             # Determine index of bins adjacent to combined mass.
             k_l = index_from_mass(m)
-            k_h = k_l + 1  # TODO Make sure that k_h <= GRID_RES at all times.
+            k_h = k_l + 1
 
             # Get mass corresponding to these indices.
             m_l = mass_from_index(k_l)
             m_h = mass_from_index(k_h)
 
-            # Use linear ansatz to split kernel between
-            # adjacent "next-lower"/"next-higher" bins.
+            # Calculate loss term.
             K_l = K_ij_loss(i, j)
+
+            # Use linear ansatz to split kernel between adjacent next-lower/-higher bins.
             eps = (m_i + m_j - m_l) / (m_h - m_l)
             K_g_l = K_l * (1 - eps)
             K_g_h = K_l * eps

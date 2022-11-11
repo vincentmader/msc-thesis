@@ -16,7 +16,7 @@ setup:
 all:
 	make setup
 	make solver
-rm:
-	rm -r ./out/runs/*
 clean:
 	rm -r ./venv
+recompile:
+	rm -r **/__pycache__

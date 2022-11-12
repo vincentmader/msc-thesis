@@ -3,21 +3,22 @@ from numba import jit
 
 from config import GRID_RESOLUTION as GRID_RES
 from utils.elementary_functions import kronecker_delta
+from utils.mass_index_conversion import mass_from_index, index_from_mass
 
 
 @jit(nopython=True)
 def dn_k(K_gain, K_loss, n, k):
-    out = 0
+    res = 0
+    
+    for i in range(GRID_RES):
+        for j in range(GRID_RES):
+            res += 1/2 * K_gain[k][i][j] * n[i] * n[j]
 
     for i in range(GRID_RES):
         for j in range(GRID_RES):
-            out += 1/2 * K_gain[k][i][j] * n[i] * n[j]
+            res += K_loss[k][i][j] * n[i] * n[j] * kronecker_delta(i, k)
 
-    for i in range(GRID_RES):
-        for j in range(GRID_RES):
-            out += K_loss[k][i][j] * n[i] * n[j] * kronecker_delta(i, k)
-
-    return out
+    return res
 
 
 @jit(nopython=True)

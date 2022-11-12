@@ -12,12 +12,27 @@
         max_run_id_length = 8
      
     [plotting]
+#       Specify which plots should be created.
+#       Possible elements:
+#       - "mass error"
+#       - "mass distribution"
+#       - "coagulation kernel"
+#       - "mass-index conversion"
+        plots_to_create = [
+            "mass-index conversion",
+            "mass distribution", 
+            "mass error", 
+            "coagulation kernel"
+        ]  
+
 #       Specify which plots should be shown in interactive pyplot mode.
 #       Possible elements:
 #       - "mass error"
 #       - "mass distribution"
 #       - "coagulation kernel"
+#       - "mass-index conversion"
         plots_to_show = [
+            "mass-index conversion",
             "mass distribution", 
             # "mass error", 
             # "coagulation kernel"

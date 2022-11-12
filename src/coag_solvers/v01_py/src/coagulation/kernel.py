@@ -1,11 +1,10 @@
 import numpy as np
 from numba import jit
 
-from config import GRID_EXP_MIN
-from config import GRID_STEPSIZE
 from config import GRID_RESOLUTION as GRID_RES
 from config import KERNEL_VARIANT
 from config import HANDLE_NEAR_ZERO_CANCELLATION
+from utils.mass_index_conversion import mass_from_index, index_from_mass
 
 # TODO Make sure that k_h <= GRID_RES at all times.
 #      Where? -> At definition `k_h = k_l + 1`.
@@ -81,14 +80,3 @@ def K_ij_loss(i, j):
         raise Exception(
             f"ERROR: Kernel variant \"{KERNEL_VARIANT}\" is not defined.")
     return K_kij
-
-
-@jit(nopython=True)
-def mass_from_index(idx):
-    return (10**GRID_EXP_MIN) * (GRID_STEPSIZE**idx)
-
-
-@jit(nopython=True)
-def index_from_mass(mass):
-    res = (np.log(mass) - GRID_EXP_MIN*np.log(10)) / (np.log(GRID_STEPSIZE))
-    return int(res)

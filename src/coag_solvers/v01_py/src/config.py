@@ -89,6 +89,8 @@ else:
 # Define which simulations plots should be created for.
 RUNS_TO_PLOT = CONFIG["plotting"]["runs_to_plot"]
 
+# Define which plots should be created.
+PLOTS_TO_CREATE = CONFIG["plotting"]["plots_to_create"]
+
 # Define which plots should be shown immediately.
 PLOTS_TO_SHOW = CONFIG["plotting"]["plots_to_show"]
-

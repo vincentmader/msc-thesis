@@ -81,3 +81,6 @@
     [simulation]
 #       Specify nr. of time-steps.
         nr_of_timesteps = 100
+
+#       Determine whether near-zero-cancellation should be handled.
+        handle_near_zero_cancellation = true

@@ -49,6 +49,9 @@ INITIAL_STATE = CONFIG["initialization"]["initial_mass_distribution"]
 # Define Discretization of Time-Axis (Abscissa).
 NR_OF_TIMESTEPS = CONFIG["simulation"]["nr_of_timesteps"]
 
+# Determine whether near-zero-cancellation should be handled.
+HANDLE_NEAR_ZERO_CANCELLATION = CONFIG["simulation"]["handle_near_zero_cancellation"]
+
 # ╭───────────────────────────────────────────────────────────────────────────╮
 # │ File-IO                                                                   │
 # ╰───────────────────────────────────────────────────────────────────────────╯

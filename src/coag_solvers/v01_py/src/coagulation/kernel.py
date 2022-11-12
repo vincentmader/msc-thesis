@@ -5,6 +5,7 @@ from config import GRID_EXP_MIN
 from config import GRID_STEPSIZE
 from config import GRID_RESOLUTION as GRID_RES
 from config import KERNEL_VARIANT
+from config import HANDLE_NEAR_ZERO_CANCELLATION
 
 # TODO Make sure that k_h <= GRID_RES at all times.
 #      Where? -> At definition `k_h = k_l + 1`.
@@ -12,9 +13,7 @@ from config import KERNEL_VARIANT
 
 
 @jit(nopython=True)
-def K(
-    handle_near_zero_cancellation=True,
-):
+def K():
     K_gain = np.zeros((GRID_RES, GRID_RES, GRID_RES))
     K_loss = np.zeros((GRID_RES, GRID_RES, GRID_RES))
 
@@ -33,27 +32,39 @@ def K(
             m_l = mass_from_index(k_l)
             m_h = mass_from_index(k_h)
 
-            # Calculate loss term.
+            # Calculate loss term (gain term can then be calculated from this).
             K_l = K_ij_loss(i, j)
 
             # Use linear ansatz to split kernel between adjacent next-lower/-higher bins.
             eps = (m_i + m_j - m_l) / (m_h - m_l)
-            K_g_l = K_l * (1 - eps)
-            K_g_h = K_l * eps
 
             if k_l == max(i, j):
-                could_cancel = True
+                might_near_zero_cancel = True
             elif k_l > max(i, j):
-                could_cancel = False
+                might_near_zero_cancel = False
             else:
                 raise Exception("ERROR: This should never happen.")
 
-            # Add gain-term to adjacent "next-lower" bin.
-            K_gain[k_l][i][j] += K_g_l
-            # Add gain-term to adjacent "next-higher" bin.
-            K_gain[k_h][i][j] += K_g_h
-            # Add loss term.
-            K_loss[i][i][j] -= K_l
+            if HANDLE_NEAR_ZERO_CANCELLATION:
+                if might_near_zero_cancel:
+                    # Add gain-term to adjacent "next-lower" bin.
+                    K_gain[k_l][i][j] -= K_l * eps
+                    # Add gain-term to adjacent "next-higher" bin.
+                    K_gain[k_h][i][j] += K_l * eps
+                else:
+                    # Add gain-term to adjacent "next-lower" bin.
+                    K_gain[k_l][i][j] += K_l * (1-eps)
+                    # Add gain-term to adjacent "next-higher" bin.
+                    K_gain[k_h][i][j] += K_l * eps
+                    # Add loss term.
+                    K_loss[i][i][j] -= K_l
+            else:
+                # Add gain-term to adjacent "next-lower" bin.
+                K_gain[k_l][i][j] += K_l * (1-eps)
+                # Add gain-term to adjacent "next-higher" bin.
+                K_gain[k_h][i][j] += K_l * eps
+                # Add loss term.
+                K_loss[i][i][j] -= K_l
 
     return K_gain, K_loss
 
@@ -79,7 +90,5 @@ def mass_from_index(idx):
 
 @jit(nopython=True)
 def index_from_mass(mass):
-    return int(
-        (np.log(mass) - GRID_EXP_MIN*np.log(10)) /
-        (np.log(GRID_STEPSIZE))
-    )
+    res = (np.log(mass) - GRID_EXP_MIN*np.log(10)) / (np.log(GRID_STEPSIZE))
+    return int(res)

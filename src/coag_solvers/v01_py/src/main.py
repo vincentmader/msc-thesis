@@ -51,6 +51,9 @@ def main():
     # Define this simulation's run-ID.
     run_id = utils.file_io.get_run_id()
 
+    # Make sure save-directory exists.
+    utils.file_io.setup_savedir(run_id)
+
     # Copy over configuration file (for reference later on).
     utils.file_io.save_config(run_id)
 

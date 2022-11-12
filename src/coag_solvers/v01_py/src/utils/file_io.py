@@ -53,6 +53,16 @@ def get_run_id():
     return run_id
 
 
+def setup_savedir(run_id):
+    # Define path to save-directory.
+    path_to_savedir = os.path.join(PATH_TO_OUTFILES, "runs", run_id)
+
+    # Make sure that out-directory exists.
+    os.system(f"mkdir -p \"{path_to_savedir}\"")
+
+    return path_to_savedir
+
+
 def setup_data_savedir(run_id):
     # Define path to save-directory.
     path_to_savedir = os.path.join(PATH_TO_OUTFILES, "runs", run_id, "data")

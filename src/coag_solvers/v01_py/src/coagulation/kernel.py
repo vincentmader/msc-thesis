@@ -12,7 +12,9 @@ from config import KERNEL_VARIANT
 
 
 @jit(nopython=True)
-def K():
+def K(
+    handle_near_zero_cancellation=True,
+):
     K_gain = np.zeros((GRID_RES, GRID_RES, GRID_RES))
     K_loss = np.zeros((GRID_RES, GRID_RES, GRID_RES))
 
@@ -38,6 +40,13 @@ def K():
             eps = (m_i + m_j - m_l) / (m_h - m_l)
             K_g_l = K_l * (1 - eps)
             K_g_h = K_l * eps
+
+            if k_l == max(i, j):
+                could_cancel = True
+            elif k_l > max(i, j):
+                could_cancel = False
+            else:
+                raise Exception("ERROR: This should never happen.")
 
             # Add gain-term to adjacent "next-lower" bin.
             K_gain[k_l][i][j] += K_g_l

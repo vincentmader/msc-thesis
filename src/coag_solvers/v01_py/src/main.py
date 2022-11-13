@@ -8,7 +8,7 @@ import state_forwarding
 import utils
 
 
-def run(K_gain, K_loss, x, n0):
+def run_solver(K_gain, K_loss, x, n0):
     # Define vector holding mass-distributions for each time-step.
     ns = [n0]
 
@@ -42,7 +42,7 @@ def main():
 
     # Compute time-evolution of mass distribution (& record execution time).
     ns, timing_info = utils.record_execution_time(
-        run, *[K_gain, K_loss, x, n0]
+        run_solver, *[K_gain, K_loss, x, n0]
     )
 
     # Save to file.

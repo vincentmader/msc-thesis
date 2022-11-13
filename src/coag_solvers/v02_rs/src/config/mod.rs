@@ -4,7 +4,6 @@ mod utils;
 
 use coagulation_kernel_variant::CoagulationKernelVariant;
 use initial_mass_distribution::InitialMassDistribution;
-use utils::load_config;
 
 #[derive(Debug)]
 pub struct Config {
@@ -23,7 +22,7 @@ pub struct Config {
 
 impl Config {
     pub fn new() -> Self {
-        let cfg = load_config();
+        let cfg = utils::load_config();
 
         // Define maximum length for run-id string. (e.g. 8 -> max. 10^8 runs)
         let max_run_id_length = &cfg["solver"]["max_run_id_length"];

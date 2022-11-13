@@ -10,7 +10,8 @@ from utils.mass_index_conversion import mass_from_index, index_from_mass
 def dn_k(K_gain, K_loss, n, k):
     res = 0
     
-    for i in range(GRID_RES):
+    i_max = GRID_RES  # i_max = index_from_mass(mass_from_index(k) / 2)
+    for i in range(i_max):
         for j in range(GRID_RES):
             res += 1/2 * K_gain[k][i][j] * n[i] * n[j]
 
@@ -30,4 +31,5 @@ def forward_state(K_gain, K_loss, x, n):
     # Calulcate entries of derivative vector.
     for k, _ in enumerate(n):
         dn[k] = dn_k(K_gain, K_loss, n, k)
+
     return n + dn

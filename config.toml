@@ -32,10 +32,10 @@
 #       - "coagulation kernel"
 #       - "mass-index conversion"
         plots_to_show = [
-            "mass-index conversion",
+          # "mass-index conversion",
             "mass distribution", 
-            # "mass error", 
-            # "coagulation kernel"
+          # "mass error", 
+          # "coagulation kernel"
         ]  
 
 #       Specify which simulation runs should be plotted.
@@ -98,4 +98,4 @@
         nr_of_timesteps = 100
 
 #       Determine whether near-zero-cancellation should be handled.
-        handle_near_zero_cancellation = true
+        handle_near_zero_cancellation = false

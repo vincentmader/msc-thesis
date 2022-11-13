@@ -28,7 +28,7 @@ def run_solver(K_gain, K_loss, x, n0):
 def main():
     print(colored("\nRunning solver v01_py...", "yellow"))
 
-    # Initialize kernel & state.
+    # Define coagulation kernel & initial state of disk's mass distribution.
     # ─────────────────────────────────────────────────────────────────────────
 
     # Define coagulation kernel (gain & loss terms, separately).
@@ -37,7 +37,7 @@ def main():
     # Define initial state.
     x, n0 = state_initialization.initial_state()
 
-    # Run compute-loop.
+    # Run coagulation solver
     # ─────────────────────────────────────────────────────────────────────────
 
     # Compute time-evolution of mass distribution (& record execution time).

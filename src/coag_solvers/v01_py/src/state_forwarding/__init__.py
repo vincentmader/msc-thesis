@@ -9,7 +9,7 @@ from utils.mass_index_conversion import mass_from_index, index_from_mass
 @jit(nopython=True)
 def dn_k(K_gain, K_loss, n, k):
     res = 0
-    
+
     i_max = GRID_RES  # i_max = index_from_mass(mass_from_index(k) / 2)
     for i in range(i_max):
         for j in range(GRID_RES):

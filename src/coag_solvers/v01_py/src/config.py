@@ -22,18 +22,18 @@ MAX_RUN_ID_LENGTH = CONFIG["solver"]["max_run_id_length"]
 GRID_RESOLUTION = CONFIG["mass_grid"]["mass_grid_resolution"]
 
 # Define minimum & maximum exponent of logarithmic mass-grid.
-GRID_EXP_MIN = f64(CONFIG["mass_grid"]["mass_exponent_min"])
-GRID_EXP_MAX = f64(CONFIG["mass_grid"]["mass_exponent_max"])
+GRID_EXP_MIN = f64(CONFIG["mass_grid"]["mass_grid_exp_min"])
+GRID_EXP_MAX = f64(CONFIG["mass_grid"]["mass_grid_exp_max"])
 
 # Define (multiplicative) step-size from one mass-grid-point to the next.
 GRID_STEPSIZE = (10**(GRID_EXP_MAX-GRID_EXP_MIN))**(1/GRID_RESOLUTION)
 
 # ╭───────────────────────────────────────────────────────────────────────────╮
-# │ Initialization                                                            │
+# │ Kernel                                                                    │
 # ╰───────────────────────────────────────────────────────────────────────────╯
 
 # Define variant of coagulation kernel.
-KERNEL_VARIANT = CONFIG["kernel"]["variant"]
+COAGULATION_KERNEL_VARIANT = CONFIG["coagulation_kernel"]["variant"]
 
 # ╭───────────────────────────────────────────────────────────────────────────╮
 # │ Initialization                                                            │
@@ -56,9 +56,10 @@ HANDLE_NEAR_ZERO_CANCELLATION = CONFIG["simulation"]["handle_near_zero_cancellat
 # │ File-IO                                                                   │
 # ╰───────────────────────────────────────────────────────────────────────────╯
 
-# Define path to directory where figures shall be saved.
+# Define path to configuration TOML file.
 PATH_TO_CONFIG = CONFIG["file_io"]["path_to_config"]
 
+# Define path to directory where figures shall be saved.
 PATH_TO_OUTFILES = CONFIG["file_io"]["path_to_outfiles"]
 
 # ╭───────────────────────────────────────────────────────────────────────────╮

@@ -68,10 +68,10 @@
 
     [mass_grid]
 #       Specify minimum mass exponent.
-        mass_exponent_min = -5
+        mass_grid_exp_min = -5
 
 #       Specify maximum mass exponent.
-        mass_exponent_max = +5
+        mass_grid_exp_max = 5
 
 #       Specify mass grid resolution.
         mass_grid_resolution = 100
@@ -83,7 +83,7 @@
 #       - "gaussian"
         initial_mass_distribution = "dirac-delta" 
     
-    [kernel]
+    [coagulation_kernel]
 #       Define coagulation kernel variant.
 #       Possible values:
 #       - "constant"

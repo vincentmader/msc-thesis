@@ -2,7 +2,7 @@ import numpy as np
 from numba import jit
 
 from config import GRID_RESOLUTION as GRID_RES
-from config import KERNEL_VARIANT
+from config import COAGULATION_KERNEL_VARIANT
 from config import HANDLE_NEAR_ZERO_CANCELLATION
 from utils.mass_index_conversion import mass_from_index, index_from_mass
 
@@ -44,19 +44,13 @@ def K():
             else:
                 raise Exception("ERROR: This should never happen.")
 
-            if HANDLE_NEAR_ZERO_CANCELLATION:
-                if might_near_zero_cancel:
-                    # Add gain-term to adjacent "next-lower" bin.
-                    K_gain[k_l][i][j] -= K_l * eps
-                    # Add gain-term to adjacent "next-higher" bin.
-                    K_gain[k_h][i][j] += K_l * eps
-                else:
-                    # Add gain-term to adjacent "next-lower" bin.
-                    K_gain[k_l][i][j] += K_l * (1-eps)
-                    # Add gain-term to adjacent "next-higher" bin.
-                    K_gain[k_h][i][j] += K_l * eps
-                    # Add loss term.
-                    K_loss[i][i][j] -= K_l
+            if HANDLE_NEAR_ZERO_CANCELLATION and might_near_zero_cancel:
+                # Add gain-term to adjacent "next-lower" bin.
+                # K_gain[k_l][i][j] -= K_l * eps
+                # Add gain-term to adjacent "next-higher" bin.
+                # K_gain[k_h][i][j] += K_l * (1-eps)
+                # K_loss[k_l][i][j] -= K_l * eps
+                raise Exception("TODO: Implement near-zero-cancellation handling")
             else:
                 # Add gain-term to adjacent "next-lower" bin.
                 K_gain[k_l][i][j] += K_l * (1-eps)
@@ -70,13 +64,13 @@ def K():
 
 @jit(nopython=True)
 def K_ij_loss(i, j):
-    if KERNEL_VARIANT == "constant":
+    if COAGULATION_KERNEL_VARIANT == "constant":
         K_kij = 1
-    elif KERNEL_VARIANT == "linear":
+    elif COAGULATION_KERNEL_VARIANT == "linear":
         K_kij = mass_from_index(i) + mass_from_index(j)
-    elif KERNEL_VARIANT == "quadratic":
+    elif COAGULATION_KERNEL_VARIANT == "quadratic":
         K_kij = mass_from_index(i) * mass_from_index(j)
     else:
         raise Exception(
-            f"ERROR: Kernel variant \"{KERNEL_VARIANT}\" is not defined.")
+            f"ERROR: Kernel variant \"{COAGULATION_KERNEL_VARIANT}\" is not defined.")
     return K_kij

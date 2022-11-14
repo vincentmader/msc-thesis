@@ -13,7 +13,7 @@
 
 #       Specify whether solver should be run.
 #       NOTE: Initialization will always take place.
-        run_solver = false
+        run_solver = true
      
     [plotting]
 #       Specify which plots should be created.
@@ -37,7 +37,7 @@
 #       - "mass-index conversion"
         plots_to_show = [
           # "mass-index conversion",
-          # "mass distribution", 
+          "mass distribution", 
           # "mass error", 
           "coagulation kernel"
         ]  
@@ -58,7 +58,7 @@
         default_fig_size = [12, 8]
 
 #       Specify nr. of compute steps between each (mass distribution) plot.
-        steps_between_plot = 5
+        steps_between_plot = 1
 
     [file_io]
 #       Define path to configuration (this file).
@@ -72,7 +72,7 @@
 
     [simulation]
 #       Specify nr. of time-steps.
-        nr_of_timesteps = 100
+        nr_of_timesteps = 10
 
 #       Determine whether near-zero-cancellation should be handled.
         handle_near_zero_cancellation = false

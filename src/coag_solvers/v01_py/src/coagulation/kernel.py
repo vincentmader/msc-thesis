@@ -41,12 +41,36 @@ def K(
             # Use linear ansatz to split kernel between adjacent next-lower/-higher bins.
             eps = (m_i + m_j - m_l) / (m_h - m_l)
 
+            K_g_l = K_l * (1-eps) #if i >= j else 0
+            K_g_h = K_l *    eps  #if i >= j else 0
+
             # Add gain-term to adjacent "next-lower" bin.
-            K_gain[k_l][i][j] += K_l * (1-eps)
+            K_gain[k_l][i][j] += K_g_l
             # Add gain-term to adjacent "next-higher" bin.
-            K_gain[k_h][i][j] += K_l * eps
+            K_gain[k_h][i][j] += K_g_h
             # Add loss term.
             K_loss[i][i][j] -= K_l
+
+            a = m_l * K_gain[k_l][i][j] + m_h * K_gain[k_h][i][j]
+            b = (m_i + m_j) *  K_loss[i][i][j]
+            if (a + b) > 0:
+                print(a + b)
+            if (a + b) > 10**-10:
+                print("i =", i)
+                print("j =", j)
+                print("\nm_i =", m_i)
+                print("m_j =", m_j)
+                print("\nk_l =", k_l)
+                print("k_h =", k_h)
+                print("\nm_l =", m_l)
+                print("m_h =", m_h)
+                print("\neps =", eps)
+                print("\nK_gain[k_l][i][j] =", K_gain[k_l][i][j])
+                print("K_gain[k_h][i][j] =", K_gain[k_h][i][j])
+                print("K_loss[i][i][j]   =", K_loss[i][i][j])
+                print("\nm_l * K_gain[k_l][i][j]   =", m_l * K_gain[k_l][i][j])
+                print("m_h * K_gain[k_h][i][j]   =", m_h * K_gain[k_h][i][j])
+                print("(m_i + m_j) * K_loss[i][i][j]   =", (m_i+m_j) * K_loss[i][i][j])
 
     return K_gain, K_loss
 

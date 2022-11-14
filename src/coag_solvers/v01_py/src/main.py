@@ -17,11 +17,10 @@ def run_solver(cfg, K_gain, K_loss, x, n0):
         # Load current mass-distribution.
         n_old = ns[t]
 
-        # Calulcate new mass-distribution.
+        # Calulcate new mass-distribution & append to state vector.
         n_new = state_forwarding.forward_state(K_gain, K_loss, x, n_old)
-
-        # Append to vector.
         ns.append(n_new)
+
     return ns
 
 
@@ -31,7 +30,7 @@ def main():
     # Load solver configuration from TOML file.
     cfg = Config()
 
-    # Define coagulation kernel & initialize disk's mass distribution.
+    # Define coagulation kernel & initialize disk mass distribution.
     # ─────────────────────────────────────────────────────────────────────────
 
     # Define coagulation kernel (gain & loss terms, separately).
@@ -61,27 +60,20 @@ def main():
     # ─────────────────────────────────────────────────────────────────────────
 
     if cfg.run_solver:
-
-        # Compute time-evolution of mass distribution .
-        # Also, record execution duration.
+        # Compute evolution of mass distribution & record execution duration.
         ns, timing_info = utils.record_execution_time(
             run_solver, *[cfg, K_gain, K_loss, x, n0]
         )
 
-        # Create info file:
-        # This file contains
-        # - start- & end-datetime, as well as 
-        # - execution duration.
+        # Create file containing information about this run.
         utils.file_io.save_run_info_to_file(cfg, run_id, timing_info)
 
         # Save mass distributions to file.
         utils.file_io.save_simulation_data(cfg, run_id, x, ns)
 
-    # Save to file.
-    # ─────────────────────────────────────────────────────────────────────────
-
     # Save kernel(s) to file.
     utils.file_io.save_coagulation_kernel(cfg, run_id, K_gain, K_loss)
+
 
 if __name__ == "__main__":
     main()

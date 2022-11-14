@@ -3,10 +3,6 @@ from numba import jit
 
 from utils.mass_index_conversion import mass_from_index, index_from_mass
 
-# TODO Make sure that k_h <= GRID_RES at all times.
-#      Where? -> At definition `k_h = k_l + 1`.
-#             -> Prevent index-out-of-bounds error!
-
 
 @jit(nopython=True)
 def K(
@@ -27,15 +23,20 @@ def K(
 
             # Determine index of bins adjacent to combined mass.
             k_l = index_from_mass(m, mass_grid_exp_min, mass_grid_stepsize)
-            k_h = k_l + 1
+            k_h = k_l + 1  # TODO handle cases where `k_h == mass_grid_resolution`
 
             # Get mass corresponding to these indices.
             m_l = mass_from_index(k_l, mass_grid_exp_min, mass_grid_stepsize)
             m_h = mass_from_index(k_h, mass_grid_exp_min, mass_grid_stepsize)
 
             # Calculate loss term (gain term can then be calculated from this).
-            K_l = 1
-            # K_l = K_ij_loss(i, j, coagulation_kernel_variant) TODO
+            K_l = K_ij_loss(
+                i,
+                j,
+                mass_grid_exp_min,
+                mass_grid_stepsize,
+                coagulation_kernel_variant,
+            )
 
             # Use linear ansatz to split kernel between adjacent next-lower/-higher bins.
             eps = (m_i + m_j - m_l) / (m_h - m_l)
@@ -78,19 +79,28 @@ def K(
     return K_gain, K_loss
 
 
-# @jit(nopython=True)
-# def K_ij_loss(i, j, coagulation_kernel_variant):
-#     # TODO Handle other variants.
+@jit(nopython=True)
+def K_ij_loss(
+    i,
+    j,
+    mass_grid_exp_min,
+    mass_grid_stepsize,
+    coagulation_kernel_variant,
+):
+    if coagulation_kernel_variant == "constant":
+        K_kij = 1
 
-#     if coagulation_kernel_variant == "constant":
-#         K_kij = 1
-#     # elif coagulation_kernel_variant == "linear":
-#     #     m_i = mass_from_index(i, mass_grid_exp_min, mass_grid_stepsize)
-#     #     m_j = mass_from_index(j, mass_grid_exp_min, mass_grid_stepsize)
-#     #     K_kij = m_i + m_j
-#     # elif coagulation_kernel_variant == "quadratic":
-#     #     K_kij = mass_from_index(i) * mass_from_index(j)
-#     else:
-#         raise Exception(
-#             f"ERROR: Kernel variant \"{coagulation_kernel_variant}\" is not defined.")
-#     return K_kij
+    elif coagulation_kernel_variant == "linear":
+        m_i = mass_from_index(i, mass_grid_exp_min, mass_grid_stepsize)
+        m_j = mass_from_index(j, mass_grid_exp_min, mass_grid_stepsize)
+        K_kij = m_i + m_j
+
+    elif coagulation_kernel_variant == "quadratic":
+        m_i = mass_from_index(i, mass_grid_exp_min, mass_grid_stepsize)
+        m_j = mass_from_index(j, mass_grid_exp_min, mass_grid_stepsize)
+        K_kij = m_i * m_j
+
+    else:
+        raise Exception("Kernel variant is undefined.")
+
+    return K_kij

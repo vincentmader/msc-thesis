@@ -13,7 +13,7 @@
 
 #       Specify whether solver should be run.
 #       NOTE: Initialization will always take place.
-        run_solver = true
+        run_solver = false
      
     [plotting]
 #       Specify which plots should be created.
@@ -23,7 +23,7 @@
 #       - "coagulation kernel"
 #       - "mass-index conversion"
         plots_to_create = [
-            "mass-index conversion",
+            # "mass-index conversion",
             "mass distribution", 
             "mass error", 
             "coagulation kernel"
@@ -39,7 +39,7 @@
           # "mass-index conversion",
           # "mass distribution", 
           # "mass error", 
-          # "coagulation kernel"
+          "coagulation kernel"
         ]  
 
 #       Specify which simulation runs should be plotted.

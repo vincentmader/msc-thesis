@@ -19,7 +19,7 @@
 #       - "coagulation kernel"
 #       - "mass-index conversion"
         plots_to_create = [
-            "mass-index conversion",
+            # "mass-index conversion",
             "mass distribution", 
             "mass error", 
             "coagulation kernel"

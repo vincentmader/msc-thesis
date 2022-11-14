@@ -3,7 +3,6 @@ from numba import jit
 
 from config import GRID_RESOLUTION as GRID_RES
 from config import COAGULATION_KERNEL_VARIANT
-from config import HANDLE_NEAR_ZERO_CANCELLATION
 from utils.mass_index_conversion import mass_from_index, index_from_mass
 
 # TODO Make sure that k_h <= GRID_RES at all times.
@@ -37,27 +36,40 @@ def K():
             # Use linear ansatz to split kernel between adjacent next-lower/-higher bins.
             eps = (m_i + m_j - m_l) / (m_h - m_l)
 
-            if k_l == max(i, j):
-                might_near_zero_cancel = True
-            elif k_l > max(i, j):
-                might_near_zero_cancel = False
-            else:
-                raise Exception("ERROR: This should never happen.")
+            # Add gain-term to adjacent "next-lower" bin.
+            K_gain[k_l][i][j] += K_l * (1-eps)
+            # Add gain-term to adjacent "next-higher" bin.
+            K_gain[k_h][i][j] += K_l * eps
+            # Add loss term.
+            K_loss[i][i][j] -= K_l
 
-            if HANDLE_NEAR_ZERO_CANCELLATION and might_near_zero_cancel:
-                # Add gain-term to adjacent "next-lower" bin.
-                # K_gain[k_l][i][j] -= K_l * eps
-                # Add gain-term to adjacent "next-higher" bin.
-                # K_gain[k_h][i][j] += K_l * (1-eps)
-                # K_loss[k_l][i][j] -= K_l * eps
-                raise Exception("TODO: Implement near-zero-cancellation handling")
-            else:
-                # Add gain-term to adjacent "next-lower" bin.
-                K_gain[k_l][i][j] += K_l * (1-eps)
-                # Add gain-term to adjacent "next-higher" bin.
-                K_gain[k_h][i][j] += K_l * eps
-                # Add loss term.
-                K_loss[i][i][j] -= K_l
+    # i = 0
+    # j = 1
+    # m_i = mass_from_index(i)
+    # m_j = mass_from_index(j)
+    # print("m_i =", m_i)
+    # print("m_j =", m_j)
+
+    # m = m_i + m_j
+    # k_l = index_from_mass(m)
+    # k_h = k_l + 1
+    # print("k_l =", k_l)
+    # print("k_h =", k_h)
+
+    # m_l = mass_from_index(k_l)
+    # m_h = mass_from_index(k_h)
+
+    # eps = (m_i + m_j - m_l) / (m_h - m_l)
+    # print("eps =", eps)
+
+    # a = m_i * K_gain[k_l][i][j] + m_j * K_gain[k_h][i][j]
+    # b = (m_i + m_j) *  K_loss[i][i][j]
+    # if a != b:
+    #     print()
+    #     print(a)
+    #     print(b)
+    #     if b == -2*a:
+    #         print("1/2")
 
     return K_gain, K_loss
 

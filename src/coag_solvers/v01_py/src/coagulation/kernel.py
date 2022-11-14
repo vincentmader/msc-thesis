@@ -11,7 +11,7 @@ def K(
     mass_grid_stepsize,
     coagulation_kernel_variant,
 ):
-    K_gain = np.zeros((mass_grid_resolution, mass_grid_resolution, mass_grid_resolution)) 
+    K_gain = np.zeros((mass_grid_resolution, mass_grid_resolution, mass_grid_resolution))
     K_loss = np.zeros((mass_grid_resolution, mass_grid_resolution, mass_grid_resolution))
 
     for i in range(mass_grid_resolution):
@@ -47,34 +47,6 @@ def K(
             K_gain[k_h][i][j] += K_l * eps
             # Add loss term.
             K_loss[i][i][j] -= K_l
-
-    # i = 0
-    # j = 1
-    # m_i = mass_from_index(i)
-    # m_j = mass_from_index(j)
-    # print("m_i =", m_i)
-    # print("m_j =", m_j)
-
-    # m = m_i + m_j
-    # k_l = index_from_mass(m)
-    # k_h = k_l + 1
-    # print("k_l =", k_l)
-    # print("k_h =", k_h)
-
-    # m_l = mass_from_index(k_l)
-    # m_h = mass_from_index(k_h)
-
-    # eps = (m_i + m_j - m_l) / (m_h - m_l)
-    # print("eps =", eps)
-
-    # a = m_i * K_gain[k_l][i][j] + m_j * K_gain[k_h][i][j]
-    # b = (m_i + m_j) *  K_loss[i][i][j]
-    # if a != b:
-    #     print()
-    #     print(a)
-    #     print(b)
-    #     if b == -2*a:
-    #         print("1/2")
 
     return K_gain, K_loss
 

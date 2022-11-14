@@ -2,90 +2,115 @@ from numpy import float64 as f64
 import toml
 
 
-CONFIG = toml.load("./config.toml")
+class Config:
+    def __init__(self):
+        cfg = toml.load("./config.toml")
 
-# ╭───────────────────────────────────────────────────────────────────────────╮
-# │ Solver                                                                    │
-# ╰───────────────────────────────────────────────────────────────────────────╯
+        # ╭───────────────────────────────────────────────────────────────────╮
+        # │ Solver                                                            │
+        # ╰───────────────────────────────────────────────────────────────────╯
 
-# Define variant of solver.
-# Trivial: -> Python (v01)
+        # Specify whether solver should be run.
+        # NOTE: Initialization will always take place.
+        run_solver = cfg["solver"]["run_solver"]
 
-# Define maximum length for run-id. (e.g. 8 -> max. 10^8 runs)
-MAX_RUN_ID_LENGTH = CONFIG["solver"]["max_run_id_length"]
+        # Define maximum length for run-id. (e.g. 8 -> max. 10^8 runs)
+        max_run_id_length = cfg["solver"]["max_run_id_length"]
 
-# ╭───────────────────────────────────────────────────────────────────────────╮
-# │ Mass Grid                                                                 │
-# ╰───────────────────────────────────────────────────────────────────────────╯
+        # ╭───────────────────────────────────────────────────────────────────╮
+        # │ Mass Grid                                                         │
+        # ╰───────────────────────────────────────────────────────────────────╯
 
-# Define number of points in mass-grid.
-GRID_RESOLUTION = CONFIG["mass_grid"]["mass_grid_resolution"]
+        # Define number of points in mass-grid.
+        mass_grid_resolution = cfg["mass_grid"]["mass_grid_resolution"]
 
-# Define minimum & maximum exponent of logarithmic mass-grid.
-GRID_EXP_MIN = f64(CONFIG["mass_grid"]["mass_grid_exp_min"])
-GRID_EXP_MAX = f64(CONFIG["mass_grid"]["mass_grid_exp_max"])
+        # Define minimum & maximum exponent of logarithmic mass-grid.
+        mass_grid_exp_min = f64(cfg["mass_grid"]["mass_grid_exp_min"])
+        mass_grid_exp_max = f64(cfg["mass_grid"]["mass_grid_exp_max"])
 
-# Define (multiplicative) step-size from one mass-grid-point to the next.
-GRID_STEPSIZE = (10**(GRID_EXP_MAX-GRID_EXP_MIN))**(1/GRID_RESOLUTION)
+        # Define (multiplicative) step-size from one mass-grid-point to the next.
+        range_of_scales = 10**(mass_grid_exp_max - mass_grid_exp_min)
+        mass_grid_stepsize = range_of_scales**(1 / mass_grid_resolution)
 
-# ╭───────────────────────────────────────────────────────────────────────────╮
-# │ Kernel                                                                    │
-# ╰───────────────────────────────────────────────────────────────────────────╯
+        # ╭───────────────────────────────────────────────────────────────────╮
+        # │ Coagulation Kernel                                                │
+        # ╰───────────────────────────────────────────────────────────────────╯
 
-# Define variant of coagulation kernel.
-COAGULATION_KERNEL_VARIANT = CONFIG["coagulation_kernel"]["variant"]
+        # Define variant of coagulation kernel.
+        coagulation_kernel_variant = cfg["coagulation_kernel"]["variant"]
 
-# ╭───────────────────────────────────────────────────────────────────────────╮
-# │ Initialization                                                            │
-# ╰───────────────────────────────────────────────────────────────────────────╯
+        # ╭───────────────────────────────────────────────────────────────────╮
+        # │ Initialization                                                    │
+        # ╰───────────────────────────────────────────────────────────────────╯
 
-# Define the initial state.
-INITIAL_STATE = CONFIG["initialization"]["initial_mass_distribution"]
+        # Define the initial state.
+        initial_mass_distribution = cfg["initialization"]["initial_mass_distribution"]
 
-# ╭───────────────────────────────────────────────────────────────────────────╮
-# │ Simulation                                                                │
-# ╰───────────────────────────────────────────────────────────────────────────╯
+        # ╭───────────────────────────────────────────────────────────────────╮
+        # │ Simulation                                                        │
+        # ╰───────────────────────────────────────────────────────────────────╯
 
-# Define Discretization of Time-Axis (Abscissa).
-NR_OF_TIMESTEPS = CONFIG["simulation"]["nr_of_timesteps"]
+        # Define Discretization of Time-Axis (Abscissa).
+        nr_of_timesteps = cfg["simulation"]["nr_of_timesteps"]
 
-# Determine whether near-zero-cancellation should be handled.
-HANDLE_NEAR_ZERO_CANCELLATION = CONFIG["simulation"]["handle_near_zero_cancellation"]
+        # Determine whether near-zero-cancellation should be handled.
+        handle_near_zero_cancellation = cfg["simulation"]["handle_near_zero_cancellation"]
 
-# ╭───────────────────────────────────────────────────────────────────────────╮
-# │ File-IO                                                                   │
-# ╰───────────────────────────────────────────────────────────────────────────╯
+        # ╭───────────────────────────────────────────────────────────────────╮
+        # │ File-IO                                                           │
+        # ╰───────────────────────────────────────────────────────────────────╯
 
-# Define path to configuration TOML file.
-PATH_TO_CONFIG = CONFIG["file_io"]["path_to_config"]
+        # Define path to configuration TOML file.
+        path_to_config = cfg["file_io"]["path_to_config"]
 
-# Define path to directory where figures shall be saved.
-PATH_TO_OUTFILES = CONFIG["file_io"]["path_to_outfiles"]
+        # Define path to directory where figures shall be saved.
+        path_to_outfiles = cfg["file_io"]["path_to_outfiles"]
 
-# ╭───────────────────────────────────────────────────────────────────────────╮
-# │ Plotting                                                                  │
-# ╰───────────────────────────────────────────────────────────────────────────╯
+        # ╭───────────────────────────────────────────────────────────────────╮
+        # │ Plotting                                                          │
+        # ╰───────────────────────────────────────────────────────────────────╯
 
-# Define default dimensions of pyplot figures.
-FIG_SIZE = CONFIG["plotting"]["fig_size"]
+        # Define default dimensions for pyplot figures.
+        default_fig_size = cfg["plotting"]["default_fig_size"]
 
-# Define number of simulation-steps between each plot.
-STEPS_BETWEEN_PLOT = CONFIG["plotting"]["steps_between_plot"]
+        # Define number of simulation-steps between each plot.
+        steps_between_plot = cfg["plotting"]["steps_between_plot"]
 
-# Define theme for pyplot.
-MPL_THEME = CONFIG["plotting"]["theme"]
-if MPL_THEME == "dark":
-    MPL_THEME = "~/.config/matplotlib/dark.mplstyle"
-elif MPL_THEME == "light":
-    MPL_THEME = None
-else:
-    MPL_THEME = None
+        # Define theme for pyplot.
+        mpl_theme = cfg["plotting"]["theme"]
+        if mpl_theme == "dark":
+            mpl_theme = "~/.config/matplotlib/dark.mplstyle"
+        elif mpl_theme == "light":
+            mpl_theme = None
+        else:
+            mpl_theme = None
 
-# Define which simulations plots should be created for.
-RUNS_TO_PLOT = CONFIG["plotting"]["runs_to_plot"]
+        # Define which simulations plots should be created for.
+        runs_to_plot = cfg["plotting"]["runs_to_plot"]
 
-# Define which plots should be created.
-PLOTS_TO_CREATE = CONFIG["plotting"]["plots_to_create"]
+        # Define which plots should be created.
+        plots_to_create = cfg["plotting"]["plots_to_create"]
 
-# Define which plots should be shown immediately.
-PLOTS_TO_SHOW = CONFIG["plotting"]["plots_to_show"]
+        # Define which plots should be shown immediately.
+        plots_to_show = cfg["plotting"]["plots_to_show"]
+
+        # ─────────────────────────────────────────────────────────────────────
+
+        self.run_solver = run_solver
+        self.max_run_id_length = max_run_id_length
+        self.mass_grid_resolution = mass_grid_resolution
+        self.mass_grid_exp_min = mass_grid_exp_min
+        self.mass_grid_exp_max = mass_grid_exp_max
+        self.mass_grid_stepsize = mass_grid_stepsize
+        self.coagulation_kernel_variant = coagulation_kernel_variant
+        self.initial_mass_distribution = initial_mass_distribution
+        self.nr_of_timesteps = nr_of_timesteps
+        self.handle_near_zero_cancellation = handle_near_zero_cancellation
+        self.path_to_config = path_to_config
+        self.path_to_outfiles = path_to_outfiles
+        self.default_fig_size = default_fig_size
+        self.steps_between_plot = steps_between_plot
+        self.mpl_theme = mpl_theme
+        self.runs_to_plot = runs_to_plot
+        self.plots_to_create = plots_to_create
+        self.plots_to_show = plots_to_show

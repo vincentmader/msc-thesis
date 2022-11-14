@@ -2,17 +2,16 @@ import os
 
 import matplotlib.pyplot as plt
 
-from config import NR_OF_TIMESTEPS, PATH_TO_OUTFILES, PLOTS_TO_SHOW
 import utils
 
 
-def plot_error_vs_time(run_id, save_plot=True):
+def plot_error_vs_time(cfg, run_id, save_plot=True):
     print("\t\tPlotting error vs. time...")
 
     # Load simulation-data from save-file into string.
-    m, Ns = utils.file_io.load_simulation_data(run_id)
+    m, Ns = utils.file_io.load_simulation_data(cfg, run_id)
     # Define time-axis.
-    t = range(NR_OF_TIMESTEPS)
+    t = range(cfg.nr_of_timesteps)
 
     # Calculate total mass in the disk at various times.
     M = [utils.calc_total_mass(m, Ns[t]) for t in t]
@@ -30,10 +29,10 @@ def plot_error_vs_time(run_id, save_plot=True):
 
     # Save plot to file.
     if save_plot:
-        save_plot_to_file(run_id)
+        save_plot_to_file(cfg, run_id)
 
     # Decide whether to show the plot.
-    show_plot = "mass error" in PLOTS_TO_SHOW
+    show_plot = "mass error" in cfg.plots_to_show
     # Show plot (optional).
     if show_plot is True:
         plt.show()
@@ -42,7 +41,7 @@ def plot_error_vs_time(run_id, save_plot=True):
     plt.close()
 
 
-def save_plot_to_file(run_id):
+def save_plot_to_file(cfg, run_id):
     filename = "total-disk-mass relative-error.png"
-    path_to_savefile = os.path.join(PATH_TO_OUTFILES, "runs", run_id, "figures", filename)
+    path_to_savefile = os.path.join(cfg.path_to_outfiles, "runs", run_id, "figures", filename)
     plt.savefig(path_to_savefile)

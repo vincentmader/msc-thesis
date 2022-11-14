@@ -1,8 +1,6 @@
 import numpy as np
 from numba import jit
 
-from config import GRID_RESOLUTION as GRID_RES
-from config import COAGULATION_KERNEL_VARIANT
 from utils.mass_index_conversion import mass_from_index, index_from_mass
 
 # TODO Make sure that k_h <= GRID_RES at all times.
@@ -11,27 +9,33 @@ from utils.mass_index_conversion import mass_from_index, index_from_mass
 
 
 @jit(nopython=True)
-def K():
-    K_gain = np.zeros((GRID_RES, GRID_RES, GRID_RES))
-    K_loss = np.zeros((GRID_RES, GRID_RES, GRID_RES))
+def K(
+    mass_grid_resolution,
+    mass_grid_exp_min,
+    mass_grid_stepsize,
+    coagulation_kernel_variant,
+):
+    K_gain = np.zeros((mass_grid_resolution, mass_grid_resolution, mass_grid_resolution)) 
+    K_loss = np.zeros((mass_grid_resolution, mass_grid_resolution, mass_grid_resolution))
 
-    for i in range(GRID_RES):
-        for j in range(GRID_RES):
+    for i in range(mass_grid_resolution):
+        for j in range(mass_grid_resolution):
             # Determine masses before & after hit-and-stick collision.
-            m_i = mass_from_index(i)
-            m_j = mass_from_index(j)
+            m_i = mass_from_index(i, mass_grid_exp_min, mass_grid_stepsize)
+            m_j = mass_from_index(j, mass_grid_exp_min, mass_grid_stepsize)
             m = m_i + m_j
 
             # Determine index of bins adjacent to combined mass.
-            k_l = index_from_mass(m)
+            k_l = index_from_mass(m, mass_grid_exp_min, mass_grid_stepsize)
             k_h = k_l + 1
 
             # Get mass corresponding to these indices.
-            m_l = mass_from_index(k_l)
-            m_h = mass_from_index(k_h)
+            m_l = mass_from_index(k_l, mass_grid_exp_min, mass_grid_stepsize)
+            m_h = mass_from_index(k_h, mass_grid_exp_min, mass_grid_stepsize)
 
             # Calculate loss term (gain term can then be calculated from this).
-            K_l = K_ij_loss(i, j)
+            K_l = 1
+            # K_l = K_ij_loss(i, j, coagulation_kernel_variant) TODO
 
             # Use linear ansatz to split kernel between adjacent next-lower/-higher bins.
             eps = (m_i + m_j - m_l) / (m_h - m_l)
@@ -74,15 +78,19 @@ def K():
     return K_gain, K_loss
 
 
-@jit(nopython=True)
-def K_ij_loss(i, j):
-    if COAGULATION_KERNEL_VARIANT == "constant":
-        K_kij = 1
-    elif COAGULATION_KERNEL_VARIANT == "linear":
-        K_kij = mass_from_index(i) + mass_from_index(j)
-    elif COAGULATION_KERNEL_VARIANT == "quadratic":
-        K_kij = mass_from_index(i) * mass_from_index(j)
-    else:
-        raise Exception(
-            f"ERROR: Kernel variant \"{COAGULATION_KERNEL_VARIANT}\" is not defined.")
-    return K_kij
+# @jit(nopython=True)
+# def K_ij_loss(i, j, coagulation_kernel_variant):
+#     # TODO Handle other variants.
+
+#     if coagulation_kernel_variant == "constant":
+#         K_kij = 1
+#     # elif coagulation_kernel_variant == "linear":
+#     #     m_i = mass_from_index(i, mass_grid_exp_min, mass_grid_stepsize)
+#     #     m_j = mass_from_index(j, mass_grid_exp_min, mass_grid_stepsize)
+#     #     K_kij = m_i + m_j
+#     # elif coagulation_kernel_variant == "quadratic":
+#     #     K_kij = mass_from_index(i) * mass_from_index(j)
+#     else:
+#         raise Exception(
+#             f"ERROR: Kernel variant \"{coagulation_kernel_variant}\" is not defined.")
+#     return K_kij

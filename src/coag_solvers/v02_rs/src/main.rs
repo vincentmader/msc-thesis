@@ -36,7 +36,6 @@ impl DiskState {
             InitialMassDistribution::Gaussian => {
                 elementary_functions::gaussian(&mass_grid, mu, sigma)
             }
-            _ => todo!(),
         };
 
         // Return disk state.
@@ -71,7 +70,7 @@ fn run_solver(cfg: &Config, initial_disk_state: DiskState) {
 fn main() {
     println!("Running solver v02_rs...");
 
-    // Load configuration TOML file.
+    // Load solver configuration from TOML file.
     let cfg = Config::new();
 
     // Define coagulation kernel & initial state of disk's mass distribution.
@@ -88,7 +87,9 @@ fn main() {
 
     // Compute time-evolution of mass distribution
     // (& TODO record execution time).
-    run_solver(&cfg, initial_disk_state);
+    if cfg.run_solver {
+        run_solver(&cfg, initial_disk_state);
+    }
 
     // Save to file.
     // ────────────────────────────────────────────────────────────────────────

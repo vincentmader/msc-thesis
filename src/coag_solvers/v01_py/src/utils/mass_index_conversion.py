@@ -1,16 +1,13 @@
 import numpy as np
 from numba import jit
 
-from config import GRID_EXP_MIN
-from config import GRID_STEPSIZE
+
+@jit(nopython=True)
+def mass_from_index(idx, mass_grid_exp_min, mass_grid_stepsize):
+    return (10**mass_grid_exp_min) * (mass_grid_stepsize**idx)
 
 
 @jit(nopython=True)
-def mass_from_index(idx):
-    return (10**GRID_EXP_MIN) * (GRID_STEPSIZE**idx)
-
-
-@jit(nopython=True)
-def index_from_mass(mass):
-    res = (np.log(mass) - GRID_EXP_MIN*np.log(10)) / (np.log(GRID_STEPSIZE))
+def index_from_mass(mass, mass_grid_exp_min, mass_grid_stepsize):
+    res = (np.log(mass) - mass_grid_exp_min*np.log(10)) / (np.log(mass_grid_stepsize))
     return int(res)

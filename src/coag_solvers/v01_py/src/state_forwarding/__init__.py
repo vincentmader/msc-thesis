@@ -1,7 +1,6 @@
 import numpy as np
 from numba import jit
 
-from config import GRID_RESOLUTION as GRID_RES
 from utils.elementary_functions import kronecker_delta
 from utils.mass_index_conversion import mass_from_index, index_from_mass
 
@@ -10,13 +9,15 @@ from utils.mass_index_conversion import mass_from_index, index_from_mass
 def dn_k(K_gain, K_loss, n, k):
     res = 0
 
-    i_max = GRID_RES  # i_max = index_from_mass(mass_from_index(k) / 2)
+    mass_grid_resolution = K_gain.shape[0]
+
+    i_max = mass_grid_resolution  # i_max = index_from_mass(mass_from_index(k) / 2)
     for i in range(i_max):
-        for j in range(GRID_RES):
+        for j in range(mass_grid_resolution):
             res += 1/2 * K_gain[k][i][j] * n[i] * n[j]
 
-    for i in range(GRID_RES):
-        for j in range(GRID_RES):
+    for i in range(mass_grid_resolution):
+        for j in range(mass_grid_resolution):
             res += K_loss[k][i][j] * n[i] * n[j] * kronecker_delta(i, k)
 
     return res

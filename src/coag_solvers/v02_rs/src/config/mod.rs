@@ -7,6 +7,7 @@ use initial_mass_distribution::InitialMassDistribution;
 
 #[derive(Debug)]
 pub struct Config {
+    pub run_solver: bool,
     pub max_run_id_length: usize,
     pub mass_grid_resolution: usize,
     pub mass_grid_exp_min: f64,
@@ -24,9 +25,23 @@ impl Config {
     pub fn new() -> Self {
         let cfg = utils::load_config();
 
+        // ╭──────────────────────────────────────────────────────────────────╮
+        // │ Solver                                                           │
+        // ╰──────────────────────────────────────────────────────────────────╯
+
+        // Specify whether solver should be run.
+        // NOTE: Initialization will always take place.
+        let run_solver = &cfg["solver"]["run_solver"];
+        let run_solver = run_solver.as_bool().unwrap();
+
         // Define maximum length for run-id string. (e.g. 8 -> max. 10^8 runs)
         let max_run_id_length = &cfg["solver"]["max_run_id_length"];
-        let max_run_id_length = max_run_id_length.as_integer().unwrap() as usize;
+        let max_run_id_length = max_run_id_length.as_integer().unwrap();
+        let max_run_id_length = max_run_id_length as usize;
+
+        // ╭──────────────────────────────────────────────────────────────────╮
+        // │ Mass Grid                                                        │
+        // ╰──────────────────────────────────────────────────────────────────╯
 
         // Specify minimum mass exponent.
         let mass_grid_exp_min = &cfg["mass_grid"]["mass_grid_exp_min"];
@@ -46,15 +61,27 @@ impl Config {
         let mass_grid_stepsize = 10_f64.powf(mass_grid_exp_max - mass_grid_exp_min);
         let mass_grid_stepsize = mass_grid_stepsize.powf(1. / mass_grid_resolution as f64);
 
+        // ╭──────────────────────────────────────────────────────────────────╮
+        // │ Coagulation Kernel                                               │
+        // ╰──────────────────────────────────────────────────────────────────╯
+
         // Define coagulation kernel variant.
         let coagulation_kernel_variant = &cfg["coagulation_kernel"]["variant"];
         let coagulation_kernel_variant = coagulation_kernel_variant.as_str().unwrap();
         let coagulation_kernel_variant = CoagulationKernelVariant::from(coagulation_kernel_variant);
 
+        // ╭──────────────────────────────────────────────────────────────────╮
+        // │ Initialization                                                   │
+        // ╰──────────────────────────────────────────────────────────────────╯
+
         // Define shape of initial mass distribution.
         let initial_mass_distribution = &cfg["initialization"]["initial_mass_distribution"];
         let initial_mass_distribution = initial_mass_distribution.as_str().unwrap();
         let initial_mass_distribution = InitialMassDistribution::from(initial_mass_distribution);
+
+        // ╭──────────────────────────────────────────────────────────────────╮
+        // │ Simulation                                                       │
+        // ╰──────────────────────────────────────────────────────────────────╯
 
         // Specify nr. of time-steps.
         let nr_of_timesteps = &cfg["simulation"]["nr_of_timesteps"];
@@ -63,6 +90,10 @@ impl Config {
         // Determine whether near-zero-cancellation should be handled.
         let handle_near_zero_cancellation = &cfg["simulation"]["handle_near_zero_cancellation"];
         let handle_near_zero_cancellation = handle_near_zero_cancellation.as_bool().unwrap();
+
+        // ╭──────────────────────────────────────────────────────────────────╮
+        // │ File-IO                                                          │
+        // ╰──────────────────────────────────────────────────────────────────╯
 
         // Define path to configuration TOML file.
         let path_to_config = &cfg["file_io"]["path_to_config"];
@@ -76,7 +107,10 @@ impl Config {
         let path_to_outfiles = std::path::Path::new(path_to_outfiles).to_owned();
         let path_to_outfiles = Box::new(path_to_outfiles);
 
+        // ────────────────────────────────────────────────────────────────────
+
         Config {
+            run_solver,
             max_run_id_length,
             mass_grid_resolution,
             mass_grid_exp_min,

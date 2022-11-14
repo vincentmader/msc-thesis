@@ -2,18 +2,18 @@ from tqdm import tqdm
 from termcolor import colored
 
 import coagulation
-from config import NR_OF_TIMESTEPS
+from config import Config
 import state_initialization
 import state_forwarding
 import utils
 
 
-def run_solver(K_gain, K_loss, x, n0):
+def run_solver(cfg, K_gain, K_loss, x, n0):
     # Define vector holding mass-distributions for each time-step.
     ns = [n0]
 
     # Start forward-loop.
-    for t in tqdm(range(NR_OF_TIMESTEPS)):
+    for t in tqdm(range(cfg.nr_of_timesteps)):
         # Load current mass-distribution.
         n_old = ns[t]
 
@@ -28,43 +28,60 @@ def run_solver(K_gain, K_loss, x, n0):
 def main():
     print(colored("\nRunning solver v01_py...", "yellow"))
 
-    # Define coagulation kernel & initial state of disk's mass distribution.
+    # Load solver configuration from TOML file.
+    cfg = Config()
+
+    # Define coagulation kernel & initialize disk's mass distribution.
     # ─────────────────────────────────────────────────────────────────────────
 
     # Define coagulation kernel (gain & loss terms, separately).
-    K_gain, K_loss = coagulation.kernel.K()
+    K_gain, K_loss = coagulation.kernel.K(
+        cfg.mass_grid_resolution,
+        cfg.mass_grid_exp_min,
+        cfg.mass_grid_stepsize,
+        cfg.coagulation_kernel_variant
+    )
 
     # Define initial state.
-    x, n0 = state_initialization.initial_state()
+    x, n0 = state_initialization.initial_state(cfg)
+
+    # Setup file/directory structure.
+    # ─────────────────────────────────────────────────────────────────────────
+
+    # Define this simulation's run-ID.
+    run_id = utils.file_io.get_run_id(cfg)
+
+    # Make sure save-directory exists.
+    utils.file_io.setup_savedir(cfg, run_id)
+
+    # Copy over configuration file (for reference later on).
+    utils.file_io.save_config(cfg, run_id)
 
     # Run coagulation solver
     # ─────────────────────────────────────────────────────────────────────────
 
-    # Compute time-evolution of mass distribution (& record execution time).
-    ns, timing_info = utils.record_execution_time(
-        run_solver, *[K_gain, K_loss, x, n0]
-    )
+    if cfg.run_solver:
+
+        # Compute time-evolution of mass distribution .
+        # Also, record execution duration.
+        ns, timing_info = utils.record_execution_time(
+            run_solver, *[cfg, K_gain, K_loss, x, n0]
+        )
+
+        # Create info file:
+        # This file contains
+        # - start- & end-datetime, as well as 
+        # - execution duration.
+        utils.file_io.save_run_info_to_file(cfg, run_id, timing_info)
+
+        # Save mass distributions to file.
+        utils.file_io.save_simulation_data(cfg, run_id, x, ns)
 
     # Save to file.
     # ─────────────────────────────────────────────────────────────────────────
 
-    # Define this simulation's run-ID.
-    run_id = utils.file_io.get_run_id()
-
-    # Make sure save-directory exists.
-    utils.file_io.setup_savedir(run_id)
-
-    # Copy over configuration file (for reference later on).
-    utils.file_io.save_config(run_id)
-
-    # Create info file (containing start- & end-datetime, as well as execution duration).
-    utils.file_io.save_run_info_to_file(run_id, timing_info)
-
-    # Save mass distributions to file.
-    utils.file_io.save_simulation_data(run_id, x, ns)
-
     # Save kernel(s) to file.
-    utils.file_io.save_coagulation_kernel(run_id, K_gain, K_loss)
+    utils.file_io.save_coagulation_kernel(cfg, run_id, K_gain, K_loss)
 
 if __name__ == "__main__":
     main()

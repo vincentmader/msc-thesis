@@ -3,22 +3,23 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
-from config import FIG_SIZE
-from config import PLOTS_TO_SHOW
-from config import PATH_TO_OUTFILES
-from config import GRID_RESOLUTION as GRID_RES
-from config import GRID_EXP_MIN
-from config import GRID_EXP_MAX
 from utils.mass_index_conversion import index_from_mass
 
 
-def plot_mass_to_index_conversion():
+def plot_mass_to_index_conversion(cfg):
     print("\tPlotting mass-to-index conversion...")
 
-    masses = np.logspace(GRID_EXP_MIN, GRID_EXP_MAX, GRID_RES)
-    indices = np.array([index_from_mass(m) for m in masses])
+    mass_grid_exp_min = cfg.mass_grid_exp_min
+    mass_grid_exp_max = cfg.mass_grid_exp_max
+    mass_grid_resolution = cfg.mass_grid_resolution
+    mass_grid_stepsize = cfg.mass_grid_stepsize
 
-    plt.figure(figsize=FIG_SIZE)
+    masses = np.logspace(mass_grid_exp_min, mass_grid_exp_max, mass_grid_resolution)
+    indices = np.array([
+        index_from_mass(m, mass_grid_exp_min, mass_grid_stepsize) for m in masses
+    ])
+
+    plt.figure(figsize=cfg.default_fig_size)
     plt.plot(masses, indices)
     plt.scatter(masses, indices, s=10)
     plt.title("Conversion from mass $m_i$ to index $i$")
@@ -26,9 +27,9 @@ def plot_mass_to_index_conversion():
     plt.ylabel("index $i$")
 
     filename = "mass-to-index conversion.png"
-    path_to_savefile = os.path.join(PATH_TO_OUTFILES, filename)
+    path_to_savefile = os.path.join(cfg.path_to_outfiles, filename)
     plt.savefig(path_to_savefile)
 
-    if "mass-index conversion" in PLOTS_TO_SHOW:
+    if "mass-index conversion" in cfg.plots_to_show:
         plt.show()
     plt.close()

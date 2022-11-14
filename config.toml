@@ -2,14 +2,18 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
     [solver]
-#       Define version of solver.
+#       Define development version of Smoluchowski coagulation solver.
 #       Possible values:
-#       - "v01" -> Python solver
-#       - "v02" -> Rust solver (might be implemented later)
+#       - "v01" -> Python solver (currently in active development)
+#       - "v02" ->   Rust solver (might be implemented later)
         version = "v01"
 
-#       Define maximum length for run-id string. (e.g. 8 -> max. 10^8 runs)
+#       Define maximum length of run-id string. (e.g. 8 -> max. 10^8 runs)
         max_run_id_length = 8
+
+#       Specify whether solver should be run.
+#       NOTE: Initialization will always take place.
+        run_solver = true
      
     [plotting]
 #       Specify which plots should be created.
@@ -19,7 +23,7 @@
 #       - "coagulation kernel"
 #       - "mass-index conversion"
         plots_to_create = [
-            # "mass-index conversion",
+            "mass-index conversion",
             "mass distribution", 
             "mass error", 
             "coagulation kernel"
@@ -33,7 +37,7 @@
 #       - "mass-index conversion"
         plots_to_show = [
           # "mass-index conversion",
-            "mass distribution", 
+          # "mass distribution", 
           # "mass error", 
           # "coagulation kernel"
         ]  
@@ -51,7 +55,7 @@
         theme = "dark"
 
 #       Specify plot dimensions.
-        fig_size = [12, 8]
+        default_fig_size = [12, 8]
 
 #       Specify nr. of compute steps between each (mass distribution) plot.
         steps_between_plot = 5
@@ -66,6 +70,13 @@
 # SIMULATION CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
 
+    [simulation]
+#       Specify nr. of time-steps.
+        nr_of_timesteps = 100
+
+#       Determine whether near-zero-cancellation should be handled.
+        handle_near_zero_cancellation = false
+
     [mass_grid]
 #       Specify minimum mass exponent.
         mass_grid_exp_min = -5
@@ -75,14 +86,7 @@
 
 #       Specify mass grid resolution.
         mass_grid_resolution = 100
-    
-    [initialization]
-#       Define shape of initial mass distribution.
-#       Possible values:
-#       - "dirac-delta"
-#       - "gaussian"
-        initial_mass_distribution = "dirac-delta" 
-    
+
     [coagulation_kernel]
 #       Define coagulation kernel variant.
 #       Possible values:
@@ -93,9 +97,9 @@
       # variant = "linear"
       # variant = "quadratic"
     
-    [simulation]
-#       Specify nr. of time-steps.
-        nr_of_timesteps = 100
-
-#       Determine whether near-zero-cancellation should be handled.
-        handle_near_zero_cancellation = false
+    [initialization]
+#       Define shape of initial mass distribution.
+#       Possible values:
+#       - "dirac-delta"
+#       - "gaussian"
+        initial_mass_distribution = "dirac-delta" 

@@ -45,7 +45,7 @@ def K(
             K_g_h = 1/2 * K_l * eps
 
             # Add gain-term to adjacent "next-lower" bin.
-            K_gain[k_l][i][j] += K_g_l 
+            K_gain[k_l][i][j] += K_g_l
             # Add gain-term to adjacent "next-higher" bin.
             K_gain[k_h][i][j] += K_g_h
             # Add loss term.

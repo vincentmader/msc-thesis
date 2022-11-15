@@ -37,9 +37,9 @@
 #       - "mass-index conversion"
         plots_to_show = [
           # "mass-index conversion",
-          "mass distribution", 
-          # "mass error", 
-          "coagulation kernel"
+          # "mass distribution", 
+          "mass error", 
+          # "coagulation kernel"
         ]  
 
 #       Specify which simulation runs should be plotted.

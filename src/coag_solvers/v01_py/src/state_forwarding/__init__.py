@@ -10,7 +10,7 @@ def dn_k(K_gain, K_loss, n, k):
 
     mass_grid_resolution = K_gain.shape[0]
 
-    for i in range(mass_grid_resolution):
+    for i in range(k+1):
         for j in range(mass_grid_resolution):
             res += K_gain[k][i][j] * n[i] * n[j]
 

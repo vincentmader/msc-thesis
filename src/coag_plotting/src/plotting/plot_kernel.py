@@ -1,7 +1,6 @@
 import json
 import os
 
-import matplotlib as mpl
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 import numpy as np
@@ -34,7 +33,7 @@ def plot_kernel_layer(cfg, K, run_id, k, show_plot=False, save_plot=True):
         plt.show()  # NOTE: Showing before saving may lead to corrupted plot file!
 
     # Close the figure to save RAM.
-    mpl.pyplot.close()
+    plt.close()
 
 
 def plot_kernel(cfg, run_id, ks):

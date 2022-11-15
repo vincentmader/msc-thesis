@@ -12,12 +12,16 @@ def run_solver(cfg, K, x, n0):
     # Define vector holding mass-distributions for each time-step.
     ns = [n0]
     M_0 = utils.calc_total_mass(x, n0)
+    dM = 0
+    M = M_0
 
     # Start forward-loop.
     for t in tqdm(range(cfg.nr_of_timesteps)):
-        M = utils.calc_total_mass(x, ns[-1])
+        M_t = utils.calc_total_mass(x, ns[-1])
         dM = (M-M_0)/M_0*100
-        print(f"time={t}, mass-error (M-M_0)/M_0*100 = {round(dM,2)} %")
+        print(f"time={t}, (M-M_0)/M_0*100 = {round(dM,2)} %, (M_{t}-M_{t-1})/M_{t-1} = {round((M_t-M)/M*100, 2)} %")
+        print(M==M_t)
+        M = M_t
 
         # Load current mass-distribution.
         n_old = ns[t]
@@ -39,9 +43,9 @@ def main():
     # ─────────────────────────────────────────────────────────────────────────
 
     K = coagulation.kernel.K(
-        cfg.mass_grid_resolution, 
-        cfg.mass_grid_exp_min, 
-        cfg.mass_grid_stepsize, 
+        cfg.mass_grid_resolution,
+        cfg.mass_grid_exp_min,
+        cfg.mass_grid_stepsize,
         cfg.coagulation_kernel_variant
     )
 

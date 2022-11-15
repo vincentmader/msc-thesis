@@ -10,7 +10,7 @@ def K(
     mass_grid_exp_min,
     mass_grid_stepsize,
     coagulation_kernel_variant,
-    ):
+):
     res = np.zeros(shape=(mass_grid_resolution, mass_grid_resolution, mass_grid_resolution))
     for i in range(mass_grid_resolution):
         m_i = mass_from_index(i, mass_grid_exp_min, mass_grid_stepsize)

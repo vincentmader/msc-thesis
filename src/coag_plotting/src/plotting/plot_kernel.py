@@ -39,13 +39,9 @@ def plot_kernel_layer(cfg, K, run_id, k, show_plot=False, save_plot=True):
 def plot_kernel(cfg, run_id, ks):
     print("\t\tPlotting kernel...")
 
-    path_to_kernel = os.path.join(cfg.path_to_outfiles, "runs", run_id, "data", "kernel_gain.txt")
+    path_to_kernel = os.path.join(cfg.path_to_outfiles, "runs", run_id, "data", "kernel.txt")
     with open(path_to_kernel, encoding="utf-8") as fp:
-        K_gain = np.array(json.load(fp))
-    path_to_kernel = os.path.join(cfg.path_to_outfiles, "runs", run_id, "data", "kernel_loss.txt")
-    with open(path_to_kernel, encoding="utf-8") as fp:
-        K_loss = np.array(json.load(fp))
-    K = K_gain + K_loss
+        K = np.array(json.load(fp))
 
     path = os.path.join(cfg.path_to_outfiles, "runs", run_id, "figures", "kernel")
     os.system(f"mkdir -p \"{path}\"")

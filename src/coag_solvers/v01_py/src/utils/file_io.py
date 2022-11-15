@@ -100,19 +100,14 @@ def save_simulation_data(cfg, run_id, x, ns):
     return run_id
 
 
-def save_coagulation_kernel(cfg, run_id, K_gain, K_loss):
+def save_coagulation_kernel(cfg, run_id, K):
     # Define (& create, if necessary) save-directory for simulation data.
     path_to_data_savedir = setup_data_savedir(cfg, run_id)
 
     # Save gain-term of kernel to file.
-    path_to_kernel = os.path.join(path_to_data_savedir, "kernel_gain.txt")
+    path_to_kernel = os.path.join(path_to_data_savedir, "kernel.txt")
     with open(path_to_kernel, "w", encoding="utf-8") as fp:
-        json.dump(K_gain.tolist(), fp)
-
-    # Save loss-term of kernel to file.
-    path_to_kernel = os.path.join(path_to_data_savedir, "kernel_loss.txt")
-    with open(path_to_kernel, "w", encoding="utf-8") as fp:
-        json.dump(K_loss.tolist(), fp)
+        json.dump(K.tolist(), fp)
 
 
 def save_config(cfg, run_id):

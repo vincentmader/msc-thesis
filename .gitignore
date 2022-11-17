@@ -1,6 +1,7 @@
 .DS_Store
-.git
+/.git/
+/out/
+/src/coag_solvers/v02_rs/target/
+/tests/
 /venv/
 __pycache__/
-out
-target

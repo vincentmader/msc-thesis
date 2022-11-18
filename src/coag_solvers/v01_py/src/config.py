@@ -67,6 +67,13 @@ class Config:
         path_to_outfiles = cfg["file_io"]["path_to_outfiles"]
 
         # ╭───────────────────────────────────────────────────────────────────╮
+        # │ Testing                                                           │
+        # ╰───────────────────────────────────────────────────────────────────╯
+
+        # Determine whether to run stability tests.
+        run_stability_tests = cfg["testing"]["run_stability_tests"]
+
+        # ╭───────────────────────────────────────────────────────────────────╮
         # │ Plotting                                                          │
         # ╰───────────────────────────────────────────────────────────────────╯
 
@@ -114,3 +121,4 @@ class Config:
         self.runs_to_plot = runs_to_plot
         self.plots_to_create = plots_to_create
         self.plots_to_show = plots_to_show
+        self.run_stability_tests = run_stability_tests

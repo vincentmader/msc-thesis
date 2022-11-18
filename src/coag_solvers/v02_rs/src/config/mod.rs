@@ -92,6 +92,14 @@ impl Config {
         let handle_near_zero_cancellation = handle_near_zero_cancellation.as_bool().unwrap();
 
         // ╭──────────────────────────────────────────────────────────────────╮
+        // │ Plotting                                                         │
+        // ╰──────────────────────────────────────────────────────────────────╯
+
+        // Determine whether to run stability tests.
+        let run_stability_tests = &cfg["testing"]["run_stability_tests"];
+        let run_stability_tests = run_stability_tests.as_bool().unwrap();
+
+        // ╭──────────────────────────────────────────────────────────────────╮
         // │ File-IO                                                          │
         // ╰──────────────────────────────────────────────────────────────────╯
 
@@ -122,6 +130,7 @@ impl Config {
             handle_near_zero_cancellation,
             path_to_config,
             path_to_outfiles,
+            run_stability_tests,
         }
     }
 }

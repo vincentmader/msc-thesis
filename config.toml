@@ -1,78 +1,9 @@
-# GLOBAL CONFIGURATION
-# ─────────────────────────────────────────────────────────────────────────────
-
-    [solver]
-#       Define development version of Smoluchowski coagulation solver.
-#       Possible values:
-#       - "v01" -> Python solver (currently in active development)
-#       - "v02" ->   Rust solver (might be implemented later)
-        version = "v01"
-
-#       Define maximum length of run-id string. (e.g. 8 -> max. 10^8 runs)
-        max_run_id_length = 8
-
-#       Specify whether solver should be run.
-#       NOTE: Initialization will always take place.
-        run_solver = true
-     
-    [plotting]
-#       Specify which plots should be created.
-#       Possible elements:
-#       - "mass error"
-#       - "mass distribution"
-#       - "coagulation kernel"
-#       - "mass-index conversion"
-        plots_to_create = [
-            # "mass-index conversion",
-            "mass distribution", 
-            "mass error", 
-            "coagulation kernel"
-        ]  
-
-#       Specify which plots should be shown in interactive pyplot mode.
-#       Possible elements:
-#       - "mass error"
-#       - "mass distribution"
-#       - "coagulation kernel"
-#       - "mass-index conversion"
-        plots_to_show = [
-          # "mass-index conversion",
-          # "mass distribution", 
-          "mass error", 
-          # "coagulation kernel"
-        ]  
-
-#       Specify which simulation runs should be plotted.
-#       Possible values:
-#       - "all"
-#       - "last"
-        runs_to_plot = "last"
-
-#       Specify pyplot theme.
-#       Possible values:
-#       - "dark"
-#       - "light"
-        theme = "dark"
-
-#       Specify plot dimensions.
-        default_fig_size = [12, 8]
-
-#       Specify nr. of compute steps between each (mass distribution) plot.
-        steps_between_plot = 1
-
-    [file_io]
-#       Define path to configuration (this file).
-        path_to_config = "./config.toml"
-
-#       Define path to directory where data & figures should be saved to.
-        path_to_outfiles = "./out"
-
 # SIMULATION CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
 
     [simulation]
 #       Specify nr. of time-steps.
-        nr_of_timesteps = 10
+        nr_of_timesteps = 1
 
 #       Determine whether near-zero-cancellation should be handled.
         handle_near_zero_cancellation = false
@@ -103,3 +34,79 @@
 #       - "dirac-delta"
 #       - "gaussian"
         initial_mass_distribution = "dirac-delta" 
+
+    [testing]
+#       Run stability tests.
+        run_stability_tests = true
+
+# PLOTTING CONFIGURATION
+# ─────────────────────────────────────────────────────────────────────────────
+
+    [plotting]
+#       Specify which plots should be created.
+#       Possible elements:
+#       - "mass error"
+#       - "mass distribution"
+#       - "coagulation kernel"
+#       - "mass-index conversion"
+        plots_to_create = [
+            # "mass-index conversion",
+            # "mass distribution", 
+            # "mass error", 
+            # "coagulation kernel"
+        ]  
+
+#       Specify which plots should be shown in interactive pyplot mode.
+#       Possible elements:
+#       - "mass error"
+#       - "mass distribution"
+#       - "coagulation kernel"
+#       - "mass-index conversion"
+        plots_to_show = [
+          # "mass-index conversion",
+          "mass distribution", 
+          "mass error", 
+          "coagulation kernel"
+        ]  
+
+#       Specify which simulation runs should be plotted.
+#       Possible values:
+#       - "all"
+#       - "last"
+        runs_to_plot = "last"
+
+#       Specify pyplot theme.
+#       Possible values:
+#       - "dark"
+#       - "light"
+        theme = "dark"
+
+#       Specify plot dimensions.
+        default_fig_size = [12, 8]
+
+#       Specify nr. of compute steps between each (mass distribution) plot.
+        steps_between_plot = 1
+
+# GLOBAL CONFIGURATION
+# ─────────────────────────────────────────────────────────────────────────────
+
+    [solver]
+#       Define development version of Smoluchowski coagulation solver.
+#       Possible values:
+#       - "v01" -> Python solver (currently in active development)
+#       - "v02" ->   Rust solver (might be implemented later)
+        version = "v01"
+
+#       Define maximum length of run-id string. (e.g. 8 -> max. 10^8 runs)
+        max_run_id_length = 8
+
+#       Specify whether solver should be run.
+#       NOTE: Initialization will always take place.
+        run_solver = true 
+
+    [file_io]
+#       Define path to configuration (this file).
+        path_to_config = "./config.toml"
+
+#       Define path to directory where data & figures should be saved to.
+        path_to_outfiles = "./out"

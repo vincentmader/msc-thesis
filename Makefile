@@ -10,6 +10,9 @@ v2:
 both:
 	make v2
 	make v1
+test:
+	clear
+	./venv/bin/python3 ./src/coag_solvers/v01_py/src/tests.py
 setup:
 	clear
 	cd ./bin && ./setup.sh

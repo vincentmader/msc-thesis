@@ -5,6 +5,7 @@ import utils
 
 def initial_state(cfg):
     x = np.logspace(cfg.mass_grid_exp_min, cfg.mass_grid_exp_max, cfg.mass_grid_resolution)
+    # print(x)
 
     if cfg.initial_mass_distribution == "gaussian":
         # mu, sigma = 10**(-5), 10**(-7)
@@ -12,7 +13,7 @@ def initial_state(cfg):
         raise Exception("TODO implement Gaussian in log-representation")
 
     elif cfg.initial_mass_distribution == "dirac-delta":
-        idx0 = 10
+        idx0 = 2
         n = utils.dirac_delta(x, idx0)
 
     else:

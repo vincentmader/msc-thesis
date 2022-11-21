@@ -9,11 +9,11 @@ import utils
 
 
 def run_solver(
-    cfg, 
-    K_gain, 
-    K_loss, 
-    x, 
-    n0, 
+    cfg,
+    K_gain,
+    K_loss,
+    x,
+    n0,
     mass_grid_exp_min,
     mass_grid_stepsize,
     run_stability_tests,
@@ -25,28 +25,29 @@ def run_solver(
     dM, M = 0, M_0
 
     # Start forward-loop.
-    # for t in tqdm(range(cfg.nr_of_timesteps)):
-    for t in range(cfg.nr_of_timesteps):
-        print(f"\n\t{t=}", end="")
+    for t in tqdm(range(cfg.nr_of_timesteps)):
+        if run_stability_tests:
+            print(f"\n\t{t=}", end="")
         # Load current mass-distribution.
         n_old = ns[t]
         # Calulcate new mass-distribution & append to state vector.
         n_new = state_forwarding.forward_state(
-            K_gain, 
-            K_loss, 
-            x, 
-            n_old, 
-            mass_grid_exp_min, 
+            K_gain,
+            K_loss,
+            x,
+            n_old,
+            mass_grid_exp_min,
             mass_grid_stepsize,
             run_stability_tests,
         )
         ns.append(n_new)
 
-        M_tp1 = utils.calc_total_mass(x, ns[-1], mass_grid_exp_min, mass_grid_stepsize)
-        dM = (M_tp1-M_0) / M_0*100
-        print(f"\n\t\t(M_{t+1}-M_0)/M_0 = {round(dM,2)} %")
-        print(f"\t\t(M_{t+1}-M_{max(0,t-1)})/M_{max(0,t-1)} = {round((M_tp1-M)/M*100, 2)} %")
-        M = M_tp1
+        if run_stability_tests:
+            M_tp1 = utils.calc_total_mass(x, ns[-1], mass_grid_exp_min, mass_grid_stepsize)
+            dM = (M_tp1-M_0) / M_0*100
+            print(f"\n\t\t(M_{t+1}-M_0)/M_0 = {dM} %")
+            print(f"\t\t(M_{t+1}-M_{max(0,t)})/M_{max(0,t)} = {(M_tp1-M)/M*100} %\n\n\n\n\n\n")
+            M = M_tp1
 
     print()
     return ns

@@ -3,17 +3,17 @@
 
     [simulation]
 #       Specify nr. of time-steps.
-        nr_of_timesteps = 10000
+        nr_of_timesteps = 5000
 
 #       Determine whether near-zero-cancellation should be handled.
         handle_near_zero_cancellation = false
 
     [mass_grid]
-#       Specify minimum mass exponent.
-        mass_grid_exp_min = -5
+#       Specify minimum mass exponent (in cgs units).
+        mass_grid_exp_min = -24
 
 #       Specify maximum mass exponent.
-        mass_grid_exp_max = 5
+        mass_grid_exp_max = -4
 
 #       Specify mass grid resolution.
         mass_grid_resolution = 100
@@ -37,7 +37,7 @@
 
     [testing]
 #       Run stability tests.
-        run_stability_tests = true
+        run_stability_tests = false
 
 # PLOTTING CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
@@ -50,10 +50,10 @@
 #       - "coagulation kernel"
 #       - "mass-index conversion"
         plots_to_create = [
-            # "mass-index conversion",
-            # "mass distribution", 
-            # "mass error", 
-            # "coagulation kernel"
+            "mass-index conversion",
+            "mass distribution", 
+            "mass error", 
+            "coagulation kernel"
         ]  
 
 #       Specify which plots should be shown in interactive pyplot mode.
@@ -85,7 +85,7 @@
         default_fig_size = [12, 8]
 
 #       Specify nr. of compute steps between each (mass distribution) plot.
-        steps_between_plot = 1
+        steps_between_plot = 500
 
 # GLOBAL CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────

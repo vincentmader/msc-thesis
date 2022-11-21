@@ -11,7 +11,7 @@ def plot_mass_distribution_over_time(cfg, run_id):
     m, Ns = utils.file_io.load_simulation_data(cfg, run_id)
 
     # Calculate total mass in the disk at t=0.
-    M_0 = utils.calc_total_mass(m, Ns[0])
+    M_0 = utils.calc_total_mass(m, Ns[0], cfg.mass_grid_exp_min, cfg.mass_grid_stepsize)
 
     # Create figure.
     _ = plt.figure(figsize=cfg.default_fig_size)
@@ -20,7 +20,7 @@ def plot_mass_distribution_over_time(cfg, run_id):
     for t, N in enumerate(Ns):
         if t % cfg.steps_between_plot != 0:
             continue
-        plot_mass_distribution(t, m, N, M_0)
+        plot_mass_distribution(cfg, t, m, N, M_0)
 
     # Prettify plot.
     plt.title("particle mass distribution")
@@ -28,7 +28,7 @@ def plot_mass_distribution_over_time(cfg, run_id):
     plt.ylabel("particle abundancy $m\cdot N(m)$")
     plt.legend(loc="upper right")
     plt.xlim(10**cfg.mass_grid_exp_min, 10**cfg.mass_grid_exp_max)
-    plt.ylim(10**(-9), 10**(-4))
+    plt.ylim(10**(-28), 10**(-22))
 
     # Save plot to file.
     save_plot_to_file(cfg, run_id)
@@ -43,18 +43,18 @@ def plot_mass_distribution_over_time(cfg, run_id):
     plt.close()
 
 
-def plot_mass_distribution(t, m, N, M_0):
+def plot_mass_distribution(cfg, t, m, N, M_0):
     # Calculate total mass (to show together with time-step in plot-label).
-    M = utils.calc_total_mass(m, N)
+    M = utils.calc_total_mass(m, N, cfg.mass_grid_exp_min, cfg.mass_grid_stepsize)
 
     # Calculate relative mass error with respect to initial disk mass.
-    err = round((M / M_0 - 1) * 100, 2)
+    err = (M / M_0 - 1) * 100
 
     # Define label: Show time, & area under curve (i.e. total mass).
     a = 2*" " if t != 0 else 6*" "
     b = r"\Delta M/M_0"
     c = err
-    label = f"${t=}$,{a}${b}={c}$ %"
+    label = f"${t=}$,{a}${b}={c:.2E}$ %"
 
     # Plot mass distribution.
     plt.loglog(m, N*m, label=label)

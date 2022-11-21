@@ -14,7 +14,7 @@ def plot_error_vs_time(cfg, run_id, save_plot=True):
     t = range(cfg.nr_of_timesteps)
 
     # Calculate total mass in the disk at various times.
-    M = [utils.calc_total_mass(m, Ns[t]) for t in t]
+    M = [utils.calc_total_mass(m, Ns[t], cfg.mass_grid_exp_min, cfg.mass_grid_stepsize) for t in t]
     # Calculate relative error.
     err = [(M[t] / M[0] - 1) * 100 for t in t]
 

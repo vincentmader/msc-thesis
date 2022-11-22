@@ -10,8 +10,7 @@ import utils
 
 def run_solver(
     cfg,
-    K_gain,
-    K_loss,
+    K,
     x,
     n0,
     mass_grid_exp_min,
@@ -32,8 +31,7 @@ def run_solver(
         n_old = ns[t]
         # Calulcate new mass-distribution & append to state vector.
         n_new = state_forwarding.forward_state(
-            K_gain,
-            K_loss,
+            K,
             x,
             n_old,
             mass_grid_exp_min,
@@ -62,7 +60,7 @@ def main():
     # Define coagulation kernel & initialize disk mass distribution.
     # ─────────────────────────────────────────────────────────────────────────
 
-    K_gain, K_loss = coagulation.kernel.K(
+    K = coagulation.kernel.K(
         cfg.mass_grid_resolution,
         cfg.mass_grid_exp_min,
         cfg.mass_grid_stepsize,
@@ -93,8 +91,7 @@ def main():
         ns, timing_info = utils.record_execution_time(
             run_solver, *[
                 cfg,
-                K_gain,
-                K_loss,
+                K,
                 x,
                 n0,
                 cfg.mass_grid_exp_min,
@@ -110,7 +107,6 @@ def main():
         utils.file_io.save_simulation_data(cfg, run_id, x, ns)
 
     # Save kernel(s) to file.
-    K = K_gain - K_loss
     utils.file_io.save_coagulation_kernel(cfg, run_id, K)
 
 

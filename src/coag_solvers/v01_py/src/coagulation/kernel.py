@@ -88,7 +88,8 @@ def K(
         print("\tskipped: ", skipped, "\t/", total)
         print("\n\t-> Accuracy:", round(good/(bad+good)*100), "% (for non-skipped)")
 
-    return K_gain, K_loss
+    K = K_gain - K_loss
+    return K
 
 
 @njit()

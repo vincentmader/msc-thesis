@@ -5,19 +5,17 @@ from utils.mass_index_conversion import mass_from_index
 
 
 @njit()
-def dn_k(K_gain, K_loss, n, k):
+def dn_k(K, n, k):
     dn_k = 0
-    for i in range(K_loss.shape[0]):
-        for j in range(K_loss.shape[0]):
-            K = K_gain[k][i][j] - K_loss[k][i][j]
-            dn_k += K * n[i] * n[j]
+    for i in range(K.shape[0]):
+        for j in range(K.shape[0]):
+            dn_k += K[k][i][j] * n[i] * n[j]
     return dn_k
 
 
 @njit()
 def forward_state(
-    K_gain,
-    K_loss,
+    K,
     x,
     n,
     mass_grid_exp_min,
@@ -29,7 +27,7 @@ def forward_state(
 
     # Calulcate entries of derivative vector.
     for k, _ in enumerate(n):
-        dn[k] = dn_k(K_gain, K_loss, n, k)
+        dn[k] = dn_k(K, n, k)
 
     if run_stability_tests:
         dmdt = sum([

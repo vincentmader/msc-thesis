@@ -1,11 +1,11 @@
 import numpy as np
-from numba import jit
+from numba import njit
 
 from utils.mass_index_conversion import mass_from_index, index_from_mass
 from utils.elementary_functions import heaviside_theta
 
 
-@jit(nopython=True)
+@njit()
 def K(
     mass_grid_resolution,
     mass_grid_exp_min,
@@ -91,7 +91,7 @@ def K(
     return K_gain, K_loss
 
 
-@jit(nopython=True)
+@njit()
 def R(
     i,
     j,

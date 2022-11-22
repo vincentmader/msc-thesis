@@ -1,10 +1,10 @@
 import numpy as np
-from numba import jit
+from numba import njit
 
 from utils.mass_index_conversion import mass_from_index
 
 
-@jit(nopython=True)
+@njit()
 def dn_k(K_gain, K_loss, n, k):
     dn_k = 0
     for i in range(K_loss.shape[0]):
@@ -14,7 +14,7 @@ def dn_k(K_gain, K_loss, n, k):
     return dn_k
 
 
-@jit(nopython=True)
+@njit()
 def forward_state(
     K_gain,
     K_loss,

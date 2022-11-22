@@ -3,20 +3,16 @@ from termcolor import colored
 
 import coagulation
 from config import Config
-import state_initialization
 import state_forwarding
+import state_initialization
 import utils
 
 
-def run_solver(
-    cfg,
-    K,
-    x,
-    n0,
-    mass_grid_exp_min,
-    mass_grid_stepsize,
-    run_stability_tests,
-):
+def run_solver(cfg, K, x, n0):
+    mass_grid_exp_min = cfg.mass_grid_exp_min
+    mass_grid_stepsize = cfg.mass_grid_stepsize
+    run_stability_tests = cfg.run_stability_tests
+
     # Define vector holding mass-distributions for each time-step.
     ns = [n0]
 
@@ -27,9 +23,10 @@ def run_solver(
     for t in tqdm(range(cfg.nr_of_timesteps)):
         if run_stability_tests:
             print(f"\n\t{t=}", end="")
+
         # Load current mass-distribution.
         n_old = ns[t]
-        # Calulcate new mass-distribution & append to state vector.
+        # Calulcate new mass-distribution.
         n_new = state_forwarding.forward_state(
             K,
             x,
@@ -38,13 +35,14 @@ def run_solver(
             mass_grid_stepsize,
             run_stability_tests,
         )
+        # Append new mass-distribution to state-vector.
         ns.append(n_new)
 
         if run_stability_tests:
             M_tp1 = utils.calc_total_mass(x, ns[-1], mass_grid_exp_min, mass_grid_stepsize)
             dM = (M_tp1-M_0) / M_0*100
-            print(f"\n\t\t(M_{t+1}-M_0)/M_0 = {dM} %")
-            print(f"\t\t(M_{t+1}-M_{max(0,t)})/M_{max(0,t)} = {(M_tp1-M)/M*100} %\n\n\n\n\n\n")
+            print(f"\n\t\t(M_{t+1}-M_0)/M_0 = {dM:.2E} %")
+            print(f"\t\t(M_{t+1}-M_{max(0,t)})/M_{max(0,t)} = {(M_tp1-M)/M*100:.2E} %\n\n\n\n\n\n")
             M = M_tp1
 
     print()
@@ -60,13 +58,7 @@ def main():
     # Define coagulation kernel & initialize disk mass distribution.
     # ─────────────────────────────────────────────────────────────────────────
 
-    K = coagulation.kernel.K(
-        cfg.mass_grid_resolution,
-        cfg.mass_grid_exp_min,
-        cfg.mass_grid_stepsize,
-        cfg.coagulation_kernel_variant,
-        cfg.run_stability_tests,
-    )
+    K = coagulation.kernel.K(cfg)
 
     # Define initial state.
     x, n0 = state_initialization.initial_state(cfg)
@@ -89,15 +81,7 @@ def main():
     if cfg.run_solver:
         # Compute evolution of mass distribution & record execution duration.
         ns, timing_info = utils.record_execution_time(
-            run_solver, *[
-                cfg,
-                K,
-                x,
-                n0,
-                cfg.mass_grid_exp_min,
-                cfg.mass_grid_stepsize,
-                cfg.run_stability_tests,
-            ]
+            run_solver, *[cfg, K, x, n0]
         )
 
         # Create file containing information about this run.

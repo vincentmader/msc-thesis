@@ -22,7 +22,7 @@ def plot_kernel_layer(cfg, K, run_id, k, show_plot=False, save_plot=True):
     plt.set_cmap("bwr")
     plt.colorbar()
     plt.xlabel("$j$")
-    plt.ylabel("$i$")
+    plt.ylabel("$i$", rotation=0)
 
     # Save plot (optional).
     if save_plot:

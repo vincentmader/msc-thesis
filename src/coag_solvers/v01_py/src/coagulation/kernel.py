@@ -2,6 +2,7 @@ import numpy as np
 from numba import jit
 
 from utils.mass_index_conversion import mass_from_index, index_from_mass
+from utils.elementary_functions import heaviside_theta
 
 
 @jit(nopython=True)
@@ -43,17 +44,13 @@ def K(
             # Use linear ansatz to split kernel between adjacent next-lower/-higher bins.
             eps = (m_i + m_j - m_l) / (m_h - m_l)
 
-            if i>j:
-                r = 1
-            elif i == j:
-                r = 1/2
-            else: 
-                r = 0
+            # Determine prefactor of gain-term.
+            r_gain = heaviside_theta(i - j)
 
             # Add gain-term to adjacent "next-lower" bin.
-            K_gain[k_l][i][j] += r * R_kij * (1-eps)
+            K_gain[k_l][i][j] += r_gain * R_kij * (1-eps)
             # Add gain-term to adjacent "next-higher" bin.
-            K_gain[k_h][i][j] += r * R_kij * eps
+            K_gain[k_h][i][j] += r_gain * R_kij * eps
             # Add loss term.
             K_loss[i][i][j] += R_kij
 

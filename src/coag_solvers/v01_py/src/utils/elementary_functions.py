@@ -18,3 +18,13 @@ def dirac_delta(x, i_x0):
 @jit(nopython=True)
 def kronecker_delta(i, j):
     return 1 if i == j else 0
+
+
+@jit(nopython=True)
+def heaviside_theta(x):
+    if x < 0:
+        return 0
+    elif x == 0:
+        return 1/2
+    else:
+        return 1

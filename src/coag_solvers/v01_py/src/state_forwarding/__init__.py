@@ -1,28 +1,16 @@
 import numpy as np
 from numba import jit
 
-from utils.elementary_functions import kronecker_delta
 from utils.mass_index_conversion import mass_from_index
 
 
 @jit(nopython=True)
 def dn_k(K_gain, K_loss, n, k):
     dn_k = 0
-
-    # Determine positive contribution to derivative from coagulation kernel's gain-term.
-    for i in range(k+1):
-        for j in range(k+1):
-            dn_k += 1/2 * K_gain[k][i][j] * n[i] * n[j]
-    # Determine negative contribution to derivative from coagulation kernel's loss-term.
     for i in range(K_loss.shape[0]):
         for j in range(K_loss.shape[0]):
-            dn_k -= K_loss[k][k][j] * n[i] * n[j] * kronecker_delta(k, i)
-
-    # for i in range(K_loss.shape[0]):
-    #     for j in range(K_loss.shape[0]):
-    #         K = 1/2 * K_gain[k][i][j] - K_loss[k][k][j] * kronecker_delta(k, i)
-    #         dn_k += K * n[i] * n[j]
-
+            K = K_gain[k][i][j] - K_loss[k][i][j]
+            dn_k += K * n[i] * n[j]
     return dn_k
 
 

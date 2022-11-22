@@ -43,12 +43,17 @@ def K(
             # Use linear ansatz to split kernel between adjacent next-lower/-higher bins.
             eps = (m_i + m_j - m_l) / (m_h - m_l)
 
+            if i>j:
+                r = 1
+            elif i == j:
+                r = 1/2
+            else: 
+                r = 0
+
             # Add gain-term to adjacent "next-lower" bin.
-            K_gain[k_l][i][j] += R_kij * (1-eps)
-
+            K_gain[k_l][i][j] += r * R_kij * (1-eps)
             # Add gain-term to adjacent "next-higher" bin.
-            K_gain[k_h][i][j] += R_kij * eps
-
+            K_gain[k_h][i][j] += r * R_kij * eps
             # Add loss term.
             K_loss[i][i][j] += R_kij
 

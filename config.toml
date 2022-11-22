@@ -3,7 +3,7 @@
 
     [simulation]
 #       Specify nr. of time-steps.
-        nr_of_timesteps = 5000
+        nr_of_timesteps = 1000
 
 #       Determine whether near-zero-cancellation should be handled.
         handle_near_zero_cancellation = false
@@ -85,7 +85,7 @@
         default_fig_size = [12, 8]
 
 #       Specify nr. of compute steps between each (mass distribution) plot.
-        steps_between_plot = 500
+        steps_between_plot = 50
 
 # GLOBAL CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────

@@ -7,8 +7,8 @@ from utils.mass_index_conversion import mass_from_index
 @njit()
 def dn_k(K, n, k):
     dn_k = 0
-    for i in range(K.shape[0]):
-        for j in range(K.shape[0]):
+    for i in range(K.shape[1]):
+        for j in range(K.shape[2]):
             dn_k += K[k][i][j] * n[i] * n[j]
     return dn_k
 

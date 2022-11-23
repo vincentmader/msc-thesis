@@ -72,7 +72,6 @@ def K(cfg):
     return K
 
 
-@njit()
 def R(i, j, cfg):
     mass_grid_exp_min = cfg.mass_grid_exp_min
     mass_grid_stepsize = cfg.mass_grid_stepsize

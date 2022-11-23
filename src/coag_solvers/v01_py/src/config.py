@@ -53,6 +53,9 @@ class Config:
         # Define Discretization of Time-Axis (Abscissa).
         nr_of_timesteps = cfg["simulation"]["nr_of_timesteps"]
 
+        # Define size of multiplicative time-step.
+        multiplicative_dt = cfg["simulation"]["multiplicative_dt"]
+
         # Determine whether near-zero-cancellation should be handled.
         handle_near_zero_cancellation = cfg["simulation"]["handle_near_zero_cancellation"]
 
@@ -112,6 +115,7 @@ class Config:
         self.coagulation_kernel_variant = coagulation_kernel_variant
         self.initial_mass_distribution = initial_mass_distribution
         self.nr_of_timesteps = nr_of_timesteps
+        self.multiplicative_dt = multiplicative_dt
         self.handle_near_zero_cancellation = handle_near_zero_cancellation
         self.path_to_config = path_to_config
         self.path_to_outfiles = path_to_outfiles

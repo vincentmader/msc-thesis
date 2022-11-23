@@ -87,6 +87,10 @@ impl Config {
         let nr_of_timesteps = &cfg["simulation"]["nr_of_timesteps"];
         let nr_of_timesteps = nr_of_timesteps.as_integer().unwrap() as usize;
 
+        // Define size of multiplicative time-step.
+        let multiplicative_dt = &cfg["simulation"]["multiplicative_dt"];
+        let multiplicative_dt = multiplicative_dt.as_float().unwrap();
+
         // Determine whether near-zero-cancellation should be handled.
         let handle_near_zero_cancellation = &cfg["simulation"]["handle_near_zero_cancellation"];
         let handle_near_zero_cancellation = handle_near_zero_cancellation.as_bool().unwrap();

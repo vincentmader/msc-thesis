@@ -5,7 +5,7 @@ from utils.mass_index_conversion import mass_from_index
 
 
 @njit()
-def dn_k(K, n, k):
+def dndt_k(K, n, k):
     dn_k = 0
     for i in range(K.shape[1]):
         for j in range(K.shape[2]):
@@ -21,13 +21,14 @@ def forward_state(
     mass_grid_exp_min,
     mass_grid_stepsize,
     run_stability_tests,
+    dt,
 ):
     # Initialize mass-distribution derivative vector.
     dn = np.zeros(len(x))
 
     # Calulcate entries of derivative vector.
     for k, _ in enumerate(n):
-        dn[k] = dn_k(K, n, k)
+        dn[k] = dndt_k(K, n, k) * dt
 
     if run_stability_tests:
         dmdt = sum([

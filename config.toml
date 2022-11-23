@@ -8,12 +8,15 @@
 #       Determine whether near-zero-cancellation should be handled.
         handle_near_zero_cancellation = false
 
+#       Define size of multiplicative time-step.
+        multiplicative_dt = 0.1
+
     [mass_grid]
 #       Specify minimum mass exponent (in cgs units).
         mass_grid_exp_min = -24
 
 #       Specify maximum mass exponent.
-        mass_grid_exp_max = -4
+        mass_grid_exp_max = +27
 
 #       Specify mass grid resolution.
         mass_grid_resolution = 100
@@ -85,7 +88,7 @@
         default_fig_size = [12, 8]
 
 #       Specify nr. of compute steps between each (mass distribution) plot.
-        steps_between_plot = 50
+        steps_between_plot = 100
 
 # GLOBAL CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────

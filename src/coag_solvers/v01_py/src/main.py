@@ -19,13 +19,18 @@ def run_solver(cfg, K, x, n0):
     M_0 = utils.calc_total_mass(x, n0, mass_grid_exp_min, mass_grid_stepsize)
     dM, M = 0, M_0
 
+    t_0 = 1
+    t = t_0
+
     # Start forward-loop.
-    for t in tqdm(range(cfg.nr_of_timesteps)):
+    for i_t in tqdm(range(cfg.nr_of_timesteps)):
         if run_stability_tests:
             print(f"\n\t{t=}", end="")
 
+        dt = cfg.multiplicative_dt * t
+
         # Load current mass-distribution.
-        n_old = ns[t]
+        n_old = ns[i_t]
         # Calulcate new mass-distribution.
         n_new = state_forwarding.forward_state(
             K,
@@ -34,6 +39,7 @@ def run_solver(cfg, K, x, n0):
             mass_grid_exp_min,
             mass_grid_stepsize,
             run_stability_tests,
+            dt,
         )
         # Append new mass-distribution to state-vector.
         ns.append(n_new)
@@ -44,6 +50,8 @@ def run_solver(cfg, K, x, n0):
             print(f"\n\t\t(M_{t+1}-M_0)/M_0 = {dM:.2E} %")
             print(f"\t\t(M_{t+1}-M_{max(0,t)})/M_{max(0,t)} = {(M_tp1-M)/M*100:.2E} %\n\n\n\n\n\n")
             M = M_tp1
+
+        t += dt
 
     print()
     return ns

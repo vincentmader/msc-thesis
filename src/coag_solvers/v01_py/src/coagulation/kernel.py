@@ -10,12 +10,11 @@ def K(cfg):
     mass_grid_exp_min = cfg.mass_grid_exp_min
     mass_grid_stepsize = cfg.mass_grid_stepsize
 
-    K_gain = np.zeros(shape=(mass_grid_resolution, mass_grid_resolution, mass_grid_resolution))
-    K_loss = np.zeros(shape=(mass_grid_resolution, mass_grid_resolution, mass_grid_resolution))
+    K = np.zeros(shape=(mass_grid_resolution, mass_grid_resolution, mass_grid_resolution))
 
-    for i in range(mass_grid_resolution):
+    for i in range(K.shape[1]):
         m_i = mass_from_index(i, mass_grid_exp_min, mass_grid_stepsize)
-        for j in range(mass_grid_resolution):
+        for j in range(K.shape[2]):
             m_j = mass_from_index(j, mass_grid_exp_min, mass_grid_stepsize)
 
             # Determine masses before & after hit-and-stick collision.
@@ -36,7 +35,7 @@ def K(cfg):
             m_h = mass_from_index(k_h, mass_grid_exp_min, mass_grid_stepsize)
 
             # Calculate loss term (gain term can then be calculated from this).
-            R_kij = R(i, j, mass_grid_exp_min, mass_grid_stepsize, cfg.coagulation_kernel_variant)
+            R_kij = R(i, j, cfg)
 
             # Use linear ansatz to split kernel between adjacent next-lower/-higher bins.
             eps = (m_i + m_j - m_l) / (m_h - m_l)
@@ -44,28 +43,41 @@ def K(cfg):
             # Determine prefactor of gain-term.
             r_gain = heaviside_theta(i - j)
 
-            # Add gain-term to adjacent "next-lower" bin.
-            K_gain[k_l][i][j] += r_gain * R_kij * (1-eps)
-            # Add gain-term to adjacent "next-higher" bin.
-            K_gain[k_h][i][j] += r_gain * R_kij * eps
-            # Add loss term.
-            K_loss[i][i][j] += R_kij
+            if not cfg.handle_near_zero_cancellation:
+                # Add gain-term to adjacent "next-higher" bin.
+                K[k_h][i][j] += r_gain * R_kij * eps
+                # Add gain-term to adjacent "next-lower" bin.
+                K[k_l][i][j] += r_gain * R_kij * (1-eps)
+                # Add loss term.
+                K[i][i][j] -= R_kij
+
+            else:
+                if k_l > max(i, j):
+                    K[k_h][i][j] += r_gain * R_kij * eps
+                    K[k_l][i][j] += r_gain * R_kij * (1-eps)
+                    K[i][i][j] -= R_kij
+
+                elif k_l == i:
+                    pass
+
+                elif k_l == j:
+                    pass
+
+                else:
+                    raise Exception
 
     if cfg.run_stability_tests:
-        test_for_mass_conservation(cfg, K_gain, K_loss)
+        test_for_mass_conservation(cfg, K)
 
-    K = K_gain - K_loss
     return K
 
 
 @njit()
-def R(
-    i,
-    j,
-    mass_grid_exp_min,
-    mass_grid_stepsize,
-    coagulation_kernel_variant,
-):
+def R(i, j, cfg):
+    mass_grid_exp_min = cfg.mass_grid_exp_min
+    mass_grid_stepsize = cfg.mass_grid_stepsize
+    coagulation_kernel_variant = cfg.coagulation_kernel_variant
+
     m_i = mass_from_index(i, mass_grid_exp_min, mass_grid_stepsize)
     m_j = mass_from_index(j, mass_grid_exp_min, mass_grid_stepsize)
 
@@ -84,7 +96,7 @@ def R(
     return res
 
 
-def test_for_mass_conservation(cfg, K_gain, K_loss):
+def test_for_mass_conservation(cfg, K):
     mass_grid_resolution = cfg.mass_grid_resolution
     mass_grid_exp_min = cfg.mass_grid_exp_min
     mass_grid_stepsize = cfg.mass_grid_stepsize
@@ -105,8 +117,8 @@ def test_for_mass_conservation(cfg, K_gain, K_loss):
             m_l = mass_from_index(k_l, mass_grid_exp_min, mass_grid_stepsize)
             m_h = mass_from_index(k_h, mass_grid_exp_min, mass_grid_stepsize)
 
-            a = m_l * K_gain[k_l][i][j] + m_h * K_gain[k_h][i][j]
-            b = (m_i + m_j) * K_loss[i][i][j]
+            a = m_l * K[k_l][i][j] + m_h * K[k_h][i][j]
+            b = (m_i + m_j) * K[i][i][j]
             if a != b:
                 if (a-b)/b > 10e-16:
                     bad += 1

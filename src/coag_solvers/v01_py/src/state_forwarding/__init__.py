@@ -16,7 +16,6 @@ def dndt_k(K, n, k):
 @njit()
 def forward_state(
     K,
-    x,
     n,
     mass_grid_exp_min,
     mass_grid_stepsize,
@@ -24,7 +23,7 @@ def forward_state(
     dt,
 ):
     # Initialize mass-distribution derivative vector.
-    dn = np.zeros(len(x))
+    dn = np.zeros(len(n))
 
     # Calulcate entries of derivative vector.
     for k, _ in enumerate(n):

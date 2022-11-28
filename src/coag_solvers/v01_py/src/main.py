@@ -16,7 +16,7 @@ def run_solver(cfg, K, x, n0):
     # Define vector holding mass-distributions for each time-step.
     ns = [n0]
 
-    M_0 = utils.calc_total_mass(x, n0, mass_grid_exp_min, mass_grid_stepsize)
+    M_0 = utils.calc_total_mass(n0, mass_grid_exp_min, mass_grid_stepsize)
     dM, M = 0, M_0
 
     t_0 = 1
@@ -34,7 +34,6 @@ def run_solver(cfg, K, x, n0):
         # Calulcate new mass-distribution.
         n_new = state_forwarding.forward_state(
             K,
-            x,
             n_old,
             mass_grid_exp_min,
             mass_grid_stepsize,
@@ -45,7 +44,7 @@ def run_solver(cfg, K, x, n0):
         ns.append(n_new)
 
         if run_stability_tests:
-            M_tp1 = utils.calc_total_mass(x, ns[-1], mass_grid_exp_min, mass_grid_stepsize)
+            M_tp1 = utils.calc_total_mass(ns[-1], mass_grid_exp_min, mass_grid_stepsize)
             dM = (M_tp1-M_0) / M_0*100
             print(f"\n\t\t(M_{t+1}-M_0)/M_0 = {dM:.2E} %")
             print(f"\t\t(M_{t+1}-M_{max(0,t)})/M_{max(0,t)} = {(M_tp1-M)/M*100:.2E} %\n\n\n\n\n\n")

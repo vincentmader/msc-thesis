@@ -1,9 +1,11 @@
 import json
 import os
 
+from numba import njit
 import numpy as np
 
 
+@njit
 def zero_pad_int(num: int, nr_of_digits: int) -> str:
     out = str(num)
     while len(out) < nr_of_digits:

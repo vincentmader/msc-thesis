@@ -53,6 +53,10 @@ class Config:
         # Define Discretization of Time-Axis (Abscissa).
         nr_of_timesteps = cfg["simulation"]["nr_of_timesteps"]
 
+        # Specify type of time-step incrementation.
+        dt_incrementation = cfg["simulation"]["dt_incrementation"]
+        # Define size of additive time-step.
+        additive_dt = cfg["simulation"]["additive_dt"]
         # Define size of multiplicative time-step.
         multiplicative_dt = cfg["simulation"]["multiplicative_dt"]
 
@@ -115,6 +119,8 @@ class Config:
         self.coagulation_kernel_variant = coagulation_kernel_variant
         self.initial_mass_distribution = initial_mass_distribution
         self.nr_of_timesteps = nr_of_timesteps
+        self.dt_incrementation = dt_incrementation
+        self.additive_dt = additive_dt
         self.multiplicative_dt = multiplicative_dt
         self.handle_near_zero_cancellation = handle_near_zero_cancellation
         self.path_to_config = path_to_config

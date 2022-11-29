@@ -27,7 +27,12 @@ def run_solver(cfg, K, x, n0):
         if run_stability_tests:
             print(f"\n\t{t=}", end="")
 
-        dt = cfg.multiplicative_dt * t
+        if cfg.dt_incrementation == "additive":
+            dt = cfg.additive_dt
+        elif cfg.dt_incrementation == "multiplicative":
+            dt = cfg.multiplicative_dt * t
+        else:
+            raise Exception
 
         # Load current mass-distribution.
         n_old = ns[i_t]

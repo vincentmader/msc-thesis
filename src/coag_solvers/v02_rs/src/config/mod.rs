@@ -87,6 +87,14 @@ impl Config {
         let nr_of_timesteps = &cfg["simulation"]["nr_of_timesteps"];
         let nr_of_timesteps = nr_of_timesteps.as_integer().unwrap() as usize;
 
+        // Specify type of time-step incrementation.
+        let dt_incrementation = &cfg["simulation"]["dt_incrementation"];
+        let dt_incrementation = dt_incrementation.as_str().unwrap();
+
+        // Define size of multiplicative time-step.
+        let additive_dt = &cfg["simulation"]["additive_dt"];
+        let additive_dt = multiplicative_dt.as_float().unwrap();
+
         // Define size of multiplicative time-step.
         let multiplicative_dt = &cfg["simulation"]["multiplicative_dt"];
         let multiplicative_dt = multiplicative_dt.as_float().unwrap();

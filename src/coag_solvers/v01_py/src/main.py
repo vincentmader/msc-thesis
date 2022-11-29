@@ -53,6 +53,8 @@ def run_solver(cfg, K, x, n0):
         t += dt
 
     print()
+    print(f"\tt_i = {t_0}")
+    print(f"\tt_f = {t:.2E}")
     return ns
 
 

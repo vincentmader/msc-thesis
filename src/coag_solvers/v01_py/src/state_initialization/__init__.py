@@ -16,6 +16,9 @@ def initial_state(cfg):
         idx0 = 2
         n = utils.dirac_delta(x, idx0)
 
+    elif cfg.initial_mass_distribution == "flat":
+        n = np.ones(x.shape[0])
+
     else:
         raise Exception(
             f"ERROR: Initial state {cfg.initial_mass_distribution} is not defined.")

@@ -54,7 +54,7 @@ def plot_mass_distribution(cfg, t, m, N, M_0):
     a = 2*" " if t != 0 else 6*" "
     b = r"\Delta M/M_0"
     c = err
-    label = f"${t=}$,{a}${b}={c:.2E}$ %"
+    label = f"$i_t={t}$,{a}${b}={c:.2E}$ %"
 
     # Plot mass distribution.
     plt.loglog(m, N*m, label=label)

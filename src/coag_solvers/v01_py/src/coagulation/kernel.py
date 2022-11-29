@@ -51,11 +51,11 @@ def K(cfg):
             # -> Just use straight-forward Kovetz-Olund algorithm.
             if not cfg.handle_near_zero_cancellation:
                 # Add loss term.
-                K[i][i][j] -= R_kij
+                K[  i, i, j] -= R_kij
                 # Add gain-term to adjacent "next-lower" bin.
-                K[k_l][i][j] += f_gain * R_kij * (1-eps)
+                K[k_l, i, j] += R_kij * f_gain * (1-eps)
                 # Add gain-term to adjacent "next-higher" bin.
-                K[k_h][i][j] += f_gain * R_kij * eps
+                K[k_h, i, j] += R_kij * f_gain * eps
 
             # If we ARE handling near-zero cancellation:
             # -> Differentiate between two cases:
@@ -68,11 +68,11 @@ def K(cfg):
                 # -> Near-zero cancellation will NOT occur.
                 if k_l > i:
                     # Add loss term.
-                    K[i][i][j] -= R_kij
+                    K[  i, i, j] -= R_kij
                     # Add gain-term to adjacent "next-lower" bin.
-                    K[k_l][i][j] += f_gain * R_kij * (1-eps)
+                    K[k_l, i, j] += R_kij * f_gain * (1-eps)
                     # Add gain-term to adjacent "next-higher" bin.
-                    K[k_h][i][j] += f_gain * R_kij * eps
+                    K[k_h, i, j] += R_kij * f_gain * eps
 
                 # Case 2: 
                 #    Resulting mass `m_k` is only slightly bigger than `max(m_i, m_j)`.
@@ -81,14 +81,16 @@ def K(cfg):
                 #      - `epsilon << 1`, and
                 #      - `k_l = max(i, j)`.
                 # -> Near-zero cancellation might very well occur, and we need to handle it:
-                elif k_l == i:
+                elif k_l == max(i, j):
+                    # Add loss term.
+                    K[  i, i, j] -= R_kij
                     # ...
-                    K[k_l][i][j] -= f_gain * R_kij * eps
+                    K[k_l, i, j] -= R_kij * f_gain * eps
                     # Add gain-term to adjacent "next-higher" bin.
-                    K[k_h][i][j] += f_gain * R_kij * eps
+                    K[k_h, i, j] += R_kij * f_gain * eps
 
+                # This can never happen, since k cannot be smaller than both i & j.
                 else:
-                    # This can never happen, since k cannot be smaller than both i & j.
                     raise Exception
 
     if cfg.run_stability_tests:

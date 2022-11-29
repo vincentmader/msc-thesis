@@ -7,6 +7,7 @@ from utils.mass_index_conversion import mass_from_index
 @njit()
 def dndt_k(K, n, k):
     dndt_k = 0
+
     for i in range(K.shape[1]):
         for j in range(K.shape[2]):
             dndt_k += K[k][i][j] * n[i] * n[j]
@@ -36,4 +37,5 @@ def forward_state(
             for k, n_k in enumerate(dn)
         ])
         print("\n\t\tSum_k dn_k/dt = dm/dt =", dmdt)
+
     return n + dn

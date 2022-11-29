@@ -29,6 +29,7 @@ def plot_mass_distribution_over_time(cfg, run_id):
     plt.legend(loc="upper right")
     plt.xlim(10**cfg.mass_grid_exp_min, 10**cfg.mass_grid_exp_max)
     plt.ylim(10**(-30), 10**(-16))
+    # plt.ylim(10**(-5), 10**(-2))
 
     # Save plot to file.
     save_plot_to_file(cfg, run_id)

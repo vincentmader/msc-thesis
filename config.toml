@@ -9,14 +9,14 @@
         handle_near_zero_cancellation = true
 
 #       Define size of multiplicative time-step.
-        multiplicative_dt = 0.11
+        multiplicative_dt = 0.01
 
     [mass_grid]
 #       Specify minimum mass exponent (in cgs units).
-        mass_grid_exp_min = -24
+        mass_grid_exp_min = -24 # -24
 
 #       Specify maximum mass exponent.
-        mass_grid_exp_max = +27
+        mass_grid_exp_max = 6 # +27
 
 #       Specify mass grid resolution.
         mass_grid_resolution = 100

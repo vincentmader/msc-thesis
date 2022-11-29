@@ -30,9 +30,8 @@ def K(cfg):
             k_h = k_l + 1
 
             # Check if indices of resulting mass(es) lie outside the discrete mass grid.
+            # If yes: -> Skip.
             if max(k_l, k_h) >= cfg.mass_grid_resolution:
-                # print("i =", i, ", j =", j, "-> k_l =", k_l)
-                # print("                -> k_h =", k_h, "\n")
                 continue
 
             # Get mass corresponding to these indices.
@@ -67,7 +66,6 @@ def K(cfg):
                 #      - `epsilon >> 0`, and
                 #      - `k_l > max(i, j)`.
                 # -> Near-zero cancellation will NOT occur.
-
                 if k_l > i:
                     # Add loss term.
                     K[i][i][j] -= R_kij

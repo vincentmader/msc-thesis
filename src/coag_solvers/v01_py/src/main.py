@@ -8,7 +8,7 @@ import state_initialization
 import utils
 
 
-def run_solver(cfg, K, x, n0):
+def run_solver(cfg, K, n0):
     mass_grid_exp_min = cfg.mass_grid_exp_min
     mass_grid_stepsize = cfg.mass_grid_stepsize
     run_stability_tests = cfg.run_stability_tests
@@ -63,6 +63,7 @@ def run_solver(cfg, K, x, n0):
     return ns
 
 
+
 def main():
     print(colored("\nRunning solver v01_py...", "yellow"))
 
@@ -95,7 +96,7 @@ def main():
     if cfg.run_solver:
         # Compute evolution of mass distribution & record execution duration.
         ns, timing_info = utils.record_execution_time(
-            run_solver, *[cfg, K, x, n0]
+            run_solver, *[cfg, K, n0]
         )
 
         # Create file containing information about this run.

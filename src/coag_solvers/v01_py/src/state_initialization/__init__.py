@@ -5,7 +5,6 @@ import utils
 
 def initial_state(cfg):
     x = np.logspace(cfg.mass_grid_exp_min, cfg.mass_grid_exp_max, cfg.mass_grid_resolution)
-    # print(x)
 
     if cfg.initial_mass_distribution == "gaussian":
         # mu, sigma = 10**(-5), 10**(-7)
@@ -22,4 +21,5 @@ def initial_state(cfg):
     else:
         raise Exception(
             f"ERROR: Initial state {cfg.initial_mass_distribution} is not defined.")
+
     return x, n

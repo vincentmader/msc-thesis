@@ -1,22 +1,22 @@
 import numpy as np
-from numba import njit
 
 from utils import mass_index_conversion
 from utils.elementary_functions import heaviside_theta
 
 
 def K(cfg):
-    # Define short-hand notation for converter functions.
+    # Define short-hand notation for index-to-mass conversion.
     mass_from_index = lambda idx: mass_index_conversion.mass_from_index(
         idx, cfg.mass_grid_exp_min, cfg.mass_grid_stepsize
     )
+    # Define short-hand notation for mass-to-index conversion.
     index_from_mass = lambda mass: mass_index_conversion.index_from_mass(
         mass, cfg.mass_grid_exp_min, cfg.mass_grid_stepsize
     )
 
     # Initialize kernel as 3D matrix of zeros.
     K = np.zeros(shape=[cfg.mass_grid_resolution]*3)
-
+    # Loop over all possible particle-particle pairs in the discrete mass grid.
     for i in range(K.shape[0]):
         m_i = mass_from_index(i)
         for j in range(K.shape[1]):
@@ -24,75 +24,34 @@ def K(cfg):
 
             # Determine masses before & after hit-and-stick collision.
             m_k = m_i + m_j
-
             # Determine indices of bins adjacent to combined mass.
             k_l = index_from_mass(m_k)
             k_h = k_l + 1
-
-            # Check if indices of resulting mass(es) lie outside the discrete mass grid.
-            # If yes: -> Skip.
+            # Check if indices of resulting mass(es) lie 
+            # outside the discrete mass grid. If yes: -> Skip.
             if max(k_l, k_h) >= cfg.mass_grid_resolution:
                 continue
 
-            # Get mass corresponding to these indices.
+            # Calculate the mass corresponding to these indices.
             m_l = mass_from_index(k_l)
             m_h = mass_from_index(k_h)
-
             # Calculate loss term (gain term can then be calculated from this).
             R_kij = R(i, j, cfg, mass_from_index)
-
             # Use linear ansatz to split kernel between adjacent next-lower/-higher bins.
             eps = (m_i + m_j - m_l) / (m_h - m_l)
-
             # Determine prefactor of gain-term.
             f_gain = heaviside_theta(i - j)
 
-            # If we're not handling near-zero cancellation:
-            # -> Just use straight-forward Kovetz-Olund algorithm.
-            if not cfg.handle_near_zero_cancellation:
-                # Add loss term.
+            might_cancel = k_l == i
+            trivial = not (cfg.handle_near_zero_cancellation and might_cancel)
+            if trivial:
                 K[  i, i, j] -= R_kij
-                # Add gain-term to adjacent "next-lower" bin.
                 K[k_l, i, j] += R_kij * f_gain * (1-eps)
-                # Add gain-term to adjacent "next-higher" bin.
                 K[k_h, i, j] += R_kij * f_gain * eps
-
-            # If we ARE handling near-zero cancellation:
-            # -> Differentiate between two cases:
             else:
-                # Case 1: 
-                #    Resulting mass `m_k` is much bigger than `max(m_i, m_j)`.
-                #    In that case: 
-                #      - `epsilon >> 0`, and
-                #      - `k_l > max(i, j)`.
-                # -> Near-zero cancellation will NOT occur.
-                if k_l > i:
-                    # Add loss term.
-                    K[  i, i, j] -= R_kij
-                    # Add gain-term to adjacent "next-lower" bin.
-                    K[k_l, i, j] += R_kij * f_gain * (1-eps)
-                    # Add gain-term to adjacent "next-higher" bin.
-                    K[k_h, i, j] += R_kij * f_gain * eps
-
-                # Case 2: 
-                #    Resulting mass `m_k` is only slightly bigger than `max(m_i, m_j)`.
-                #    This occurs if one of the interacting masses is much smaller than the other.
-                #    In that case: 
-                #      - `epsilon << 1`, and
-                #      - `k_l = max(i, j)`.
-                # -> Near-zero cancellation might very well occur, and we need to handle it:
-                elif k_l == max(i, j):
-                    # Add loss term.
-                    K[  i, i, j] -= R_kij
-                    # ...
-                    K[k_l, i, j] -= R_kij * f_gain * eps
-                    # Add gain-term to adjacent "next-higher" bin.
-                    K[k_h, i, j] += R_kij * f_gain * eps
-
-                # This can never happen, since k cannot be smaller than both i & j.
-                else:
-                    raise Exception
-
+                K[k_l, i, j] -= R_kij * f_gain * eps
+                K[k_h, i, j] += R_kij * f_gain * eps
+    
     if cfg.run_stability_tests:
         test_for_mass_conservation(cfg, K, mass_from_index, index_from_mass)
 

@@ -1,11 +1,11 @@
 from tqdm import tqdm
-from termcolor import colored
 
 import coagulation
 from config import Config
 import state_forwarding
 import state_initialization
 import utils
+from utils.cprint import cprint
 
 
 def run_solver(cfg, K, n0):
@@ -49,23 +49,24 @@ def run_solver(cfg, K, n0):
         ns.append(n_new)
 
         if run_stability_tests:
-            M_tp1 = utils.calc_total_mass(ns[-1], mass_grid_exp_min, mass_grid_stepsize)
+            M_tp1 = utils.calc_total_mass(
+                ns[-1], mass_grid_exp_min, mass_grid_stepsize)
             dM = (M_tp1-M_0) / M_0*100
             print(f"\n\t\t(M_{t+1}-M_0)/M_0 = {dM:.2E} %")
-            print(f"\t\t(M_{t+1}-M_{max(0,t)})/M_{max(0,t)} = {(M_tp1-M)/M*100:.2E} %\n\n\n\n\n\n")
+            print(
+                f"\t\t(M_{t+1}-M_{max(0,t)})/M_{max(0,t)} = {(M_tp1-M)/M*100:.2E} %\n\n\n\n\n\n")
             M = M_tp1
 
         t += dt
 
-    print()
-    print(f"\tt_i = {t_0}")
-    print(f"\tt_f = {t:.2E}")
+    cprint(f"- t_i = {t_0}", indent=1)
+    cprint(f"- t_f = {t:.2E}", indent=1)
+
     return ns
 
 
-
 def main():
-    print(colored("\nRunning solver v01_py...", "yellow"))
+    cprint("Running solver v01_py...", indent=1)
 
     # Load solver configuration from TOML file.
     cfg = Config()
@@ -98,6 +99,8 @@ def main():
         ns, timing_info = utils.record_execution_time(
             run_solver, *[cfg, K, n0]
         )
+        start, end, duration = timing_info
+        cprint(f"Execution time: {duration}", indent=1, color="green")
 
         # Create file containing information about this run.
         utils.file_io.save_run_info_to_file(cfg, run_id, timing_info)

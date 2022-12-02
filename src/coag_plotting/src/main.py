@@ -1,14 +1,14 @@
 import os
 
-from termcolor import colored
 import matplotlib.pyplot as plt
 
 from config import Config
 from plotting import plot_error_vs_time
-from plotting.mass_index_conversion import mass_to_index_conversion
-from plotting.mass_index_conversion import index_to_mass_conversion
 from plotting import plot_kernel
 from plotting import plot_mass_distribution_over_time
+from plotting.mass_index_conversion import index_to_mass_conversion
+from plotting.mass_index_conversion import mass_to_index_conversion
+from utils.cprint import cprint
 import utils
 
 
@@ -26,13 +26,12 @@ def get_run_ids(cfg):
     elif cfg.runs_to_plot == "last":
         out.append(run_ids[-1])
     else:
-        raise Exception(f"ERROR: runs_to_plot \"{cfg.runs_to_plot}\" is not defined.")
+        raise Exception(
+            f"ERROR: runs_to_plot \"{cfg.runs_to_plot}\" is not defined.")
     return out
 
 
 def main(cfg):
-    print(colored("\nRunning plotter...", "yellow"))
-
     k = int(cfg.mass_grid_resolution/2)
     ks = range(k, k+1)
 
@@ -46,7 +45,7 @@ def main(cfg):
 
     run_ids = get_run_ids(cfg)
     for run_id in run_ids:
-        print(colored(f"\tPlotting for {run_id}", "blue"))
+        cprint(f"Plotting for {run_id}...", indent=1)
 
         # Make sure the directory for saving plots exists.
         utils.file_io.setup_plot_savedir(cfg, run_id)
@@ -68,6 +67,6 @@ def main(cfg):
 if __name__ == "__main__":
     # Load configuration TOML file.
     cfg = Config()
-    
+
     # Start plotter.
     main(cfg)

@@ -5,6 +5,9 @@ import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 import numpy as np
 
+from utils.cprint import cprint
+
+
 VMIN, VCEN, VMAX = -1, 0, 1
 CMAP_NORM = colors.TwoSlopeNorm(vmin=VMIN, vcenter=VCEN, vmax=VMAX)
 
@@ -37,13 +40,15 @@ def plot_kernel_layer(cfg, K, run_id, k, show_plot=False, save_plot=True):
 
 
 def plot_kernel(cfg, run_id, ks):
-    print("\t\tPlotting kernel...")
+    cprint("Plotting kernel...", indent=2)
 
-    path_to_kernel = os.path.join(cfg.path_to_outfiles, "runs", run_id, "data", "kernel.txt")
+    path_to_kernel = os.path.join(
+        cfg.path_to_outfiles, "runs", run_id, "data", "kernel.txt")
     with open(path_to_kernel, encoding="utf-8") as fp:
         K = np.array(json.load(fp))
 
-    path = os.path.join(cfg.path_to_outfiles, "runs", run_id, "figures", "kernel")
+    path = os.path.join(cfg.path_to_outfiles, "runs",
+                        run_id, "figures", "kernel")
     os.system(f"mkdir -p \"{path}\"")
 
     # Decide whether to show the plot.

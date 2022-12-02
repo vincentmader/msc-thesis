@@ -3,15 +3,17 @@ import os
 import matplotlib.pyplot as plt
 
 import utils
+from utils.cprint import cprint
 
 
 def plot_mass_distribution_over_time(cfg, run_id):
-    print("\t\tPlotting mass distribution...")
+    cprint("Plotting mass distribution...", indent=2)
     # Load simulation-data from save-file into string.
     m, Ns = utils.file_io.load_simulation_data(cfg, run_id)
 
     # Calculate total mass in the disk at t=0.
-    M_0 = utils.calc_total_mass(Ns[0], cfg.mass_grid_exp_min, cfg.mass_grid_stepsize)
+    M_0 = utils.calc_total_mass(
+        Ns[0], cfg.mass_grid_exp_min, cfg.mass_grid_stepsize)
 
     # Create figure.
     _ = plt.figure(figsize=cfg.default_fig_size)
@@ -65,7 +67,8 @@ def plot_mass_distribution(cfg, t, m, N, M_0):
 def save_plot_to_file(cfg, run_id):
     # Define path to file that plot should be written to.
     filename = "mass-distribution N(m).png"
-    path_to_savefile = os.path.join(cfg.path_to_outfiles, "runs", run_id, "figures", filename)
+    path_to_savefile = os.path.join(
+        cfg.path_to_outfiles, "runs", run_id, "figures", filename)
 
     # Save the figure.
     plt.savefig(path_to_savefile)

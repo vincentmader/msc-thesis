@@ -4,17 +4,19 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from utils.mass_index_conversion import index_from_mass
+from utils.cprint import cprint
 
 
 def plot_mass_to_index_conversion(cfg):
-    print("\tPlotting mass-to-index conversion...")
+    cprint("Plotting mass-to-index conversion...", indent=1)
 
     mass_grid_exp_min = cfg.mass_grid_exp_min
     mass_grid_exp_max = cfg.mass_grid_exp_max
     mass_grid_resolution = cfg.mass_grid_resolution
     mass_grid_stepsize = cfg.mass_grid_stepsize
 
-    masses = np.logspace(mass_grid_exp_min, mass_grid_exp_max, mass_grid_resolution)
+    masses = np.logspace(
+        mass_grid_exp_min, mass_grid_exp_max, mass_grid_resolution)
     indices = np.array([
         index_from_mass(m, mass_grid_exp_min, mass_grid_stepsize) for m in masses
     ])

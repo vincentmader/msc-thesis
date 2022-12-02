@@ -7,7 +7,5 @@ def record_execution_time(f, *args):
     start = dt.now()
     res = f(*args)
     end = dt.now()
-
     duration = end - start
-    print(colored(f"\tExecution time: {duration}", "blue"))
-    return res, (start, end)
+    return res, (start, end, duration)

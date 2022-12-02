@@ -75,9 +75,9 @@
 #       - "mass-index conversion"
         plots_to_show = [
         # "mass-index conversion",
-          "mass distribution", 
+          # "mass distribution", 
         # "mass error", 
-          "coagulation kernel"
+          # "coagulation kernel"
         ]  
 
 #       Specify which simulation runs should be plotted.
@@ -101,13 +101,20 @@
 # GLOBAL CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
 
-    [solver]
+    [project]
 #       Define development version of Smoluchowski coagulation solver.
 #       Possible values:
 #       - "v01" -> Python solver (currently in active development)
 #       - "v02" ->   Rust solver (might be implemented later)
-        version = "v01"
+        kernel_version = "v01"
 
+#       Define version of Smoluchowski coagulation kernel creation.
+#       Possible values:
+#       - "v01" -> Python kernel (currently in active development)
+#       - "v02" ->   Rust kernel (might be implemented later)
+        solver_version = "v01"
+
+    [solver]
 #       Define maximum length of run-id string. (e.g. 8 -> max. 10^8 runs)
         max_run_id_length = 8
 

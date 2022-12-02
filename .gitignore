@@ -2,6 +2,7 @@
 /.git/
 /out/
 /src/coag_solvers/v02_rs/target/
+/src/coag_kernels/v02_rs/target/
 /src/testing/
 /venv/
 __pycache__/

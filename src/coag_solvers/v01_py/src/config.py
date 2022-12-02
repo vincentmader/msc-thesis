@@ -6,6 +6,9 @@ class Config:
     def __init__(self):
         cfg = toml.load("./config.toml")
 
+        kernel_version = cfg["project"]["kernel_version"]
+        solver_version = cfg["project"]["solver_version"]
+
         # ╭───────────────────────────────────────────────────────────────────╮
         # │ Solver                                                            │
         # ╰───────────────────────────────────────────────────────────────────╯
@@ -110,6 +113,8 @@ class Config:
 
         # ─────────────────────────────────────────────────────────────────────
 
+        self.kernel_version = kernel_version
+        self.solver_version = solver_version
         self.run_solver = run_solver
         self.max_run_id_length = max_run_id_length
         self.mass_grid_resolution = mass_grid_resolution

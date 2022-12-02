@@ -96,7 +96,7 @@
         default_fig_size = [12, 8]
 
 #       Specify nr. of compute steps between each (mass distribution) plot.
-        steps_between_plot = 100
+        steps_between_plot = 50
 
 # GLOBAL CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────

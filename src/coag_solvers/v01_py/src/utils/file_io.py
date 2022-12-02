@@ -13,23 +13,6 @@ def zero_pad_int(num: int, nr_of_digits: int) -> str:
     return out
 
 
-def save_run_info_to_file(cfg, run_id, timing_info):
-    start = timing_info[0]
-    end = timing_info[1]
-
-    start_timestamp_in_mus = int(start.timestamp() * 1e6)
-    end_timestamp_in_mus = int(end.timestamp() * 1e6)
-    duration_in_mus = (end - start).microseconds
-
-    info_file_content = f"start_timestamp_in_mus={start_timestamp_in_mus}\n"
-    info_file_content += f"end_timestamp_in_mus={end_timestamp_in_mus}\n"
-    info_file_content += f"duration_in_mus={duration_in_mus}"
-
-    path_to_info_file = os.path.join(cfg.path_to_outfiles, "runs", run_id, "run_info.txt")
-    with open(path_to_info_file, "w", encoding="utf-8") as fp:
-        fp.write(info_file_content)
-
-
 def get_run_id(cfg):
     path_to_runs = os.path.join(cfg.path_to_outfiles, "runs")
     outfiles = os.listdir(path_to_runs)
@@ -51,6 +34,29 @@ def get_run_id(cfg):
     # run_id = f"run-id={run_id}, date={date_str}, time={time_str}"
     run_id = f"id={run_id}"
     return run_id
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def save_run_info_to_file(cfg, run_id, timing_info):
+    start = timing_info[0]
+    end = timing_info[1]
+
+    start_timestamp_in_mus = int(start.timestamp() * 1e6)
+    end_timestamp_in_mus = int(end.timestamp() * 1e6)
+    duration_in_mus = (end - start).microseconds
+
+    info_file_content = f"start_timestamp_in_mus={start_timestamp_in_mus}\n"
+    info_file_content += f"end_timestamp_in_mus={end_timestamp_in_mus}\n"
+    info_file_content += f"duration_in_mus={duration_in_mus}"
+
+    path_to_info_file = os.path.join(cfg.path_to_outfiles, "runs", run_id, "run_info.txt")
+    with open(path_to_info_file, "w", encoding="utf-8") as fp:
+        fp.write(info_file_content)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 
 
 def setup_savedir(cfg, run_id):
@@ -83,6 +89,18 @@ def setup_plot_savedir(cfg, run_id):
     return path_to_savedir
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def save_config(cfg, run_id):
+    path_i = cfg.path_to_config
+    path_f = os.path.join(cfg.path_to_outfiles, "runs", run_id, "config.toml")
+    os.system(f"cp \"{path_i}\" \"{path_f}\"")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+
+
 def save_simulation_data(cfg, run_id, x, ns):
     # Define content of save-file.
     content = ",".join([str(i) for i in x]) + "\n"
@@ -100,22 +118,6 @@ def save_simulation_data(cfg, run_id, x, ns):
     with open(path_to_savefile, 'w', encoding="utf-8") as fp:
         fp.write(content)
     return run_id
-
-
-def save_coagulation_kernel(cfg, run_id, K):
-    # Define (& create, if necessary) save-directory for simulation data.
-    path_to_data_savedir = setup_data_savedir(cfg, run_id)
-
-    # Save gain-term of kernel to file.
-    path_to_kernel = os.path.join(path_to_data_savedir, "kernel.txt")
-    with open(path_to_kernel, "w", encoding="utf-8") as fp:
-        json.dump(K.tolist(), fp)
-
-
-def save_config(cfg, run_id):
-    path_i = cfg.path_to_config
-    path_f = os.path.join(cfg.path_to_outfiles, "runs", run_id, "config.toml")
-    os.system(f"cp \"{path_i}\" \"{path_f}\"")
 
 
 def load_simulation_data(cfg, run_id):
@@ -137,3 +139,27 @@ def load_simulation_data(cfg, run_id):
         Ns.append(N)
 
     return m, Ns
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def save_coagulation_kernel_to_file(cfg, run_id, K):
+    # Define (& create, if necessary) save-directory for simulation data.
+    path_to_data_savedir = setup_data_savedir(cfg, run_id)
+
+    # Save gain-term of kernel to file.
+    path_to_kernel = os.path.join(path_to_data_savedir, "kernel.txt")
+    with open(path_to_kernel, "w", encoding="utf-8") as fp:
+        json.dump(K.tolist(), fp)
+
+
+def load_coagulation_kernel_from_file(cfg, run_id):
+    path_to_data_savedir = setup_data_savedir(cfg, run_id)
+    path_to_kernel = os.path.join(path_to_data_savedir, "kernel.txt")
+    with open(path_to_kernel, "r", encoding="utf-8") as fp:
+        K = json.load(fp)
+    return np.array(K)
+
+
+# ─────────────────────────────────────────────────────────────────────────────

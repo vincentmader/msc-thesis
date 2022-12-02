@@ -1,6 +1,7 @@
+import sys
+
 from tqdm import tqdm
 
-import coagulation
 from config import Config
 import state_forwarding
 import state_initialization
@@ -71,19 +72,15 @@ def main():
     # Load solver configuration from TOML file.
     cfg = Config()
 
-    # Define coagulation kernel & initialize disk mass distribution.
-    # ─────────────────────────────────────────────────────────────────────────
+    run_id = sys.argv[1]
 
-    K = coagulation.kernel.K(cfg)
+    K = utils.file_io.load_coagulation_kernel_from_file(cfg, run_id)
 
     # Define initial state.
     x, n0 = state_initialization.initial_state(cfg)
 
     # Setup file/directory structure.
     # ─────────────────────────────────────────────────────────────────────────
-
-    # Define this simulation's run-ID.
-    run_id = utils.file_io.get_run_id(cfg)
 
     # Make sure save-directory exists.
     utils.file_io.setup_savedir(cfg, run_id)
@@ -107,9 +104,6 @@ def main():
 
         # Save mass distributions to file.
         utils.file_io.save_simulation_data(cfg, run_id, x, ns)
-
-    # Save kernel(s) to file.
-    utils.file_io.save_coagulation_kernel(cfg, run_id, K)
 
 
 if __name__ == "__main__":

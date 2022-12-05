@@ -22,12 +22,13 @@ def cprint_header():
     title = f"{title} " if len(title) % 2 != 0 else title
     pad = 2
     a = (terminal_width - 2*pad - 2)
-    b = int((terminal_width - len(title) - 2*(pad+1))/2)
+    b = int((a - len(title))/2)
     c = pad * ' '
     d = b * ' '
     e = a * '─'
+    f = " " if terminal_width % 2 != 0 else ""
     text = f"{c}╭{e}╮{c}\n"
-    text += f"{c}│{d}{title}{d}│{c}\n"
+    text += f"{c}│{d}{f}{title}{d}│{c}\n"
     text += f"{c}╰{e}╯{c}"
     colored_text = colored(text, "blue")
     print(colored_text)

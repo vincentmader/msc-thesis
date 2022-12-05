@@ -27,7 +27,8 @@ def cprint_header():
     d = b * ' '
     e = a * '─'
     f = " " if terminal_width % 2 != 0 else ""
-    text = f"{c}╭{e}╮{c}\n"
+    text = "\n"
+    text += f"{c}╭{e}╮{c}\n"
     text += f"{c}│{d}{f}{title}{d}│{c}\n"
     text += f"{c}╰{e}╯{c}"
     colored_text = colored(text, "blue")

@@ -12,9 +12,13 @@ from utils.cprint import cprint_header
 def create_coagulation_kernel(run_id, version="v01"):
     cprint(f"1. Creation of Coagulation Kernel", newline=True, color="blue")
     if version == "v01":
-        os.system(f"./venv/bin/python3 ./src/coag_kernels/v01_py/src/main.py {run_id}")
+        file = "./src/coag_kernels/v01_py/src/main.py"
+        os.system(f"./venv/bin/python3 {file} {run_id}")
     elif version == "v02":
         os.system("cd ./src/coag_kernels/v02_rs && cargo run --release")
+    elif version == "v03":
+        file = "./src/coag_kernels/v03_py_kees/src/main.py"
+        os.system(f"./venv/bin/python3 {file} {run_id}")
     else:
         error_msg = f"Undefined solver-version: \"{version}\""
         raise Exception(colored(error_msg, "red"))
@@ -23,7 +27,8 @@ def create_coagulation_kernel(run_id, version="v01"):
 def run_coagulation_solver(run_id, version="v01"):
     cprint(f"2. Execution of Coagulation Solver", newline=True, color="blue")
     if version == "v01":
-        os.system(f"./venv/bin/python3 ./src/coag_solvers/v01_py/src/main.py {run_id}")
+        os.system(
+            f"./venv/bin/python3 ./src/coag_solvers/v01_py/src/main.py {run_id}")
     elif version == "v02":
         os.system("cd ./src/coag_solvers/v02_rs && cargo run --release")
     else:

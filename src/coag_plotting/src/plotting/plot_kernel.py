@@ -40,7 +40,7 @@ def plot_kernel_layer(cfg, K, run_id, k, show_plot=False, save_plot=True):
 
 
 def plot_kernel(cfg, run_id, ks):
-    cprint("Plotting kernel...", indent=2)
+    cprint("Plotting kernel...", indent=1)
 
     path_to_kernel = os.path.join(
         cfg.path_to_outfiles, "runs", run_id, "data", "kernel.txt")

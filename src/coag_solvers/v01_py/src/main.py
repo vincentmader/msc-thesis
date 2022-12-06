@@ -67,12 +67,11 @@ def run_solver(cfg, K, n0):
 
 
 def main():
-    cprint("Running solver v01_py...", indent=1)
-
     # Load solver configuration from TOML file.
     cfg = Config()
 
     run_id = sys.argv[1]
+    cprint(f"{run_id}", indent=1, color="cyan")
 
     K = utils.file_io.load_coagulation_kernel_from_file(cfg, run_id)
 
@@ -92,6 +91,8 @@ def main():
     # ─────────────────────────────────────────────────────────────────────────
 
     if cfg.run_solver:
+        cprint("Running solver v01_py...", indent=1)
+
         # Compute evolution of mass distribution & record execution duration.
         ns, timing_info = utils.record_execution_time(
             run_solver, *[cfg, K, n0]

@@ -12,7 +12,7 @@
 #       Possible values:
 #       - "additive"
 #       - "multiplicative"
-        dt_incrementation = "multiplicative"
+        dt_incrementation = "additive"
 #       Define size of additive time-step.
         additive_dt = 1
 #       Define size of multiplicative time-step.
@@ -61,7 +61,7 @@
 #       - "coagulation kernel"
 #       - "mass-index conversion"
         plots_to_create = [
-            "mass-index conversion",
+          # "mass-index conversion",
             "mass distribution", 
             "mass error", 
             "coagulation kernel"
@@ -77,7 +77,7 @@
         # "mass-index conversion",
           "mass distribution", 
           "mass error", 
-        # "coagulation kernel"
+          "coagulation kernel"
         ]  
 
 #       Specify which simulation runs should be plotted.
@@ -96,7 +96,7 @@
         default_fig_size = [12, 8]
 
 #       Specify nr. of compute steps between each (mass distribution) plot.
-        steps_between_plot = 50
+        steps_between_plot = 100
 
 # GLOBAL CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
@@ -106,13 +106,14 @@
 #       Possible values:
 #       - "v01" -> Python solver (currently in active development)
 #       - "v02" ->   Rust solver (might be implemented later)
-        kernel_version = "v01"
+        solver_version = "v01"
 
 #       Define version of Smoluchowski coagulation kernel creation.
 #       Possible values:
 #       - "v01" -> Python kernel (currently in active development)
 #       - "v02" ->   Rust kernel (might be implemented later)
-        solver_version = "v01"
+#       - "v03" -> Python kernel (Kees' code)
+        kernel_version = "v01"
 
     [solver]
 #       Define maximum length of run-id string. (e.g. 8 -> max. 10^8 runs)

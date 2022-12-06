@@ -45,7 +45,7 @@ def main(cfg):
 
     run_ids = get_run_ids(cfg)
     for run_id in run_ids:
-        cprint(f"Plotting for {run_id}...", indent=1)
+        cprint(f"{run_id}", indent=1, color="cyan")
 
         # Make sure the directory for saving plots exists.
         utils.file_io.setup_plot_savedir(cfg, run_id)

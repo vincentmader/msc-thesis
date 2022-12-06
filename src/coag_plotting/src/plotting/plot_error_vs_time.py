@@ -7,7 +7,7 @@ from utils.cprint import cprint
 
 
 def plot_error_vs_time(cfg, run_id, save_plot=True):
-    cprint("Plotting error vs. time...", indent=2)
+    cprint("Plotting error vs. time...", indent=1)
 
     # Load simulation-data from save-file into string.
     m, Ns = utils.file_io.load_simulation_data(cfg, run_id)

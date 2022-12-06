@@ -12,7 +12,7 @@
 #       Possible values:
 #       - "additive"
 #       - "multiplicative"
-        dt_incrementation = "additive"
+        dt_incrementation = "multiplicative"
 #       Define size of additive time-step.
         additive_dt = 1
 #       Define size of multiplicative time-step.
@@ -111,7 +111,7 @@
 #       - "v01" -> Python kernel (currently in active development)
 #       - "v02" ->   Rust kernel (might be implemented later)
 #       - "v03" -> Python kernel (Kees' code)
-        kernel_version = "v03"
+        kernel_version = "v01"
 
     [solver]
 #       Define maximum length of run-id string. (e.g. 8 -> max. 10^8 runs)

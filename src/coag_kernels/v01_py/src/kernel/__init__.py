@@ -10,7 +10,6 @@ def K(cfg):
         idx, cfg.mass_grid_exp_min, cfg.mass_grid_stepsize
     )
     # Define short-hand notation for mass-to-index conversion.
-
     def index_from_mass(mass): return mass_index_conversion.index_from_mass(
         mass, cfg.mass_grid_exp_min, cfg.mass_grid_stepsize
     )
@@ -20,6 +19,12 @@ def K(cfg):
     # Loop over all possible particle-particle pairs in the discrete mass grid.
     for i in range(K.shape[0]):
         m_i = mass_from_index(i)
+        if(i==0):
+            print(f"{m_i=}")
+        if(i==1):
+            print(f"{m_i=}")
+        if (i==99):
+            print(f"{m_i=}")
         for j in range(K.shape[1]):
             m_j = mass_from_index(j)
 
@@ -40,23 +45,29 @@ def K(cfg):
             # Calculate loss term (gain term can then be calculated from this).
             R_kij = R(i, j, cfg, mass_from_index)
 
-            # Use linear ansatz to split kernel between adjacent next-lower/-higher bins.
-            eps = (m_i + m_j - m_l) / (m_h - m_l)
             # Determine prefactor of gain-term.
             f_gain = heaviside_theta(i - j)
 
             might_cancel = (k_l == i)
             trivial = not (cfg.handle_near_zero_cancellation and might_cancel)
             if trivial:
+                eps = (m_i + m_j - m_l) / (m_h - m_l)
                 K[i, i, j] -= R_kij
                 K[k_l, i, j] += R_kij * f_gain * (1-eps)
                 K[k_h, i, j] += R_kij * f_gain * eps
             else:
+                eps = m_j / (m_h - m_l) # NOTE 2nd case of near-zero-cancellation
                 K[k_l, i, j] -= R_kij * f_gain * eps
+                if i == j:
+                    K[k_l, i, j] -= 1/2 * R_kij   # TODO no eps here
                 K[k_h, i, j] += R_kij * f_gain * eps
 
     if cfg.run_stability_tests:
         test_for_mass_conservation(cfg, K, mass_from_index, index_from_mass)
+
+    print(K[50, 50, 49])
+
+    # plt.plot(K[])
 
     return K
 

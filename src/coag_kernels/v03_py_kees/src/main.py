@@ -1,7 +1,7 @@
 import sys
 
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 from config import Config
 import utils
@@ -37,11 +37,14 @@ for i in range(n):
         k_l = kk_l[i, j]
         k_h = kk_h[i, j]
         eps = eeps[i, j]
+        # ^ NOTE: second case of near-zero-cancellation here, needs fix!
+
         # First the normal version
         K_kij[i, i, j] -= R_kij
         K_kij[k_l, i, j] += f_gain[i, j]*R_kij*(1-eps)
         if k_h < n:
             K_kij[k_h, i, j] += f_gain[i, j]*R_kij*eps
+
         # Now the near cancellation version
         if k_l > i:
             K_kij_nc[i, i, j] -= R_kij
@@ -52,6 +55,8 @@ for i in range(n):
             K_kij_nc[k_l, i, j] -= f_gain[i, j]*R_kij*eps
             if k_h < n:
                 K_kij_nc[k_h, i, j] += f_gain[i, j]*R_kij*eps
+            if i == j:
+                K_kij_nc[k_l, i, j] -= 1/2 * R_kij   # NOTE no eps here
 
 k = n//2
 

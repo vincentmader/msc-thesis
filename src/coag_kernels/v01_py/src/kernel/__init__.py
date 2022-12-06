@@ -6,11 +6,12 @@ from utils.elementary_functions import heaviside_theta
 
 def K(cfg):
     # Define short-hand notation for index-to-mass conversion.
-    mass_from_index = lambda idx: mass_index_conversion.mass_from_index(
+    def mass_from_index(idx): return mass_index_conversion.mass_from_index(
         idx, cfg.mass_grid_exp_min, cfg.mass_grid_stepsize
     )
     # Define short-hand notation for mass-to-index conversion.
-    index_from_mass = lambda mass: mass_index_conversion.index_from_mass(
+
+    def index_from_mass(mass): return mass_index_conversion.index_from_mass(
         mass, cfg.mass_grid_exp_min, cfg.mass_grid_stepsize
     )
 
@@ -27,7 +28,7 @@ def K(cfg):
             # Determine indices of bins adjacent to combined mass.
             k_l = index_from_mass(m_k)
             k_h = k_l + 1
-            # Check if indices of resulting mass(es) lie 
+            # Check if indices of resulting mass(es) lie
             # outside the discrete mass grid. If yes: -> Skip.
             if max(k_l, k_h) >= cfg.mass_grid_resolution:
                 continue
@@ -35,8 +36,10 @@ def K(cfg):
             # Calculate the mass corresponding to these indices.
             m_l = mass_from_index(k_l)
             m_h = mass_from_index(k_h)
+
             # Calculate loss term (gain term can then be calculated from this).
             R_kij = R(i, j, cfg, mass_from_index)
+
             # Use linear ansatz to split kernel between adjacent next-lower/-higher bins.
             eps = (m_i + m_j - m_l) / (m_h - m_l)
             # Determine prefactor of gain-term.
@@ -45,13 +48,13 @@ def K(cfg):
             might_cancel = (k_l == i)
             trivial = not (cfg.handle_near_zero_cancellation and might_cancel)
             if trivial:
-                K[  i, i, j] -= R_kij
+                K[i, i, j] -= R_kij
                 K[k_l, i, j] += R_kij * f_gain * (1-eps)
                 K[k_h, i, j] += R_kij * f_gain * eps
             else:
                 K[k_l, i, j] -= R_kij * f_gain * eps
                 K[k_h, i, j] += R_kij * f_gain * eps
-    
+
     if cfg.run_stability_tests:
         test_for_mass_conservation(cfg, K, mass_from_index, index_from_mass)
 
@@ -88,7 +91,7 @@ def test_for_mass_conservation(cfg, K, mass_from_index, index_from_mass):
             m_k = m_i + m_j
             k_l = index_from_mass(m_k)
             k_h = k_l + 1
-            if max(k_l,k_h) >= cfg.mass_grid_resolution:
+            if max(k_l, k_h) >= cfg.mass_grid_resolution:
                 # print("i =", i, ", j =", j, "-> k_l =", k_l)
                 # print("                -> k_h =", k_h, "\n")
                 skipped += 1
@@ -112,5 +115,3 @@ def test_for_mass_conservation(cfg, K, mass_from_index, index_from_mass):
     print("\tbad:     ", bad, "\t/", total)
     print("\tskipped: ", skipped, "\t/", total)
     print("\n\t-> Accuracy:", round(good/(bad+good)*100), "% (for non-skipped)")
-
-

@@ -16,7 +16,7 @@ def initial_state(cfg):
         n = utils.dirac_delta(x, idx0)
 
     elif cfg.initial_mass_distribution == "flat":
-        n = np.ones(x.shape[0])
+        n = np.ones(x.shape[0]) / x.shape[0]
 
     else:
         raise Exception(

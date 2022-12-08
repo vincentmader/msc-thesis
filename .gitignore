@@ -4,5 +4,7 @@
 /src/coag_solvers/v02_rs/target/
 /src/coag_kernels/v02_rs/target/
 /src/testing/
+/tex/tex-headers/
+/tex/msc-thesis.tex
 /venv/
 __pycache__/

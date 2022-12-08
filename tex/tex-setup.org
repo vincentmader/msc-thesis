@@ -1,0 +1,6 @@
+#+latex_header: \input{./tex-headers/packages.tex}
+#+latex_header: \input{./tex-packages.tex}
+#+latex_header: \input{./tex-headers/header.tex}
+#+latex_header: \input{./tex-header.tex}
+#+latex_header_extra: \input{./tex-headers/header-extra.tex}
+#+latex_header_extra: \input{./tex-header-extra.tex}

@@ -3,7 +3,7 @@
 
 [time_discretization]
 #   Specify the number of time-steps.
-    nr_of_timesteps = 100
+    nr_of_timesteps = 1000
 
 #   Specify type of time-step incrementation.
 #   - Option 1: "additive"
@@ -17,22 +17,24 @@
     multiplicative_dt = 0.1
 
 [mass_discretization]
+#   Specify variant of mass grid discretization.
+#   - Option 1: "linear"
+#   - Option 2: "logarithmic"
+    mass_grid_variant = "logarithmic"
 #   Specify mass grid resolution, 
 #   i.e. the number of bins $\mathcal N_m$.
     mass_grid_resolution = 100
-#   Specify minimum & maximum mass exponent (in cgs units).
-    mass_grid_exp_min = -24
-    mass_grid_exp_max = +27
+#   Specify mass grid boundaries (in cgs units).
+#   Note: In logarithmic grid, the exponents are given instead.
+    mass_grid_min_value = -24
+    mass_grid_max_value = +27
 
 [coagulation_kernel]
 #   Define coagulation kernel variant.
-#   Possible values:
-#   - "constant"
-#   - "linear"
-#   - "quadratic"
+#   - Option 1: "constant"
+#   - Option 2: "linear"
+#   - Option 3: "quadratic"
     variant = "constant"
-  # variant = "linear"
-  # variant = "quadratic"
     
 [stability]
 #   Determine whether near-zero-cancellation should be handled.
@@ -40,11 +42,10 @@
 
 [initialization]
 #   Define shape of initial mass distribution.
-#   Possible values:
-#   - "dirac-delta"
-#   - "gaussian"
-#   - "flat"
-    initial_mass_distribution = "flat" 
+#   - Option: "dirac-delta"
+#   - Option: "gaussian"
+#   - Option: "flat"
+    initial_mass_distribution = "dirac-delta" 
 
 [testing]
 #   Run stability tests.
@@ -72,10 +73,10 @@
 #   - Option 3: "coagulation kernel"
 #   - Option 4: "mass-index conversion"
     plots_to_show = [
-    # "mass-index conversion",
-    # "mass distribution", 
+      "mass-index conversion",
+      "mass distribution", 
       "mass error", 
-    # "coagulation kernel"
+      "coagulation kernel"
     ]  
 
 #   Specify which simulation runs should be plotted.
@@ -86,21 +87,20 @@
 #   Specify plotting theme.
 #   - Option 1: "dark"
 #   - Option 2: "light"
-    theme = "light"
+    theme = "dark"
 
 #   Specify plot dimensions.
     default_fig_size = [9, 6]
   # default_fig_size = [12, 8]
 
 #   Specify nr. of compute steps between each (mass distribution) plot.
-    steps_between_plot = 1
+    steps_between_plot = 100
 
 # GLOBAL CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
 
 [project]
 #   Define development version of Smoluchowski coagulation solver.
-#   Possible values:
 #   - Option 1: "v01" -> Python solver (currently in active development)
 #   - Option 2: "v02" ->   Rust solver (might be implemented later)
     solver_version = "v01"

@@ -1,6 +1,7 @@
 import os
 
 import matplotlib.pyplot as plt
+import numpy as np
 
 import utils
 from utils.cprint import cprint
@@ -10,24 +11,27 @@ def plot_error_vs_time(cfg, run_id, save_plot=True):
     cprint("Plotting error vs. time...", indent=1)
 
     # Load simulation-data from save-file into string.
-    _m, Ns = utils.file_io.load_simulation_data(cfg, run_id)
+    _, Ns = utils.file_io.load_simulation_data(cfg, run_id)
     # Define time-axis.
-    t = range(cfg.nr_of_timesteps)
+    t = np.arange(0, cfg.nr_of_timesteps)
 
     # Calculate total mass in the disk at various times.
     M = [utils.calc_total_mass(Ns[t], cfg) for t in t]
 
     # Calculate relative error.
-    err = [(M[t] / M[0] - 1) * 100 for t in t]
+    err = [(M[t] / M[0] - 1) for t in t]
 
     # Create new figure.
     _ = plt.figure()
+
     # Plot error vs. time.
     plt.plot(t, err)
+
     # Define axis-labels.
     plt.title("Relative error of total disk-mass over time")
-    plt.xlabel("time $t$")
-    plt.ylabel(r"relative error $\frac{\Delta M}{M_0}$ [%]")
+    plt.xlabel("time-step")
+    plt.ylabel(r"$\frac{\Delta M}{M_0}$", rotation=0)
+    plt.xlim(t[0], t[-1])
 
     # Save plot to file.
     if save_plot:

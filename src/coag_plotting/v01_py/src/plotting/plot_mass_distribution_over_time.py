@@ -6,8 +6,18 @@ import utils
 from utils.cprint import cprint
 
 
+def get_x_limits(cfg):
+    min_value = cfg.mass_grid_min_value
+    max_value = cfg.mass_grid_max_value
+    if cfg.mass_grid_variant == "logarithmic":
+        return 10**min_value, 10**max_value
+    else:
+        return min_value, max_value
+
+
 def plot_mass_distribution_over_time(cfg, run_id):
     cprint("Plotting mass distribution...", indent=1)
+
     # Load simulation-data from save-file into string.
     m, Ns = utils.file_io.load_simulation_data(cfg, run_id)
 
@@ -23,12 +33,14 @@ def plot_mass_distribution_over_time(cfg, run_id):
             continue
         plot_mass_distribution(cfg, t, m, N, M_0)
 
+    x_min, x_max = get_x_limits(cfg)
+
     # Prettify plot.
     plt.title("particle mass distribution")
     plt.xlabel("particle mass $m$")
     plt.ylabel("particle abundancy $m\cdot N(m)$")
     plt.legend(loc="upper right", ncol=2)
-    plt.xlim(10**cfg.mass_grid_exp_min, 10**cfg.mass_grid_exp_max)
+    plt.xlim(x_min, x_max)
     y_max = max([max(m*N) for N in Ns]) * 1e3
     y_min = y_max / 1e9
     plt.ylim(y_min, y_max)
@@ -38,7 +50,6 @@ def plot_mass_distribution_over_time(cfg, run_id):
 
     # Decide whether to show the plot.
     show_plot = "mass distribution" in cfg.plots_to_show
-    # Show the plot (optional).
     if show_plot is True:
         plt.show()
 
@@ -51,7 +62,7 @@ def plot_mass_distribution(cfg, t, m, N, M_0):
     M = utils.calc_total_mass(N, cfg)
 
     # Calculate relative mass error with respect to initial disk mass.
-    err = (M / M_0 - 1) * 100
+    err = (M / M_0 - 1)
 
     # Define label: Show time, & area under curve (i.e. total mass).
     if t == 0:
@@ -64,7 +75,7 @@ def plot_mass_distribution(cfg, t, m, N, M_0):
     b = r"\Delta M/M_0"
     c = f"{err:.1e}"
     c = c if err < 0 else f" {c}"
-    label = f"$i_t={t}$,{a}${b}=${c} %"
+    label = f"$i_t={t}$,{a}${b}=${c}"
 
     # Plot mass distribution.
     plt.loglog(m, N*m, label=label)

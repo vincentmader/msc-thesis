@@ -2,15 +2,22 @@ import numpy as np
 
 
 def mass_from_index(idx, cfg):
-    mass_grid_exp_min = cfg.mass_grid_exp_min
-    mass_grid_stepsize = cfg.mass_grid_stepsize
-
-    return (10**mass_grid_exp_min) * (mass_grid_stepsize**idx)
+    variant = cfg.mass_grid_variant
+    min_value = cfg.mass_grid_min_value
+    stepsize = cfg.mass_grid_stepsize
+    if variant == "logarithmic":
+        return (10**min_value) * (stepsize**idx)
+    else:
+        raise Exception()
 
 
 def index_from_mass(mass, cfg):
-    mass_grid_exp_min = cfg.mass_grid_exp_min
-    mass_grid_stepsize = cfg.mass_grid_stepsize
+    variant = cfg.mass_grid_variant
+    min_value = cfg.mass_grid_min_value
+    stepsize = cfg.mass_grid_stepsize
 
-    res = (np.log(mass) - mass_grid_exp_min*np.log(10)) / (np.log(mass_grid_stepsize))
-    return int(res)
+    if variant == "logarithmic":
+        res = (np.log(mass) - min_value*np.log(10)) / np.log(stepsize)
+        return int(res)
+    else:
+        raise Exception()

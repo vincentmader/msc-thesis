@@ -10,13 +10,13 @@ def plot_error_vs_time(cfg, run_id, save_plot=True):
     cprint("Plotting error vs. time...", indent=1)
 
     # Load simulation-data from save-file into string.
-    m, Ns = utils.file_io.load_simulation_data(cfg, run_id)
+    _m, Ns = utils.file_io.load_simulation_data(cfg, run_id)
     # Define time-axis.
     t = range(cfg.nr_of_timesteps)
 
     # Calculate total mass in the disk at various times.
-    M = [utils.calc_total_mass(
-        Ns[t], cfg.mass_grid_exp_min, cfg.mass_grid_stepsize) for t in t]
+    M = [utils.calc_total_mass(Ns[t], cfg) for t in t]
+
     # Calculate relative error.
     err = [(M[t] / M[0] - 1) * 100 for t in t]
 

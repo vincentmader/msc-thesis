@@ -1,5 +1,7 @@
 import sys
 
+import matplotlib.pyplot as plt
+import numpy as np
 from tqdm import tqdm
 
 from config import Config
@@ -10,14 +12,10 @@ from utils.cprint import cprint
 
 
 def run_solver(cfg, K, n0):
-    mass_grid_exp_min = cfg.mass_grid_exp_min
-    mass_grid_stepsize = cfg.mass_grid_stepsize
-    run_stability_tests = cfg.run_stability_tests
-
     # Define vector holding mass-distributions for each time-step.
     ns = [n0]
 
-    M_0 = utils.calc_total_mass(n0, mass_grid_exp_min, mass_grid_stepsize)
+    M_0 = utils.calc_total_mass(n0, cfg)
     dM, M = 0, M_0
 
     t_0 = 1
@@ -25,8 +23,34 @@ def run_solver(cfg, K, n0):
 
     # Start forward-loop.
     for i_t in tqdm(range(cfg.nr_of_timesteps)):
-        if run_stability_tests:
-            print(f"\n\t{t=}", end="")
+        # print()
+        # print(i_t)
+        # print()
+        # print(ns[-1][-2])
+        # if not i_t == 0:
+        #     print(ns[-1][-1])
+        #     maximum = max(ns[-1])
+        #     print(maximum)
+        #     i_max = np.where(ns[-1] == maximum)
+        #     print("i_m_max=", i_max)
+        #     print("m_max=", mass_from_index(i_max, mass_grid_exp_min, mass_grid_stepsize))
+        #     input()
+        # print(mass_from_index(60, mass_grid_exp_min, mass_grid_stepsize))
+        # input()
+
+        # n_i = ns[i_t]
+        # m = np.array([mass_from_index(i, cfg) for i in range(len(n_i))])
+        # N = m * n_i
+
+        # plt.figure()
+        # plt.loglog(m*n_i)
+        # plt.ylim(1e-40, 1e30)
+        # path = os.path.join(cfg.path_to_outfiles, "test", f"N(t={i_t}).png")
+        # plt.savefig(path)
+        # plt.close()
+
+        # if run_stability_tests:
+        #     print(f"\n\t{t=}", end="")
 
         if cfg.dt_incrementation == "additive":
             dt = cfg.additive_dt
@@ -38,25 +62,19 @@ def run_solver(cfg, K, n0):
         # Load current mass-distribution.
         n_old = ns[i_t]
         # Calulcate new mass-distribution.
-        n_new = state_forwarding.forward_state(
-            K,
-            n_old,
-            mass_grid_exp_min,
-            mass_grid_stepsize,
-            run_stability_tests,
-            dt,
-        )
+        n_new = state_forwarding.forward_state(K, n_old, dt)
         # Append new mass-distribution to state-vector.
         ns.append(n_new)
 
-        if run_stability_tests:
-            M_tp1 = utils.calc_total_mass(
-                ns[-1], mass_grid_exp_min, mass_grid_stepsize)
-            dM = (M_tp1-M_0) / M_0*100
-            print(f"\n\t\t(M_{t+1}-M_0)/M_0 = {dM:.2E} %")
-            print(
-                f"\t\t(M_{t+1}-M_{max(0,t)})/M_{max(0,t)} = {(M_tp1-M)/M*100:.2E} %\n\n\n\n\n\n")
-            M = M_tp1
+        # if run_stability_tests:
+        #     M_tp1 = utils.calc_total_mass(
+        #         ns[-1], mass_grid_exp_min, mass_grid_stepsize)
+        #     dM = (M_tp1-M_0) / M_0*100
+        #     print(i_t)
+        #     print(f"\n\t\t(M_{t+1}-M_0)/M_0 = {dM:.2E} %")
+        #     print(
+        #         f"\t\t(M_{t+1}-M_{max(0,t)})/M_{max(0,t)} = {(M_tp1-M)/M*100:.2E} %\n\n\n\n\n\n")
+        #     M = M_tp1
 
         t += dt
 
@@ -90,21 +108,20 @@ def main():
     # Run coagulation solver
     # ─────────────────────────────────────────────────────────────────────────
 
-    if cfg.run_solver:
-        cprint("Running solver v01_py...", indent=1)
+    cprint("Running solver v01_py...", indent=1)
 
-        # Compute evolution of mass distribution & record execution duration.
-        ns, timing_info = utils.record_execution_time(
-            run_solver, *[cfg, K, n0]
-        )
-        start, end, duration = timing_info
-        cprint(f"Execution time: {duration}", indent=1, color="green")
+    # Compute evolution of mass distribution & record execution duration.
+    ns, timing_info = utils.record_execution_time(
+        run_solver, *[cfg, K, n0]
+    )
+    start, end, duration = timing_info
+    cprint(f"Execution time: {duration}", indent=1, color="green")
 
-        # Create file containing information about this run.
-        utils.file_io.save_run_info_to_file(cfg, run_id, timing_info)
+    # Create file containing information about this run.
+    utils.file_io.save_run_info_to_file(cfg, run_id, timing_info)
 
-        # Save mass distributions to file.
-        utils.file_io.save_simulation_data(cfg, run_id, x, ns)
+    # Save mass distributions to file.
+    utils.file_io.save_simulation_data(cfg, run_id, x, ns)
 
 
 if __name__ == "__main__":

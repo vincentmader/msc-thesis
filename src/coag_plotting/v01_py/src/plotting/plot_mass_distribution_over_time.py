@@ -12,8 +12,7 @@ def plot_mass_distribution_over_time(cfg, run_id):
     m, Ns = utils.file_io.load_simulation_data(cfg, run_id)
 
     # Calculate total mass in the disk at t=0.
-    M_0 = utils.calc_total_mass(
-        Ns[0], cfg.mass_grid_exp_min, cfg.mass_grid_stepsize)
+    M_0 = utils.calc_total_mass(Ns[0], cfg)
 
     # Create figure.
     _ = plt.figure(figsize=cfg.default_fig_size)
@@ -49,7 +48,7 @@ def plot_mass_distribution_over_time(cfg, run_id):
 
 def plot_mass_distribution(cfg, t, m, N, M_0):
     # Calculate total mass (to show together with time-step in plot-label).
-    M = utils.calc_total_mass(N, cfg.mass_grid_exp_min, cfg.mass_grid_stepsize)
+    M = utils.calc_total_mass(N, cfg)
 
     # Calculate relative mass error with respect to initial disk mass.
     err = (M / M_0 - 1) * 100

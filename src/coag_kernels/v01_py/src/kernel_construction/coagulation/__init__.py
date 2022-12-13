@@ -1,33 +1,29 @@
 import numpy as np
 
-from utils import mass_index_conversion
 from utils.elementary_functions import heaviside_theta
+from utils.mass_index_conversion import mass_from_index
+from utils.mass_index_conversion import index_from_mass
 
 
 def kernel(cfg):
-    # Define short-hand notation for index-to-mass conversion.
-    def mass_from_index(idx): return mass_index_conversion.mass_from_index(
-        idx, cfg.mass_grid_exp_min, cfg.mass_grid_stepsize
-    )
-
-    # Define short-hand notation for mass-to-index conversion.
-    def index_from_mass(mass): return mass_index_conversion.index_from_mass(
-        mass, cfg.mass_grid_exp_min, cfg.mass_grid_stepsize
-    )
-
     # Initialize kernel as 3D matrix of zeros.
     K = np.zeros(shape=[cfg.mass_grid_resolution]*3)
 
+    indices = np.arange(0, K.shape[0], 1)
+    masses = mass_from_index(indices, cfg)
+
     # Loop over all possible particle-particle pairs in the discrete mass grid.
-    for i in range(K.shape[0]):
-        m_i = mass_from_index(i)
-        for j in range(K.shape[1]):
-            m_j = mass_from_index(j)
+    for i in indices:
+        m_i = masses[i]
+        # m_i = mass_from_index(i, cfg)
+        for j in indices:
+            # m_j = mass_from_index(j, cfg)
+            m_j = masses[j]
 
             # Determine masses before & after hit-and-stick collision.
             m_k = m_i + m_j
             # Determine indices of bins adjacent to combined mass.
-            k_l = index_from_mass(m_k)
+            k_l = index_from_mass(m_k, cfg)
             k_h = k_l + 1
             # Check if indices of resulting mass(es) lie
             # outside the discrete mass grid. If yes: -> Skip.
@@ -35,11 +31,11 @@ def kernel(cfg):
                 continue
 
             # Calculate the mass corresponding to these indices.
-            m_l = mass_from_index(k_l)
-            m_h = mass_from_index(k_h)
+            m_l = mass_from_index(k_l, cfg)
+            m_h = mass_from_index(k_h, cfg)
 
             # Calculate loss term (gain term can then be calculated from this).
-            R_kij = R(i, j, cfg, mass_from_index)
+            R_kij = R(i, j, cfg)
 
             # Determine prefactor of gain-term.
             f_gain = heaviside_theta(i - j)
@@ -65,11 +61,11 @@ def kernel(cfg):
     return K
 
 
-def R(i, j, cfg, mass_from_index):
+def R(i, j, cfg):
     coagulation_kernel_variant = cfg.coagulation_kernel_variant
 
-    m_i = mass_from_index(i)
-    m_j = mass_from_index(j)
+    m_i = mass_from_index(i, cfg)
+    m_j = mass_from_index(j, cfg)
 
     if coagulation_kernel_variant == "constant":
         res = 1
@@ -86,22 +82,22 @@ def R(i, j, cfg, mass_from_index):
     return res
 
 
-def test_for_mass_conservation(cfg, K, mass_from_index, index_from_mass):
+def test_for_mass_conservation(cfg, K):
     good, bad, skipped, total = 0, 0, 0, 0
     for i in range(K.shape[0]):
-        m_i = mass_from_index(i)
+        m_i = mass_from_index(i, cfg)
         for j in range(K.shape[1]):
-            m_j = mass_from_index(j)
+            m_j = mass_from_index(j, cfg)
             m_k = m_i + m_j
-            k_l = index_from_mass(m_k)
+            k_l = index_from_mass(m_k, cfg)
             k_h = k_l + 1
             if max(k_l, k_h) >= cfg.mass_grid_resolution:
                 # print("i =", i, ", j =", j, "-> k_l =", k_l)
                 # print("                -> k_h =", k_h, "\n")
                 skipped += 1
                 continue
-            m_l = mass_from_index(k_l)
-            m_h = mass_from_index(k_h)
+            m_l = mass_from_index(k_l, cfg)
+            m_h = mass_from_index(k_h, cfg)
 
             a = m_l * K[k_l][i][j] + m_h * K[k_h][i][j]
             b = (m_i + m_j) * K[i][i][j]

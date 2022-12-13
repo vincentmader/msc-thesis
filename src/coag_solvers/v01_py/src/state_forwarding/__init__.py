@@ -1,7 +1,8 @@
+import matplotlib.pyplot as plt
+import os
+
 import numpy as np
 from numba import njit
-
-from utils.mass_index_conversion import mass_from_index
 
 
 @njit()
@@ -16,14 +17,8 @@ def dndt_k(K, n, k):
 
 
 @njit()
-def forward_state(
-    K,
-    n,
-    mass_grid_exp_min,
-    mass_grid_stepsize,
-    run_stability_tests,
-    dt,
-):
+def forward_state(K, n, dt):
+
     # Initialize mass-distribution derivative vector.
     dn = np.zeros(len(n))
 
@@ -31,11 +26,19 @@ def forward_state(
     for k, _ in enumerate(n):
         dn[k] = dndt_k(K, n, k) * dt
 
-    if run_stability_tests:
-        dmdt = sum([
-            n_k * mass_from_index(k, mass_grid_exp_min, mass_grid_stepsize)
-            for k, n_k in enumerate(dn)
-        ])
-        print("\n\t\tSum_k dn_k/dt = dm/dt =", dmdt)
+    # plt.figure()
+    # plt.plot(dn / n)
+    # # plt.ylim(1e-40, 1e30)
+    # # path = os.path.join(cfg.path_to_outfiles, "test", f"N(t={i_t}).png")
+    # # plt.savefig(path)
+    # plt.show()
+    # plt.close()
+
+    # if run_stability_tests:
+        # dmdt = sum([
+        #     n_k * mass_from_index(k, cfg)
+        #     for k, n_k in enumerate(dn)
+        # ])
+        # print("\n\t\tSum_k dn_k/dt = dm/dt =", dmdt)
 
     return n + dn

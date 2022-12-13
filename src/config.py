@@ -34,10 +34,15 @@ class Config:
         mass_grid_max_value = f64(section["mass_grid_max_value"])
         # Define multiplicative step-size from one bin to the next.
         if mass_grid_variant == "logarithmic":
-            range_of_scales = 10**(mass_grid_max_value - mass_grid_min_value)
-            mass_grid_stepsize = range_of_scales**(1 / (mass_grid_resolution-1))
+            exp_min = mass_grid_min_value
+            exp_max = mass_grid_max_value
+            N_m = mass_grid_resolution
+            mass_grid_stepsize = (10**(exp_max-exp_min))**(1 / (N_m-1))
         else:
-            raise Exception
+            m_min = mass_grid_min_value
+            m_max = mass_grid_max_value
+            N_m = mass_grid_resolution
+            mass_grid_stepsize = (m_max-m_min) / N_m
 
         # ╭───────────────────────────────────────────────────────────────────╮
         # │ Coagulation Kernel                                                │

@@ -10,9 +10,26 @@ def get_x_limits(cfg):
     min_value = cfg.mass_grid_min_value
     max_value = cfg.mass_grid_max_value
     if cfg.mass_grid_variant == "logarithmic":
-        return 10**min_value, 10**max_value
+        x_min = 10**min_value
+        x_max = 10**max_value
+    elif cfg.mass_grid_variant == "linear":
+        x_min = min_value
+        x_max = max_value
     else:
-        return min_value, max_value
+        raise Exception()
+    return x_min, x_max
+
+
+def get_y_limits(cfg, m, Ns):
+    if cfg.mass_grid_variant == "logarithmic":
+        y_max = max([max(m*N) for N in Ns]) * 1e3
+        y_min = y_max / 1e9
+    elif cfg.mass_grid_variant == "linear":
+        y_min = 0
+        y_max = 1
+    else:
+        raise Exception()
+    return y_min, y_max
 
 
 def plot_mass_distribution_over_time(cfg, run_id):
@@ -34,6 +51,7 @@ def plot_mass_distribution_over_time(cfg, run_id):
         plot_mass_distribution(cfg, t, m, N, M_0)
 
     x_min, x_max = get_x_limits(cfg)
+    y_min, y_max = get_y_limits(cfg, m, Ns)
 
     # Prettify plot.
     plt.title("particle mass distribution")
@@ -41,8 +59,6 @@ def plot_mass_distribution_over_time(cfg, run_id):
     plt.ylabel("particle abundancy $m\cdot N(m)$")
     plt.legend(loc="upper right", ncol=2)
     plt.xlim(x_min, x_max)
-    y_max = max([max(m*N) for N in Ns]) * 1e3
-    y_min = y_max / 1e9
     plt.ylim(y_min, y_max)
 
     # Save plot to file.
@@ -78,7 +94,10 @@ def plot_mass_distribution(cfg, t, m, N, M_0):
     label = f"$i_t={t}$,{a}${b}=${c}"
 
     # Plot mass distribution.
-    plt.loglog(m, N*m, label=label)
+    if cfg.mass_grid_variant == "logarithmic":
+        plt.loglog(m, N*m, label=label)
+    elif cfg.mass_grid_variant == "linear":
+        plt.plot(m, N, label=label)
 
 
 def save_plot_to_file(cfg, run_id):

@@ -8,7 +8,7 @@ def mass_from_index(idx, cfg):
     if variant == "logarithmic":
         return (10**min_value) * (stepsize**idx)
     else:
-        raise Exception()
+        return min_value + stepsize*idx
 
 
 def index_from_mass(mass, cfg):
@@ -20,4 +20,5 @@ def index_from_mass(mass, cfg):
         res = (np.log(mass) - min_value*np.log(10)) / np.log(stepsize)
         return int(res)
     else:
-        raise Exception()
+        res = (mass - min_value) / stepsize
+        return int(res)

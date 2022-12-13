@@ -5,11 +5,15 @@ import utils
 
 def initial_state(cfg):
     if cfg.mass_grid_variant == "logarithmic":
-        mass_grid_exp_min = cfg.mass_grid_min_value
-        mass_grid_exp_max = cfg.mass_grid_max_value
-        x = np.logspace(mass_grid_exp_min, mass_grid_exp_max, cfg.mass_grid_resolution)
+        exp_min = cfg.mass_grid_min_value
+        exp_max = cfg.mass_grid_max_value
+        N_m = cfg.mass_grid_resolution
+        x = np.logspace(exp_min, exp_max, N_m)
     else:
-        raise Exception()
+        m_min = cfg.mass_grid_min_value
+        m_max = cfg.mass_grid_max_value
+        N_m = cfg.mass_grid_resolution
+        x = np.linspace(m_min, m_max, N_m)
 
     if cfg.initial_mass_distribution == "gaussian":
         # mu, sigma = 10**(-5), 10**(-7)

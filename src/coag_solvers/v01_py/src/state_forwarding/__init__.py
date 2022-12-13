@@ -18,7 +18,6 @@ def dndt_k(K, n, k):
 
 @njit()
 def forward_state(K, n, dt):
-
     # Initialize mass-distribution derivative vector.
     dn = np.zeros(len(n))
 

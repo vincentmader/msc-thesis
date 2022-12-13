@@ -111,10 +111,8 @@ def main():
     cprint("Running solver v01_py...", indent=1)
 
     # Compute evolution of mass distribution & record execution duration.
-    ns, timing_info = utils.record_execution_time(
-        run_solver, *[cfg, K, n0]
-    )
-    start, end, duration = timing_info
+    ns, timing_info = utils.record_execution_time(run_solver, *[cfg, K, n0])
+    _, _, duration = timing_info
     cprint(f"Execution time: {duration}", indent=1, color="green")
 
     # Create file containing information about this run.

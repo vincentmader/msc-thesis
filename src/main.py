@@ -1,5 +1,4 @@
 import os
-import toml
 
 from termcolor import colored
 
@@ -38,7 +37,7 @@ def run_coagulation_solver(run_id, version="v01"):
 
 def run_plotter(run_id):
     cprint("3. Visualization of Results", newline=True, color="blue")
-    os.system(f"./venv/bin/python3 ./src/coag_plotting/src/main.py {run_id}")
+    os.system(f"./venv/bin/python3 ./src/coag_plotting/v01_py/src/main.py {run_id}")
 
 
 if __name__ == "__main__":

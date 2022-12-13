@@ -28,7 +28,7 @@ def plot_mass_distribution_over_time(cfg, run_id):
     plt.xlabel("particle mass $m$")
     plt.ylabel("particle abundancy $m\cdot N(m)$")
     plt.legend(loc="upper right", ncol=2)
-    plt.xlim(10**cfg.mass_grid_exp_min, 10**cfg.mass_grid_exp_max)
+    plt.xlim(cfg.mass_grid_min, cfg.mass_grid_max)
     y_max = max([max(m*N) for N in Ns]) * 1e3
     y_min = y_max / 1e9
     plt.ylim(y_min, y_max)

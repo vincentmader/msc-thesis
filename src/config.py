@@ -1,3 +1,4 @@
+from numpy import log10
 from numpy import float64 as f64
 import toml
 
@@ -25,14 +26,22 @@ class Config:
         # ╰───────────────────────────────────────────────────────────────────╯
         section = cfg["mass_discretization"]
 
+        # Define mass-grid variant.
+        mass_grid_variant = section["mass_grid_variant"]
         # Define number of points in mass-grid.
         mass_grid_resolution = section["mass_grid_resolution"]
         # Define minimum & maximum exponent of logarithmic mass-grid.
-        mass_grid_exp_min = f64(section["mass_grid_exp_min"])
-        mass_grid_exp_max = f64(section["mass_grid_exp_max"])
-        # Define (multiplicative) step-size from one mass-grid-point to the next.
-        range_of_scales = 10**(mass_grid_exp_max - mass_grid_exp_min)
-        mass_grid_stepsize = range_of_scales**(1 / (mass_grid_resolution-1))
+        mass_grid_min = f64(section["minimum_mass"])
+        mass_grid_max = f64(section["maximum_mass"])
+        if mass_grid_variant == "linear":
+            # Define additive step-size from one grid-point to the next.
+            raise Exception()
+        elif mass_grid_variant == "logarithmic":
+            # Define multiplicative step-size from one grid-point to the next.
+            range_of_scales = 10**(mass_grid_max - mass_grid_min)
+            mass_grid_stepsize = range_of_scales**(1 / (mass_grid_resolution-1))
+        else:
+            raise Exception()
 
         # ╭───────────────────────────────────────────────────────────────────╮
         # │ Coagulation Kernel                                                │
@@ -128,8 +137,11 @@ class Config:
         self.handle_near_zero_cancellation = handle_near_zero_cancellation
         self.initial_mass_distribution = initial_mass_distribution
         self.kernel_version = kernel_version
-        self.mass_grid_exp_max = mass_grid_exp_max
-        self.mass_grid_exp_min = mass_grid_exp_min
+        self.mass_grid_min = mass_grid_min
+        self.mass_grid_max = mass_grid_max
+        self.mass_grid_variant = mass_grid_variant
+        # self.mass_grid_exp_max = mass_grid_exp_max
+        # self.mass_grid_exp_min = mass_grid_exp_min
         self.mass_grid_resolution = mass_grid_resolution
         self.mass_grid_stepsize = mass_grid_stepsize
         self.max_run_id_length = max_run_id_length

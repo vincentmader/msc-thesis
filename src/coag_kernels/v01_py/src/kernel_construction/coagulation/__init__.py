@@ -4,11 +4,12 @@ from utils import mass_index_conversion
 from utils.elementary_functions import heaviside_theta
 
 
-def K(cfg):
+def kernel(cfg):
     # Define short-hand notation for index-to-mass conversion.
     def mass_from_index(idx): return mass_index_conversion.mass_from_index(
         idx, cfg.mass_grid_exp_min, cfg.mass_grid_stepsize
     )
+
     # Define short-hand notation for mass-to-index conversion.
     def index_from_mass(mass): return mass_index_conversion.index_from_mass(
         mass, cfg.mass_grid_exp_min, cfg.mass_grid_stepsize
@@ -16,6 +17,7 @@ def K(cfg):
 
     # Initialize kernel as 3D matrix of zeros.
     K = np.zeros(shape=[cfg.mass_grid_resolution]*3)
+
     # Loop over all possible particle-particle pairs in the discrete mass grid.
     for i in range(K.shape[0]):
         m_i = mass_from_index(i)
@@ -50,14 +52,15 @@ def K(cfg):
                 K[k_l, i, j] += R_kij * f_gain * (1-eps)
                 K[k_h, i, j] += R_kij * f_gain * eps
             else:
-                eps = m_j / (m_h - m_l) # NOTE 2nd case of near-zero-cancellation
+                # NOTE 2nd case of near-zero-cancellation
+                eps = m_j / (m_h - m_l)
                 K[k_l, i, j] -= R_kij * f_gain * eps
                 if i == j:
                     K[k_l, i, j] -= 1/2 * R_kij   # TODO no eps here
                 K[k_h, i, j] += R_kij * f_gain * eps
 
-    if cfg.run_stability_tests:
-        test_for_mass_conservation(cfg, K, mass_from_index, index_from_mass)
+    # if cfg.run_stability_tests:
+    #     test_for_mass_conservation(cfg, K, mass_from_index, index_from_mass)
 
     return K
 

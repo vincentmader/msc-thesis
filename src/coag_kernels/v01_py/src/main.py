@@ -1,7 +1,7 @@
 import sys
 
 from config import Config
-from kernel import K
+from kernel_construction import kernel as K
 import utils
 from utils.cprint import cprint
 

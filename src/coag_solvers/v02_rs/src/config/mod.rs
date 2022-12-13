@@ -19,6 +19,7 @@ pub struct Config {
     pub handle_near_zero_cancellation: bool,
     pub path_to_config: Box<std::path::PathBuf>,
     pub path_to_outfiles: Box<std::path::PathBuf>,
+    pub run_stability_tests: bool,
 }
 
 impl Config {
@@ -34,27 +35,22 @@ impl Config {
         let run_solver = &cfg["solver"]["run_solver"];
         let run_solver = run_solver.as_bool().unwrap();
 
-        // Define maximum length for run-id string. (e.g. 8 -> max. 10^8 runs)
-        let max_run_id_length = &cfg["solver"]["max_run_id_length"];
-        let max_run_id_length = max_run_id_length.as_integer().unwrap();
-        let max_run_id_length = max_run_id_length as usize;
-
         // ╭──────────────────────────────────────────────────────────────────╮
         // │ Mass Grid                                                        │
         // ╰──────────────────────────────────────────────────────────────────╯
 
         // Specify minimum mass exponent.
-        let mass_grid_exp_min = &cfg["mass_grid"]["mass_grid_exp_min"];
+        let mass_grid_exp_min = &cfg["mass_discretization"]["mass_grid_exp_min"];
         let mass_grid_exp_min = mass_grid_exp_min.as_integer().unwrap();
         let mass_grid_exp_min = mass_grid_exp_min as f64;
 
         // Specify maximum mass exponent.
-        let mass_grid_exp_max = &cfg["mass_grid"]["mass_grid_exp_max"];
+        let mass_grid_exp_max = &cfg["mass_discretization"]["mass_grid_exp_max"];
         let mass_grid_exp_max = mass_grid_exp_max.as_integer().unwrap();
         let mass_grid_exp_max = mass_grid_exp_max as f64;
 
         // Specify mass grid resolution.
-        let mass_grid_resolution = &cfg["mass_grid"]["mass_grid_resolution"];
+        let mass_grid_resolution = &cfg["mass_discretization"]["mass_grid_resolution"];
         let mass_grid_resolution = mass_grid_resolution.as_integer().unwrap() as usize;
 
         // Define (multiplicative) step-size from one mass-grid-point to the next.
@@ -93,14 +89,18 @@ impl Config {
 
         // Define size of multiplicative time-step.
         let additive_dt = &cfg["simulation"]["additive_dt"];
-        let additive_dt = multiplicative_dt.as_float().unwrap();
+        let additive_dt = additive_dt.as_float().unwrap();
 
         // Define size of multiplicative time-step.
         let multiplicative_dt = &cfg["simulation"]["multiplicative_dt"];
         let multiplicative_dt = multiplicative_dt.as_float().unwrap();
 
+        // ╭──────────────────────────────────────────────────────────────────╮
+        // │ Simulation                                                       │
+        // ╰──────────────────────────────────────────────────────────────────╯
+
         // Determine whether near-zero-cancellation should be handled.
-        let handle_near_zero_cancellation = &cfg["simulation"]["handle_near_zero_cancellation"];
+        let handle_near_zero_cancellation = &cfg["stability"]["handle_near_zero_cancellation"];
         let handle_near_zero_cancellation = handle_near_zero_cancellation.as_bool().unwrap();
 
         // ╭──────────────────────────────────────────────────────────────────╮
@@ -114,6 +114,11 @@ impl Config {
         // ╭──────────────────────────────────────────────────────────────────╮
         // │ File-IO                                                          │
         // ╰──────────────────────────────────────────────────────────────────╯
+
+        // Define maximum length for run-id string. (e.g. 8 -> max. 10^8 runs)
+        let max_run_id_length = &cfg["file_io"]["max_run_id_length"];
+        let max_run_id_length = max_run_id_length.as_integer().unwrap();
+        let max_run_id_length = max_run_id_length as usize;
 
         // Define path to configuration TOML file.
         let path_to_config = &cfg["file_io"]["path_to_config"];

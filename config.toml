@@ -1,129 +1,127 @@
 # SIMULATION CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
 
-    [simulation]
-#       Specify nr. of time-steps.
-        nr_of_timesteps = 1000
+[time_discretization]
+#   Specify the number of time-steps.
+    nr_of_timesteps = 100
 
-#       Determine whether near-zero-cancellation should be handled.
-        handle_near_zero_cancellation = true
+#   Specify type of time-step incrementation.
+#   - Option 1: "additive"
+#   - Option 2: "multiplicative"
+    dt_incrementation = "multiplicative"
 
-#       Specify type of time-step incrementation.
-#       Possible values:
-#       - "additive"
-#       - "multiplicative"
-        dt_incrementation = "multiplicative"
-#       Define size of additive time-step.
-        additive_dt = 1
-#       Define size of multiplicative time-step.
-        multiplicative_dt = 0.1
+#   Define size of additive time-step.
+    additive_dt = 1
 
-    [mass_grid]
-#       Specify minimum & maximum mass exponent (in cgs units).
-        mass_grid_exp_min = -24
-        mass_grid_exp_max = +27
+#   Define size of multiplicative time-step.
+    multiplicative_dt = 0.1
 
-#       Specify mass grid resolution.
-        mass_grid_resolution = 100
+[mass_discretization]
+#   Specify mass grid resolution, 
+#   i.e. the number of bins $\mathcal N_m$.
+    mass_grid_resolution = 100
+#   Specify minimum & maximum mass exponent (in cgs units).
+    mass_grid_exp_min = -24
+    mass_grid_exp_max = +27
 
-    [coagulation_kernel]
-#       Define coagulation kernel variant.
-#       Possible values:
-#       - "constant"
-#       - "linear"
-#       - "quadratic"
-        variant = "constant"
-      # variant = "linear"
-      # variant = "quadratic"
+[coagulation_kernel]
+#   Define coagulation kernel variant.
+#   Possible values:
+#   - "constant"
+#   - "linear"
+#   - "quadratic"
+    variant = "constant"
+  # variant = "linear"
+  # variant = "quadratic"
     
-    [initialization]
-#       Define shape of initial mass distribution.
-#       Possible values:
-#       - "dirac-delta"
-#       - "gaussian"
-#       - "flat"
-        initial_mass_distribution = "dirac-delta" 
+[stability]
+#   Determine whether near-zero-cancellation should be handled.
+    handle_near_zero_cancellation = true
 
-    [testing]
-#       Run stability tests.
-        run_stability_tests = false
+[initialization]
+#   Define shape of initial mass distribution.
+#   Possible values:
+#   - "dirac-delta"
+#   - "gaussian"
+#   - "flat"
+    initial_mass_distribution = "flat" 
+
+[testing]
+#   Run stability tests.
+    run_stability_tests = true
 
 # PLOTTING CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
 
-    [plotting]
-#       Specify which plots should be created.
-#       Possible elements:
-#       - "mass error"
-#       - "mass distribution"
-#       - "coagulation kernel"
-#       - "mass-index conversion"
-        plots_to_create = [
-          # "mass-index conversion",
-            "mass distribution", 
-            "mass error", 
-            "coagulation kernel"
-        ]  
+[plotting]
+#   Specify which plots should be created.
+#   - Option 1: "mass error"
+#   - Option 2: "mass distribution"
+#   - Option 3: "coagulation kernel"
+#   - Option 4: "mass-index conversion"
+    plots_to_create = [
+      # "mass-index conversion",
+        "mass distribution", 
+        "mass error", 
+        "coagulation kernel"
+    ]  
 
-#       Specify which plots should be shown in interactive pyplot mode.
-#       Possible elements:
-#       - "mass error"
-#       - "mass distribution"
-#       - "coagulation kernel"
-#       - "mass-index conversion"
-        plots_to_show = [
-        # "mass-index conversion",
-          "mass distribution", 
-          "mass error", 
-          "coagulation kernel"
-        ]  
+#   Specify which plots should be shown in interactive pyplot mode.
+#   - Option 1: "mass error"
+#   - Option 2: "mass distribution"
+#   - Option 3: "coagulation kernel"
+#   - Option 4: "mass-index conversion"
+    plots_to_show = [
+    # "mass-index conversion",
+    # "mass distribution", 
+      "mass error", 
+    # "coagulation kernel"
+    ]  
 
-#       Specify which simulation runs should be plotted.
-#       Possible values:
-#       - "all"
-#       - "last"
-        runs_to_plot = "last"
+#   Specify which simulation runs should be plotted.
+#   - Option 1: "all"
+#   - Option 2: "last"
+    runs_to_plot = "last"
 
-#       Specify pyplot theme.
-#       Possible values:
-#       - "dark"
-#       - "light"
-        theme = "dark"
+#   Specify plotting theme.
+#   - Option 1: "dark"
+#   - Option 2: "light"
+    theme = "light"
 
-#       Specify plot dimensions.
-        default_fig_size = [12, 8]
+#   Specify plot dimensions.
+    default_fig_size = [9, 6]
+  # default_fig_size = [12, 8]
 
-#       Specify nr. of compute steps between each (mass distribution) plot.
-        steps_between_plot = 100
+#   Specify nr. of compute steps between each (mass distribution) plot.
+    steps_between_plot = 1
 
 # GLOBAL CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
 
-    [project]
-#       Define development version of Smoluchowski coagulation solver.
-#       Possible values:
-#       - "v01" -> Python solver (currently in active development)
-#       - "v02" ->   Rust solver (might be implemented later)
-        solver_version = "v01"
+[project]
+#   Define development version of Smoluchowski coagulation solver.
+#   Possible values:
+#   - Option 1: "v01" -> Python solver (currently in active development)
+#   - Option 2: "v02" ->   Rust solver (might be implemented later)
+    solver_version = "v01"
 
-#       Define version of Smoluchowski coagulation kernel creation.
-#       Possible values:
-#       - "v01" -> Python kernel (currently in active development)
-#       - "v02" ->   Rust kernel (might be implemented later)
-#       - "v03" -> Python kernel (Kees' code)
-        kernel_version = "v01"
+#   Define version of Smoluchowski coagulation kernel creation.
+#   - Option 1: "v01" -> Python kernel (currently in active development)
+#   - Option 2: "v02" ->   Rust kernel (might be implemented later)
+#   - Option 3: "v03" -> Python kernel (Kees' code)
+    kernel_version = "v01"
 
-    [solver]
-#       Define maximum length of run-id string. (e.g. 8 -> max. 10^8 runs)
-        max_run_id_length = 8
+[solver]
+#   Specify whether solver should be run.
+#   NOTE: Initialization will always take place.
+    run_solver = true 
 
-#       Specify whether solver should be run.
-#       NOTE: Initialization will always take place.
-        run_solver = true 
+[file_io]
+#   Define maximum length of run-id string. (e.g. 8 -> max. 10^8 runs)
+    max_run_id_length = 8
 
-    [file_io]
-#       Define path to configuration (this file).
-        path_to_config = "./config.toml"
+#   Define path to configuration (this file).
+    path_to_config = "./config.toml"
 
-#       Define path to directory where data & figures should be saved to.
-        path_to_outfiles = "./out"
+#   Define path to directory where data & figures should be saved to.
+    path_to_outfiles = "./out"

@@ -3,7 +3,7 @@
 
 [time_discretization]
 #   Specify the number of time-steps.
-    nr_of_timesteps = 1000
+    nr_of_timesteps = 100
 
 #   Specify type of time-step incrementation.
 #   - Option 1: "additive"
@@ -17,26 +17,19 @@
     multiplicative_dt = 0.1
 
 [mass_discretization]
-#   Specify variant of grid.
-#   Option 1: "linear"
-#   Option 2: "logarithmic"
-    mass_grid_variant = "logarithmic"
-
 #   Specify mass grid resolution, 
 #   i.e. the number of bins $\mathcal N_m$.
     mass_grid_resolution = 100
-
-#   Specify minimum & maximum mass (in cgs units).
-#   NOTE: For the logarithmic grid, the exponents are given instead!
-    minimum_mass = -24
-    maximum_mass = +27
-
+#   Specify minimum & maximum mass exponent (in cgs units).
+    mass_grid_exp_min = -24
+    mass_grid_exp_max = +27
 
 [coagulation_kernel]
 #   Define coagulation kernel variant.
-#   - Option: "constant"
-#   - Option: "linear"
-#   - Option: "quadratic"
+#   Possible values:
+#   - "constant"
+#   - "linear"
+#   - "quadratic"
     variant = "constant"
   # variant = "linear"
   # variant = "quadratic"
@@ -47,10 +40,11 @@
 
 [initialization]
 #   Define shape of initial mass distribution.
-#   - Option: "dirac-delta"
-#   - Option: "gaussian"
-#   - Option: "flat"
-    initial_mass_distribution = "dirac-delta" 
+#   Possible values:
+#   - "dirac-delta"
+#   - "gaussian"
+#   - "flat"
+    initial_mass_distribution = "flat" 
 
 [testing]
 #   Run stability tests.
@@ -79,7 +73,7 @@
 #   - Option 4: "mass-index conversion"
     plots_to_show = [
     # "mass-index conversion",
-      "mass distribution", 
+    # "mass distribution", 
       "mass error", 
     # "coagulation kernel"
     ]  
@@ -92,13 +86,14 @@
 #   Specify plotting theme.
 #   - Option 1: "dark"
 #   - Option 2: "light"
-    theme = "dark"
+    theme = "light"
 
 #   Specify plot dimensions.
     default_fig_size = [9, 6]
+  # default_fig_size = [12, 8]
 
 #   Specify nr. of compute steps between each (mass distribution) plot.
-    steps_between_plot = 100
+    steps_between_plot = 1
 
 # GLOBAL CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
@@ -119,7 +114,7 @@
 [solver]
 #   Specify whether solver should be run.
 #   NOTE: Initialization will always take place.
-    run_solver = true
+    run_solver = true 
 
 [file_io]
 #   Define maximum length of run-id string. (e.g. 8 -> max. 10^8 runs)

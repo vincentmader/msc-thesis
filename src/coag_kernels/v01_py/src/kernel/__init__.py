@@ -19,12 +19,6 @@ def K(cfg):
     # Loop over all possible particle-particle pairs in the discrete mass grid.
     for i in range(K.shape[0]):
         m_i = mass_from_index(i)
-        if(i==0):
-            print(f"{m_i=}")
-        if(i==1):
-            print(f"{m_i=}")
-        if (i==99):
-            print(f"{m_i=}")
         for j in range(K.shape[1]):
             m_j = mass_from_index(j)
 
@@ -64,10 +58,6 @@ def K(cfg):
 
     if cfg.run_stability_tests:
         test_for_mass_conservation(cfg, K, mass_from_index, index_from_mass)
-
-    print(K[50, 50, 49])
-
-    # plt.plot(K[])
 
     return K
 

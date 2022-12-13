@@ -28,10 +28,10 @@ def plot_mass_distribution_over_time(cfg, run_id):
     plt.title("particle mass distribution")
     plt.xlabel("particle mass $m$")
     plt.ylabel("particle abundancy $m\cdot N(m)$")
-    plt.legend(loc="upper right")
+    plt.legend(loc="upper right", ncol=2)
     plt.xlim(10**cfg.mass_grid_exp_min, 10**cfg.mass_grid_exp_max)
     y_max = max([max(m*N) for N in Ns]) * 1e3
-    y_min = y_max / 1e6
+    y_min = y_max / 1e9
     plt.ylim(y_min, y_max)
 
     # Save plot to file.
@@ -55,10 +55,17 @@ def plot_mass_distribution(cfg, t, m, N, M_0):
     err = (M / M_0 - 1) * 100
 
     # Define label: Show time, & area under curve (i.e. total mass).
-    a = 2*" " if t != 0 else 6*" "
+    if t == 0:
+        a = 7*" "
+    elif t == 1000:
+        a = " "
+    else:
+        a = 3*" "
+    # a = 2*" " if t != 0 else 6*" "
     b = r"\Delta M/M_0"
-    c = err
-    label = f"$i_t={t}$,{a}${b}={c:.2E}$ %"
+    c = f"{err:.1e}"
+    c = c if err < 0 else f" {c}"
+    label = f"$i_t={t}$,{a}${b}=${c} %"
 
     # Plot mass distribution.
     plt.loglog(m, N*m, label=label)

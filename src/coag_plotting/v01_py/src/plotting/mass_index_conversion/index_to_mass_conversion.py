@@ -10,13 +10,10 @@ from utils.cprint import cprint
 def plot_index_to_mass_conversion(cfg):
     cprint("Plotting index-to-mass conversion...", indent=1)
 
-    mass_grid_exp_min = cfg.mass_grid_exp_min
     mass_grid_resolution = cfg.mass_grid_resolution
-    mass_grid_stepsize = cfg.mass_grid_stepsize
 
     indices = np.arange(0, mass_grid_resolution + 1, 1)
-    masses = np.array([mass_from_index(i, mass_grid_exp_min,
-                      mass_grid_stepsize) for i in indices])
+    masses = np.array([mass_from_index(i, cfg) for i in indices])
 
     plt.figure(figsize=cfg.default_fig_size)
     plt.plot(indices, masses)
@@ -24,6 +21,9 @@ def plot_index_to_mass_conversion(cfg):
     plt.title("Conversion from index $i$ to mass $m_i$")
     plt.xlabel("index $i$")
     plt.ylabel("mass $m_i$")
+
+    # ax = plt.gca()
+    # ax.set_yscale('log')
 
     filename = "index-to-mass conversion.png"
     path_to_savefile = os.path.join(cfg.path_to_outfiles, filename)

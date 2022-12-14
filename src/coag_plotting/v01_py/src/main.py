@@ -3,9 +3,9 @@ import os
 import matplotlib.pyplot as plt
 
 from config import Config
-from plotting import plot_error_vs_time
-from plotting import plot_kernel
-from plotting import plot_mass_distribution_over_time
+from plotting.error_vs_time import plot_error_vs_time
+from plotting.kernel import plot_kernel
+from plotting.mass_distribution_over_time import plot_mass_distribution_over_time
 from plotting.mass_index_conversion import index_to_mass_conversion
 from plotting.mass_index_conversion import mass_to_index_conversion
 from utils.cprint import cprint

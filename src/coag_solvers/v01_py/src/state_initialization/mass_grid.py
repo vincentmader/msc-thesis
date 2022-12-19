@@ -4,6 +4,11 @@ from config import Config
 
 
 def get_mass_grid(cfg: Config):
+    """Constructs particle mass grid.
+
+    Arguments:
+    - cfg:  simulation configuration
+    """
     variant = cfg.mass_grid_variant
     resolution = cfg.mass_grid_resolution
 

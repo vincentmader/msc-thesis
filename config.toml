@@ -49,7 +49,7 @@
 
 [testing]
 #   Run stability tests.
-    run_stability_tests = true
+    run_stability_tests = false
 
 # PLOTTING CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
@@ -64,7 +64,7 @@
       # "mass-index conversion",
         "mass distribution", 
         "mass error", 
-        "coagulation kernel"
+      # "coagulation kernel"
     ]  
 
 #   Specify which plots should be shown in interactive pyplot mode.
@@ -73,7 +73,7 @@
 #   - Option 3: "coagulation kernel"
 #   - Option 4: "mass-index conversion"
     plots_to_show = [
-      "mass-index conversion",
+    # "mass-index conversion",
       "mass distribution", 
       "mass error", 
       "coagulation kernel"

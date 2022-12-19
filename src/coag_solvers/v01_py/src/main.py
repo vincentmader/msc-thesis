@@ -1,7 +1,7 @@
 import sys
 
-import matplotlib.pyplot as plt
-import numpy as np
+# import matplotlib.pyplot as plt
+# import numpy as np
 from tqdm import tqdm
 
 from config import Config
@@ -94,7 +94,7 @@ def main():
     K = utils.file_io.load_coagulation_kernel_from_file(cfg, run_id)
 
     # Define initial state.
-    x, n0 = state_initialization.initial_state(cfg)
+    x, n0 = state_initialization.get_initial_state(cfg)
 
     # Setup file/directory structure.
     # ─────────────────────────────────────────────────────────────────────────

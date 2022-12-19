@@ -13,24 +13,19 @@ def kernel(cfg):
     masses = mass_from_index(indices, cfg)
 
     # Loop over all possible particle-particle pairs in the discrete mass grid.
-    for i in indices:
-        m_i = masses[i]
-        # m_i = mass_from_index(i, cfg)
-        for j in indices:
-            # m_j = mass_from_index(j, cfg)
-            m_j = masses[j]
+    for i, m_i in zip(indices, masses):
+        for j, m_j in zip(indices, masses):
 
-            # Determine masses before & after hit-and-stick collision.
+            # Calculate mass after hit-and-stick collision.
             m_k = m_i + m_j
             # Determine indices of bins adjacent to combined mass.
             k_l = index_from_mass(m_k, cfg)
             k_h = k_l + 1
-            # Check if indices of resulting mass(es) lie
-            # outside the discrete mass grid. If yes: -> Skip.
+
+            # If indices of combined mass lie outside the mass grid: -> Skip.
             if max(k_l, k_h) >= cfg.mass_grid_resolution:
                 continue
-
-            # Calculate the mass corresponding to these indices.
+            # Calculate the mass corresponding to the two indices.
             m_l = mass_from_index(k_l, cfg)
             m_h = mass_from_index(k_h, cfg)
 
@@ -40,6 +35,7 @@ def kernel(cfg):
             # Determine prefactor of gain-term.
             f_gain = heaviside_theta(i - j)
 
+            # Check whether cancellation-handling needs to be done.
             might_cancel = (k_l == i)
             trivial = not (cfg.handle_near_zero_cancellation and might_cancel)
             if trivial:
@@ -48,11 +44,10 @@ def kernel(cfg):
                 K[k_l, i, j] += R_kij * f_gain * (1-eps)
                 K[k_h, i, j] += R_kij * f_gain * eps
             else:
-                # NOTE 2nd case of near-zero-cancellation
-                eps = m_j / (m_h - m_l)
+                eps = m_j / (m_h - m_l)  # NOTE 2nd case of cancellation
                 K[k_l, i, j] -= R_kij * f_gain * eps
                 if i == j:
-                    K[k_l, i, j] -= 1/2 * R_kij   # TODO no eps here
+                    K[k_l, i, j] -= 1/2 * R_kij   # NOTE no eps here
                 K[k_h, i, j] += R_kij * f_gain * eps
 
     # if cfg.run_stability_tests:
@@ -62,18 +57,16 @@ def kernel(cfg):
 
 
 def R(i, j, cfg):
-    coagulation_kernel_variant = cfg.coagulation_kernel_variant
-
     m_i = mass_from_index(i, cfg)
     m_j = mass_from_index(j, cfg)
 
-    if coagulation_kernel_variant == "constant":
+    if cfg.coagulation_kernel_variant == "constant":
         res = 1
 
-    elif coagulation_kernel_variant == "linear":
+    elif cfg.coagulation_kernel_variant == "linear":
         res = m_i + m_j
 
-    elif coagulation_kernel_variant == "quadratic":
+    elif cfg.coagulation_kernel_variant == "quadratic":
         res = m_i * m_j
 
     else:

@@ -1,3 +1,5 @@
+*.lof
+*.lot
 .DS_Store
 /.git/
 /out/

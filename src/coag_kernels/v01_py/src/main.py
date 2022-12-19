@@ -7,10 +7,8 @@ from utils import file_io
 
 
 if __name__ == "__main__":
-    # Get run-id from command-line argument.
+    # Get run-id from command-line argument, and print it.
     run_id = sys.argv[1]
-
-    # Print information.
     cprint(f"{run_id}", indent=1, color="cyan")
 
     # Load configuration from TOML file.

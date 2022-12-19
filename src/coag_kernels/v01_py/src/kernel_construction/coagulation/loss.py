@@ -1,7 +1,7 @@
 import numpy as np
 
 from config import Config
-from kernel_construction.collision import collision_and_merge_rate as R
+from collision import collision_and_merge_rate as R
 
 
 def construct_loss_term(cfg: Config):

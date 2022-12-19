@@ -1,7 +1,7 @@
 import numpy as np
 
 from config import Config
-from kernel_construction.collision import collision_and_merge_rate as R
+from collision import collision_and_merge_rate as R
 from utils.elementary_functions import heaviside_theta
 from utils.mass_index_conversion import mass_from_index
 from utils.mass_index_conversion import index_from_mass

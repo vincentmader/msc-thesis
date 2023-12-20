@@ -1,0 +1,57 @@
+\vfill
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+
+        \def\R{0.25}  % This is the radius of the star.
+        \def\D{0.75}  % This is the x-padding between star & disk/axis.
+        \def\Y{0.5}   % This is the y-intersect.
+        \def\MAX{7}   % This is the maximum value along the abscissa.
+        \def\M{1/20}  % This factor controls the slope of the power law plots.
+        \def\T{\D/3}  % This factor controls the size & y-padding of the abscissa ticks.
+
+        % Draw the star.
+        \draw (0, 0) circle (\R);
+
+        % Draw the 4 power-law components for the "disk".
+        \draw[domain= \D  : \MAX,smooth,variable=\x,black] plot ({\x},{ \x^2*\M+\Y});  % top-right
+        \draw[domain=-\MAX:-\D,  smooth,variable=\x,black] plot ({\x},{-\x^2*\M+\Y});  % top-left
+        \draw[domain= \MAX: \D,  smooth,variable=\x,black] plot ({\x},{-\x^2*\M-\Y});  % bot-right
+        \draw[domain=-\D  :-\MAX,smooth,variable=\x,black] plot ({\x},{ \x^2*\M-\Y});  % bot-left
+
+        % Draw the abscissa, i.e. the radial axis.
+        \draw[->] (\D,   0)     -- (1.1*\MAX, 0) node[below] {$r$};
+        % Draw the ticks & labels.
+        \draw     (\D,   -\T/3) -- (\D,       \T/3);  % left tick
+        \node at  (\D,   -\T  ) {$r_\text{min}$};     % left label
+        \draw     (\MAX, -\T/3) -- (\MAX,     \T/3);  % right tick
+        \node at  (\MAX, -\T  ) {$r_\text{max}$};     % right label
+
+    \end{tikzpicture}
+    \caption{Schematic View of the Disk Structure's Dependence on Radial Distance}
+    \label{}
+\end{figure} \ \\ 
+
+% \begin{figure}[h!]
+%     \centering
+% \begin{center}
+%     \begin{tikzpicture}
+%         \draw (0, 0) circle (0.5cm);
+
+%         % \foreach \x in {0.5, 1, 1.5} {
+%         %     \draw (\x, 0) -- (\x, {1/\x^2});
+%         %     \draw (-\x, 0) -- (-\x, {1/\x^2});
+%         % }
+
+
+%          % Draw the axes
+%         % \draw[->] (-3, 0) -- (3, 0) node[right] {$x$};
+%         % \draw[->] (0, -1) -- (0, 3) node[above] {$y$};
+    
+%         % Draw the quadratic sloped line
+%     \end{tikzpicture}
+%     \caption{}
+% \end{center}
+    % \label{}
+% \end{figure} \ \\ 

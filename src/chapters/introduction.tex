@@ -168,43 +168,46 @@
 \newpage
 \section{Preliminary Notes on Axis Discretization}
 
-    Throughout this thesis, we will deal with several physical quantities with values that range
-    across many orders of magnitude. Most notably, these are time, distance, and mass. \\
+    Throughout this thesis, we will deal with several physical quantities carrying values that 
+    range across many orders of magnitude. Most notably, these are time, distance, and mass. \\
 
-    Due to the fact that analytical solutions to the relevant differential equation(s) exist only 
-    for a very limited set of cases, it will be necessary to make use of numerical integration 
-    techniques to obtain approximate solutions. (...)
-    As such, the axes for the above-mentioned (?) physical quantities
-    will have to be discretized in an appropriate manner. \\
+    As we will discuss later on, the differential equation(s) most relevant to this thesis only 
+    possess analytical solutions in a very limited set of cases. Due to this fact, it will be
+    necessary to make use of numerical integration techniques to obtain an approximate solution.
+    As such, the axes for the above-mentioned (?) physical quantities will have to be discretized 
+    in an appropriate manner. \\
 
-    As an example, we will shortly demonstrate how one might do this for the mass axis $m$.
-    The construction of discrete axes for both time $t$ and space (i.e. distance from the star $r$)
-    can then be done entirely analogously to what we will do here: \\
+    As an example, we will shortly demonstrate how one might do this for the mass axis $m$. The
+    construction of a discrete axis for both time $t$ and space (i.e. radial distance $r$ from the
+    central star) can then be done entirely analogously to what we will showcase here: \\
 
-    The continuous range of particle masses $m$ present in the disk is partitioned into a set of 
+    The continuous range $m$ of particle masses present in the disk is partitioned into a set of 
     $\mathcal N_m\in\mathbb N$ intervals, which we will refer to as "bins" from this point onwards. 
     Each of these bins can be uniquely characterized by an index 
-    $i\in[1,\ \mathcal N_m]\cap\mathbb N$, and assigned a mass value $m_i^\text{c}$, 
-    which is situated at the center of the bin (ergo the superfix "c").\\
+    $i\in[1,\ \mathcal N_m]\cap\mathbb N$, and assigned a corresponding mass value $m_i^\text{c}$, 
+    which is situated at the \textit{center of the bin} (ergo the superfix "c").\\
     
-    To derive an expression that can be used for calculating the mass values at the \textit{bin
-    centers}, let us first define the mass values at the \textit{bin boundaries}. To do this,
+    To derive an expression that can be used to calculate the mass values at these bin centers, 
+    let us first define the mass values at the \textit{boundaries of the bin}. To do this,
     consider a collection of $\mathcal N_m+1$ appropriately spaced grid points $m_i^\text{b}$. 
     The first and last of these values, i.e. the lower and upper boundaries of the discrete mass 
     grid, shall be labeled $m_\text{min}$ and $m_\text{max}$, respectively. \\
 
-    In [cite linear] and [cite logarithmic], we will go into more detail on how exactly the values 
-    for $m_i^\text{b}$ and $m_i^\text{c}$ are to be defined. \\
+    In \cref{subsec:axis_discretization_with_linear_scale} and
+    \cref{subsec:axis_discretization_with_logarithmic_scale}, we will go into more detail on how 
+    exactly the values for $m_i^\text{b}$ and $m_i^\text{c}$ are to be defined when making use of 
+    a linear and logarithmic scaling, respectively. \\
     % TODO Assure consistent usage of \text{b} and \text{c}.
 
-    A schematic represenation of the continuous mass axis and its discrete analogon can be seen 
-    visualized in \cref{fig:continuous_and_discrete_mass_axis} below.
+    For the moment, a schematic represenation of the continuous mass axis and its discrete analogon
+    can be seen visualized in \cref{fig:continuous_and_discrete_mass_axis} below.
     % TODO Display `Figure` instead of `fig`.
 
     \input{diagrams/discrete_mass_axis.tex}
 
     % Axis Discretization with Linear Scaling {{{ 
     \subsection{Axis Discretization with Linear Scaling}
+    \label{subsec:axis_discretization_with_linear_scale}
 
         The spacing of the grid points of course depends heavily on the utilized scaling, which for 
         simplicity shall be linear at the moment. Later on we will make use of a logarithmic scaling,
@@ -247,6 +250,7 @@
     % }}}
     % Axis Discretization with Logarithmic Scaling {{{ 
     \subsection{Axis Discretization with Logarithmic Scaling}
+    \label{subsec:axis_discretization_with_logarithmic_scale}
 
         As before, let $\mathcal N_m$ label the total number of bins, and let the upper and lower grid 
         boundaries be given by $m_\text{min}$ and $m_\text{max}$, respectively.\\

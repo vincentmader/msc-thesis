@@ -184,7 +184,7 @@
     The continuous range $m$ of particle masses present in the disk is partitioned into a set of 
     $\mathcal N_m\in\mathbb N$ intervals, which we will refer to as "bins" from this point onwards. 
     Each of these bins can be uniquely characterized by an index 
-    $i\in[1,\ \mathcal N_m]\cap\mathbb N$, and assigned a corresponding mass value $m_i^\text{c}$, 
+    $i\in[1,\mathcal N_m]\cap\mathbb N$, and assigned a corresponding mass value $m_i^\text{c}$, 
     which is situated at the \textit{center of the bin} (ergo the superfix "c").\\
     
     To derive an expression that can be used to calculate the mass values at these bin centers, 
@@ -193,7 +193,8 @@
     The first and last of these values, i.e. the lower and upper boundaries of the discrete mass 
     grid, shall be labeled $m_\text{min}$ and $m_\text{max}$, respectively. \\
 
-    In \cref{subsec:axis_discretization_with_linear_scale} and
+    The spacing of the grid points of course depends heavily on the utilized scaling. In
+    \cref{subsec:axis_discretization_with_linear_scale} and
     \cref{subsec:axis_discretization_with_logarithmic_scale}, we will go into more detail on how 
     exactly the values for $m_i^\text{b}$ and $m_i^\text{c}$ are to be defined when making use of 
     a linear and logarithmic scaling, respectively. \\
@@ -209,30 +210,32 @@
     \subsection{Axis Discretization with Linear Scaling}
     \label{subsec:axis_discretization_with_linear_scale}
 
-        The spacing of the grid points of course depends heavily on the utilized scaling, which for 
-        simplicity shall be linear at the moment. Later on we will make use of a logarithmic scaling,
-        to assure a better representation of all values along the wide range of dust particle masses 
-        present in the proto-planetary disk.\\
+        For the sake of simplicity, let us assume a linear scaling at the moment. Later on, we 
+        will make use of a logarithmic scaling instead, which will help us assure a more 
+        appropriate representation of all values along the wide range of dust particle masses 
+        that are present in the proto-planetary disk.\\
     
-        For now, the mass value $m_i^\text{b}$ (representing the lower boundary of a bin $i$) can be 
+        For a given bin, characterized by the index $i$, the mass value corresponding to the bin's
+        lower boundary shall be labeled $m_i^\text{b}$. When using a linear scaling, it can be 
         expressed as
         \begin{align}
           m_i^\text{b}=m_\text{min}+(m_\text{max}-m_\text{min})\cdot\frac{i}{\mathcal N_m}
         \end{align}
-    
-        To calculate the mass values at the bin centers, all we need to do now is take the arithmetic 
-        mean of its two boundaries values, i.e.:
+
+        Having derived the mass values at the boundaries of each bin, it is now quite easy to 
+        calculate the corresponding values at the bin center. To do this, all we need to do is take 
+        the arithmetic mean of the two boundary values:
         \begin{equation}
             m_i^\text{c}
                 =\frac{m_i^\text{b}+m_{i+1}^\text{b}}{2}
         \end{equation}
         
         Thus, after having defined only the three numbers $\mathcal N_m$, $m_\text{min}$, and 
-        $m_\text{max}$, it is possible to interpolate the values of all mass grid points sitting on the 
-        boundaries and/or centers of the bins.\\
+        $m_\text{max}$, it is possible to interpolate the values of all mass grid points positioned 
+        on both the boundaries as well as the  centers of the bins.\\
         
-        The inverse transformation from mass to index can be determined easily by rearranging the above 
-        relation. This leads to the following expression:
+        The inverse transformation from mass to index can be derived easily by rearranging the 
+        above relation, which leads to the following expression:
         \begin{equation}
             i(m)
                 =\mathcal N_m\cdot\frac{m-m_\text{min}}{m_\text{max}-m_\text{min}}
@@ -252,42 +255,49 @@
     \subsection{Axis Discretization with Logarithmic Scaling}
     \label{subsec:axis_discretization_with_logarithmic_scale}
 
-        As before, let $\mathcal N_m$ label the total number of bins, and let the upper and lower grid 
-        boundaries be given by $m_\text{min}$ and $m_\text{max}$, respectively.\\
-        
-        Once again, we first define an expression for the grid points sitting directly on the bin 
-        boundaries. Making use of an index $i\in\mathcal[1,N_m+1]$, they can be uniquely identified and
-        calculated via
+        The procedure for constructing the discretized axis using a logarithmic scaling works quite
+        analogously to what we just saw in the linear case. (The main difference is that we switch
+        out addition/subtraction by multiplication/division, and multiplication/division by
+        exponentiation.)
+        \\
+
+        As before, let $\mathcal N_m$ label the total number of bins, each of which can be uniquely 
+        identified by an index $i\in\mathcal[1,\mathcal N_m+1]$. Once again, we will first define 
+        an expression for the grid points sitting directly on the lower boundary of each bin. When
+        making use of a logarithmic scaling, these values are given by
         \begin{equation}
             m_i^\text{b}
                 =m_\text{min}\cdot\left(\frac{m_\text{max}}{m_\text{min}}\right)^{i/\mathcal N_m}
         \end{equation}
-        To arrive at the mass values at the bin centers, we again take the mean. Contrary to the case of 
-        a linear scaling, here we're not using the arithmetic mean though, but the geometric mean, i.e.
+        To arrive at the mass values at the bin centers, we again take the mean. Contrary to the 
+        linear case, here we are not using the arithmetic mean though, but the geometric mean
+        instead:
         \begin{align}
             m_i^\text{c}
                 =\sqrt{m_i\cdot m_{i+1}}
         \end{align}
     
-        As in the linear case, the inverse transformation can easily be arrived at by rearranging for 
-        $i$. This leads to the following expression:
+        As in the linear case, the inverse transformation can easily be arrived at by rearranging
+        for the index $i$, which leads to the following expression:
         \begin{align}
-            i(m)
-                =\mathcal N_m\cdot
-                    \frac{\log(m)-\log(m_\text{min})}{\log(m_\text{max})-\log(m_\text{min})}
+            i(m) = \mathcal N_m\cdot \frac{
+                \log(m)-\log(m_\text{min})
+            }{
+                \log(m_\text{max})-\log(m_\text{min})
+            }
         \end{align}
         
-        In contrast to the linear grid, where the bin "width" (i.e. the additive offset from one 
-        bin to the next) is the same for all bins, in the logarithmic grid this is not the case.
-        Instead, what stays the same for is the \textit{relative} mass increase from one bin to the
-        next:
-        \footnote{\todo{This is true only down to the machine precision of the utilized computer. 
-        (?)}}
+        In contrast to the linear grid, where the "bin width", i.e. the additive offset between bins
+        \begin{equation}
+            \Delta m := m_{i+1} - m_i
+        \end{equation}
+        is the same for all bins, in the logarithmic grid this is not the case. Instead, what stays
+        constant here is the \textit{relative} mass increase from one bin to the next:\footnote{This
+        is true only up to the machine precision of the utilized computer setup.}
         \begin{equation}
             \frac{m_i^\text{c}}{m_i^\text{c}}
                 =\frac{m_i^\text{b}}{m_i^\text{b}}
-                =\text{const.}
-                \forall i\in[1,\mathcal N_m]
+                =\text{const.}\ \forall i\in[1,\mathcal N_m]
         \end{equation}
 
     % }}}

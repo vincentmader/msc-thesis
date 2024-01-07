@@ -168,15 +168,18 @@
 \newpage
 \section{Preliminary Notes on Axis Discretization}
 
-    "In the course of" this thesis, we will deal with several quantities "whose values" range over 
-    many order of magnitude, most notably time, distance, and mass. \\
+    Throughout this thesis, we will deal with several physical quantities with values that range
+    across many orders of magnitude. Most notably, these are time, distance, and mass. \\
 
-    Due to the fact that we will want to "perform a numerical treatment", the corresponding axes 
-    will have to be discretized in an appropriate manner. As an example, in the following we will 
-    shortly demonstrate how one might do this for the mass axis $m$. \\
+    Due to the fact that analytical solutions to the relevant differential equation(s) exist only 
+    for a very limited set of cases, it will be necessary to make use of numerical integration 
+    techniques to obtain approximate solutions. (...)
+    As such, the axes for the above-mentioned (?) physical quantities
+    will have to be discretized in an appropriate manner. \\
 
+    As an example, we will shortly demonstrate how one might do this for the mass axis $m$.
     The construction of discrete axes for both time $t$ and space (i.e. distance from the star $r$)
-    can be done entirely analogously to "what we do for the mass axis" in the following: \\
+    can then be done entirely analogously to what we will do here: \\
 
     The continuous range of particle masses $m$ present in the disk is partitioned into a set of 
     $\mathcal N_m\in\mathbb N$ intervals, which we will refer to as "bins" from this point onwards. 
@@ -184,11 +187,15 @@
     assigned a mass value $m_i^\text{c}$, which is situated at the center of the bin 
     (ergo the superfix "c").\\
     
-    To derive an expression that can be used for calculating the mass values at the bin centers, let us 
-    first define the mass values at the \textit{bin boundaries}. To do this, consider a collection of 
-    $\mathcal N_m+1$ appropriately spaced grid points $m_i^\text{b}$. The first and last of these 
-    values, i.e. the upper and lower boundaries of the discrete mass grid, shall be given by 
-    $m_\text{max}$ and $m_\text{min}$, respectively. \\
+    To derive an expression that can be used for calculating the mass values at the bin centers, 
+    let us first define the mass values at the \textit{bin boundaries}. To do this, consider a
+    collection of $\mathcal N_m+1$ appropriately spaced grid points $m_i^\text{b}$. The first 
+    and last of these values, i.e. the upper and lower boundaries of the discrete mass grid, 
+    shall be given by $m_\text{max}$ and $m_\text{min}$, respectively. \\
+
+    In [cite linear] and [cite logarithmic], we will go into more detail on how exactly the values 
+    for $m_i^\text{b}$ and $m_i^\text{c}$ are to be defined. \\
+    % TODO Assure consistent usage of \text{b} and \text{c}.
 
     A schematic represenation of the continuous mass axis and its discrete analogon can be seen 
     visualized in \cref{fig:continuous_and_discrete_mass_axis} below.
@@ -266,15 +273,17 @@
                     \frac{\log(m)-\log(m_\text{min})}{\log(m_\text{max})-\log(m_\text{min})}
         \end{align}
         
-        In contrast to the linear grid, the bin "width", i.e. the additive offset from one bin to the 
-        next, is not the same for all bins in the logarithmic grid. Instead, what stays the same for is 
-        the \textit{relative} mass increase from one bin to the next, i.e.
+        In contrast to the linear grid, where the bin "width" (i.e. the additive offset from one 
+        bin to the next) is the same for all bins, in the logarithmic grid this is not the case.
+        Instead, what stays the same for is the \textit{relative} mass increase from one bin to the
+        next:
+        \footnote{\todo{This is true only down to the machine precision of the utilized computer. 
+        (?)}}
         \begin{equation}
             \frac{m_i^\text{c}}{m_i^\text{c}}
                 =\frac{m_i^\text{b}}{m_i^\text{b}}
                 =\text{const.}
                 \forall i\in[1,\mathcal N_m]
         \end{equation}
-        \todo{This is at most true down to machine precision.} 
 
     % }}}

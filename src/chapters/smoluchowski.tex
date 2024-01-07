@@ -1,6 +1,376 @@
-\section{Continuous Formulation}
-\section{Discretized Formulation}
-\section{Analytical Solutions}
-\section{Numerical Integration}
+\section{The Smoluchowski Equation}
+
+    \todo{The Smoluchowski equation...} \\
+    \todo{...provides a mathematical model commonly used to describe the process of particles
+    aggregation/coagulation} \\
+    \todo{...is used in a wide range of physical and biological contexts. (examples?)} \\
+    \todo{...is named after the Polish physicist Marian Smoluchowski, due to his treatment of the 
+    equation in 1916 \cite{smoluchowski_1916}} \\
+
+    \todo{Smoluchowski equation is a \textit{population balance equation}}. \\
+    \todo{Smoluchowski equation is an \textit{integro-differential equation}}. \\
+    \todo{ODE or PDE?} \\
+    \todo{For each choice of \textit{kernel function}, there exists a unique solution (cite).}
+
+    % Continuous Formulation {{{
+    \subsection{Continuous Formulation}
+
+        \todo{For the evolution of the particle mass distribution,} \\
+        \todo{the Smoluchowski equation in its most general form reads:}
+    
+        \begin{equation}
+            \label{eq:continuous_smoluchowski_equation}
+            \pderiv{n}{t}(m)
+                =
+                    \int\limits_0^\infty
+                    \int\limits_0^\infty
+                    \mathcal K(m,m',m'')
+                    \cdot n(m')
+                    \cdot n(m'')
+                    \ \dd m'
+                    \ \dd m''
+        \end{equation}
+
+        Here, the term $\mathcal K(m, m', m'')$ labels the \textit{coagulation kernel}. 
+        \todo{It carries the information about how the number of particles with mass $m$
+        changes with time under the influence of collisions between particles with masses $m'$ 
+        and $m''$.} \\
+
+        \todo{We will discuss it in [cite section], and [coag-section] and [frag-section].}
+ 
+    % }}}
+    % Discretized Formulation {{{ 
+    \newpage\subsection{Discretized Formulation}
+
+        \todo{Now, discretize the Smoluchowski equation.} \\
+        \todo{For this, we perform the following mappings}:
+        \begin{align}
+            \pderiv{n}{t}
+                &\to \frac{\Delta n}{\Delta t} \\
+            \int_0^\infty \dd m'
+                &\to \sum_{i=1}^{\mathcal N_m} \Delta m_i \\
+            \int_0^\infty \dd m''
+                &\to \sum_{j=1}^{\mathcal N_m} \Delta m_j
+        \end{align} 
+
+        \todo{This results in:}
+        \begin{equation}
+            \label{eq:discrete_smoluchowski_equation}
+            \begin{split}
+                % \pderiv{n}{t}(m)
+                %     &=\int\limits_0^\infty\int\limits_0^\infty 
+                %         K(m,m',m'')\cdot n(m')\cdot n(m'')\ \dd m'\ \dd m''
+                % \\
+                %     &\downarrow
+                % \\
+                \pderiv{n_k}{t}
+                    &=\sum_{i=1}^{\mathcal N_m}\sum_{j=1}^{\mathcal N_m}
+                        K(m_k,m_i,m_j)\cdot n_i\cdot n_j\cdot\Delta m_i\cdot\Delta m_j
+                \\
+            \end{split}
+        \end{equation}
+    
+        Let us define
+        \begin{equation}
+            K_{kij}
+                := K(m_k,m_i,m_j)\cdot\Delta m_k
+        \end{equation}
+    
+        If in addition we make use of the relationship $N_i=n_i\cdot\Delta m_i$ 
+        that was defined in (\todo{cite}), then we can rewrite the Smoluchowski equation as
+        \begin{equation}
+            \pderiv{N_k}{t}
+                = \sum_{i=1}^{\mathcal N_m}\sum_{j=1}^{\mathcal N_m} K_{kij}\cdot N_i\cdot N_j
+        \end{equation}
+    
+    % }}}
+
+\newpage\section{The Kernel}
+
+    In the following, we will factorize the kernel into two separate terms like this:
+    \begin{equation}
+        \mathcal K(m,m',m'') = R(m',m'') \cdot K(m,m',m'') 
+    \end{equation}
+    \todo{Here, the first term $R(m',m'')$ will be used to encode information about how many
+    collisions occur per unit time between particles with masses $m'$ and $m''$, as defined 
+    in [cite].} \\
+    \todo{Talk about units! (not 1/second)} \\
+
+    \todo{The second term, on the other hand, will be used to encode how the initial masses 
+    $m'$ and $m''$ are then distributed onto the range of particles resulting from such a 
+    collision, each carrying a mass of value $m$.}
+
+    \todo{It can be decomposed into a positive and a negative contribution:}
+    \begin{equation}
+        K(m,m',m'') = G(m, m', m'') + L(m, m', m'')
+    \end{equation}
+
+    \todo{With:}
+    \begin{align}
+        L(m, m', m'') &= -1 \\
+        G(m, m', m'') &= f(m, m', m'')
+    \end{align}
+
+    \todo{Kernel symmetry:}
+    \begin{itemize}
+        \item \todo{(only use "upper left" half of the matrix)}
+    \end{itemize}
+
+    % Physical Units {{{ 
+    \subsection{Physical Units (\todo{Is this section needed?})}
+    % }}}
+    % Physical Units {{{ 
+    \subsection{Discretization}
+
+        \begin{equation}
+            K(m, m', m'')
+                \to
+                    K_{kij}
+                =
+                    K(m_k, m_i, m_j) \cdot\Delta m_k
+        \end{equation}
+
+    % }}}
+    % Definition of the Kernel Mass Error {{{ 
+    \subsection{Definition of the Kernel Mass Error}
+
+        \todo{Remove $R$} \\
+        \todo{Fix units (not 1/second)} \\
+
+        Kernel mass error per second (in \SI{}{\kilogram\second^{-1}}): (\todo{rename variable})
+        \begin{align}
+            \Delta K_{ij}
+                &=
+                    \sum_{k=1}^{\mathcal N_m}m_k\cdot K_{kij}
+        \end{align}
+        
+        Kernel mass error $\Delta K_{ij}$ per collision (in \SI{}{\kilogram}): 
+        (\todo{rename variable})
+        \begin{align}
+            \Delta K_{ij}
+                &=
+                    \sum_{k=1}^{\mathcal N_m}m_k\cdot\frac{K_{kij}}{R^\text{coll}_{ij}}
+        \end{align}
+        
+        Relative kernel mass error $\Delta K_{ij}$ per collision (unitless):
+        \begin{align}
+            \Delta K_{ij}
+                &=
+                    \sum_{k=1}^{\mathcal N_m}\frac{m_k}{m_i+m_j}\cdot\frac{K_{kij}}{R^\text{coll}_{ij}}
+        \end{align}
+        
+        Total kernel error $\Delta K$:
+        \begin{align}
+            \Delta K
+                &=
+                    \sqrt{
+                        \sum_{i=1}^{\mathcal N_m}
+                        \sum_{j=1}^{\mathcal N_m}
+                        \big(\Delta K_{ij}\big)^2
+                    }
+        \end{align}
+
+    % }}}
+
+\newpage\section{Analytical Solutions}
+
+    Analytical solutions to the Smoluchowski coagulation equation exist if, and only if the kernel
+    takes on one of the following three forms:
+    \begin{enumerate}
+        \item constant kernel
+            $$K=1$$
+        \item linear kernel
+            $$K=m_1+m_2$$
+        \item quadratic kernel
+            $$K=m_1\cdot m_2$$
+    \end{enumerate}
+    \todo{Rewrite with $m$, $m'$, and $m''$.}
+
+    % Constant Kernel {{{ 
+    \subsection{Constant Kernel}
+
+    \todo{Constant Kernel:} (general enough?)
+    \begin{equation}
+        K(m, m', m'')
+            = 1
+    \end{equation}
+
+    \todo{Smoluchowski equation with constant kernel:}
+    \begin{equation}
+        \pderiv{n}{t}(m)
+            = 
+                \int\limits_0^\infty \int\limits_0^\infty
+                n(m') \cdot n(m'')
+                \ \dd m' \ \dd m''
+    \end{equation}
+
+    % }}}
+    % Linear Kernel {{{ 
+    \subsection{Linear Kernel}
+
+    \todo{Linear Kernel:} (general enough?)
+    \begin{equation}
+        K(m, m', m'')
+            = m' + m''
+    \end{equation}
+
+    \todo{Smoluchowski equation with linear kernel:}
+    \begin{equation}
+        \pderiv{n}{t}(m)
+            = 
+                \int\limits_0^\infty \int\limits_0^\infty
+                (m' + m'') \cdot
+                n(m') \cdot n(m'')
+                \ \dd m' \ \dd m''
+    \end{equation}
+
+    % }}}
+    % Quadratic Kernel {{{ 
+    \subsection{Quadratic Kernel}
+
+    \todo{Quadratic Kernel:} (general enough?)
+    \begin{equation}
+        K(m, m', m'')
+            = m' \cdot m''
+    \end{equation}
+
+    \todo{Smoluchowski equation with quadratic kernel:}
+    \begin{equation}
+        \pderiv{n}{t}(m)
+            = 
+                \int\limits_0^\infty \int\limits_0^\infty
+                (m' \cdot m'') \cdot
+                n(m') \cdot n(m'')
+                \ \dd m' \ \dd m''
+    \end{equation}
+
+    % }}}
+
+\newpage\section{Numerical Integration}
+
+    % Definition of the Integration Mass Error {{{ 
+    \subsection{Definition of the Integration Mass Error}
+
+        \todo{Let us now take a look at how to use numerical integration of the discretized 
+        Smoluchowski coagulation equation to arrive at an approximate solution for the temporal 
+        evolution of the particle mass distribution function under the influence of dust particle 
+        collisions.} \\
+
+        \todo{To be able to compare different numerical schemes quantitatively, both with respect 
+        to their accuracy as well as stability properties, it makes sense to first define a measure 
+        of the total error of the integration.} \\
+
+        \todo{As we already know from eq [...], the mass volume density can be calculcated from the 
+        particle mass distribution.} \\ % TODO Rewrite this.
+
+        \todo{Let $t_i$ and $t_f$ label the time at the start and end of the integration, respectively.
+        The mass volume density's value at these two points in time can be written as:}
+
+        \begin{align}
+            % TODO Define `t_i` and `t_f`. Note that `t_i = t_0`
+            % TODO Use subscript or superscript for `i` and `f` ?
+            \rho_\text{i}
+                &:=\sum_{k=0}^{\mathcal N_m} m_k\cdot n_k(t=t_\text{i})\cdot\Delta m_k
+            \\
+            \rho_\text{f}
+                &:=\sum_{k=0}^{\mathcal N_m} m_k\cdot n_k(t=t_\text{f})\cdot\Delta m_k
+        \end{align}
+
+        \todo{After the integration has finished, the relative mass error (more specifically: density 
+        error) then reads:}
+        
+        \begin{equation}
+            \Delta\rho
+                :=\frac{\rho_\text{f}-\rho_\text{i}}{\rho_\text{i}}
+        \end{equation}
+
+        In reality, this mass error should be exactly equal to zero. Otherwise, mass conservation would not be given, since the movement of mass from one point in space to another is not included in our model. \\
+        
+        The numerical integration introduces an error though, which ideally should be kept at machine precision. % TODO Rewrite this.
+
+    % }}}
+    % Explicit Euler Scheme {{{ 
     \subsection{Explicit Euler Scheme}
+
+        A naive approach for solving the Smoluchowski equation numerically is given by the simple 
+        explicit Euler integration scheme, which we will briefly address here. Assuming a constant 
+        time-step size $\Delta t\in\mathbb R_+$, the elapsed time after $m\in\mathbb N_0$ integration 
+        steps can be expressed as 
+        \begin{equation}
+            t_m
+                =t_0+m\cdot\Delta t,
+        \end{equation}
+        where $t_0$ is the time value at the start of the integration.\\
+        
+        Now, the goal is to find the corresponding values $n_k^m$ for the particle mass 
+        distribution:
+        \begin{equation}
+            n_k^m
+                :=n(m=m_k,\ t=t_m)
+        \end{equation}
+        
+        We define the differences
+        \begin{align}
+            \Delta n_k
+                &=n_k^m-n_k^{m-1}
+            \ \ \ \text{and}\ \ \
+            \\
+            \Delta t
+                &=t_m-t_{m-1}
+        \end{align}
+        which, in turn, can be used to define the 1st order foward finite difference
+        \begin{equation}
+            \text{FFD}
+                =\frac{\Delta n_k}{\Delta t}
+        \end{equation}
+        
+        The finite difference can now be used as an approximation for the temporal derivative 
+        of $n$:
+        \begin{equation}
+            \pderiv{n_k}{t}
+                \approx\text{FFD}
+        \end{equation}
+        
+        Plugging in \cref{eq:discrete_smoluchowski_equation} and rearranging for $\Delta n_k$ 
+        leads to
+        \begin{equation}
+            \Delta n_k
+            =\Delta t\cdot
+                \sum_{i=1}^{\mathcal N_m}\sum_{j=1}^{\mathcal N_m}
+                K_{kij}\cdot n_i\cdot n_j
+        \end{equation}
+        
+        % TODO Be consistent: "time step" or "time-step" ?
+        This can now be used an approximate value for the change in $n_k$ from one time-step to 
+        the next, i.e.
+        \begin{equation}
+            \begin{split}
+                n_k^m
+                    &=n_k^{m-1}+\Delta n_k
+                \\
+                    &=n_k^{m-1}+\Delta t\cdot
+                        \sum_{i=1}^{\mathcal N_m}\sum_{j=1}^{\mathcal N_m}
+                        K_{kij}\cdot n_i\cdot n_j
+            \end{split}
+        \end{equation}
+        
+        % TODO Cite CFL ?
+        % TODO Add CFL to abbreviations
+        In order to ensure stability of the numerical integration, the step size needs to respect the 
+        Courant-Friedrichs-Lewy (CFL) criterion, which provides an upper limit for the values that 
+        $\Delta t$ can take on \cite{courant_friedrichs_lewy_1928}.\\
+        
+        \todo{Formulate CFL criterion for Smoluchowski equation.}
+
+    % }}}
+    % Implicit Radau Scheme {{{ 
     \subsection{Implicit Radau Scheme}
+
+        \todo{Runge-Kutta scheme} \\
+        \todo{Here, 4th order (correct?)} \\
+        \todo{Implemented by Kees [cite?]} \\
+
+        \todo{Accuracy} \\
+        \todo{Stability, Mass Conservation} \\
+
+    % }}}

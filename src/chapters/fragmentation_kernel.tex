@@ -1,2 +1,36 @@
 \section{Continuous Formulation}
+
+    \todo{Smol. eq. looks very similar to coag., but $f$ instead of $\delta_d$, can't "reduce".} \\
+    \todo{That's where the computational cost comes from!} \\
+
+    \todo{Is the below correct?}
+    \begin{align}
+        L_\text{coag}(m)
+            &= \int\limits_0^\infty R_\text{coll}(m, m') \cdot n(m) \cdot n(m') \ \dd m \ \dd m' \\
+        G_\text{coag}(m)
+            &= \int\limits_0^\infty \int\limits_0^\infty R_\text{coll}(m', m'') \cdot
+                n(m') \cdot n(m'') \cdot f(m,m',m'') \ \dd m' \ \dd m'' 
+    \end{align}
+
+    \todo{For the loss:}
+    \begin{itemize}
+        \item Same as in coagulation.
+        \item If two particles with masses $m$ and $m'$ collide, these two particles "disappear"
+              from the distribution.
+        \item Instead, new particles have to be added.
+        \item Once again, there is the criterion of mass conservation.
+    \end{itemize}
+
+    \todo{For the gain:}
+    \begin{itemize}
+        \item Looks very similar to coagulation.
+        \item But: Here we have the term $f(m,m',m'')$ in the integral.
+        \item In coagulation, this term is equal to $\delta_D(m-m'-m'')$.
+        \item If two masses fuse, there is only a single possible mass value that can result from 
+              that, without breaking mass conservation.
+        \item In fragmentation, this is different.
+        \item If two particles collide, they can in principle fragment into a whole range of 
+              differently sized particles, as long as mass is conserved.
+    \end{itemize}
+
 \section{Discretized Formulation}

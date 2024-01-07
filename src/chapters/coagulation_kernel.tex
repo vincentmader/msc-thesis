@@ -1,4 +1,191 @@
 \section{Continuous Formulation}
+
+    \todo{Is the below correct?}
+    \begin{align}
+        L_\text{coag}(m)
+            &= \int\limits_0^\infty R_\text{coll}(m, m') \cdot n(m) \cdot n(m') \ \dd m \ \dd m' \\
+        G_\text{coag}(m)
+            &= \int\limits_0^\infty \int\limits_0^\infty R_\text{coll}(m', m'') \cdot
+                n(m') \cdot n(m'') \cdot \delta_D(m-m'-m'') \ \dd m' \ \dd m'' \\
+            &= \int\limits_0^\infty R_\text{coll}(m', m-m') \cdot n(m') \cdot n(m-m') \ \dd m'
+    \end{align}
+
+    \todo{The question is: How does the number of particles with mass $m$ change?} \\
+
+    \todo{For the loss:}
+    \begin{itemize}
+        \item Particle with mass $m$ could collide with any other mass, labeled $m'$.
+        \item This would then (here: pure coag.) lead to the merging of the particles.
+        \item (A new particle with mass $m+m'$ is created and has to be added to the distribution.)
+        \item A particle has to be removed from bin $m$ and $m'$.
+        \item We sum (integrate) over all these masses $m'$.
+    \end{itemize}
+
+    \todo{For the gain}:
+    \begin{itemize}
+        \item How can a particle with mass $m$ be created via coagulation?
+        \item For this to happen, two particles with masses $m'$ and $m''$ have to collide \& merge.
+        \item Condition: Mass conservation $m=m'+m''$ ($\to\ \delta_D(m-m'-m'')$).
+        \item We can reduce the 2D integral to a 1D integral, making use of the relationship
+            \begin{equation}
+                f(x_0)
+                    = \int\limits_{-\infty}^{\infty} f(x) \cdot \delta_D(x-x_0) \ \dd x 
+            \end{equation}
+    \end{itemize}
+
 \section{Discretized Formulation}
+
+    Even in a highly simplified scenario, where only hit-and-stick coagulation is included, the 
+    definition of the kernel $K_{kij}$ is not at all trivial. To assure both the consistency and 
+    accuracy of the algorithm, one has to take care of two separate problems, namely:
+    \begin{enumerate}
+        \item The conservation of mass \textit{has} to be assured, otherwise the numerical solution can 
+            not be assumed to remain stable for long. In the case of stick-and-hit coagulation, this 
+            means that for every pair of colliding particles, a single new particle has to be created. 
+            At the same time, the two initial particles have to be removed from the distribution. 
+            During this process, the total mass should remain unaffected down to machine precision.
+        \item When using a logarithmically spaced grid for the discretized mass axis, it can not be 
+            assumed that after a collision of two dust particles with masses $m_i$ and $m_j$ the 
+            resulting particle will carry a mass $m_k=m_i+m_j$ whose value can be mapped trivially onto 
+            the grid. In general, the corresponding index will not be an integer, and instead lie 
+            between somewhere between the two neighboring grid points with indices $k$ and $k+1$.
+            Therefore, the result of the merging of $m_i$ and $m_j$ has to be divided in some sensible 
+            way between these two neighboring bins.
+    \end{enumerate}
+    
+    % The Kovetz-Olund Algorithm {{{ 
     \subsection{The Kovetz-Olund Algorithm}
-    \subsection{Near-Zero Cancellation Handling}
+        
+        An elegant way for solving the two problems listed above is given in the 1969 paper
+        by Kovetz \& Olund \cite{kovetz_olund_1969}, where they used the following procedure:
+        \begin{enumerate}
+            \item The stick-and-hit coagulation kernel is split into two parts. The first is
+                the \textit{gain} of particles in bin $k$ due to the collision of particles from the
+                bins $i$ and $j$. The second is the \textit{loss} of particles from bin $k$ due to
+                collisions of particles in bin $k$ with particles from any other bin $j$.
+            
+                Using this separation into gain \& loss, the dust particle mass distribution's
+                temporal derivative can be expressed in the following form:
+                \begin{equation}
+                    \pderiv{n_k}{t}
+                        =\sum_{i=0}^{\mathcal N_m}\sum_{j=0}^{\mathcal N_m}
+                            K_{kij}^\text{gain}\cdot n_i\cdot n_j
+                        -\sum_{j=0}^{\mathcal N_m}K_{kj}^\text{loss}\cdot n_k\cdot n_j
+                \end{equation}
+                In other words, the total kernel [from above, cite eq.] can be written as
+                \begin{equation}
+                    K_{kij}
+                        =K_{kij}^\text{gain}
+                        -K_{ij}^\text{loss}\delta_{ki}
+                \end{equation}
+                Splitting the kernel like this into a gain \& a loss term is a quite general
+                approach, and can be used in more complex scenarios as well (including e.g.
+                particle fragmentation processes).
+            \item For the scenario of pure hit-and-stick coagulation, a unique discretization
+                of the kernel can be defined such that both the number of particles and the
+                conservation of total mass are handled correctly. To do this, consider a
+                pair of colliding particles with indices $i$ and $j$. Then, let the index
+                $\bar k$ be chosen in such a way that the condition
+                \begin{equation}
+                    m_{\bar k}\leq m_i+m_j<m_{\bar k+1}
+                \end{equation}
+                is satisfied.
+            \item As stated before, in hit-and-stick coagulation, a single new particle emerges
+                for each pair of colliding particles. Using the definitions from above, this
+                condition can be expressed as follows:
+                \begin{equation}
+                    K_{\bar k,ij}^\text{gain}
+                    +K_{\bar k+1,ij}^\text{gain}
+                    \overset{!}{=}K_{ij}^\text{loss}
+                \end{equation}
+            \item The second condition is that of mass conservation, which can be written as:
+                \begin{equation}
+                    m_{\bar k}K_{\bar k,ij}^\text{gain}
+                    +m_{\bar k+1}K_{\bar k+1,ij}^\text{gain}
+                    \overset{!}{=}(m_i+m_j)K_{ij}^\text{loss}
+                \end{equation}
+            \item Now, to map the resulting particle's mass onto two neighboring bins, let us define a 
+                parameter $\varepsilon$ such that
+                \begin{align}
+                    K_{\bar k,ij}^\text{gain}
+                        &=K_{ij}^\text{loss}\cdot(1-\varepsilon),\ \text{and}\\
+                    K_{\bar k+1,ij}^\text{gain}
+                        &=K_{ij}^\text{loss}\cdot\varepsilon
+                \end{align}
+                This assures that [equation from pt 3] is satisfied. If we now plug this
+                definition into [equation from pt 4] and solve for $\varepsilon$, we
+                arrive at
+                \begin{equation}
+                    \varepsilon
+                        :=\frac{m_i+m_j-m_{\bar k}}{m_{\bar k+1}-m_{\bar k}}
+                \end{equation}
+        \end{enumerate}
+        This is the Kovetz-Olund algorithm \cite{kovetz_olund_1969}, and it was also used in subsequent 
+        coagulation studies by e.g. \cite{brauer_dullemond_henning_2007} and 
+        \cite{birnstiel_dullemond_brauer_2010}.
+    
+    % }}}
+    % Near-Zero Cancellation Handling {{{ 
+    \newpage\subsection{Near-Zero-Cancellation Handling}
+    
+        When using floating-point numbers following the representation defined
+        by the IEEE-754 standard, it can occur that
+        \begin{align*}
+          a+b=a
+          \ \ \ \ \ \text{for} \ \ \ \ \
+          b\neq0
+        \end{align*}
+        Typically, this happens when
+        \begin{align*}
+            |b|<\varepsilon_m\cdot|a|
+        \end{align*}
+        Here, $\varepsilon_m$ labels the \textit{machine precision}.\\
+        \todo{Add: How big is $\varepsilon_m$ for an f32, how big for an f64?}\\
+        
+        Let $i$ and $j$ once again be the indices used to label two colliding particles. Additionally, 
+        assume now that particle $i$ is \textit{much smaller} than particle $j$.\\
+        
+        The detailed balance approach from above requires the removal of both the big and the small 
+        particle from the mass distribution, followed by the re-insertion of a new particle carrying the 
+        initial pair's combined mass. This new particle would then have a mass which is nearly identical 
+        to that of the bigger one of the original two particles, it would be only a tiny bit heavier.\\
+        
+        In the approach defined above this would mean that $\bar k=j$, i.e. the resulting particle will 
+        reside in the same bin as the larger original one. Also, it would follow that 
+        $\varepsilon\ll1$.\\
+        
+        Let us now take a look at the particle mass distribution in the bin $\bar k$ and, more 
+        specifically, by how much it changes from one timestep to the next. For this particular pair of 
+        $i$ and $\bar k=j$, we can write:
+        \begin{align*}
+            \pderiv{n_{\bar k}}{t}
+                =K_{\bar k,i\bar k}^{\text{gain}}\cdot n_i\cdot n_{\bar k}
+                -K_{\bar ki}^{\text{loss}}\cdot n_i\cdot n_{\bar k}
+        \end{align*}
+        Plugging in [equation from above] leads to
+        \begin{align*}
+            \pderiv{n_{\bar k}}{t}
+                =(1-\varepsilon)K_{\bar ki}^{\text{loss}}\cdot n_i\cdot n_{\bar k}
+                -K_{\bar ki}^{\text{loss}}\cdot n_i\cdot n_{\bar k}
+        \end{align*}
+        Here, the two terms almost cancel each other out. What remains is a contribution which is 
+        proportional to $\varepsilon$.\\
+        
+        If $\varepsilon$ is small enough, the double-precision accuracy of the floating point 
+        representation will lead to breakdown of the method.\\
+        \todo{rewrite this sentence, copied almost exactly from Kees}\\
+        
+        It is relatively easy to identify the particle pairs $(i,j)$ for which the scenario detailed 
+        above will occur. Let $i$ (without loss of generality) be the index of the larger one of the two 
+        colliding masses. Cancellation may then occur when the resulting $k$ is equal to $j$.\\
+        
+        In that case, we carry out the subtraction in [previous equation] analytically, and write:
+        \begin{align*}
+            \pderiv{n_{\bar k}}{t}
+                =-\varepsilon K_{\bar ki}^{\text{loss}}\cdot n_i\cdot n_{\bar k}
+        \end{align*}
+        \todo{Elaborate on this, see "Dust Evolution with Binning Methods"}
+    
+        \input{diagrams/cancellation_handling_for_coagulation_kernel.tex}
+
+    % }}}

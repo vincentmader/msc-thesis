@@ -1,46 +1,43 @@
-Our first task will be the definition of a model for the proto-planetary disk, 
-as well as its contents. \\
+Our first real task will be the definition of a model for the proto-planetary disk, as well as its
+gas and dust contents. Here, it has to be said that due to the complexity of the involved processes 
+and the (literally) astronomically large number of particles present in the disk, our model can only 
+ever be a highly simplified approximation to reality. \\
 
-Here, it has to be said that due to the complexity of the involved processes and the (literally)
-astronomically large number of particles present in the disk, our model can only ever be a highly
-simplified approximation to reality. \\
+Nonetheless, the goal of the following chapters will be to formulate a model that captures a 
+typical PPD's most relevant properties, thus allowing us to conduct studies of the processes
+involved in dust particle coagulation and/or fragmentation in the subsequent chapters. \\
 
-Nonetheless, the goal of the following chapters will be the formulation of a model that captures
-a typical disk's most relevant properties, and allows us to conduct studies of the processes
-involved in dust particle coagulation and/or fragmentation. \\
+\todo{Do what? (Star, Disk, Gas, Dust, Coagulation/Fragmentation)} \\
 
-\assume{Start with gas cloud: Composition like interstellar medium} \\
-\assume{Then: Disk collapses, star forms at center (how long ago?)}
+\assume{We will base our model on the aforementioned nebular hypothesis: The origin of the modeled
+proto-planetary is assumed to be found in the collapse of a giant interstellar cloud consisting of 
+mostly gas and, to a lesser extent, dust particles. As such, the disk's elementary and material 
+composition is assumed to equal that of the interstellar medium.} \\
 
-\section{The Star at the Center of the Disk}
+\assume{Also, we will assume the cloud collapse to lie sufficiently far in the past, such that a 
+star has already formed at the center of the disk. (\todo{How long ago?})} [cite subsection]
 
-    In our model, the star's most relevant properties will be its mass $M_*$, as well as its
-    luminosity $L_*$. \\
+\section{Symmetry Properties of the Disk}  
 
-    \assume{Star is sun-like: Both of these properties will be assumed to equal those of our own
-    solar system's Sun.} Thus, we define
-    \begin{align}
-        M_*&:=M_\odot=\SI{1.989e30}{\kg},\ \text{and} \\
-        L_*&:=L_\odot\ =\SI{3.828e26}{\joule\second^{-1}},
-    \end{align}
-    where $M_\odot$ and $L_\odot$ label the solar mass and luminosity, respectively. \\
+    \input{diagrams/disk_structure.tex}
 
-    \todo{What type of star is it? Where in the main sequence is it? How old is it?} 
-    \begin{itemize}
-        \item G-type main sequence star
-        \item often imprecisely called "yellow dwarf" 
-              (imprecisely, because its light is actually white)
-    \end{itemize}
-    \todo{The Sun was not as it is today when it formed $\approx$ 4.6 billion years ago.} \\
+    \todo{Rename section? $\to$ "Disk Structure" ?} \\
 
-    \todo{As "mentioned" above, we assume the star to have formed as a result of the gravitational
-    collapse of a large molecular cloud.} \\
+    \todo{Consider a disk with an inner and outer disk radius
+        $r_\text{min}=\SI{0.01}{\astronomicalunit}$ 
+    and 
+        $r_\text{max}=\SI{100}{\astronomicalunit}$,
+    respectively.} \\
 
-\section{Mass Distribution and Material Composition}
+    \todo{Plot disk structure (flaring disk, flaring index)} \\
+    \todo{What exactly is on the ordinate? ($r$ on the abscissa)} \\
+
+    \assume{Disk is radially symmetric: $f(r,\varphi,z)=f(r,z)$ (cylindrical coordinates)} \\
+
+\clearpage\section{Mass Distribution and Material Composition}
 
    Most of the original gas cloud's mass is assumed to be concentrated inside the central star,
-   while the disk surrounding it holds only a much smaller fraction of the total mass. \\ 
-
+   while the disk surrounding it holds only a much smaller fraction of the total mass. 
    We label the stellar mass $M_*$, and the disk mass $M_\text{disk}$. 
    The ratio between the two shall be defined as
    \begin{equation}
@@ -57,25 +54,26 @@ involved in dust particle coagulation and/or fragmentation. \\
         q_\text{dust-to-gas}=\frac{M_\text{dust}}{M_\text{gas}}:=0.01
     \end{equation}
 
-\section{Symmetry Properties of the Disk}  
+\section{The Star at the Center of the Disk}
 
-    \todo{Rename section? $\to$ "Disk Structure" ?} \\
+    For our model, the star's most relevant properties will be its mass $M_*$, as well as its
+    luminosity $L_*$. \assume{Both of these properties will be assumed to equal those of our own
+    solar system's Sun.} Thus, we define
+    \begin{align}
+        M_*&:=M_\odot=\SI{1.989e30}{\kg},\ \text{and} \\
+        L_*&:=L_\odot\ =\SI{3.828e26}{\joule\second^{-1}},
+    \end{align}
+    where $M_\odot$ and $L_\odot$ label the solar mass and luminosity, respectively. \\
 
-    \todo{Consider a disk with an inner and outer disk radius
-        $r_\text{min}=\SI{0.01}{\astronomicalunit}$ 
-    and 
-        $r_\text{max}=\SI{100}{\astronomicalunit}$,
-    respectively.} \\
+    \todo{What type of star is it? Where in the main sequence is it? How old is it?} 
+    \begin{itemize}
+        \item G-type main sequence star
+        \item often imprecisely called "yellow dwarf" 
+              (imprecisely, because its light is actually white)
+    \end{itemize}
+    \todo{The Sun was not as it is today when it formed $\approx$ 4.6 billion years ago.} \\
 
-    \todo{Plot disk structure (flaring disk, flaring index)} \\
-    \todo{What exactly is on the ordinate? ($r$ on the abscissa)} \\
-
-    \assume{Disk is radially symmetric: $f(r,\varphi,z)=f(r,z)$ (cylindrical coordinates)} \\
-
-    \ \\ % TODO Add padding to diagram.
-    \input{diagrams/disk_structure.tex}
-
-\section{Radial Midplane Temperature Profile}
+\clearpage\section{Radial Midplane Temperature Profile}
 
     To keep things simple, let us make the assumption that the gas and dust particles 
     in the disk behave like perfect black-body objects. As such, the relationship between the

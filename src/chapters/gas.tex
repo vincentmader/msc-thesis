@@ -201,9 +201,8 @@
 
         \begin{equation}
             N_g
-                =\frac{\rho_g}{2.3\cdot m_\text{p}}
+                =\frac{\rho_g}{m_g}
         \end{equation}
-        \todo{Define $?=2.3\cdot m_p$}
 
         \todo{Is this really even needed? (Don't I only need dust number density?)} \\
 
@@ -222,27 +221,53 @@
 
 \newpage\section{Gas Particle Kinematics}
 
-    \todo{Plot radial profile of "speed" (thermal + ..?)}
+    \todo{There are both stochastic and systematic contributions to the gas kinematics.}
 
-    The viscous evolution of the gas disk can be described by the continuity equation 
-    \cite{birnstiel_dullemond_brauer_2010}:
-    \begin{equation}
-        \pderiv{\Sigma_g}{t}-\frac{1}{r}\pderiv{}{r}\bigg(\Sigma_g \cdot r \cdot u_g\bigg) = S_g
-    \end{equation}
-    Here, $u_g$ labels the \textit{radial gas velocity}.
-    \\
-    % TODO: What is $S_g$
-    % TODO: Does $u_g$ label radial velocity or speed?
-    % TODO: Choose either $uor and $v$ as variable names for velocities.
-    %       Be consistent across the entire thesis.
+    \subsection{Thermal Gas Velocity}
 
-    A solution to this equation is given by \cite{lynden-bell_pringle_1974}, where the 
-    radial velocity of the gas is given by
-    \begin{equation}
-        u_{g}
-        =-\frac{3}{\Sigma_g\cdot\sqrt{r}}
-            \cdot\pderiv{}{r}\bigg(\Sigma_g \cdot \nu_g \cdot \sqrt{r}\bigg)
-    \end{equation}
-    % TODO: Have I already defined the viscosity somewhere? Else define here.
+        \todo{Sound speed:}
+        \begin{equation}
+            c_s = \sqrt{\frac{k_BT}{m_g}}
+        \end{equation}
 
-    \input{diagrams/radial_gas_velocity.tex}
+        \todo{Thermal velocity:} % TODO thermal SPEED
+        \begin{equation}
+            u_\text{th} = \sqrt{\frac{8}{\pi}} \cdot c_s
+        \end{equation}
+
+        \todo{Mean free path:}
+        \begin{equation}
+            \lambda_\text{mfp} = \frac{1}{n \cdot \sigma_{\text{H}_2}}
+        \end{equation}
+
+    \subsection{Radial Gas Velocity}
+
+        \todo{Plot radial profile of "speed" (thermal + ..?)}
+
+        The viscous evolution of the gas disk can be described by the continuity equation 
+        \cite{birnstiel_dullemond_brauer_2010}:
+        \begin{equation}
+            \pderiv{\Sigma_g}{t}-\frac{1}{r}\pderiv{}{r}\bigg(\Sigma_g \cdot r \cdot u_g\bigg) = S_g
+        \end{equation}
+        Here, $u_g$ labels the \textit{radial gas velocity}.
+        \\
+        % TODO: What is $S_g$
+        % TODO: Does $u_g$ label radial velocity or speed?
+        % TODO: Choose either $uor and $v$ as variable names for velocities.
+        %       Be consistent across the entire thesis.
+
+        A solution to this equation is given by \cite{lynden-bell_pringle_1974}, where the 
+        radial velocity of the gas is given by
+        \begin{equation}
+            u_{g}
+            =-\frac{3}{\Sigma_g\cdot\sqrt{r}}
+                \cdot\pderiv{}{r}\bigg(\Sigma_g \cdot \nu_g \cdot \sqrt{r}\bigg)
+        \end{equation}
+        % TODO: Have I already defined the viscosity somewhere? Else define here.
+
+        \todo{Viscosity:}
+        \begin{equation}
+            \nu_g = \frac{1}{2} \cdot u_\text{th} \cdot \lambda_\text{mfp}
+        \end{equation}
+
+        \input{diagrams/radial_gas_velocity.tex}

@@ -130,15 +130,15 @@
     
         When using floating-point numbers following the representation defined
         by the IEEE-754 standard, it can occur that
-        \begin{align*}
+        \begin{equation}
           a+b=a
           \ \ \ \ \ \text{for} \ \ \ \ \
           b\neq0
-        \end{align*}
+        \end{equation}
         Typically, this happens when
-        \begin{align*}
+        \begin{equation}
             |b|<\varepsilon_m\cdot|a|
-        \end{align*}
+        \end{equation}
         Here, $\varepsilon_m$ labels the \textit{machine precision}.\\
         \todo{Add: How big is $\varepsilon_m$ for an f32, how big for an f64?}\\
         
@@ -157,17 +157,17 @@
         Let us now take a look at the particle mass distribution in the bin $\bar k$ and, more 
         specifically, by how much it changes from one timestep to the next. For this particular pair of 
         $i$ and $\bar k=j$, we can write:
-        \begin{align*}
+        \begin{equation}
             \pderiv{n_{\bar k}}{t}
                 =K_{\bar k,i\bar k}^{\text{gain}}\cdot n_i\cdot n_{\bar k}
                 -K_{\bar ki}^{\text{loss}}\cdot n_i\cdot n_{\bar k}
-        \end{align*}
+        \end{equation}
         Plugging in [equation from above] leads to
-        \begin{align*}
+        \begin{equation}
             \pderiv{n_{\bar k}}{t}
                 =(1-\varepsilon)K_{\bar ki}^{\text{loss}}\cdot n_i\cdot n_{\bar k}
                 -K_{\bar ki}^{\text{loss}}\cdot n_i\cdot n_{\bar k}
-        \end{align*}
+        \end{equation}
         Here, the two terms almost cancel each other out. What remains is a contribution which is 
         proportional to $\varepsilon$.\\
         
@@ -180,10 +180,10 @@
         colliding masses. Cancellation may then occur when the resulting $k$ is equal to $j$.\\
         
         In that case, we carry out the subtraction in [previous equation] analytically, and write:
-        \begin{align*}
+        \begin{equation}
             \pderiv{n_{\bar k}}{t}
                 =-\varepsilon K_{\bar ki}^{\text{loss}}\cdot n_i\cdot n_{\bar k}
-        \end{align*}
+        \end{equation}
         \todo{Elaborate on this, see "Dust Evolution with Binning Methods"}
     
         \input{diagrams/cancellation_handling_for_coagulation_kernel.tex}

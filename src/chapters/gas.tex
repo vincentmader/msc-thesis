@@ -1,17 +1,3 @@
-\todo{Plot top-down view of the disk.} \\
-
-\assume{Gas is in hydrostatic equilibrium.} \\
-\assume{Gas behaves isothermically.}
-
-\section{A Single Gas Particle}
-
-    \assume{Gas mean particle mass.}
-    \begin{equation}
-        m_g
-            := 2.3 \cdot m_p
-    \end{equation}
-    Here, $m_p$ labels the mass of a single proton.
-
 \newpage\section{Radial Gas Density Profile}
 
     Our next task will be to formulate a simple model for the spatial distribution of the disk's 
@@ -101,15 +87,8 @@
     % Volume Density Profile {{{ 
     \newpage\subsection{Volume Density Profile}
 
-        \assume{Isothermal condition}
-        \begin{equation}
-            P = \rho_g \cdot c_s^2
-        \end{equation}
-
-        \assume{Disk is in hydrostatic equilibrium (see assumption above)}  % TODO
-        \begin{equation}
-            \deriv{P}{z} = - \rho_g \cdot g_z  % TODO Why `g_z` and not `g` ?
-        \end{equation}
+        \assume{Isothermal condition} [cite] \\
+        \assume{Disk is in hydrostatic equilibrium [cite]} \\
 
         Let us adopt cylindrical coordinates and consider a point $\vec r=(r,\phi,z)^T$ in the 
         disk. \\  % TODO Write with transposed `T` ?

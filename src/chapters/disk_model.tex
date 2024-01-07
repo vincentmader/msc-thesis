@@ -1,82 +1,125 @@
-Our first real task will be the definition of a model for the proto-planetary disk, as well as its
-gas and dust contents. Here, it has to be said that due to the complexity of the involved processes 
-and the (literally) astronomically large number of particles present in the disk, our model can only 
-ever be a highly simplified approximation to reality. \\
+Our first task will be the definition of a model for the proto-planetary disk, as well as for
+the properties of its gas and dust contents. It needs to be said here that due to the complexity of
+the involved processes and the (literally) astronomically large number of particles present in the 
+disk, our model can only ever be a highly simplified approximation to reality. \\
 
-Nonetheless, the goal of the following chapters will be to formulate a model that captures a 
-typical PPD's most relevant properties, thus allowing us to conduct studies of the processes
-involved in dust particle coagulation and/or fragmentation in the subsequent chapters. \\
+Nonetheless, the goal of the following chapter(s) (?) will be to formulate a model that captures a 
+typical PPD's most relevant properties, which would then allow us to conduct studies of the 
+processes involved in dust particle coagulation and/or fragmentation in the subsequent chapters. 
+To be able to construct such a framework, it will be necessary to make a couple of assumptions:
 
-\todo{Do what? (Star, Disk, Gas, Dust, Coagulation/Fragmentation)} \\
+% \todo{Do what? (Star, Disk, Gas, Dust, Coagulation/Fragmentation)} \\
 
-\assume{We will base our model on the aforementioned nebular hypothesis: The origin of the modeled
-proto-planetary is assumed to be found in the collapse of a giant interstellar cloud consisting of 
-mostly gas and, to a lesser extent, dust particles. As such, the disk's elementary and material 
-composition is assumed to equal that of the interstellar medium.} \\
+\section{First Assumptions}
 
-\assume{Also, we will assume the cloud collapse to lie sufficiently far in the past, such that a 
-star has already formed at the center of the disk. (\todo{How long ago?})} [cite subsection]
-
-\section{Symmetry Properties of the Disk}  
-
+    \begin{enumerate}
+        \item \assume{} First of all, we will base our model on the aforementioned nebular 
+            hypothesis: The origin of the modeled proto-planetary disk is assumed to be found in 
+            the collapse of a giant interstellar cloud. % consisting of mostly gas and dust. 
+            As such, the disk's elementary and material composition is assumed to equal that of the 
+            interstellar medium as well. \\
+            \todo{Elements?}
+    
+        \item \assume{} Also, we will assume that the cloud collapse happened sufficiently long ago 
+            that a star could already form at the center of the disk (while not long enough for 
+            planet formation to occur).
+            % (\todo{How long ago?}) [cite subsection]
+            For the studies that will be carried out in the context of this thesis, the star's most
+            relevant properties will be its mass $M_*$ as well as its luminosity $L_*$. 
+            \assume{}
+            Both of these properties will be assumed to equal those of our own solar system's Sun. 
+            Thus, we define
+            \begin{align}
+                M_*&:=M_\odot=\SI{1.989e30}{\kg},\ \text{and} \\
+                L_*&:=L_\odot\ =\SI{3.828e26}{\joule\second^{-1}},
+            \end{align}
+            where $M_\odot$ and $L_\odot$ label the solar mass and luminosity, respectively.
+            % \todo{What type of star is it? Where in the main sequence is it? How old is it?} 
+            % \begin{itemize}
+            %     \item G-type main sequence star
+            %     \item often imprecisely called "yellow dwarf" 
+            %           (imprecisely, because its light is actually white)
+            % \end{itemize}
+            % \todo{The Sun was not as it is today when it formed $\approx$ 4.6 billion years ago.} \\
+    
+        \item
+            We will assume most of the original gas cloud's mass to be concentrated inside this 
+            star, while the disk surrounding it holds only a much smaller fraction of the total 
+            mass. We label the stellar mass $M_*$, and the disk mass $M_\text{disk}$. 
+            The ratio between the two shall be defined as
+            \begin{equation}
+                q_\text{disk-to-star}
+                    =\frac{M_\text{disk}}{M_*}  
+                    :=0.01
+            \end{equation}
+    
+        \item \assume{Furthermore, the disk's mass is assumed to be dominated by the contribution 
+            of circumstellar gas, with only a comparatively tiny contribution of dust particles.}
+            Let $M_\text{dust}$ and $M_\text{gas}$ label the total mass present in the form of dust 
+            and gas, respectively. 
+            With
+            \begin{equation}
+                M_\text{disk} = M_\text{gas} + M_\text{disk},
+            \end{equation}
+            we define the dust-to-gas ratio as
+            \begin{equation}
+                q_\text{dust-to-gas}=\frac{M_\text{dust}}{M_\text{gas}}:=0.01
+            \end{equation}
+    
+        \item The next assumption we will make concerns itself with disk symmetry. For this, let us 
+            adopt cylindrical coordinates $(r, \varphi, z)$. In reality, each of the disk's 
+            position-dependent properties could best be described by a function $f(r, \varphi, z)$ 
+            that depends on all three of these coordinates. \\
+            To keep things simple though, we will not attempt to resolve the disk in all three 
+            spatial dimensions. Instead, we will focus mostly on the radial dependence of the 
+            disk's features.
+    
+            On large scales, we will assume the disk's features to not depend significantly on 
+            $\varphi$ and $z$.
+    
+            \todo{Consider a disk with an inner and outer disk radius
+                $r_\text{min}=\SI{0.01}{\astronomicalunit}$ 
+            and 
+                $r_\text{max}=\SI{100}{\astronomicalunit}$,
+            respectively.} \\
+    
+        \item \assume{Gas mean particle mass.}
+            \begin{equation}
+                m_g
+                    := 2.3 \cdot m_p
+            \end{equation}
+            Here, $m_p$ labels the mass of a single proton. \\
+    
+        \item \assume{Gas is in hydrostatic equilibrium.}
+            \begin{equation}
+                \deriv{P}{z} = - \rho_g \cdot g_z  % TODO Why `g_z` and not `g` ?
+            \end{equation}
+    
+        \item \assume{Gas behaves isothermically.}
+            \begin{equation}
+                P = \rho_g \cdot c_s^2
+            \end{equation}
+    
+    \end{enumerate}
+    
+    \todo{Plot top-down view of the disk.}
+    
     \input{diagrams/disk_structure.tex}
 
-    \todo{Rename section? $\to$ "Disk Structure" ?} \\
+% \section{Symmetry Properties of the Disk}  
 
-    \todo{Consider a disk with an inner and outer disk radius
-        $r_\text{min}=\SI{0.01}{\astronomicalunit}$ 
-    and 
-        $r_\text{max}=\SI{100}{\astronomicalunit}$,
-    respectively.} \\
+%     \todo{Rename section? $\to$ "Disk Structure" ?} \\
+%     \todo{Plot disk structure (flaring disk, flaring index)} \\
+%     \todo{What exactly is on the ordinate? ($r$ on the abscissa)} \\
 
-    \todo{Plot disk structure (flaring disk, flaring index)} \\
-    \todo{What exactly is on the ordinate? ($r$ on the abscissa)} \\
+%     \assume{Disk is radially symmetric: $f(r,\varphi,z)=f(r,z)$ (cylindrical coordinates)} \\
 
-    \assume{Disk is radially symmetric: $f(r,\varphi,z)=f(r,z)$ (cylindrical coordinates)} \\
-
-\clearpage\section{Mass Distribution and Material Composition}
-
-   Most of the original gas cloud's mass is assumed to be concentrated inside the central star,
-   while the disk surrounding it holds only a much smaller fraction of the total mass. 
-   We label the stellar mass $M_*$, and the disk mass $M_\text{disk}$. 
-   The ratio between the two shall be defined as
-   \begin{equation}
-       q_\text{disk-to-star}
-           =\frac{M_\text{disk}}{M_*}  
-           :=0.01
-   \end{equation}
-
-    \assume{Furthermore, the disk's mass is assumed to be dominated by the contribution of
-    circumstellar gas, with only a comparatively tiny contribution of dust particles.}
-    Let $M_\text{dust}$ and $M_\text{gas}$ label the total mass present in the form of dust and 
-    gas, respectively. Then, we define the dust-to-gas ratio as 
-    \begin{equation}
-        q_\text{dust-to-gas}=\frac{M_\text{dust}}{M_\text{gas}}:=0.01
-    \end{equation}
-
-\section{The Star at the Center of the Disk}
-
-    For our model, the star's most relevant properties will be its mass $M_*$, as well as its
-    luminosity $L_*$. \assume{Both of these properties will be assumed to equal those of our own
-    solar system's Sun.} Thus, we define
-    \begin{align}
-        M_*&:=M_\odot=\SI{1.989e30}{\kg},\ \text{and} \\
-        L_*&:=L_\odot\ =\SI{3.828e26}{\joule\second^{-1}},
-    \end{align}
-    where $M_\odot$ and $L_\odot$ label the solar mass and luminosity, respectively. \\
-
-    \todo{What type of star is it? Where in the main sequence is it? How old is it?} 
-    \begin{itemize}
-        \item G-type main sequence star
-        \item often imprecisely called "yellow dwarf" 
-              (imprecisely, because its light is actually white)
-    \end{itemize}
-    \todo{The Sun was not as it is today when it formed $\approx$ 4.6 billion years ago.} \\
+% \clearpage\section{Mass Distribution and Material Composition}
 
 \clearpage\section{Radial Midplane Temperature Profile}
 
-    To keep things simple, let us make the assumption that the gas and dust particles 
-    in the disk behave like perfect black-body objects. As such, the relationship between the
+    \assume{To keep things simple, let us make the assumption that the gas and dust particles 
+    in the disk behave like perfect black-body objects.} As such, the relationship between the
     thermal radiation flux $B$ coming from the star (i.e. the total energy per unit surface area 
     per unit time) and the temperature $T$ is given by the Stefan-Boltzmann law, which states that
     \begin{equation}

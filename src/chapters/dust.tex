@@ -1,3 +1,4 @@
+% A Single Dust Particle {{{ 
 \section{A Single Dust Particle}
 
     \assume{Dust particles are perfectly spherical.}
@@ -17,7 +18,10 @@
     $$\rho_d=\SI{1600}{\kilogram\ \meter^{-3}}$$
     % TODO Increase spacing in `\SI` renders, here & elsewhere.
 
+% }}}
+% The Dust Particle Mass Distribution Function {{{ 
 \section{The Dust Particle Mass Distribution Function}
+
     % Continuous Formulation {{{ 
     \subsection{Continuous Formulation}
 
@@ -68,8 +72,9 @@
 
     % }}}
 
-\newpage
-\section{Dust Particle Kinematics}
+% }}}
+% Dust Particle Kinematics {{{ 
+\clearpage\section{Dust Particle Kinematics}
     
     \todo{This is relevant to us mainly in the context of relative velocity. 
     (for collision rate)} \\
@@ -228,8 +233,9 @@
 
     % }}}
 
-\newpage
-\section{Dust Particle Collisions}
+% }}}
+% Dust Particle Collisions {{{ 
+\clearpage\section{Dust Particle Collisions}
 
     % Collision Cross Section {{{ 
     \subsection{Collision Cross Section}
@@ -257,6 +263,8 @@
                 \approx \sigma_{ij} \cdot \Delta v_{ij} \cdot \textcolor{red}{n}
         \end{equation}
 
+        \todo{Watch out: Different units! (not 1/second)}
+
         \input{diagrams/collision_rate.tex}
         % TODO Define `minipage` plot with both coll. cross section & coll. rate.
 
@@ -276,13 +284,8 @@
         on the relative velocity between the two particles, and can be classified into 3 distinct 
         categories, namely (pure hit-and-stick) coagulation, fragmentation, and bouncing.\\
         
-        Let
-        \begin{align*}
-            P^\text{coag}&(m,m'),\\
-            P^\text{frag}&(m,m'),\ \text{and}\\
-            P^\text{bounce}&(m,m')
-        \end{align*}
-        label the probability that a collision will lead to the respective outcome. \\
+        Let $P^\text{coag}$, $P^\text{frag}$, and $P^\text{bounce}$
+        label the probabilities that a collision will lead to the respective outcome. \\
 
         \todo{They will be defined in... [ref. chapter]} \\
         
@@ -342,3 +345,5 @@
         \input{diagrams/collision_outcome_probabilities.tex}
 
     % }}}
+
+% }}}

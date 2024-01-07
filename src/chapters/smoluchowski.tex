@@ -47,31 +47,28 @@
     \newpage\subsection{Discretized Formulation}
 
         \todo{Now, discretize the Smoluchowski equation.} \\
-        \todo{For this, we perform the following mappings}:
-        \begin{align}
-            \pderiv{n}{t}
-                &\to \frac{\Delta n}{\Delta t} \\
-            \int_0^\infty \dd m'
-                &\to \sum_{i=1}^{\mathcal N_m} \Delta m_i \\
-            \int_0^\infty \dd m''
-                &\to \sum_{j=1}^{\mathcal N_m} \Delta m_j
-        \end{align} 
+
+        To do this, we perform the following two mappings:
+        \begin{enumerate}
+            \item Replace temporal derivative of particle mass distribution function with 
+                finite difference.
+                \begin{equation}
+                    \pderiv{n}{t} \to \frac{\Delta n}{\Delta t}
+                \end{equation}
+            \item Replace integral over particle mass axis with discrete sum.
+                \begin{equation}
+                    \int_0^\infty \dd m' \to \sum_{i=1}^{\mathcal N_m} \Delta m_i
+                    \ \ \ \text{and}\ \ \
+                    \int_0^\infty \dd m'' \to \sum_{j=1}^{\mathcal N_m} \Delta m_j
+                \end{equation} 
+        \end{enumerate}
 
         \todo{This results in:}
         \begin{equation}
             \label{eq:discrete_smoluchowski_equation}
-            \begin{split}
-                % \pderiv{n}{t}(m)
-                %     &=\int\limits_0^\infty\int\limits_0^\infty 
-                %         K(m,m',m'')\cdot n(m')\cdot n(m'')\ \dd m'\ \dd m''
-                % \\
-                %     &\downarrow
-                % \\
-                \pderiv{n_k}{t}
-                    &=\sum_{i=1}^{\mathcal N_m}\sum_{j=1}^{\mathcal N_m}
-                        K(m_k,m_i,m_j)\cdot n_i\cdot n_j\cdot\Delta m_i\cdot\Delta m_j
-                \\
-            \end{split}
+            \pderiv{n_k}{t}
+                \approx \sum_{i=1}^{\mathcal N_m}\sum_{j=1}^{\mathcal N_m}
+                    K(m_k,m_i,m_j)\cdot n_i\cdot n_j\cdot\Delta m_i\cdot\Delta m_j
         \end{equation}
     
         Let us define
@@ -80,11 +77,11 @@
                 := K(m_k,m_i,m_j)\cdot\Delta m_k
         \end{equation}
     
-        If in addition we make use of the relationship $N_i=n_i\cdot\Delta m_i$ 
-        that was defined in (\todo{cite}), then we can rewrite the Smoluchowski equation as
+        If, in addition, we make use of the relationship $N_i=n_i\cdot\Delta m_i$ that was defined 
+        in (\todo{cite}), then we can rewrite the Smoluchowski equation as
         \begin{equation}
             \pderiv{N_k}{t}
-                = \sum_{i=1}^{\mathcal N_m}\sum_{j=1}^{\mathcal N_m} K_{kij}\cdot N_i\cdot N_j
+                \approx \sum_{i=1}^{\mathcal N_m}\sum_{j=1}^{\mathcal N_m} K_{kij}\cdot N_i\cdot N_j
         \end{equation}
     
     % }}}

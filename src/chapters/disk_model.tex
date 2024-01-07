@@ -10,6 +10,7 @@ To be able to construct such a framework, it will be necessary to make a couple 
 
 % \todo{Do what? (Star, Disk, Gas, Dust, Coagulation/Fragmentation)} \\
 
+% First Assumptions {{{
 \section{First Assumptions}
 
     \begin{enumerate}
@@ -108,17 +109,9 @@ To be able to construct such a framework, it will be necessary to make a couple 
     
     \input{diagrams/disk_structure.tex}
 
-% \section{Symmetry Properties of the Disk}  
-
-%     \todo{Rename section? $\to$ "Disk Structure" ?} \\
-%     \todo{Plot disk structure (flaring disk, flaring index)} \\
-%     \todo{What exactly is on the ordinate? ($r$ on the abscissa)} \\
-
-%     \assume{Disk is radially symmetric: $f(r,\varphi,z)=f(r,z)$ (cylindrical coordinates)} \\
-
-% \clearpage\section{Mass Distribution and Material Composition}
-
-\clearpage\section{Radial Midplane Temperature Profile}
+% }}}
+% Radial Profile of the Midplane Temperature {{{ 
+\clearpage\section{Radial Profile of the Midplane Temperature}
 
     \assume{To keep things simple, let us make the assumption that the gas and dust particles 
     in the disk behave like perfect black-body objects.} As such, the relationship between the
@@ -180,6 +173,8 @@ To be able to construct such a framework, it will be necessary to make a couple 
     %     \item sound speed (here?)
     % \end{itemize}
 
+% }}}
+% Radial Profile of the Gas Density {{{ 
 \newpage\section{Radial Gas Density Profile}
 
     Our next task will be to formulate a simple model for the spatial distribution of the disk's 
@@ -380,10 +375,13 @@ To be able to construct such a framework, it will be necessary to make a couple 
 
     % }}}
 
+% }}}
+% Gas Particle Kinematics {{{ 
 \newpage\section{Gas Particle Kinematics}
 
     \todo{There are both stochastic and systematic contributions to the gas kinematics.}
 
+    % Thermal Gas Velocity {{{ 
     \subsection{Thermal Gas Velocity}
 
         \todo{Sound speed:}
@@ -403,6 +401,8 @@ To be able to construct such a framework, it will be necessary to make a couple 
 
         \input{diagrams/thermal_gas_velocity.tex}
 
+    % }}}
+    % Radial Gas Velocity {{{ 
     \newpage\subsection{Radial Gas Velocity}
 
         \todo{Plot radial profile of "speed" (thermal + ..?)}
@@ -434,3 +434,12 @@ To be able to construct such a framework, it will be necessary to make a couple 
         \end{equation}
 
         \input{diagrams/radial_gas_velocity.tex}
+
+    % }}}
+% }}}
+
+% \section{Symmetry Properties of the Disk}  
+%     \todo{Rename section? $\to$ "Disk Structure" ?} \\
+%     \todo{Plot disk structure (flaring disk, flaring index)} \\
+%     \todo{What exactly is on the ordinate? ($r$ on the abscissa)} \\
+%     \assume{Disk is radially symmetric: $f(r,\varphi,z)=f(r,z)$ (cylindrical coordinates)} \\

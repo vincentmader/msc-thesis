@@ -12,6 +12,7 @@ To be able to construct such a framework, it will be necessary to make a couple 
 
 % First Assumptions {{{
 \section{First Assumptions}
+\label{sec:first_assumptions_about_the_disk}
 
     \begin{enumerate}
         \item \assume{} First of all, we will base our model on the aforementioned nebular 
@@ -100,6 +101,7 @@ To be able to construct such a framework, it will be necessary to make a couple 
     
         \item \assume{Gas behaves isothermically.}
             \begin{equation}
+                \label{eq:isothermal_condition}
                 P = \rho_g \cdot c_s^2
             \end{equation}
     
@@ -178,8 +180,9 @@ To be able to construct such a framework, it will be necessary to make a couple 
 \newpage\section{Radial Profile of the Gas Density}
 
     Our next task will be to formulate a simple model for the spatial distribution of the disk's 
-    gaseous contents. In this context, we will adopt cylindrical coordinates $(r, \varphi, z)$ and
-    define both the surface and volume density profiles along the radial axis $r$.
+    gaseous contents. In this context, we will adopt cylindrical coordinates 
+    $\vec r=(r, \varphi, z)^T$ and define both the surface and volume density profiles along the 
+    radial axis $r$.
 
     % Radial Profile of the Gas Surface Density {{{ 
     \subsection{Radial Profile of the Gas Surface Density}
@@ -264,92 +267,87 @@ To be able to construct such a framework, it will be necessary to make a couple 
     % Radial Profile of the Gas Volume Density {{{ 
     \newpage\subsection{Radial Profile of the Gas Volume Density}
         
-        For the derivation of the volume density's radial profile, we will make
-
-        \assume{Isothermal condition} [cite] \\
-        \assume{Disk is in hydrostatic equilibrium [cite]} \\
-
-        Let us adopt cylindrical coordinates and consider a point $\vec r=(r,\phi,z)^T$ in the 
-        disk. \\  % TODO Write with transposed `T` ?
-
-        \assume{The disk is "much more wide than tall": (it is a disk, afterall...)}
-        \begin{equation*}
-            r\gg z 
-        \end{equation*}
-
-        \todo{Sketch disk} \\
-        \input{diagrams/force_balance_in_disk_with_hydrostatic_equilibrium.tex}
-
-        The acceleration due to Newtonian gravity is given by
+        Consider again a point $\vec r=(r,\phi,z)^T$ in the disk. Since the disk is much more wide 
+        than tall (it is a disk, after all), we can make the assumption that
+        % TODO Be more specific: We focus on a point where that makes sense.
         \begin{equation}
-            g=\frac{GM_*}{r^2+z^2}
+            \label{eq:r_much_bigger_than_z}
+            r\gg z 
         \end{equation}
 
-        Making use of the laws of trigonometry, we can write
+        The acceleration due to Newtonian gravity exerted by the star at the disk center 
+        on a massive object at position $\vec r$ is given by
         \begin{equation}
-            g_z=g\cdot\sin\theta
+            \vec g = -\frac{GM_*}{r^2+z^2} \cdot \frac{\vec r}{|\vec r|}
+        \end{equation}
+
+        Now consider the schematic drawing in
+        \cref{fig:trigonometry_schematic_for_gas_volume_density_plot}.
+        Making use of basic trigonometry, we can write
+        \begin{equation}
+            g_z = |\vec g| \cdot \sin\theta
         \end{equation}
         and
         \begin{equation}
             \sin\theta=\frac{z}{\sqrt{r^2+z^2}}
         \end{equation}
 
-        Plugging all of this into [cite: above], we can write
+        As already mentioned in \cref{sec:first_assumptions_about_the_disk}, the gas in the 
+        proto-planetary disk is assumed to be in perfect hydrostatic equilibrium. 
+        Therefore, we can write
         \begin{align}
             \deriv{P}{z}
                 &= -\rho_g \cdot g_z \\
-                &= -\rho_g \cdot g \cdot \sin\theta \\
+                &= -\rho_g \cdot |\vec g| \cdot \sin\theta \\
                 &= -\rho_g \cdot \frac{GM_*}{r^2+z^2} \cdot\frac{z}{\sqrt{r^2+z^2}} \\
-                &= -\rho_g \cdot z \cdot\frac{GM_*}{ (r^2+z^2)^{\frac{3}{2}} } \\
-            \Rightarrow
-            \deriv{P}{z}
-                &\approx -\rho_g \cdot z \cdot \Omega_K^2
+                &= -\rho_g \cdot z \cdot\frac{GM_*}{ (r^2+z^2)^{\frac{3}{2}} }
+                \label{eq:hydrostatic_equilibrium_with_plugged_in_trigonmetry}
         \end{align}
 
-        For the last step, we made use of the fact that $r \gg z$, which allows us to make the 
-        approximation
+        Let us now make use of \cref{eq:r_much_bigger_than_z}, which allows us to make 
+        the approximation
         \begin{equation}
-            \frac{GM_*}{(r^2+z^2)^\frac{3}{2}}
-                \approx \frac{GM_*}{r^3}
-                = \Omega_K^2
+            \frac{GM_*}{(r^2+z^2)^{3/2}} \approx \frac{GM_*}{r^3} = \Omega_K^2
+        \end{equation}
+        and thus, together with \cref{eq:hydrostatic_equilibrium_with_plugged_in_trigonmetry},
+        lets us write
+        \begin{equation}
+            \deriv{P}{z} \approx -\rho_g \cdot z \cdot \Omega_K^2
         \end{equation}
 
-        \todo{Differentiate isothermal condition with respect to $z$:}
+        \input{diagrams/force_balance_in_disk_with_hydrostatic_equilibrium.tex}
+
+        The second assumption we made about the gas in \cref{sec:first_assumptions_about_the_disk}
+        was that its behavior can be modeled as perfectly isothermal. If we differentiate the 
+        isothermal condition from 
+        \cref{eq:isothermal_condition} with respect to $z$, we get
         \begin{equation}
-            \deriv{P}{z}
-                = \deriv{\rho_g}{z}\cdot c_s^2
+            \deriv{P}{z} = \deriv{\rho_g}{z}\cdot c_s^2
         \end{equation}
 
-        \todo{We now have two expressions for $\pderiv{P}{z}$}, in [cite eq 1] and [cite eq 2]. \\
-        \todo{Equating both of these and solving for $\pderiv{\rho_g}{z}$ leads to the following 
-        differential equation:}
+        Thus, we now have two expressions for $\text dP/\text dz$. Equating both of these and then 
+        solving for $\text d\rho_g/\text dz$ leads to the following differential equation:
         % TODO Is it an ODE or a PDE ? Should I write `dy/dx` here, or `del y / del x` ?
         \begin{equation}
-            \deriv{\rho_g}{z}
-                = - \left(\frac{\Omega_K}{c_s}\right)^2 \cdot \rho_g \cdot z
+            \boxed{\deriv{\rho_g}{z} = - \left(\frac{\Omega_K}{c_s}\right)^2 \cdot \rho_g \cdot z}
         \end{equation}
 
         This differential equation can be solved by making the ansatz of a Gaussian distribution
         \begin{equation}
-            \rho_g(z)
-                = 
-                    \rho_0\cdot\exp\left(-\frac{z^2}{2H_p^2}\right)
+            \boxed{\rho_g(z) = \rho_0\cdot\exp\left(-\frac{z^2}{2H_p^2}\right)}
         \end{equation}
         where
         \begin{equation}
-            H_p
-                :=\frac{\Omega_K}{c_s}
+            H_p :=\frac{\Omega_K}{c_s}
         \end{equation}
         is the so-called \textit{pressure scale height} of the disk. \\
         % TODO socalled vs so-called
 
-        \todo{Now that we know the behavior of the gas volume density, we can easily derive it from 
-        the gas surface density like this:} 
+        Now that we know the behavior of the gas volume density, we can easily derive it from 
+        the gas surface density like this: (\todo{Why can we do this?})
         \begin{equation}
-            \rho_g(r)
-                =\frac{\Sigma_g(r)}{\sqrt{2\pi}\cdot H_p}
+            \boxed{\rho_g(r) =\frac{\Sigma_g(r)}{\sqrt{2\pi}\cdot H_p}}
         \end{equation}
-        \todo{Why can we do this?}
 
     % }}}
     % Radial Profile of the Gas Number Density {{{ 

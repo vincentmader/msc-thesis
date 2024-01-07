@@ -197,7 +197,7 @@ To be able to construct such a framework, it will be necessary to make a couple 
         \end{equation}
 
         \assume{As noted before in (cite), we will assume the disk to be perfectly radially 
-        symmetric.} (\todo{At least macroscopically!}) \\
+        symmetric.} (\todo{At least macroscopically!})
         For the density distributions, this means that
         \begin{align}
             \Sigma_g(r, \varphi) 
@@ -214,31 +214,30 @@ To be able to construct such a framework, it will be necessary to make a couple 
                 = \int\limits_{-\infty}^{\infty} \rho_g(r,z)\ \dd z
         \end{equation}
         
-        \todo{So far, we do not yet have an expression for the gas volume density $\rho_g$.}
-        Therefore, we can not derive the surface density $\Sigma_g$ by evaluating the above
-        integral. Instead, we will go the other way round by making an ansatz for the surface gas
-        density and then derive the volume density from that. \\
+        But: We do not yet have an expression for the gas volume density $\rho_g$ so far.
+        Therefore, we cannot derive the surface density $\Sigma_g$ by simply evaluating the above
+        integral. Instead, we will go the other way round and make an ansatz for the gas surface
+        density. Then we will be able to derive the volume density from that. \\
 
         In order to do this, we will 
-        follow the work of Brauer, Dullemond, \& Henning \cite{brauer_dullemond_henning_2007},
+        follow the work of Brauer, Dullemond, \& Henning \cite{brauer_dullemond_henning_2007}
         % Following the works of \cite{brauer_dullemond_henning_2007}
         % , \cite{andrews_2007}, and \cite{kitamura_2002}, 
         and make the assumption that the radial profile of the gas surface density can be 
         approximated by using an inverse power law of the form
         \begin{equation}
             \label{eq:gas_surface_density_profile_inverse_power_law_ansatz}
-            \Sigma_g(r)=\Sigma_0\cdot\frac{1}{r^\sigma}
+            \Sigma_g(r) = \Sigma_0\cdot\frac{1}{r^\sigma}
             \ \ \ \text{with}\ \ \
-            \sigma:=0.8
-        \end{equation}
-        % TODO Why 0.8 ?
+            \sigma := 0.8
+        \end{equation}  % TODO Why 0.8 ?
+        Before we can use this though, we still need to define $\Sigma_0$, which we will do now: \\
 
-        \todo{Before we can use this, we need to define $\Sigma_0$}. \\
-
-        The total gas mass present in the disk is given by $M_\text{gas}$, which we defined in 
-        (\todo{cite}). \\
-        \todo{Since the integration of the surface density over the entire disk surface must yield 
-        this value, we can formulate the following condition:}
+        The total gas mass present in the disk is given by $M_\text{gas}$, the numerical value of 
+        which can easily be derived from what we defined in
+        \cref{sec:first_assumptions_about_the_disk}. Since the integration of the surface density 
+        over the entire disk surface must yield this value, we can formulate the following 
+        condition:
         \begin{align}
             M_\text{gas}
                 % &= \int_{A_\text{disk}} \Sigma_g(r) \ \dd A \\
@@ -246,21 +245,21 @@ To be able to construct such a framework, it will be necessary to make a couple 
         \end{align}
         % TODO Define r_min and r_max before.
 
-        \todo{Above (cite): Discretize $r$-axis into $\mathcal N_r$ "bins"}
+        Since we discretized the radial axis into $\mathcal N_r$ "bins", we can rewrite this as
         \begin{equation}
-            M_\text{gas}
-                = \sum_{i=1}^{\mathcal N_r} \Sigma_g(r_i) \cdot 2\pi r_i \cdot \Delta r_i
+            M_\text{gas} = \sum_{i=1}^{\mathcal N_r} \Sigma_g(r_i) \cdot 2\pi r_i \cdot \Delta r_i
         \end{equation}
         % TODO Define N_r before.
 
-        Now we can plug in \cref{eq:gas_surface_density_profile_inverse_power_law_ansatz} and 
-        rearrange for $\Sigma_0$:
+        Now plug in \cref{eq:gas_surface_density_profile_inverse_power_law_ansatz} and 
+        rearrange for $\Sigma_0$ to arrive at
         \begin{equation}
             \Sigma_0
                 = M_\text{gas} \cdot \left[
                     \sum_{i=1}^{\mathcal N_m} 2\pi r_i^{1-\sigma} \cdot \Delta r_i
-                \right]^{-1}
+                \right]^{-1},
         \end{equation}
+        which is all we need to formulate the radial profile of the gas surface density.
         % TODO Do this with dA instead of 4pi r dr ?
 
     % }}}
@@ -367,11 +366,9 @@ To be able to construct such a framework, it will be necessary to make a couple 
     % }}}
     % Plots of Density Profiles {{{
 
-        \newpage
-        \todo{Plot gas surface density $\Sigma_g(r)$ vs $r$.} \\
-        \todo{Plot gas volume density $\rho_g(r_i)$ vs $r_i$.} \\
-        \todo{Plot $\rho_g(z)$.}
+        \clearpage
         \input{diagrams/gas_density_profiles.tex}
+        \todo{Plot $\rho_g(z)$.}
 
     % }}}
 

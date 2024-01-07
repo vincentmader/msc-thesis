@@ -239,14 +239,13 @@
     % Collision Cross Section {{{ 
     \subsection{Collision Cross Section}
         
-        \todo{As already mentioned in (\todo{cite}), for the studies made in this thesis, 
-              we assume a perfectly spherical dust particle shape.} \\
+        As already mentioned in (\todo{cite}), in the context of this thesis we will assume the
+        dust particles to possess a perfectly spherical shape. Under this assumption, the cross
+        section $\sigma_{ij}$ for a collision of two dust particles with radii $a_i$ and $a_j$ can
+        be approximated by the area of a circle the radius of which equals the sum of the two
+        particles' radii. \\
 
-        \todo{Therefore, the cross section $\sigma_{ij}$ for the collision of two dust particles 
-              with radii $a_i$ and $a_j$ can be approximated by the area of a circle whose radius 
-              equals the sum of the two particle radii.} \\
-
-        \todo{As such, the collision cross section can be written as:}
+        Therefore, the collision cross section can be written as:
         \begin{equation}
             \sigma_{ij} = \pi \cdot (a_i+a_j)^2
         \end{equation}
@@ -256,7 +255,9 @@
     \subsection{Collision Rate}
 
         The rate $R^\text{coll}_{ij}$ of collisions between pairs of particles from bins $i$ 
-        and $j$ is given by the product of the corresponding collision cross section, relative particle velocity, and number density of particles at the considered location in the disk. 
+        and $j$ is given by the product of the corresponding collision cross section, the
+        particles' relative velocity, and the number density of particles at the considered 
+        location in the disk. 
         \begin{equation}                                            % ^ TODO: "considered?"
             R^\text{coll}_{ij}
                 \approx \sigma_{ij} \cdot \Delta v_{ij} \cdot \textcolor{red}{n}

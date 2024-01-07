@@ -1,5 +1,212 @@
+% Motivation {{{ 
 \section{Motivation}
+
+    \todo{The integration of the Smoluchowski equation is numerically expensive.} \\
+    \todo{This is due to the fact that we have to evaluate a sum over the three-dimensional
+    kernel matrix.} \\
+
+    \todo{For every mass value, we are interested in finding out how the number of particles 
+    carrying that mass is influenced by collisions of particles carrying every possible 
+    combination of mass values.} \\
+    \todo{As such, the computational complexity is proportional to $\mathcal N_m^3$}. \\
+
+    \todo{Since this has to be done for each time step, the computational cost of the entire 
+    integration is increased by an additional factor $\mathcal N_t$.} \\
+
+    \todo{Also, in principle this has to be done separately at each position in the disk.} \\
+    \todo{In the simplified model used throughout the disk, we assumed spherical symmetry, and 
+    did not spatially resolve the disk along the $z$-axis.}
+    \todo{As such, in this case the computational complexity is proportional to an
+    additional factor $\mathcal N_r$}. \\
+
+    \todo{It gets even worse if we want to resolve the disk along all three spatial dimensions.} \\
+    \todo{Then, there is an additional factor $\mathcal N_\varphi \cdot \mathcal N_z$.} \\
+
+    \todo{It may be good enough to only resolve the disk along the radial axis, or even to focus 
+    on just a single point in the disk. Even then though, it gets more complicated if one wants 
+    to build a detailed model of dust particle coagulation.} \\
+
+    \todo{In the discussion up to this point, we made the assumption that all dust particles are 
+    perfectly spherically, and can thus be characterized entirely by the mass that they carry.} \\
+
+    \todo{This is of course quite simplistic. In reality, dust particles possess much more complex 
+    shapes.}xz    \todo{...}
+    \todo{An illustration of the so-called \textit{dust bunnies} resulting from collisions can be 
+    seen in [cite].} \\
+
+    \todo{A detailed description ... (impossible?)} \\
+    \todo{To at least somewhat include the dynamics of such particles, one can make the assumption 
+    that a dust particle can be characterized by not one, but two attributes: In addition to the 
+    particle mass, we define the \textit{particle porosity}, which gives a (Masz) for the
+    (Packungsdichte) of the particle.} \\
+
+    \todo{Studies including (...) have already been done by [cite].} \\
+
+    \todo{If porosity is included as a second attribute for the dust particles, it is no longer 
+    enough to formulate a three-dimensional matrix for the coagulation kernel. Instead, it 
+    becomes six-dimensional.} \\
+    \todo{The computational complexity increases by an additional factor $\mathcal N_p^3$ (?).}
+
+    \todo{Therefore, the total computational complexity (assuming 3D spatial resolution) 
+    becomes proportional to}
+    \begin{equation}
+        O\big(
+            \mathcal N_m^3 \cdot \mathcal N_p^3 \cdot 
+            \mathcal N_t   \cdot 
+            \mathcal N_r   \cdot \mathcal N_\varphi \cdot \mathcal N_z
+        \big)
+    \end{equation}
+
+    \todo{The idea of this thesis:} \\
+    \todo{Speed up the integration via stochastic sampling of the coagulation kernel.} \\
+    \todo{In future studies (where porosity is included) this could lead to drastic improvements 
+    in the (integration times) by (excluding less relevant sum terms) (...)} \\
+
+    \todo{Goals?} \\
+    \todo{Metrics?} \\
+    \todo{Bare minimum: Mass conservation (detailed balance)} \\
+    \todo{Then: Accuracy}
+
+% }}}
+% Previous Works {{{
 \section{Previous Works}
+
+% }}}
+% Monte Carlo Sampling {{{
+\section{Introduction to Monte Carlo Sampling}
+
+\todo{Before we start: Take a look at simple examples.} \\
+
+    % Monte Carlo Integration in 1D {{{ 
+    \subsection{Monte Carlo Integration in 1D}
+
+        \todo{Consider a function $f$ that is defined on an interval $D\subset\mathbb R$
+        (from $x_\text{min}$ to $x_\text{max}$).} \\
+        \todo{To demonstrate the basic idea of Monte Carlo integration, and without loss of 
+        generality, let us for now assume that the image of $D$ under $f$ follows a Gaussian 
+        distribution.}
+        \begin{equation}
+            f: 
+            D \to \mathbb R, 
+            x \mapsto \frac{1}{\sqrt{2\pi}\sigma}\exp\bigg(\frac{-(x-\mu)^2}{2\sigma^2}\bigg)
+        \end{equation}
+
+        We would now like to calculate an approximate value for the integral 
+        \begin{equation}
+            I = \int\limits_{x_\text{min}}^{x_\text{max}} f(x) \ \text dx
+        \end{equation}
+
+        Sample a total of $\mathcal N_\text{sample} \in \mathbb N$ points from the interval $D$. \\
+
+        \todo{This will be done according to a probability distribution $P(x)$, the definition of 
+        which will be the crucial thing to do. (?)} \\
+
+        With $i \in [1, N_\text{sample}] \cap \mathbb N$, let $x_i$ label the chosen values. \\
+
+    % }}}
+    % Monte Carlo Integration in 2D {{{ 
+    \subsection{Monte Carlo Integration in 2D}
+
+    % }}}
+
+% }}}
+% Basic Idea {{{ 
+\section{Basic Idea}
+
+    \todo{We want to minimize the cost of integration by only including the most "relevant" 
+    sum terms of the right hand side of [cite Smol. eq.] into the calculation. (Soon define what 
+    relevant means)} \\
+    \todo{We want to sample the most "relevant" collisions, i.e. those that have the largest 
+    effect on the temporal derivative of the particle mass distribution function.} \\
+    \todo{We do \textit{not} sample $i$ and $j$ separately. Instead, we sample pairs $(i, j)$.} \\
+
+% }}}
+% Definition of the Sampling Probability {{{
 \section{Definition of the Sampling Probability}
+
+    \todo{Our first task will be to recognize proportionalities, before putting it all together.} \\
+
+    The idea here is to define the sampling probability distribution in such a way that the most 
+    often sampled collisions are those that have the largest effect on the temporal evolution of 
+    the dust particle mass distribution. \\
+
+    Therefore, it seems plausible that, all other factors being equal, more frequently occuring 
+    collisions should also be sampled more frequently. \\
+
+    As such, we can recognize the proportionality relations
+    \begin{equation}
+        P_{ij} \sim R^\text{coll}_{ij}
+    \end{equation}
+    as well as 
+    \begin{align}
+        P_{ij} \sim N_i 
+        \ \ \ \text{and} \ \ \
+        P_{ij} \sim N_j
+    \end{align}
+
+    \todo{Also:}
+    \begin{equation}
+        P_ij \sim m_i
+        \ \ \ \text{and} \ \ \
+        P_ij \sim m_j
+    \end{equation}
+
+    Also, it makes sense to define this probability distribution in such a way that the collisions 
+    that are most likely to be chosen are those that have the "largest effect" on the particle mass 
+    distribution function. With that, we mean those collisions that lead to the largest transfer of 
+    mass from one bin to another. \\
+    
+    We define a \textit{weight matrix} $W_{ij}$ encoding this condition:
+    \begin{equation} 
+        W_{ij}
+            = \sum_{k=1}^{\mathcal N_m} m_k \cdot \big|K_{kij}\big|
+    \end{equation}
+
+    \todo{The total probability distribution is then directly proportional to the product of 
+          the contributions discussed so far:}
+    \begin{equation}
+        P_{ij}
+            \sim W_{ij}\cdot N_i\cdot N_j\cdot m_i\cdot m_j
+    \end{equation}
+
+    To turn this into an actual probability distribution though, we still have to perform a 
+    normalization step, to assure that the sum over all probabilities is equal to one:
+    \begin{equation}
+        \sum_{i=1}^{\mathcal N_m}\sum_{j=1}^{\mathcal N_m}P_{ij}
+            \overset{!}{=}1
+    \end{equation}
+
+    To do this, we define the sum
+    \begin{equation}
+        S
+            := \sum_{i=1}^{\mathcal N_m} \sum_{j=1}^{\mathcal N_m}
+               W_{ij} \cdot N_i \cdot N_j \cdot m_i \cdot m_j
+    \end{equation}
+    and, with this, the normalized probability distribution
+    \begin{equation}
+        P_{ij}
+            = \frac{W_{ij} \cdot N_i \cdot N_j \cdot m_i \cdot m_j}{S}
+    \end{equation}
+
+% }}}
+% First tests {{{ 
+    \subsection{First Tests (\todo{rename})}
+
+    \todo{Test (also for other sampling methods):}
+    $$K_\text{complete}=K(\mathcal{N}_s=\mathcal{N}_m^2)$$
+
+% }}}
+% Sampling "without returning" {{{ 
 \section{Sampling "without returning"}
+
+    The first case that we will consider will make use of "sampling without returning". Here, a 
+    particle pair $(i, j)$ is only allowed to be chosen once per time step.
+
+% }}}
+% Sampling "with returning" {{{ 
 \section{Sampling "with returning"}
+
+    Now, we will consider the case of "sampling with returning", i.e. we will now allow particle 
+    pairs to be chosen more than once per time step.
+
+% }}}

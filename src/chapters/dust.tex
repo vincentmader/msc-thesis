@@ -262,54 +262,35 @@
     % Collision Outcomes {{{ 
     \subsection{Collision Outcomes}
 
-        Since the kinematics of circumstellar dust particles are influenced by both systematic and 
-        stochastic contributions (e.g. Keplerian and Brownian motion, respectively), occasional
-        particle collisions are to be expected. At a given time $t$ and position $\vec r$ in the
-        disk, let us write $$R^\text{coll}(m,m')$$ to denote the rate of collisions between two
-        particles carrying the masses $m$ and $m'$, respectively. \\
+        Depending on the relative velocity of the two particles involved in a collision,
+        % TODO Note somewhere that it's ALWAYS a two-particle interaction.
+        we will differentiate between three different collision outcome scenarios:
+        \begin{enumerate}
+            \item If the relative velocity is low, the two particles will merge into a single one.
+                \\ (\todo{pure "hit-and-stick" coagulation})
+            \item \todo{Bouncing?}
+            \item If the relative velocity is large enough, the collision will lead to a shattering 
+                (fragmenting) of the two particles.
+        \end{enumerate}
 
-        \todo{This rate will be defined further in... [ref. chapter]} \\
-        
-        The outcome of a collision between such a particle pair depends (\todo{among other things})
-        on the relative velocity between the two particles, and can be classified into 3 distinct 
-        categories, namely (pure hit-and-stick) coagulation, fragmentation, and bouncing.\\
-        
-        Let $P^\text{coag}$, $P^\text{frag}$, and $P^\text{bounce}$
-        label the probabilities that a collision will lead to the respective outcome. \\
+        \todo{For each of the three possible outcomes, we will define an associated probability.} \\
+        \todo{Let $P^\text{coag}$, $P^\text{frag}$, and $P^\text{bounce}$
+        label the probabilities that a collision will lead to the respective outcome.} \\
 
-        \todo{They will be defined in... [ref. chapter]} \\
-        
-        The rates at which such events occur are then given by
-        \begin{equation}
-            R^\text{coag}(m,m')
-                =R^\text{coll}(m,m')\cdot P^\text{coag}(m,m'),
-        \end{equation}
-        \begin{equation}
-            R^\text{frag}(m,m')
-                =R^\text{coll}(m,m')\cdot P^\text{frag}(m,m'),
-        \end{equation}
-        \begin{center}and\end{center}
-        \begin{equation}
-            R^\text{bounce}(m,m')
-                =R^\text{coll}(m,m')\cdot P^\text{bounce}(m,m').
-        \end{equation}
-        
-        % to denote the probability that such a collision will lead to a 
-        % merging of the two collision partners into a single new particle. Analogously, 
-        % labels that rate of collisions leading to fragmentation of the two 
-        % particles into a range of newly created, smaller particles.
-        % TODO "newly created" or "newly-created" ?
-        % $R^\text{coag}(m,m',\vec r,t)$ label the rate of 
-        % collisions leading to the merging of two particles carrying the masses $m$ and $m'$, respectively. 
-        % Analogously, let $R^\text{frag}(m,m',\vec r,t)$ be the rate of collisions leading to particle 
-        % fragmentation.\\
-        
+        \todo{The rates at which such events occur are then given by}
+        \begin{align}
+            R^\text{coag}(m,m')   &= R^\text{coll}(m,m') \cdot P^\text{coag}(m,m') \\
+            R^\text{frag}(m,m')   &= R^\text{coll}(m,m') \cdot P^\text{frag}(m,m') \\
+            R^\text{bounce}(m,m') &= R^\text{coll}(m,m') \cdot P^\text{bounce}(m,m')
+        \end{align}
+
+        \clearpage
+
         \todo{Threshold value for relative velocity:}
-        
         \begin{equation}
             v_\text{threshold}:=\SI{1}{\meter\second^{-1}}
         \end{equation}
-        
+
         \begin{equation}
             P^\text{frag}_{ij}
             =
@@ -329,11 +310,38 @@
         \begin{equation}
             P^\text{frag}_{ij}=(1+x)\cdot e^{-x}
         \end{equation}
-        
-        \todo{Line plot: outcome probability vs. particle radius}
-        
+
         \input{diagrams/collision_outcome_probabilities.tex}
 
+        \todo{...}
+        \clearpage
+
+        % Since the kinematics of circumstellar dust particles are influenced by both systematic and 
+        % stochastic contributions (e.g. Keplerian and Brownian motion, respectively), occasional
+        % particle collisions are to be expected. At a given time $t$ and position $\vec r$ in the
+        % disk, let us write $$R^\text{coll}(m,m')$$ to denote the rate of collisions between two
+        % particles carrying the masses $m$ and $m'$, respectively. \\
+
+        % \todo{This rate will be defined further in... [ref. chapter]} \\
+        
+        % The outcome of a collision between such a particle pair depends (\todo{among other things})
+        % on the relative velocity between the two particles, and can be classified into 3 distinct 
+        % categories, namely (pure hit-and-stick) coagulation, fragmentation, and bouncing.\\
+
+        % \todo{They will be defined in... [ref. chapter]} \\ 
+        
+        % to denote the probability that such a collision will lead to a 
+        % merging of the two collision partners into a single new particle. Analogously, 
+        % labels that rate of collisions leading to fragmentation of the two 
+        % particles into a range of newly created, smaller particles.
+        % TODO "newly created" or "newly-created" ?
+        % $R^\text{coag}(m,m',\vec r,t)$ label the rate of 
+        % collisions leading to the merging of two particles carrying the masses $m$ and $m'$, respectively. 
+        % Analogously, let $R^\text{frag}(m,m',\vec r,t)$ be the rate of collisions leading to particle 
+        % fragmentation.\\
+        
+        % \todo{Line plot: outcome probability vs. particle radius}
+        
     % }}}
 
 % }}}

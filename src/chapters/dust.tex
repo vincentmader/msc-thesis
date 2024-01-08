@@ -19,7 +19,7 @@
 
 % }}}
 % The Dust Particle Mass Distribution Function {{{ 
-\section{The Dust Particle Mass Distribution Function}
+\clearpage\section{The Dust Particle Mass Distribution Function}
 
     % Continuous Formulation {{{ 
     \subsection{Continuous Formulation}
@@ -43,7 +43,7 @@
 
     % }}}
     % Discretized Formulation {{{ 
-    \clearpage\subsection{Discretized Formulation}
+    \subsection{Discretized Formulation}
 
         Let us introduce the notation
         \begin{equation}
@@ -70,7 +70,19 @@
         % TODO Make approximation here? Need to switch from integral to sum at some point.
 
     % }}}
+% Initialization {{{ 
+\clearpage\section{Initialization}
 
+    \todo{At the beginning, assume no coagulation has taken place (at all?).} \\
+    \todo{Write about formation of smallest dust grains: From ISM? Formed from gas in disk?} \\
+
+    \todo{All particles have lowest possible mass.} \\
+    \todo{Mass distribution function is initialized as Dirac delta distribution centerd on 
+    "lowest bin".} \\
+
+    \todo{Add plot.}
+
+% }}}
 % }}}
 % Dust Particle Kinematics {{{ 
 \clearpage\section{Dust Particle Kinematics}
@@ -99,6 +111,8 @@
         u_{n}
         =-\pderiv{P_g}{r}\cdot\frac{E_d}{2\rho_g\Omega_K}
     \end{equation}
+    \todo{formula for $u_n$ based on work by \cite{weidenschilling_1977}} \\
+    \todo{drift efficiency parameter $E_d$ introduced by \cite{birnstiel_dullemond_brauer_2010}} \\
 
     \todo{Epstein regime} \\
 
@@ -110,6 +124,7 @@
             u_{r,i}
             =\frac{u_{g}}{1+\text{St}_i^2}-\frac{2u_{n}}{\text{St}_i+\text{St}_i^{-1}}
         \end{equation}
+        \todo{following work by \cite{birnstiel_dullemond_brauer_2010}} \\
 
         \todo{Talk about Stokes' numbers.}
         % TODO "Stokes number" vs. "Stokes' number"
@@ -134,8 +149,8 @@
             =|u_{r,i}-u_{r,j}|
         \end{equation}
     
-        See fig.
-        \hyperref[fig:relative_dust_particle_velocities]{\ref*{fig:relative_dust_particle_velocities}a}.
+        See \hyperref[fig:relative_dust_particle_velocities]
+        {\cref*{fig:relative_dust_particle_velocities}a}.
 
     % }}}
     % Azimuthal Motion {{{ 
@@ -153,8 +168,8 @@
             \bigg|
         \end{equation}
     
-        For a visualization, see fig. 
-        \hyperref[fig:relative_dust_particle_velocities]{\ref*{fig:relative_dust_particle_velocities}b}.
+        For a visualization, see \hyperref[fig:relative_dust_particle_velocities]
+        {\cref*{fig:relative_dust_particle_velocities}b}.
 
     % }}}
     % Differential Settling {{{ 
@@ -182,8 +197,8 @@
         For the calculation of the relative velocity contributions due to turbulent motion, we 
         adapt the work of \cite{ormel_cuzzi_2007}. \\
 
-        See fig.
-        \hyperref[fig:relative_dust_particle_velocities]{\ref*{fig:relative_dust_particle_velocities}d}.
+        See \hyperref[fig:relative_dust_particle_velocities]
+        {\cref*{fig:relative_dust_particle_velocities}d}.
 
     % }}}
     % Total Relative Velocity {{{ 

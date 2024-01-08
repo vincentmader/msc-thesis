@@ -84,6 +84,7 @@ To be able to construct such a framework, it will be necessary to make a couple 
             and 
                 $r_\text{max}=\SI{100}{\astronomicalunit}$,
             respectively.} \\
+            \todo{For numerical treatment, discretize radial axis into $\mathcal N_r$ bins.}
 
             \todo{Assume perfect radial symmetry?}
     
@@ -266,8 +267,8 @@ To be able to construct such a framework, it will be necessary to make a couple 
     % Radial Profile of the Gas Volume Density {{{ 
     \newpage\subsection{Radial Profile of the Gas Volume Density}
         
-        Consider again a point $\vec r=(r,\phi,z)^T$ in the disk. Since the disk is much more wide 
-        than tall (it is a disk, after all), we can make the assumption that
+        Consider again a point $\vec r=(r,\phi,z)^T$ in the disk. (\todo{Rewrite:)} Since the disk
+        is much more wide than tall (it is a disk, after all), we can make the assumption that
         % TODO Be more specific: We focus on a point where that makes sense.
         \begin{equation}
             \label{eq:r_much_bigger_than_z}

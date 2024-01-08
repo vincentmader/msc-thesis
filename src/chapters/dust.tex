@@ -78,6 +78,10 @@
     \todo{This is relevant to us mainly in the context of relative velocity. 
     (for collision rate)} \\
 
+    We include four processes in the calculation of the relative dust particle velocities, namely 
+    the two systematic contributions of radial and azimuthal drift, and the two stochastic 
+    contributions of Brownian and turbulent motion. \\
+
     \todo{Consider a particle suspended in a fluid flow. The ratio between the particle's 
     characteristic time scale and the characteristic time scale of the fluid flow
     is often referred to as \textit{Stokes' number}, named after George Gabriel Stokes.} \\
@@ -93,8 +97,10 @@
     \todo{maximum drift velocity of a particle}
     \begin{equation}
         u_{n}
-        =-\pderiv{P}{r}\cdot\frac{E_d}{2\rho_g\Omega_K}
+        =-\pderiv{P_g}{r}\cdot\frac{E_d}{2\rho_g\Omega_K}
     \end{equation}
+
+    \todo{Epstein regime} \\
 
     % Radial Drift {{{ 
     \subsection{Radial Drift}
@@ -133,10 +139,11 @@
 
     % }}}
     % Azimuthal Motion {{{ 
-    \subsection{Azimuthal Motion}
- 
-        The azimuthal relative velocity $\Delta v^\text{AZ}_{ij}$ between a pair 
-        of particles $(i, j)$ can be written as
+    \clearpage\subsection{Azimuthal Motion}
+
+        According to \cite{weidenschilling_1977} and \cite{nakagawa_1986}, the relative azimuthal 
+        velocity $\Delta v^\text{AZ}_{ij}$ for gas-dominated drag between a pair of particles 
+        $(i, j)$ can be written as
         \begin{equation}
             \Delta v^\text{AZ}_{ij}=\bigg|
                 u_n\cdot\bigg(
@@ -151,68 +158,36 @@
 
     % }}}
     % Differential Settling {{{ 
-    \subsection{Differential Settling}
+    % \subsection{Differential Settling}
     % }}}
     % Brownian Motion {{{ 
     \subsection{Brownian Motion}
 
-      The Maxwell-Boltzmann distribution function is given by 
-        \begin{equation}
-            f(v)
-            =\left(\frac{m}{2\pi\cdot k_BT}\right)^{3/2}
-            \cdot4\pi v^2\cdot\exp\left(-\frac{mv^2}{2k_BT}\right)
-        \end{equation}
-
-        The most probable dust particle speed can easily be determined by 
-        setting the first derivative of $f$ with respect to $v$ equal to 0:
-        \begin{equation}
-            0\overset{!}{=}\deriv{f}{v}
-        \end{equation}
-        Rearanging for the velocity leads to the expression
-        \begin{equation}
-            \hat{v}=\sqrt{\frac{2k_BT}{m}}
-        \end{equation}
-
-        The RMS speed can be calculated via
-        \begin{align}
-            \sqrt{\overline{v^2}}
-            &=\sqrt{\int\limits_0^\infty v^2\cdot f(v)\ \text{d}v}\\
-            &=\sqrt{\frac{3k_BT}{m}}
-        \end{align}
-
-        We're not actually interested in the most probable particle speed.
-        Instead, what we want to look at is the arithmetic mean particle speed.
-        It can be calculated from the integral 
-        \begin{equation}
-            \bar{v}
-            =\int\limits_0^\infty v\cdot f(v)\ \text{d}v
-        \end{equation}
-        and then be expressed as
-        \begin{equation}
-            \bar{v}
-            =\sqrt{\frac{8k_BT}{\pi\cdot m}}
-        \end{equation}
-        \todo{Now with reduced particle mass:}
+        Here, we follow the work of \cite{dullemond_dominik_2004}, where the contribution to 
+        relative velocity due to Brownian motion is given by
         \begin{equation}
             \Delta v_{ij}^\text{BR}
             =\sqrt{\frac{8k_BT}{\pi}\cdot\frac{m_i+m_j}{m_i\cdot m_j}}
         \end{equation}
-
-        See fig. 
-        \hyperref[fig:relative_dust_particle_velocities]{\ref*{fig:relative_dust_particle_velocities}c}.
+        Note that this term will be the largest when both collision partners carry a very low mass.
+        Brownian motion thus favors collisions in which at least one collision partner is a 
+        low-mass particles. This can be seen reflected in 
+        \hyperref[fig:relative_dust_particle_velocities]{
+        \cref*{fig:relative_dust_particle_velocities}c}.
 
     % }}}
     % Turbulent Motion {{{ 
     \subsection{Turbulent Motion}
 
-        \todo{See \cite{ormel_cuzzi_2007}.} \\
-    
+        For the calculation of the relative velocity contributions due to turbulent motion, we 
+        adapt the work of \cite{ormel_cuzzi_2007}. \\
+
         See fig.
         \hyperref[fig:relative_dust_particle_velocities]{\ref*{fig:relative_dust_particle_velocities}d}.
 
     % }}}
     % Total Relative Velocity {{{ 
-    \newpage\subsection{Total Relative Velocity}
+    \subsection{Total Relative Velocity}
 
         The total relative dust particle velocity can be expressed as the root mean square (RMS) of 
         the individual relative velocity contributions:

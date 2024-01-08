@@ -177,7 +177,7 @@ To be able to construct such a framework, it will be necessary to make a couple 
 
 % }}}
 % Radial Profile of the Gas Density {{{ 
-\newpage\section{Radial Profile of the Gas Density}
+\clearpage\section{Radial Profile of the Gas Density}
 
     Our next task will be to formulate a simple model for the spatial distribution of the disk's 
     gaseous contents. In this context, we will adopt cylindrical coordinates 
@@ -371,27 +371,69 @@ To be able to construct such a framework, it will be necessary to make a couple 
     % }}}
 
 % }}}
+% Radial Profile of the Gas Pressure {{{ 
+% \clearpage\section{Radial Profile of the Gas Pressure}
+
+    % The gas pressure is given by: [\todo{Cite}]
+    % \begin{equation}
+    %     P_g = \rho_g \cdot c_s^2
+    % \end{equation}
+
+% }}}
 % Gas Particle Kinematics {{{ 
 \newpage\section{Gas Particle Kinematics}
 
     \todo{There are both stochastic and systematic contributions to the gas kinematics.}
 
-    % Thermal Gas Velocity {{{ 
-    \subsection{Thermal Gas Velocity}
+    \subsection{Sound Speed (\todo{Move to \cref{sec:first_assumptions_about_the_disk}})}
 
-        \todo{Sound speed:}
+        The speed of sound is defined as the speed at which pressure disturbances travel in a 
+        given medium. It is given by 
+        \begin{equation}
+            \label{eq:general_definition_of_sound_speed}
+            c_s := \sqrt{\frac{\partial P}{\partial \rho}}
+        \end{equation}
+        where $P$ and $\rho$ label the pressure and mass density, respectively. \\
+        
+        \assume{As noted before, we assume the gas to behave in an isothermal manner (i.e. the
+        temperature stays constant across time.)} As such, the ideal gas equation of state reads 
+        % A gas can be approximated to be isothermal if the sound wave period is much higher than the (radiative) cooling time of the gas, as any increase in temperature due to compression by the wave will be immediately followed by radiative cooling to the original equilibrium temperature well before the next compression occurs. Many astrophysical situations in the ISM are close to being isothermal, thus the isothermal sound speed is often used. For example, in conditions where temperature and density are independent such as H II regions (where the gas temperature is set by the ionizing star’s spectrum), the gas is very close to isothermal.
+        \begin{equation}
+            \label{eq:isothermal_ideal_gas_equation_of_state}
+            P = \frac{\rho k_B T}{m_g}
+        \end{equation}
+
+        Plugging \cref{eq:isothermal_ideal_gas_equation_of_state} into
+        \cref{eq:general_definition_of_sound_speed}, we arrive at the isothermal sound speed
         \begin{equation}
             c_s = \sqrt{\frac{k_BT}{m_g}}
         \end{equation}
+        % TODO Replace $m_g$ with $\mu$ (mean molecular mass, accounts for chemical composition of gas)
 
-        \todo{Thermal velocity:} % TODO thermal SPEED
+        % TODO Decide on usage of $P$ vs. $P_g$ and $\rho$ vs. $\rho_g$
+
+        \input{diagrams/sound_speed.tex}
+
+    % Thermal Gas Velocity {{{ 
+    \clearpage\subsection{Thermal Gas Velocity (\todo{Rename: Gas Viscosity?})}
+
+        We define the absolute value of the thermal velocity to be the mean of the magnitude
+        of the molecular velocity. It is given by (\todo{Derive this})
         \begin{equation}
             u_\text{th} = \sqrt{\frac{8}{\pi}} \cdot c_s
         \end{equation}
 
-        \todo{Mean free path:}
+        A particle's mean free path in a given medium is given by the inverse product between the 
+        number of particles per unit volume and the cross section for a collision:
         \begin{equation}
             \lambda_\text{mfp} = \frac{1}{n \cdot \sigma_{\text{H}_2}}
+        \end{equation}
+        Here, we follow \cite{birnstiel_dullemond_brauer_2010} and use 
+        $\sigma_{\text{H}_2} = \SI{2e-19}{\meter^2}$ for the collision cross section. \\
+
+        \todo{Viscosity: (kinematic viscosity)}
+        \begin{equation}
+            \nu_g = \frac{1}{2} \cdot u_\text{th} \cdot \lambda_\text{mfp}
         \end{equation}
 
         \input{diagrams/thermal_gas_velocity.tex}
@@ -400,7 +442,7 @@ To be able to construct such a framework, it will be necessary to make a couple 
     % Radial Gas Velocity {{{ 
     \newpage\subsection{Radial Gas Velocity}
 
-        \todo{Plot radial profile of "speed" (thermal + ..?)}
+        \todo{Plot radial profile of "speed" (thermal + ..?)} \\
 
         The viscous evolution of the gas disk can be described by the continuity equation 
         \cite{birnstiel_dullemond_brauer_2010}:
@@ -423,13 +465,7 @@ To be able to construct such a framework, it will be necessary to make a couple 
         \end{equation}
         % TODO: Have I already defined the viscosity somewhere? Else define here.
 
-        \todo{Viscosity:}
-        \begin{equation}
-            \nu_g = \frac{1}{2} \cdot u_\text{th} \cdot \lambda_\text{mfp}
-        \end{equation}
-
         \input{diagrams/radial_gas_velocity.tex}
-        \todo{Why so small?}
 
     % }}}
 % }}}

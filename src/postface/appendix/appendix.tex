@@ -71,3 +71,44 @@
         \item Dust particles are perfectly spherical.
         \item Dust particles all have density $\rho_d$.
     \end{itemize}
+
+\section{\todo{Move}}
+
+    The Maxwell-Boltzmann distribution function is given by 
+    \begin{equation}
+        f(v)
+        =\left(\frac{m}{2\pi\cdot k_BT}\right)^{3/2}
+        \cdot4\pi v^2\cdot\exp\left(-\frac{mv^2}{2k_BT}\right)
+    \end{equation}
+
+    The most probable dust particle speed can easily be determined by 
+    setting the first derivative of $f$ with respect to $v$ equal to 0:
+    \begin{equation}
+        0\overset{!}{=}\deriv{f}{v}
+    \end{equation}
+    Rearanging for the velocity leads to the expression
+    \begin{equation}
+        \hat{v}=\sqrt{\frac{2k_BT}{m}}
+    \end{equation}
+
+    The RMS speed can be calculated via
+    \begin{align}
+        v_\text{RMS}
+        =\sqrt{\overline{v^2}}
+        &=\sqrt{\int\limits_0^\infty v^2\cdot f(v)\ \text{d}v}\\
+        &=\sqrt{\frac{3k_BT}{m}}
+    \end{align}
+
+    We're not actually interested in the most probable particle speed.
+    Instead, what we want to look at is the arithmetic mean particle speed.
+    It can be calculated from the integral 
+    \begin{equation}
+        \bar{v}
+        =\int\limits_0^\infty v\cdot f(v)\ \text{d}v
+    \end{equation}
+    and then be expressed as
+    \begin{equation}
+        \bar{v}
+        =\sqrt{\frac{8k_BT}{\pi\cdot m}}
+    \end{equation}
+    \todo{Now with reduced particle mass: See above}

@@ -187,41 +187,44 @@
     % Definition of the Kernel Mass Error {{{ 
     \subsection{Definition of the Kernel Mass Error}
 
-        \todo{Remove $R$} \\
-        \todo{Fix units (not 1/second)} \\
+        Here, it makes sense to distinguish between various definitions:
 
-        Kernel mass error per second (in \SI{}{\kilogram\second^{-1}}): (\todo{rename variable})
-        \begin{align}
-            \Delta K_{ij}
-                &=
-                    \sum_{k=1}^{\mathcal N_m}m_k\cdot K_{kij}
-        \end{align}
-        
-        Kernel mass error $\Delta K_{ij}$ per collision (in \SI{}{\kilogram}): 
-        (\todo{rename variable})
-        \begin{align}
-            \Delta K_{ij}
-                &=
-                    \sum_{k=1}^{\mathcal N_m}m_k\cdot\frac{K_{kij}}{R^\text{coll}_{ij}}
-        \end{align}
-        
-        Relative kernel mass error $\Delta K_{ij}$ per collision (unitless):
-        \begin{align}
-            \Delta K_{ij}
-                &=
-                    \sum_{k=1}^{\mathcal N_m}\frac{m_k}{m_i+m_j}\cdot\frac{K_{kij}}{R^\text{coll}_{ij}}
-        \end{align}
-        
-        Total kernel error $\Delta K$:
-        \begin{align}
-            \Delta K
-                &=
-                    \sqrt{
+        \begin{enumerate}
+
+            \item Kernel mass error $\Delta \mathcal K_{ij}$ per second (and per density!)
+                (given in \SI{}{\kilogram\ \meter^3\ \second^{-1}}): 
+                \begin{align}
+                    \Delta \mathcal K_{ij}
+                        &= \sum_{k=1}^{\mathcal N_m} m_k \cdot \mathcal K_{kij}
+                \end{align}
+
+            \item Kernel mass error $\Delta K_{ij}$ per collision 
+                (given in \SI{}{\kilogram}): 
+                \begin{align}
+                    \Delta K_{ij}
+                        = \frac{\Delta \mathcal K_{ij}}{R^\text{coll}_{ij}}
+                        = \sum_{k=1}^{\mathcal N_m} m_k \cdot K_{kij}
+                \end{align}
+
+            \item Relative kernel mass error $\Delta K_{ij}$ per collision 
+                (dimensionless):
+                \begin{align}
+                    \Delta K_{ij}^\text{rel} &= \sum_{k=1}^{\mathcal N_m} \frac{m_k}{m_i+m_j} \cdot K_{kij}
+                \end{align}
+
+            \item Total kernel error $\Delta K$
+                (dimensionless as wel):
+                \begin{align}
+                    \Delta K^\text{rel} &= \sqrt{
                         \sum_{i=1}^{\mathcal N_m}
                         \sum_{j=1}^{\mathcal N_m}
-                        \big(\Delta K_{ij}\big)^2
+                        \big(\Delta K_{ij}^\text{rel}\big)^2
                     }
-        \end{align}
+                \end{align}
+
+        \end{enumerate}
+
+        \todo{The last definition is what we will use to classify the "goodness" of our kernel.} 
 
     % }}}
 

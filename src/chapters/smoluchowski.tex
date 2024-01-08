@@ -90,29 +90,79 @@
 
 \newpage\section{The Kernel}
 
-    In the following, we will factorize the kernel into two separate terms like this:
+    In the following, we will factorize the kernel into two separate terms:
     \begin{equation}
         \mathcal K(m,m',m'') = R(m',m'') \cdot K(m,m',m'') 
     \end{equation}
-    \todo{Here, the first term $R(m',m'')$ will be used to encode information about how many
-    collisions occur per unit time between particles with masses $m'$ and $m''$, as defined 
-    in [cite].} \\
-    \todo{Talk about units! (not 1/second)} \\
 
-    \todo{The second term, on the other hand, will be used to encode how the initial masses 
-    $m'$ and $m''$ are then distributed onto the range of particles resulting from such a 
-    collision, each carrying a mass of value $m$.}
+    The idea behind this distinction is the following: 
+    \begin{enumerate}
+        \item The first term $R(m',m'')$ is used to encode information about 
+            \textit{how often collision events occur} per unit time between a given
+            pair of particles carrying the masses $m'$ and $m''$. \\
+            (\todo{It is defined as in [cite], separately for coagulation and fragmentation})
+        \item In contrast to that, the second term $K(m,m',m'')$ helps us understand 
+            \textit{how this affects the number of particles} carrying a mass value $m$ under any
+            such collision, i.e. it gives information about how matter is redistributed onto the
+            range of possible masses.
+    \end{enumerate}
 
-    \todo{It can be decomposed into a positive and a negative contribution:}
+    % \todo{Talk about units! (not 1/second)} \\
+
+    We can further decompose the "redistribution" kernel $K$ into a positive and a negative
+    contribution, which in the following we will address as the \textit{gain} and \textit{loss} 
+    term $G$ and $L$, respectively:
     \begin{equation}
         K(m,m',m'') = G(m, m', m'') + L(m, m', m'')
     \end{equation}
 
-    \todo{With:}
+    These two terms are defined as follows:
     \begin{align}
         L(m, m', m'') &= -1 \\
         G(m, m', m'') &= f(m, m', m'')
     \end{align}
+
+    When evaluating the sum in [cite Smol. eq.] during integration, this will have the following 
+    effect:
+    \begin{enumerate}
+        \item For each collision between two particles $m'$ and $m''$, a single particle will be 
+            removed from the distribution for each of these two masses, hence the term $-1$ in the 
+            equation above.
+        \item At the same time, the total mass involved in the collision, which is given by the 
+            sum $m_\text{tot} = m' + m''$, will have to be "redistributed" onto the "distribution" 
+            in some sensible manner, necessarily respecting the conservation of mass. How exactly 
+            this is done is determined by a function $f(m,m',m'')$, which will look differently 
+            depending on whether one wishes to model pure (hit-and-stick) coagulation, or
+            whether one is interested in collisions leading to particle fragmentation instead.
+    \end{enumerate}
+
+    As mentioned above, we will define two separate kernels to describe the influence of both
+    collisions leading to coagulation as well as fragmentation events, respectively:
+    \begin{align}
+        \mathcal K^\text{coag}(m,m',m'') &= R^\text{coag}(m',m'') \cdot K^\text{coag}(m,m',m'') \\
+        \mathcal K^\text{frag}(m,m',m'') &= R^\text{frag}(m',m'') \cdot K^\text{frag}(m,m',m'')
+    \end{align}
+
+    After having done this, we can add these two sub-kernels to arrive at the total kernel:
+    \begin{equation}
+        \mathcal K(m,m',m'') = \mathcal K^\text{coag}(m,m',m'') + \mathcal K^\text{frag}(m,m',m'')
+    \end{equation}
+
+    For completeness, it should be said that we could add another sub-kernel 
+    $\mathcal K^\text{bounce}$ to the sum, for collisions leading to particle bouncing events.
+    We might as well neglect this though, since bouncing does not affect the dust particle mass 
+    distribution in any way, and therefore we can set
+    \begin{equation}
+        \mathcal K^\text{bounce}(m,m',m'') 
+        = R^\text{bounce}(m',m'') \cdot \underbrace{K^\text{bounce}(m,m',m'')}_{=0}
+    \end{equation}
+
+    \clearpage
+    \todo{...} \\
+
+    \todo{The second term, on the other hand, will be used to encode how the initial masses 
+    $m'$ and $m''$ are then distributed onto the range of particles resulting from such a 
+    collision, each carrying a mass of value $m$.} \\
 
     \todo{Kernel symmetry:}
     \begin{itemize}

@@ -89,7 +89,7 @@ To be able to construct such a framework, it will be necessary to make a couple 
     
         \item \assume{Gas mean particle mass.}
             \begin{equation}
-                m_g
+                \mu_g
                     := 2.3 \cdot m_p
             \end{equation}
             Here, $m_p$ labels the mass of a single proton. \\
@@ -355,7 +355,7 @@ To be able to construct such a framework, it will be necessary to make a couple 
         The number $N_g$ of gas particles per unit volume is given by the number density
         \begin{equation}
             N_g
-                =\frac{\rho_g}{m_g}
+                =\frac{\rho_g}{\mu_g}
         \end{equation}
 
         \todo{Is this definition really even needed? (Don't I only need dust number density?)} \\
@@ -400,15 +400,14 @@ To be able to construct such a framework, it will be necessary to make a couple 
         % A gas can be approximated to be isothermal if the sound wave period is much higher than the (radiative) cooling time of the gas, as any increase in temperature due to compression by the wave will be immediately followed by radiative cooling to the original equilibrium temperature well before the next compression occurs. Many astrophysical situations in the ISM are close to being isothermal, thus the isothermal sound speed is often used. For example, in conditions where temperature and density are independent such as H II regions (where the gas temperature is set by the ionizing star’s spectrum), the gas is very close to isothermal.
         \begin{equation}
             \label{eq:isothermal_ideal_gas_equation_of_state}
-            P = \frac{\rho k_B T}{m_g}
+            P = \frac{\rho k_B T}{\mu_g}
         \end{equation}
 
         Plugging \cref{eq:isothermal_ideal_gas_equation_of_state} into
         \cref{eq:general_definition_of_sound_speed}, we arrive at the isothermal sound speed
         \begin{equation}
-            c_s = \sqrt{\frac{k_BT}{m_g}}
+            c_s = \sqrt{\frac{k_BT}{\mu_g}}
         \end{equation}
-        % TODO Replace $m_g$ with $\mu$ (mean molecular mass, accounts for chemical composition of gas)
 
         % TODO Decide on usage of $P$ vs. $P_g$ and $\rho$ vs. $\rho_g$
 

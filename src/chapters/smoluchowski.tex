@@ -141,7 +141,7 @@
 
     % }}}
     % Decomposition into Gain and Loss Terms {{{ 
-    \subsection{Decomposition into Gain and Loss Terms}
+    \clearpage\subsection{Decomposition into Gain and Loss Terms}
 
         We can further decompose the "redistribution" kernel $K$ into a positive and a negative
         contribution, which in the following we will address as the \textit{gain} and \textit{loss} 
@@ -149,19 +149,23 @@
         \begin{equation}
             K(m,m',m'') = G(m, m', m'') + L(m, m', m'')
         \end{equation}
+        \todo{...such that the total kernel is given by}
+        \begin{equation}
+            \mathcal K(m,m',m'') = R(m',m'') \cdot \bigg[G(m, m', m'') + L(m, m', m'')\bigg]
+        \end{equation}
 
         These two terms are defined as follows:
         \begin{align}
-            L(m, m', m'') &= -1 \\
+            L(m, m', m'') &= -\frac{1}{2} \cdot \bigg[\delta_D(m-m')+\delta(m-m'')\bigg] \\
             G(m, m', m'') &= f(m, m', m'')
         \end{align}
 
         When evaluating the sum in [cite Smol. eq.] during integration, this will have the following 
         effect:
         \begin{enumerate}
-            \item For each collision between two particles $m'$ and $m''$, a single particle will be 
-                removed from the distribution for each of these two masses, hence the term $-1$ in the 
-                equation above.
+            \item For each collision between two particles $m'$ and $m''$, a single particle will 
+                be removed from the distribution for each of these two masses, hence the term $-1$ 
+                in the equation above. (\todo{fix this})
             \item At the same time, the total mass involved in the collision, which is given by the 
                 sum $m_\text{tot} = m' + m''$, will have to be "redistributed" onto the "distribution" 
                 in some sensible manner, necessarily respecting the conservation of mass. How exactly 
@@ -169,6 +173,20 @@
                 depending on whether one wishes to model pure (hit-and-stick) coagulation, or
                 whether one is interested in collisions leading to particle fragmentation instead.
         \end{enumerate}
+
+        \todo{Plugging this into [cite Smol. eq.]...}
+        \begin{align}
+            \deriv{n}{t}
+            &=\int\limits_0^\infty \int\limits_0^\infty R(m',m'') \cdot G(m,m',m'')
+                \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm'' \\
+            &+\int\limits_0^\infty \int\limits_0^\infty R(m',m'') \cdot L(m,m',m'')
+                \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm'' \\
+            &=\int\limits_0^\infty \int\limits_0^\infty R(m',m'') \cdot f(m,m',m'')
+                \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm'' \\
+            &+\int\limits_0^\infty \int\limits_0^\infty R(m',m'') \cdot L(m,m',m'')
+                \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm'' 
+        \end{align}
+        \todo{Add discretized version}
 
     % }}}
     % Decomposition into Coagulation and Fragmentation Kernel {{{ 

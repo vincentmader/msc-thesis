@@ -13,6 +13,53 @@
     %     L(m,m',m'') &= -1
     % \end{align}
 
+    From above:
+    \begin{align}
+        L^\text{coag}(m,m',m'') &= -1 \\
+        G^\text{coag}(m,m',m'') &= \delta_D(m-m'-m'')
+    \end{align}
+
+    Total kernel for dust particle coagulation given by:
+    \begin{align}
+        \mathcal K(m,m',m'')
+        &= R^\text{coll}(m',m'') \cdot K(m,m',m'') \\
+        &= R^\text{coll}(m',m'') \cdot \bigg[G^\text{coag}(m,m',m'') + L^\text{coag}(m,m',m'')\bigg]
+    \end{align}
+
+    \todo{Plugging this definition into [cite Smol. eq.]}, the
+    Smoluchowski equation (with only coagulation) becomes
+    \begin{align}
+        \deriv{n}{t}
+        = 
+            &\int\limits_0^\infty \int\limits_0^\infty R(m',m'') \cdot \delta_D(m-m'-m'')
+            \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm'' \\
+            -&\int\limits_0^\infty \int\limits_0^\infty R(m',m'')
+            \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm'' 
+    \end{align}
+
+    \todo{We can reduce the 2D integral in the second term to a 1D integral.}
+    \todo{For this, we make use of the relationship}
+    \begin{equation}
+        f(x_0) = \int\limits_{-\infty}^{\infty} f(x) \cdot \delta_D(x-x_0) \ \dd x 
+    \end{equation}
+
+    \todo{This leads to}
+    \begin{align}
+        \deriv{n}{t}
+        = 
+            &\int\limits_0^\infty R(m',m-m') \cdot n(m') \cdot n(m-m') \ \text dm' \\
+            -&\int\limits_0^\infty \int\limits_0^\infty R(m',m'')
+            \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm'' 
+    \end{align}
+
+    \todo{Add discretized version}
+
+
+
+
+
+    \clearpage 
+
     \todo{Is the below correct?}
     \begin{align}
         L_\text{coag}(m)
@@ -39,11 +86,7 @@
         \item How can a particle with mass $m$ be created via coagulation?
         \item For this to happen, two particles with masses $m'$ and $m''$ have to collide \& merge.
         \item Condition: Mass conservation $m=m'+m''$ ($\to\ \delta_D(m-m'-m'')$).
-        \item We can reduce the 2D integral to a 1D integral, making use of the relationship
-            \begin{equation}
-                f(x_0)
-                    = \int\limits_{-\infty}^{\infty} f(x) \cdot \delta_D(x-x_0) \ \dd x 
-            \end{equation}
+        \item 
     \end{itemize}
 
 \section{Discretized Formulation}

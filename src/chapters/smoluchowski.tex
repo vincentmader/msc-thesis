@@ -554,6 +554,38 @@
 % Definition of the Fragmentation Kernel {{{ 
 \section{Definition of the Fragmentation Kernel}
 
+    \todo{As above, gain and loss:}
+    \begin{align}
+        L^\text{coag}(m, m', m'') 
+            &:= -R(m',m'') \cdot \frac{1}{2} \bigg[\delta_D(m-m')+\delta_D(m-m'')\bigg] \\
+        G^\text{coag}(m, m', m'') 
+            &:= +R(m',m'') \cdot \frac{1}{2} \cdot f(m,m',m'')
+    \end{align}
+
+    \todo{For the loss:}
+    \begin{itemize}
+        \item Same as in coagulation.
+        \item If two particles with masses $m$ and $m'$ collide, these two particles "disappear"
+              from the distribution.
+        \item Instead, new particles have to be added.
+        \item Once again, there is the criterion of mass conservation.
+    \end{itemize}
+
+    \todo{For the gain:}
+    \begin{itemize}
+        \item Looks very similar to coagulation.
+        \item But: Here we have the term $f(m,m',m'')$ in the integral.
+        \item In coagulation, this term is equal to $\delta_D(m-m'-m'')$.
+        \item If two masses fuse, there is only a single possible mass value that can result from 
+              that, without breaking mass conservation.
+        \item In fragmentation, this is different.
+        \item If two particles collide, they can in principle fragment into a whole range of 
+              differently sized particles, as long as mass is conserved.
+    \end{itemize}
+
+    \todo{Smol. eq. looks very similar to coag., but $f$ instead of $\delta_D$, can't "reduce".} \\
+    \todo{That's where the computational cost comes from!} \\
+
 % }}}
 % Analytical Solutions {{{ 
 \newpage\section{Analytical Solutions}

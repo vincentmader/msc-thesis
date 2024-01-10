@@ -1,3 +1,4 @@
+% The Smoluchowski Equation {{{ 
 \section{The Smoluchowski Equation}
 
     Let us now turn our attention to a certain integro-differential equation, which serves as the
@@ -89,6 +90,8 @@
     
     % }}}
 
+% }}}
+% The Kernel {{{ 
 \newpage\section{The Kernel}
 
     In the following, we will factorize the kernel into two separate terms:
@@ -110,65 +113,17 @@
 
     % \todo{Talk about units! (not 1/second)} \\
 
-    We can further decompose the "redistribution" kernel $K$ into a positive and a negative
-    contribution, which in the following we will address as the \textit{gain} and \textit{loss} 
-    term $G$ and $L$, respectively:
-    \begin{equation}
-        K(m,m',m'') = G(m, m', m'') + L(m, m', m'')
-    \end{equation}
-
-    These two terms are defined as follows:
-    \begin{align}
-        L(m, m', m'') &= -1 \\
-        G(m, m', m'') &= f(m, m', m'')
-    \end{align}
-
-    When evaluating the sum in [cite Smol. eq.] during integration, this will have the following 
-    effect:
-    \begin{enumerate}
-        \item For each collision between two particles $m'$ and $m''$, a single particle will be 
-            removed from the distribution for each of these two masses, hence the term $-1$ in the 
-            equation above.
-        \item At the same time, the total mass involved in the collision, which is given by the 
-            sum $m_\text{tot} = m' + m''$, will have to be "redistributed" onto the "distribution" 
-            in some sensible manner, necessarily respecting the conservation of mass. How exactly 
-            this is done is determined by a function $f(m,m',m'')$, which will look differently 
-            depending on whether one wishes to model pure (hit-and-stick) coagulation, or
-            whether one is interested in collisions leading to particle fragmentation instead.
-    \end{enumerate}
-
-    As mentioned above, we will define two separate kernels to describe the influence of both
-    collisions leading to coagulation as well as fragmentation events, respectively:
-    \begin{align}
-        \mathcal K^\text{coag}(m,m',m'') &= R^\text{coag}(m',m'') \cdot K^\text{coag}(m,m',m'') \\
-        \mathcal K^\text{frag}(m,m',m'') &= R^\text{frag}(m',m'') \cdot K^\text{frag}(m,m',m'')
-    \end{align}
-
-    After having done this, we can add these two sub-kernels to arrive at the total kernel:
-    \begin{equation}
-        \mathcal K(m,m',m'') = \mathcal K^\text{coag}(m,m',m'') + \mathcal K^\text{frag}(m,m',m'')
-    \end{equation}
-
-    For completeness, it should be said that we could add another sub-kernel 
-    $\mathcal K^\text{bounce}$ to the sum, for collisions leading to particle bouncing events.
-    We might as well neglect this though, since bouncing does not affect the dust particle mass 
-    distribution in any way, and therefore we can set
-    \begin{equation}
-        \mathcal K^\text{bounce}(m,m',m'') 
-        = R^\text{bounce}(m',m'') \cdot \underbrace{K^\text{bounce}(m,m',m'')}_{=0}
-    \end{equation}
-
-    \clearpage
-    \todo{...} \\
-
-    \todo{The second term, on the other hand, will be used to encode how the initial masses 
-    $m'$ and $m''$ are then distributed onto the range of particles resulting from such a 
-    collision, each carrying a mass of value $m$.} \\
-
-    \todo{Kernel symmetry:}
+    \todo{Kernel symmetry:} 
     \begin{itemize}
         \item \todo{(only use "upper left" half of the matrix)}
     \end{itemize}
+
+    % \clearpage
+    % \todo{...} \\
+
+    % \todo{The second term, on the other hand, will be used to encode how the initial masses 
+    % $m'$ and $m''$ are then distributed onto the range of particles resulting from such a 
+    % collision, each carrying a mass of value $m$.} \\
 
     % Physical Units {{{ 
     % \subsection{Physical Units (\todo{Is this section needed?})}
@@ -183,6 +138,63 @@
         %         =
         %             K(m_k, m_i, m_j) \cdot\Delta m_k
         % \end{equation}
+
+    % }}}
+
+    % Decomposition into Gain and Loss Terms {{{ 
+    \subsection{Decomposition into Gain and Loss Terms}
+
+        We can further decompose the "redistribution" kernel $K$ into a positive and a negative
+        contribution, which in the following we will address as the \textit{gain} and \textit{loss} 
+        term $G$ and $L$, respectively:
+        \begin{equation}
+            K(m,m',m'') = G(m, m', m'') + L(m, m', m'')
+        \end{equation}
+
+        These two terms are defined as follows:
+        \begin{align}
+            L(m, m', m'') &= -1 \\
+            G(m, m', m'') &= f(m, m', m'')
+        \end{align}
+
+        When evaluating the sum in [cite Smol. eq.] during integration, this will have the following 
+        effect:
+        \begin{enumerate}
+            \item For each collision between two particles $m'$ and $m''$, a single particle will be 
+                removed from the distribution for each of these two masses, hence the term $-1$ in the 
+                equation above.
+            \item At the same time, the total mass involved in the collision, which is given by the 
+                sum $m_\text{tot} = m' + m''$, will have to be "redistributed" onto the "distribution" 
+                in some sensible manner, necessarily respecting the conservation of mass. How exactly 
+                this is done is determined by a function $f(m,m',m'')$, which will look differently 
+                depending on whether one wishes to model pure (hit-and-stick) coagulation, or
+                whether one is interested in collisions leading to particle fragmentation instead.
+        \end{enumerate}
+
+    % }}}
+    % Decomposition into Coagulation and Fragmentation Kernel {{{ 
+    \clearpage\subsection{Decomposition into Coagulation and Fragmentation Kernel}
+
+        As mentioned above, we will define two separate kernels to describe the influence of both
+        collisions leading to coagulation as well as fragmentation events, respectively:
+        \begin{align}
+            \mathcal K^\text{coag}(m,m',m'') &= R^\text{coag}(m',m'') \cdot K^\text{coag}(m,m',m'') \\
+            \mathcal K^\text{frag}(m,m',m'') &= R^\text{frag}(m',m'') \cdot K^\text{frag}(m,m',m'')
+        \end{align}
+
+        After having done this, we can add these two sub-kernels to arrive at the total kernel:
+        \begin{equation}
+            \mathcal K(m,m',m'') = \mathcal K^\text{coag}(m,m',m'') + \mathcal K^\text{frag}(m,m',m'')
+        \end{equation}
+
+        For completeness, it should be said that we could add another sub-kernel 
+        $\mathcal K^\text{bounce}$ to the sum, for collisions leading to particle bouncing events.
+        We might as well neglect this though, since bouncing does not affect the dust particle mass 
+        distribution in any way, and therefore we can set
+        \begin{equation}
+            \mathcal K^\text{bounce}(m,m',m'') 
+            = R^\text{bounce}(m',m'') \cdot \underbrace{K^\text{bounce}(m,m',m'')}_{=0}
+        \end{equation}
 
     % }}}
     % Definition of the Kernel Mass Error {{{ 
@@ -229,6 +241,8 @@
 
     % }}}
 
+% }}}
+% Analytical Solutions {{{ 
 \newpage\section{Analytical Solutions}
 
     Analytical solutions to the Smoluchowski coagulation equation exist if, and only if the kernel
@@ -303,6 +317,8 @@
 
     % }}}
 
+% }}}
+% Numerical Integration {{{
 \newpage\section{Numerical Integration}
 
     % Definition of the Integration Mass Error {{{ 
@@ -434,3 +450,4 @@
         \todo{Stability, Mass Conservation} \\
 
     % }}}
+% }}}

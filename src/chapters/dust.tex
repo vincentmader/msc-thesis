@@ -192,12 +192,100 @@
 
     % }}}
     % Turbulent Motion {{{ 
-    \subsection{Turbulent Motion}
+    \clearpage\subsection{Turbulent Motion}
 
         For the calculation of the relative velocity contributions due to turbulent motion, we 
-        adapt the work of \cite{ormel_cuzzi_2007}. \\
+        adapt the work of \cite{ormel_cuzzi_2007}, \todo{where they followed the procedure
+        outlined below:}
 
-        See \hyperref[fig:relative_dust_particle_velocities]
+        \begin{equation}
+            \Delta v^\text{TU}_{ij} =
+            \begin{cases}
+                \Delta v_{ij}^\text{A} & \text{if } t_{sm} \leq t_s \\
+                \Delta v_{ij}^\text{B} & \text{if } t_s < t_{sm} \leq t_n \\
+                \Delta v_{ij}^\text{C} & \text{if } t_{sm} > t_n \\
+            \end{cases}
+        \end{equation}
+
+        \todo{with cases:}
+        \begin{enumerate}
+
+            \item Limit of tightly coupled particles (below the Kolmogorov scale) \\
+                See Section 3.4.1 of OC2007, their Eq. 26
+                % \begin{equation}
+                %     \Delta v_{ij}^1 
+                %     = v_g \cdot \sqrt{\frac{t_1 - t_2}{t_1 + t_2} \cdot (\Delta u_1 - \Delta u_2)}
+                % \end{equation}
+                % with the two "velocities" $u_1$ and $u_2$ given by
+                % \begin{equation}
+                %     \Delta u_{1,2} 
+                %     = \left(\frac{t_{1,2}}{t_n}\right)^2 \cdot 
+                %         \left(\frac{t_{1,2}}{t_n} + \frac{1}{\sqrt{\text{Re}} }\right)^{-1} \\
+                % \end{equation}
+                \begin{equation}
+                    \Delta v_{ij}^\text{A}
+                    = v_g \cdot \sqrt{
+                        \frac{\text{St}_i - \text{St}_j}{\text{St}_i + \text{St}_j} \cdot 
+                        \left(
+                            \frac{\text{St}_i^2}{\text{St}_i + \text{Re}^{-1/2}} -
+                            \frac{\text{St}_j^2}{\text{St}_j + \text{Re}^{-1/2}}
+                        \right)
+                    }
+                \end{equation} 
+
+            \item At least one of the particles is not in the tightly coupled regime. \\
+                Both particles have $\text{St} < 1$. \\
+                See Section 3.4.2 of OC2007, their Eq. 28
+                \begin{equation}
+                    \Delta v_{ij}^\text{B} = v_g \cdot \sqrt{
+                        \text{St}_i \cdot \left[
+                            2y_a - (1+\varepsilon) + \frac{2}{1+\varepsilon} \cdot \left(
+                                \frac{1}{1+y_a} + \frac{\varepsilon^3}{y_a+\varepsilon}
+                            \right)
+                        \right] 
+                    }
+                \end{equation}
+                where $\varepsilon < 1$ is the ratio of the stopping times 
+                and $y_a = 1.6$ (\todo{is what?}).
+                % \begin{equation}
+                %     \varepsilon = \frac{\min(t_1, t_2)}{\max(t_1, t_2)} < 1
+                % \end{equation}
+                % Ratio of St_smallest/St_largest
+                % St1 = St_largest
+                % \begin{equation}
+                %     \Delta v_{ij}^\text{B} = v_g \cdot \sqrt{\Delta u_2 \cdot \text{St}_i}
+                % \end{equation}
+                % with 
+                % \begin{align}
+                %     \Delta u_1 
+                %         &= \frac{1}{1 + 1.6} + \frac{\varepsilon^3}{1.6 + \varepsilon} \\
+                %     \Delta u_2 
+                %         &= 3.2 - (1 + \varepsilon) + \frac{2}{1 + \varepsilon} \cdot \Delta u_1
+                % \end{align}
+                % with 
+                % and
+                % \begin{equation}
+                %     \text{St}_1 = \frac{\max(t_1, t_2)}{t_n}
+                % \end{equation}
+
+            \item At least one of the particles is not in the tightly coupled regime. \\ 
+                At least one of the particles has $\text{St} \geq 1$. \\
+                See Section 3.4.3 of OC2007, their Eq. 29
+                \begin{equation}
+                    \Delta v_{ij}^\text{C} = v_g \cdot \sqrt{
+                        \frac{1}{1+\text{St}_i} + \frac{1}{1+\text{St}_j}
+                    }
+                \end{equation}
+                % \begin{equation}
+                %         \frac{t_n}{t_n + t_1} + \frac{t_n}{t_n + t_2}
+                % \end{equation}
+
+        \end{enumerate}
+
+        \todo{Define $v_g$}. \\
+        \todo{Define $\text{Re}$}. \\
+
+        For a visualization of the results, see \hyperref[fig:relative_dust_particle_velocities]
         {\cref*{fig:relative_dust_particle_velocities}d}.
 
         \input{diagrams/relative_velocity.tex}

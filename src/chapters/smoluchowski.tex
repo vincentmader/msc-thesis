@@ -31,14 +31,14 @@
                 =
                     \int\limits_0^\infty
                     \int\limits_0^\infty
-                    \mathcal K(m,m',m'')
+                    K(m,m',m'')
                     \cdot n(m')
                     \cdot n(m'')
                     \ \dd m'
                     \ \dd m''
         \end{equation}
 
-        \todo{Here, the term $\mathcal K(m, m', m'')$ labels the \textit{coagulation kernel}. 
+        \todo{Here, the term $K(m, m', m'')$ labels the \textit{coagulation kernel}. 
         It carries the information about how the number of particles with mass $m$ changes with 
         time under the influence of collisions between particles with masses $m'$ and $m''$.} \\
 
@@ -96,7 +96,7 @@
 
     In the following, we will factorize the kernel into two separate terms:
     \begin{equation}
-        \mathcal K(m,m',m'') = R(m',m'') \cdot K(m,m',m'') 
+        K(m,m',m'') = R(m',m'') \cdot X(m,m',m'') 
     \end{equation}
 
     The idea behind this distinction is the following: 
@@ -105,10 +105,11 @@
             \textit{how often collision events occur} per unit time between a given
             pair of particles carrying the masses $m'$ and $m''$. \\
             (\todo{It is defined as in [cite], separately for coagulation and fragmentation})
-        \item In contrast to that, the second term $K(m,m',m'')$ helps us understand 
+        \item In contrast to that, the second term $X(m,m',m'')$ helps us understand 
             \textit{how this affects the number of particles} carrying a mass value $m$ under any
             such collision, i.e. it gives information about how matter is redistributed onto the
             range of possible masses.
+            (\todo{for each collision})
     \end{enumerate}
 
     % \todo{Talk about units! (not 1/second)} \\
@@ -143,22 +144,42 @@
     % Decomposition into Gain and Loss Terms {{{ 
     \clearpage\subsection{Decomposition into Gain and Loss Terms}
 
-        We can further decompose the "redistribution" kernel $K$ into a positive and a negative
-        contribution, which in the following we will address as the \textit{gain} and \textit{loss} 
-        term $G$ and $L$, respectively:
+        We can further decompose the "redistribution" kernel $K(m,m',m'')$ into a negative and a 
+        positive contribution, which in the following we will address as the \textit{loss} and 
+        \textit{gain} term $L$ and $G$, respectively:
         \begin{equation}
-            K(m,m',m'') = G(m, m', m'') + L(m, m', m'')
+            K(m,m',m'') = L(m, m', m'') + G(m, m', m'') 
         \end{equation}
-        \todo{...such that the total kernel is given by}
-        \begin{equation}
-            \mathcal K(m,m',m'') = R(m',m'') \cdot \bigg[G(m, m', m'') + L(m, m', m'')\bigg]
-        \end{equation}
+        % \begin{equation}
+        %     K(m,m',m'') = R(m',m'') \cdot \bigg[G(m, m', m'') + L(m, m', m'')\bigg]
+        % \end{equation}
 
-        These two terms are defined as follows:
+        We will define these two terms as follows:
         \begin{align}
-            L(m, m', m'') &= -\frac{1}{2} \cdot \bigg[\delta_D(m-m')+\delta(m-m'')\bigg] \\
-            G(m, m', m'') &= f(m, m', m'')
+            L(m, m', m'') 
+                &:= -R(m',m'') \cdot \frac{1}{2} \bigg[\delta_D(m-m')+\delta_D(m-m'')\bigg] \\
+            G(m, m', m'') 
+                &:= +R(m',m'') \cdot f(m, m', m'') 
         \end{align}
+
+        \todo{The two separate Dirac distributions in the square brackets relate to the symmetry 
+        of the kernel, which satisfies the following relationship.} \\
+        \todo{Continuous case:}
+        \begin{equation}
+            K(m,m',m'') = K(m,m'',m')
+        \end{equation}
+        \todo{Discrete case:}
+        \begin{equation}
+            K_{kij} = K_{kji}
+        \end{equation}
+        \todo{I.e.: It is irrelevant whether a particle A collides with a particle B, or whether 
+        a particle B collides with particle A. These are the same collision events}. \\
+        \todo{They are both encoded into the kernel though, which is why we need the factor $1/2$ 
+        in order to not count them twice.} \\
+        \todo{For the numerical integration that we will do later, we will of course not sum over 
+        the entire kernel and divide by 2 afterwards. That would lead to an unnecessary factor 2 
+        in the necessary computations. Instead, we will map the lower right half of the kernel 
+        matrix onto the top left (as we will see later).} \\
 
         When evaluating the sum in [cite Smol. eq.] during integration, this will have the following 
         effect:
@@ -176,17 +197,61 @@
 
         \todo{Plugging this into [cite Smol. eq.]...}
         \begin{align}
-            \deriv{n}{t}
-            &=\int\limits_0^\infty \int\limits_0^\infty R(m',m'') \cdot G(m,m',m'')
+            \deriv{n}{t} =
+            &-\int\limits_0^\infty \int\limits_0^\infty R(m',m'') \cdot 
+                \frac{1}{2}\bigg[\delta_D(m-m')+\delta_D(m-m'')\bigg]
                 \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm'' \\
-            &+\int\limits_0^\infty \int\limits_0^\infty R(m',m'') \cdot L(m,m',m'')
-                \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm'' \\
-            &=\int\limits_0^\infty \int\limits_0^\infty R(m',m'') \cdot f(m,m',m'')
-                \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm'' \\
-            &+\int\limits_0^\infty \int\limits_0^\infty R(m',m'') \cdot L(m,m',m'')
+            &+\int\limits_0^\infty \int\limits_0^\infty R(m',m'') \cdot f(m,m',m'')
                 \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm'' 
         \end{align}
-        \todo{Add discretized version}
+        \todo{which, if we pull apart the two terms in the square brackets, can be 
+        equivalently written as}
+        \begin{align}
+            \deriv{n}{t} =
+            &-\int\limits_0^\infty \int\limits_0^\infty R(m',m'') \cdot \frac{1}{2}\delta_D(m-m')
+                \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm'' \\
+            &-\int\limits_0^\infty \int\limits_0^\infty R(m',m'') \cdot \frac{1}{2}\delta_D(m-m'')
+                \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm'' \\
+            &+\int\limits_0^\infty \int\limits_0^\infty R(m',m'') \cdot f(m,m',m'')
+                \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm''
+        \end{align}
+
+        \todo{Making use of the relationship}
+        \begin{equation}
+            f(x_0) = \int\limits_{-\infty}^{\infty} f(x) \cdot \delta_D(x-x_0) \ \dd x 
+        \end{equation}
+        \todo{for the Dirac delta distribution, ...} \\
+
+        \todo{...we can reduce the 2D integral in each of the first two terms a 1D integral.}
+        \begin{align}
+            \deriv{n}{t} =
+            &-\frac{1}{2} \int\limits_0^\infty R(m,m'') \cdot n(m) \cdot n(m'') \ \text dm'' \\
+            &-\frac{1}{2} \int\limits_0^\infty R(m',m) \cdot n(m') \cdot n(m) \ \text dm' \\
+            &+\int\limits_0^\infty \int\limits_0^\infty R(m',m'') \cdot f(m,m',m'')
+                \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm''
+        \end{align}
+
+        \todo{Since we can rename $m'' \to m'$ without changing ...} \\
+        \todo{... and $R(m,m') = R(m',m)$ (...)} \\
+        \todo{...}
+        \begin{align}
+            \deriv{n}{t} =
+            &-\int\limits_0^\infty R(m,m') \cdot n(m) \cdot n(m') \ \text dm' \\
+            &+\int\limits_0^\infty \int\limits_0^\infty R(m',m'') \cdot f(m,m',m'')
+                \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm''
+        \end{align}
+
+        (\todo{Explain ...})
+
+        \todo{The discretized analogon to [cite last eq.] according to [cite sec. on discr.] reads}
+        \begin{equation}
+            \deriv{N}{t} =
+            -\sum_{i=1}^{\mathcal N_m} 
+                R_{ij} \cdot N_i \cdot N_j 
+            +\sum_{i=1}^{\mathcal N_m} \sum_{j=1}^{\mathcal N_m} 
+                R_{ij} \cdot f_{kij} \cdot N_i \cdot N_j
+        \end{equation}
+        (\todo{Define $f_{kij}$})
 
     % }}}
     % Decomposition into Coagulation and Fragmentation Kernel {{{ 
@@ -195,22 +260,22 @@
         As mentioned above [where?], we will define two separate kernels to describe the influence 
         of both collisions leading to coagulation as well as fragmentation events, respectively:
         \begin{align}
-            \mathcal K^\text{coag}(m,m',m'') &= R^\text{coag}(m',m'') \cdot K^\text{coag}(m,m',m'') \\
-            \mathcal K^\text{frag}(m,m',m'') &= R^\text{frag}(m',m'') \cdot K^\text{frag}(m,m',m'')
+            K^\text{coag}(m,m',m'') &= R^\text{coag}(m',m'') \cdot X^\text{coag}(m,m',m'') \\
+            K^\text{frag}(m,m',m'') &= R^\text{frag}(m',m'') \cdot X^\text{frag}(m,m',m'')
         \end{align}
 
         After having done this, we can add these two sub-kernels to arrive at the total kernel:
         \begin{equation}
-            \mathcal K(m,m',m'') = \mathcal K^\text{coag}(m,m',m'') + \mathcal K^\text{frag}(m,m',m'')
+            X(m,m',m'') = X^\text{coag}(m,m',m'') + X^\text{frag}(m,m',m'')
         \end{equation}
 
         For completeness, it should be said that we could add another sub-kernel 
-        $\mathcal K^\text{bounce}$ to the sum, for collisions leading to particle bouncing events.
+        $K^\text{bounce}$ to the sum, for collisions leading to particle bouncing events.
         We might as well neglect this though, since bouncing does not affect the dust particle mass 
         distribution in any way, and therefore we can set
         \begin{equation}
-            \mathcal K^\text{bounce}(m,m',m'') 
-            = R^\text{bounce}(m',m'') \cdot \underbrace{K^\text{bounce}(m,m',m'')}_{=0}
+            K^\text{bounce}(m,m',m'') 
+            = R^\text{bounce}(m',m'') \cdot \underbrace{X^\text{bounce}(m,m',m'')}_{=0}
         \end{equation}
 
     % }}}
@@ -221,34 +286,34 @@
 
         \begin{enumerate}
 
-            \item Kernel mass error $\Delta \mathcal K_{ij}$ per second (and per density!)
+            \item Kernel mass error $\Delta K_{ij}$ per second (and per density!)
                 (given in \SI{}{\kilogram\ \meter^3\ \second^{-1}}): 
                 \begin{align}
-                    \Delta \mathcal K_{ij}
-                        &= \sum_{k=1}^{\mathcal N_m} m_k \cdot \mathcal K_{kij}
+                    \Delta K_{ij} &= \sum_{k=1}^{\mathcal N_m} m_k \cdot K_{kij}
                 \end{align}
 
-            \item Kernel mass error $\Delta K_{ij}$ per collision 
+            \item Kernel mass error $\Delta X_{ij}$ per collision 
                 (given in \SI{}{\kilogram}): 
                 \begin{align}
-                    \Delta K_{ij}
-                        = \frac{\Delta \mathcal K_{ij}}{R^\text{coll}_{ij}}
-                        = \sum_{k=1}^{\mathcal N_m} m_k \cdot K_{kij}
+                    \Delta X_{ij}
+                        = \frac{\Delta K_{ij}}{R^\text{coll}_{ij}}
+                        = \sum_{k=1}^{\mathcal N_m} m_k \cdot X_{kij}
                 \end{align}
 
-            \item Relative kernel mass error $\Delta K_{ij}$ per collision 
+            \item Relative kernel mass error $\Delta X_{ij}^\text{rel}$ per collision 
                 (dimensionless):
                 \begin{align}
-                    \Delta K_{ij}^\text{rel} &= \sum_{k=1}^{\mathcal N_m} \frac{m_k}{m_i+m_j} \cdot K_{kij}
+                    \Delta X_{ij}^\text{rel} 
+                        &= \sum_{k=1}^{\mathcal N_m} \frac{m_k}{m_i+m_j} \cdot X_{kij}
                 \end{align}
 
-            \item Total kernel error $\Delta K$
+            \item Total kernel error $\Delta X^\text{rel}$
                 (dimensionless as wel):
                 \begin{align}
-                    \Delta K^\text{rel} &= \sqrt{
+                    \Delta X^\text{rel} &= \sqrt{
                         \sum_{i=1}^{\mathcal N_m}
                         \sum_{j=1}^{\mathcal N_m}
-                        \big(\Delta K_{ij}^\text{rel}\big)^2
+                        \big(\Delta X_{ij}^\text{rel}\big)^2
                     }
                 \end{align}
 
@@ -272,7 +337,8 @@
         \item quadratic kernel
             $$K=m_1\cdot m_2$$
     \end{enumerate}
-    \todo{Rewrite with $m$, $m'$, and $m''$.}
+    \todo{Rewrite with $m$, $m'$, and $m''$.} \\
+    \todo{Rewrite with $K$ and $X$. Take which?}
 
     % Constant Kernel {{{ 
     \subsection{Constant Kernel}

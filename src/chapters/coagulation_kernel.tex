@@ -21,8 +21,8 @@
 
     Total kernel for dust particle coagulation given by:
     \begin{align}
-        \mathcal K(m,m',m'')
-        &= R^\text{coll}(m',m'') \cdot K(m,m',m'') \\
+        K(m,m',m'')
+        &= R^\text{coll}(m',m'') \cdot X^\text{coag}(m,m',m'') \\
         &= R^\text{coll}(m',m'') \cdot \bigg[G^\text{coag}(m,m',m'') + L^\text{coag}(m,m',m'')\bigg]
     \end{align}
 
@@ -36,12 +36,6 @@
             -&\int\limits_0^\infty \int\limits_0^\infty R(m',m'')
             \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm'' 
     \end{align}
-
-    \todo{We can reduce the 2D integral in the second term to a 1D integral.}
-    \todo{For this, we make use of the relationship}
-    \begin{equation}
-        f(x_0) = \int\limits_{-\infty}^{\infty} f(x) \cdot \delta_D(x-x_0) \ \dd x 
-    \end{equation}
 
     \todo{This leads to}
     \begin{align}

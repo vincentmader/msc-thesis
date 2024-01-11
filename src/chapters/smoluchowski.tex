@@ -411,8 +411,6 @@
 
     % The Kovetz-Olund Algorithm {{{ 
     \clearpage\subsection{The Kovetz-Olund Algorithm}
-
-        \todo{Rename $n\to N$} \\
         
         An elegant way for solving the two problems listed above is given in the 1969 paper
         by Kovetz \& Olund \cite{kovetz_olund_1969}, where they used the following procedure:
@@ -427,16 +425,14 @@
                 Using this separation into gain \& loss, the dust particle mass distribution's
                 temporal derivative can be expressed in the following form:
                 \begin{equation}
-                    \pderiv{n_k}{t}
-                        =\sum_{i=0}^{\mathcal N_m}\sum_{j=0}^{\mathcal N_m}
-                            K_{kij}^\text{gain}\cdot n_i\cdot n_j
-                        -\sum_{j=0}^{\mathcal N_m}K_{kj}^\text{loss}\cdot n_k\cdot n_j
+                    \pderiv{N_k}{t}
+                        = \sum_{i=0}^{\mathcal N_m} \sum_{j=0}^{\mathcal N_m}
+                            K_{kij}^\text{gain}\cdot N_i\cdot N_j
+                        - \sum_{j=0}^{\mathcal N_m} K_{kj}^\text{loss} \cdot N_k\cdot N_j
                 \end{equation}
                 In other words, the total kernel [from above, cite eq.] can be written as
                 \begin{equation}
-                    K_{kij}
-                        =K_{kij}^\text{gain}
-                        -K_{ij}^\text{loss}\cdot\delta_{ki}
+                    K_{kij} = K_{kij}^\text{gain} - K_{ij}^\text{loss}\cdot\delta_{ki}
                 \end{equation}
                 Splitting the kernel like this into a gain \& a loss term is a quite general
                 approach, and can be used in more complex scenarios as well (including e.g.
@@ -447,30 +443,29 @@
                 pair of colliding particles with indices $i$ and $j$. Then, let the index
                 $\bar k$ be chosen in such a way that the condition
                 \begin{equation}
-                    m_{\bar k}\leq m_i+m_j<m_{\bar k+1}
+                    m_{\bar k} \leq m_i + m_j < m_{\bar k+1}
                 \end{equation}
                 is satisfied.
             \item As stated before, in hit-and-stick coagulation, a single new particle emerges
                 for each pair of colliding particles. Using the definitions from above, this
                 condition can be expressed as follows:
                 \begin{equation}
-                    K_{\bar k,ij}^\text{gain}
-                    +K_{\bar k+1,ij}^\text{gain}
-                    \overset{!}{=}K_{ij}^\text{loss}
+                    K_{\bar k,ij}^\text{gain} + K_{\bar k+1,ij}^\text{gain}
+                    \overset{!}{=} K_{ij}^\text{loss}
                 \end{equation}
             \item The second condition is that of mass conservation, which can be written as:
                 \begin{equation}
-                    m_{\bar k}\cdot K_{\bar k,ij}^\text{gain}
-                    +m_{\bar k+1}\cdot K_{\bar k+1,ij}^\text{gain}
-                    \overset{!}{=}(m_i+m_j)\cdot K_{ij}^\text{loss}
+                    m_{\bar k} \cdot K_{\bar k,ij}^\text{gain}
+                    + m_{\bar k+1} \cdot K_{\bar k+1,ij}^\text{gain}
+                    \overset{!}{=} (m_i+m_j) \cdot K_{ij}^\text{loss}
                 \end{equation}
             \item Now, to map the resulting particle's mass onto two neighboring bins, let us    
                 define a parameter $\varepsilon$ such that
                 \begin{align}
                     K_{\bar k,ij}^\text{gain}
-                        &=K_{ij}^\text{loss}\cdot(1-\varepsilon),\ \text{and}\\
+                        &=K_{ij}^\text{loss} \cdot (1-\varepsilon),\ \text{and}\\
                     K_{\bar k+1,ij}^\text{gain}
-                        &=K_{ij}^\text{loss}\cdot\varepsilon
+                        &=K_{ij}^\text{loss} \cdot \varepsilon
                 \end{align}
                 This assures that [equation from pt 3] is satisfied. If we now plug this
                 definition into [equation from pt 4] and solve for $\varepsilon$, we

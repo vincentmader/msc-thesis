@@ -1,0 +1,182 @@
+\vfill
+
+\newcommand{\particle}[3]{%
+    \ifcase#1
+        % Zero
+    \or
+        \draw[fill={black!0!white}] (#2          , #3         ) circle (\R);
+    \or
+        \draw[fill={black!0!white}] (#2 - 0.65*\R, #3 + 0.30*\R) circle (\R);
+        \draw[fill={black!0!white}] (#2 + 0.65*\R, #3 - 0.30*\R) circle (\R);
+    \or
+        \draw[fill={black!0!white}] (#2 - 0.70*\R, #3 - 0.50*\R) circle (\R);
+        \draw[fill={black!0!white}] (#2 + 0.00*\R, #3 + 0.50*\R) circle (\R);
+        \draw[fill={black!0!white}] (#2 + 0.70*\R, #3 - 0.50*\R) circle (\R);
+    \or
+        \draw[fill={black!0!white}] (#2 + 0.65*\R, #3 + 0.65*\R) circle (\R);
+        \draw[fill={black!0!white}] (#2 - 0.65*\R, #3 - 0.65*\R) circle (\R);
+        \draw[fill={black!0!white}] (#2 + 0.65*\R, #3 - 0.65*\R) circle (\R);
+        \draw[fill={black!0!white}] (#2 - 0.65*\R, #3 + 0.65*\R) circle (\R);
+    \or
+        \draw[fill={black!0!white}] (#2 + 0.85*\R, #3 + 0.85*\R) circle (\R);
+        \draw[fill={black!0!white}] (#2 - 0.85*\R, #3 - 0.85*\R) circle (\R);
+        \draw[fill={black!0!white}] (#2 + 0.85*\R, #3 - 0.85*\R) circle (\R);
+        \draw[fill={black!0!white}] (#2 - 0.85*\R, #3 + 0.85*\R) circle (\R);
+        \draw[fill={black!0!white}] (#2 +       0, #3 +       0) circle (\R);
+    \fi
+}
+
+\newcommand{\bang}[1]{
+    \node[shape=starburst, starburst points=#1, starburst point height=0.5cm, 
+        draw, black, fill=white,
+        minimum width=1.5cm, minimum height=1.5cm,
+    ] {};
+}
+
+\newcommand{\illustrateCoagulation}[0]{
+    \begin{tikzpicture}
+
+        \def\R{0.2}
+        \def\P{1.1}
+
+        \def\Xa{-1*\P}
+        \def\Ya{+3*\P}
+        \def\Xb{+1*\P}
+        \def\Yb{+3*\P}
+        \def\Xc{+0*\P}
+        \def\Yc{-3*\P}
+
+        \begin{scope}[decoration={
+            markings,
+            mark=at position 0.5 with {\arrow{latex}}}
+        ]
+            \draw[postaction={decorate}] (\Xa, \Ya) -- (  0,   0);
+            \draw[postaction={decorate}] (\Xb, \Yb) -- (  0,   0);
+            \draw[postaction={decorate}] (  0,   0) -- (\Xc, \Yc);
+        \end{scope}
+
+        \particle{3}{\Xa}{\Ya}
+        \particle{1}{\Xb}{\Yb}
+        \particle{4}{\Xc}{\Yc}
+
+        \bang{10}
+
+        \draw[draw=white,fill=white] (0, -4*\P) circle (\R);
+
+    \end{tikzpicture}
+}
+
+\newcommand{\illustrateFragmentation}[0]{
+    \begin{tikzpicture}
+
+        \def\R{0.2}
+        \def\P{1.1}
+
+        \def\Xa{-1.0*\P}
+        \def\Ya{+3.0*\P}
+        \def\Xb{+1.0*\P}
+        \def\Yb{+3.0*\P}
+        \def\Xc{-2.0*\P}
+        \def\Yc{-2.8*\P}
+        \def\Xd{-1.0*\P}
+        \def\Yd{-3.1*\P}
+        \def\Xe{+0.0*\P}
+        \def\Ye{-3.3*\P}
+        \def\Xf{+1.0*\P}
+        \def\Yf{-3.1*\P}
+        \def\Xg{+2.0*\P}
+        \def\Yg{-2.8*\P}
+
+        \begin{scope}[decoration={
+            markings,
+            mark=at position 0.5 with {\arrow{latex}}}
+        ]
+            \draw[postaction={decorate}] (\Xa, \Ya) -- (  0,   0);
+            \draw[postaction={decorate}] (\Xb, \Yb) -- (  0,   0);
+            \draw[postaction={decorate}] (  0,   0) -- (\Xc, \Yc);
+            \draw[postaction={decorate}] (  0,   0) -- (\Xd, \Yd);
+            \draw[postaction={decorate}] (  0,   0) -- (\Xe, \Ye);
+            \draw[postaction={decorate}] (  0,   0) -- (\Xf, \Yf);
+            \draw[postaction={decorate}] (  0,   0) -- (\Xg, \Yg);
+        \end{scope}
+
+        \particle{5}{\Xa}{\Ya}
+        \particle{3}{\Xb}{\Yb}
+        \particle{1}{\Xc}{\Yc}
+        \particle{2}{\Xd}{\Yd}
+        \particle{3}{\Xe}{\Ye}
+        \particle{1}{\Xf}{\Yf}
+        \particle{1}{\Xg}{\Yg}
+
+        \bang{9}
+
+        \draw[draw=white,fill=white] (0, -4*\P) circle (\R);
+
+    \end{tikzpicture}
+}
+
+\newcommand{\illustrateBouncing}[0]{
+    \begin{tikzpicture}
+
+        \def\R{0.2}
+        \def\P{1.1}
+
+        \def\Xa{-1*\P}
+        \def\Ya{+3*\P}
+        \def\Xb{+1*\P}
+        \def\Yb{+3*\P}
+        \def\Xc{-1*\P}
+        \def\Yc{-3*\P}
+        \def\Xd{+1*\P}
+        \def\Yd{-3*\P}
+
+        \begin{scope}[decoration={
+            markings,
+            mark=at position 0.5 with {\arrow{latex}}}
+        ]
+            \draw[postaction={decorate}] (\Xa, \Ya) -- (  0,   0);
+            \draw[postaction={decorate}] (\Xb, \Yb) -- (  0,   0);
+            \draw[postaction={decorate}] (  0,   0) -- (\Xc, \Yc);
+            \draw[postaction={decorate}] (  0,   0) -- (\Xd, \Yd);
+        \end{scope}
+
+        \particle{3}{\Xa}{\Ya}
+        \particle{1}{\Xb}{\Yb}
+        \particle{3}{\Xc}{\Yc}
+        \particle{1}{\Xd}{\Yd}
+
+        \bang{13}
+
+        \draw[draw=white,fill=white] (0, -4*\P) circle (\R);
+
+    \end{tikzpicture}
+}
+
+\begin{figure}[h!]
+    \centering
+    \makebox[\textwidth]{
+        \begin{minipage}{.33\paperwidth}
+            \centering
+          	\subfloat[Coagulation]{  % TODO Rename?
+                \label{:a}
+                \illustrateCoagulation
+          	}
+        \end{minipage}%
+        \begin{minipage}{.33\paperwidth}
+            \centering
+          	\subfloat[Fragmentation]{
+                \label{:b}
+                \illustrateFragmentation
+          	}
+        \end{minipage}
+        \begin{minipage}{.33\paperwidth}
+            \centering
+          	\subfloat[Bouncing]{
+                \label{:b}
+                \illustrateBouncing
+          	}
+        \end{minipage}%
+    }
+    \caption{Illustration of Dust Particle Collision Outcomes}
+    \label{}
+\end{figure} 

@@ -407,6 +407,9 @@
             way between these two neighboring bins.
     \end{enumerate}
 
+    \todo{What then is $f^{coag}_{kij}$? (Define here or elsewhere?) 
+    (with canc. handling \& Kovetz-Olund)} \\
+
     \todo{See next section [cite] for how to do this.}
 
     % The Kovetz-Olund Algorithm {{{ 
@@ -618,7 +621,7 @@
         \todo{inverse power law (?)}
 
         \begin{equation}
-            f^\text{frag}_{kij} = (m_i + m_j) \cdot \xi_{kij}
+            f^\text{frag}_{kij} = \frac{m_i + m_j}{m_k} \cdot \xi_{kij}
         \end{equation}
         where $\xi_{kij}$ labels the fraction of $m_\text{tot} = m_i + m_j$ that "lands" in 
         a given bin $k$. It is defined as 
@@ -627,7 +630,7 @@
         \end{equation}
         with $q=-\frac{11}{6}$ and
         \begin{equation}
-            S := \sum_{k_\text{min}}^{k_\text{max}} m_k^{q+1} \cdot \Delta m_k
+            S := \sum_{k_\text{min}}^{k_\text{max}} m_k^q % \cdot \Delta m_k
         \end{equation}
 
         \todo{Elaborate, explain, cite!}

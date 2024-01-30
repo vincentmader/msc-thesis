@@ -1,71 +1,93 @@
+Now we will focus on the definition of a model for dust particle coagulation. \\
+
+Adopting the formalism that was outlined in \cref{sec:dust_particle_mass_distribution},
+we would like to study the behavior of the particle mass distribution function $n(m)$
+under the influence of particle collisions. Both associative and dissociative process 
+(coagulation and fragmentation) are to be taken into account.
+
+% \begin{itemize}
+%     \item Commonly used: Smoluchowski equation.
+%     \item In each time step (and for each location in the disk), we determine how the dust
+%         particle population of a certain size is influenced by collision of particles pairs 
+%         carrying all possible combinations of mass values.
+%     \item In the case of "pure" (hit-and-stick) coagulation
+%     \item
+% \end{itemize}
+
 % The Smoluchowski Equation {{{ 
 \section{The Smoluchowski Equation}
 
-    Let us now turn our attention to a certain integro-differential equation, which serves as the
-    centerpiece of the dust particle coagulation model that this thesis is built upon. \\
+    The centerpiece of the coagulation model that this thesis is built upon is provided by 
+    the following integro-differential population balance equation:
+    \begin{equation}
+        \label{eq:continuous_smoluchowski_equation}
+        \pderiv{n}{t}(m)
+            =
+                \int\limits_0^\infty
+                \int\limits_0^\infty
+                K(m,m',m'')
+                \cdot n(m')
+                \cdot n(m'')
+                \ \dd m'
+                \ \dd m''
+    \end{equation}
 
-    The so-called \textit{Smoluchowski equation} provides a mathematical framework commonly used 
-    to describe the process of particle aggregation, or \textit{coagulation}, into larger and 
-    larger structures. \\
+    This so-called \textit{Smoluchowski coagulation equation} provides a mathematical framework 
+    that can used to model the process of particle aggregation, or \textit{coagulation}, 
+    into larger and larger structures. It finds applications in a wide range of physical 
+    and biological contexts. \\ % todo (examples?) \\
 
-    This population balance equation is used in a wide range of physical and biological contexts. 
-    (examples?) \\
+    The equation is named after the Polish physicist Marian Smoluchowski, due to his treatment 
+    of the equation in 1916 \cite{smoluchowski_1916}. \\
 
-    It is named after the Polish physicist Marian Smoluchowski, due to his treatment of the 
-    equation in 1916 \cite{smoluchowski_1916}. \\
+    In it, the term $K(m, m', m'')$ labels the so-called \textit{coagulation kernel}. 
+    Into it, we will encode the information about how the number of particles with mass $m$ 
+    changes with time under the influence of collisions between particles with masses 
+    $m'$ and $m''$. \\
+
+    The effects of both coagulation and fragmentation processes can be defined in separate 
+    kernel functions, that are then added to acquire the total kernel. We will define 
+    these function in \cref{sec:coagulation_kernel} and \cref{sec:fragmentation_kernel},
+    respectively.
 
     % \todo{ODE or PDE?} \\
-    \todo{For each choice of \textit{kernel function}, there exists a unique solution (cite).}
-    (and initial conditions)
+    % \todo{For each choice of \textit{kernel function}, there exists a unique solution (cite).}
+    % (and initial conditions)
 
     % Continuous Formulation {{{
-    \subsection{Continuous Formulation}
+    % \subsection{Continuous Formulation}
 
-        \todo{For the evolution of the particle mass distribution function, (depending 
-        \textit{only} on the particle mass), the Smoluchowski equation in its most general form 
-        reads:}
-    
-        \begin{equation}
-            \label{eq:continuous_smoluchowski_equation}
-            \pderiv{n}{t}(m)
-                =
-                    \int\limits_0^\infty
-                    \int\limits_0^\infty
-                    K(m,m',m'')
-                    \cdot n(m')
-                    \cdot n(m'')
-                    \ \dd m'
-                    \ \dd m''
-        \end{equation}
+    %     \todo{For the evolution of the particle mass distribution function, (depending 
+    %     \textit{only} on the particle mass), the Smoluchowski equation in its most general form 
+    %     reads:}
 
-        \todo{Here, the term $K(m, m', m'')$ labels the \textit{coagulation kernel}. 
-        It carries the information about how the number of particles with mass $m$ changes with 
-        time under the influence of collisions between particles with masses $m'$ and $m''$.} \\
-
-        \todo{We will discuss it in [cite section], and [coag-section] and [frag-section].}
+    %     \todo{We will discuss it in [cite section], and [coag-section] and [frag-section].}
  
     % }}}
+
+% }}}
     % Discretized Formulation {{{ 
     \newpage\subsection{Discretized Formulation}
 
-        \todo{Now, discretize the Smoluchowski equation.} \\
+        To discretize the Smoluchowski coagulation equation, we need to 
+        switch out the temporal derivative of the particle mass distribution function
+        with their finite difference analogons:
+        \begin{equation}
+            \pderiv{n}{t} \to \frac{\Delta n}{\Delta t}
+        \end{equation}
+        Throughout this thesis, we will use the notion $\partial n/\partial t$ interchangeably
+        with the finite difference notation, since we will basically always be talking about
+        the numerical solution anyhow.
 
-        To do this, we perform the following two mappings:
-        \begin{enumerate}
-            \item Replace temporal derivative of particle mass distribution function with 
-                finite difference.
-                \begin{equation}
-                    \pderiv{n}{t} \to \frac{\Delta n}{\Delta t}
-                \end{equation}
-            \item Replace integral over particle mass axis with discrete sum.
-                \begin{equation}
-                    \int_0^\infty \dd m' \to \sum_{i=1}^{\mathcal N_m} \Delta m_i
-                    \ \ \ \text{and}\ \ \
-                    \int_0^\infty \dd m'' \to \sum_{j=1}^{\mathcal N_m} \Delta m_j
-                \end{equation} 
-        \end{enumerate}
+        Additionally to the above, we have to replace the integral over the particle mass axis 
+        with a discrete sum.
+        \begin{equation}
+            \int_0^\infty \dd m' \to \sum_{i=1}^{\mathcal N_m} \Delta m_i
+            \ \ \ \ \text{and}\ \ \ \
+            \int_0^\infty \dd m'' \to \sum_{j=1}^{\mathcal N_m} \Delta m_j
+        \end{equation} 
 
-        \todo{This results in:}
+        This yields:
         \begin{equation}
             \label{eq:discrete_smoluchowski_equation}
             \pderiv{n_k}{t}
@@ -75,24 +97,22 @@
         % TODO Later on I talk about `del n / del t` instead of `Delta n / Delta t`.
         %    -> Decide on which one of these to use.
     
-        Let us define
-        \begin{equation}
-            K_{kij}
-                := K(m_k,m_i,m_j)\cdot\Delta m_k
-        \end{equation}
-    
-        If, in addition, we make use of the relationship $N_i=n_i\cdot\Delta m_i$ that was defined 
-        in (\todo{cite}), then we can rewrite the Smoluchowski equation as
+        Let us now make use of the relationship $N_i=n_i \cdot \Delta m_i$ that was defined in 
+        \cref{sec:dust_particle_mass_distribution}, which allows us to rewrite the Smoluchowski as
+        % If, in addition, we make use of the relationship  that was defined 
+        % in (\todo{cite}), then we can rewrite the Smoluchowski equation as
         \begin{equation}
             \pderiv{N_k}{t}
                 \approx \sum_{i=1}^{\mathcal N_m}\sum_{j=1}^{\mathcal N_m} K_{kij}\cdot N_i\cdot N_j
         \end{equation}
+        where we made use of the definition of the discrete \textit{kernel matrix}
+        \begin{equation}
+            K_{kij} := K(m_k,m_i,m_j) \cdot \Delta m_k
+        \end{equation}
     
     % }}}
-
-% }}}
 % The Kernel {{{ 
-\newpage\section{The Kernel}
+\section{The Kernel}
 
     In the following, we will factorize the kernel into two separate terms:
     \begin{equation}
@@ -279,56 +299,11 @@
         \end{equation}
 
     % }}}
-    % Definition of the Kernel Mass Error {{{ 
-    \subsection{Definition of the Kernel Mass Error}
-
-        Here, it makes sense to distinguish between various definitions:
-
-        \begin{enumerate}
-
-            \item Kernel mass error $\Delta K_{ij}$ per second (and per density!)
-                (given in \SI{}{\kilogram\ \meter^3\ \second^{-1}}): 
-                \begin{align}
-                    \Delta K_{ij} &= \sum_{k=1}^{\mathcal N_m} m_k \cdot K_{kij}
-                \end{align}
-
-            \item Kernel mass error $\Delta X_{ij}$ per collision 
-                (given in \SI{}{\kilogram}): 
-                \begin{align}
-                    \Delta X_{ij}
-                        = \frac{\Delta K_{ij}}{R^\text{coll}_{ij}}
-                        = \sum_{k=1}^{\mathcal N_m} m_k \cdot X_{kij}
-                \end{align}
-
-            \item Relative kernel mass error $\Delta X_{ij}^\text{rel}$ per collision 
-                (dimensionless):
-                \begin{align}
-                    \Delta X_{ij}^\text{rel} 
-                        &= \sum_{k=1}^{\mathcal N_m} \frac{m_k}{m_i+m_j} \cdot X_{kij}
-                \end{align}
-
-            \item Total kernel error $\Delta X^\text{rel}$
-                (dimensionless as wel):
-                \begin{align}
-                    \Delta X^\text{rel} &= \sqrt{
-                        \sum_{i=1}^{\mathcal N_m}
-                        \sum_{j=1}^{\mathcal N_m}
-                        \big(\Delta X_{ij}^\text{rel}\big)^2
-                    }
-                \end{align}
-
-        \end{enumerate}
-
-        \todo{The last definition is what we will use to classify the "goodness" of our kernel.} 
-
-        \todo{Add table: Kernel error for coag. / frag. / both, 
-        and for various mass axis resolutions.}
-
-    % }}}
 
 % }}}
 % Definition of the Coagulation Kernel {{{ 
 \section{Definition of the Coagulation Kernel}
+\label{sec:coagulation_kernel}
 
     \todo{As above, gain and loss:}
     \begin{align}
@@ -397,7 +372,7 @@
     accuracy of the algorithm, one has to take care of two separate problems, namely:
     \begin{enumerate}
         \item The conservation of mass \textit{has} to be assured, otherwise the numerical solution can 
-            not be assumed to remain stable for long. In the case of stick-and-hit coagulation, this 
+            not be assumed to remain stable for long. In the case of hit-and-stick coagulation, this 
             means that for every pair of colliding particles, a single new particle has to be created. 
             At the same time, the two initial particles have to be removed from the distribution. 
             During this process, the total mass should remain unaffected down to machine precision.
@@ -421,7 +396,7 @@
         An elegant way for solving the two problems listed above is given in the 1969 paper
         by Kovetz \& Olund \cite{kovetz_olund_1969}, where they used the following procedure:
         \begin{enumerate}
-            \item The stick-and-hit coagulation kernel is split into two parts. 
+            \item The hit-and-stick coagulation kernel is split into two parts. 
                 (\todo{as we did above})
                 The first is the \textit{gain} of particles in bin $k$ due to the collision of 
                 particles from the bins $i$ and $j$. The second is the \textit{loss} of particles 
@@ -554,15 +529,38 @@
 
     \clearpage
     \todo{Plot pure coagulation kernel on linear mass axis for various values of $k$.}
+    \todo{Plot pure coagulation kernel on logarithmic mass axis for various values of $k$.}
 
     \clearpage
-    \todo{Plot pure coagulation kernel on logarithmic mass axis for various values of $k$.}
+    \begin{figure}[h!]
+        \makebox[\textwidth]{
+            \includegraphics[width=\paperwidth]{101/Kkij vs k, coag=True, frag=False.pdf}
+        }
+        \caption{ \todo{Add description!} \\ \todo{Add colorbar!} \\ (with correct z-limits!)}
+    \end{figure}
+
+    \clearpage
+    \begin{figure}[h!]
+        \makebox[\textwidth]{
+            \includegraphics[width=\paperwidth]{102/Kkij_gain vs k, coag=True, frag=False.pdf}
+        }
+        \caption{ \todo{Add description!} \\ \todo{Add colorbar!} \\ (with correct z-limits!)}
+    \end{figure}
+
+    \clearpage
+    \begin{figure}[h!]
+        \makebox[\textwidth]{
+            \includegraphics[width=\paperwidth]{102/Kkij_loss vs k, coag=True, frag=False.pdf}
+        }
+        \caption{ \todo{Add description!} \\ \todo{Add colorbar!} \\ (with correct z-limits!)}
+    \end{figure}
 
 % }}}
 
 % }}}
 % Definition of the Fragmentation Kernel {{{ 
 \section{Definition of the Fragmentation Kernel}
+\label{sec:fragmentation_kernel}
 
     \todo{As above, gain and loss:}
     \begin{align}
@@ -601,8 +599,7 @@
     \todo{Different approaches [cite]}
 
     % Modeling the Mass Distribution Resulting from a Fragmentation Event {{{ 
-    \clearpage\subsection{Modeling the Mass Distribution Resulting from a Fragmentation Event
-    (\todo{rename?})}
+    \clearpage\subsection{Modeling the Resulting Mass Distribution}
 
         \todo{Naive: Move all masses to the bin corresponding to lowest mass} \\
         \todo{i.e.: total "pulverization"} \\
@@ -642,12 +639,112 @@
 % Visualization of Fragmentation Kernel {{{ 
 
     \clearpage
-    \todo{Plot pure coagulation kernel on linear mass axis for various values of $k$.}
+    \todo{Plot pure fragmentation kernel on linear mass axis for various values of $k$.}
+    \todo{Plot pure fragmentation kernel on logarithmic mass axis for various values of $k$.}
 
     \clearpage
-    \todo{Plot pure coagulation kernel on logarithmic mass axis for various values of $k$.}
+    \begin{figure}[h!]
+        \makebox[\textwidth]{
+            \includegraphics[width=\paperwidth]{101/Kkij vs k, coag=False, frag=True.pdf}
+        }
+        \caption{ \todo{Add description!} \\ \todo{Add colorbar!} \\ (with correct z-limits!)}
+    \end{figure}
+
+    \clearpage
+    \begin{figure}[h!]
+        \makebox[\textwidth]{
+            \includegraphics[width=\paperwidth]{102/Kkij_gain vs k, coag=False, frag=True.pdf}
+        }
+        \caption{ \todo{Add description!} \\ \todo{Add colorbar!} \\ (with correct z-limits!)}
+    \end{figure}
+
+    \clearpage
+    \begin{figure}[h!]
+        \makebox[\textwidth]{
+            \includegraphics[width=\paperwidth]{102/Kkij_loss vs k, coag=False, frag=True.pdf}
+        }
+        \caption{ \todo{Add description!} \\ \todo{Add colorbar!} \\ (with correct z-limits!)}
+    \end{figure}
 
 % }}}
+
+% }}}
+% The Total Kernel {{{
+\section{The Total Kernel}
+
+    % Definition of the Kernel Mass Error {{{ 
+    \subsection{Definition of the Kernel Mass Error}
+
+        Here, it makes sense to distinguish between various definitions:
+
+        \begin{enumerate}
+
+            \item Kernel mass error $\Delta K_{ij}$ per second (and per density!)
+                (given in \SI{}{\kilogram\ \meter^3\ \second^{-1}}): 
+                \begin{align}
+                    \Delta K_{ij} &= \sum_{k=1}^{\mathcal N_m} m_k \cdot K_{kij}
+                \end{align}
+
+            \item Kernel mass error $\Delta X_{ij}$ per collision 
+                (given in \SI{}{\kilogram}): 
+                \begin{align}
+                    \Delta X_{ij}
+                        = \frac{\Delta K_{ij}}{R^\text{coll}_{ij}}
+                        = \sum_{k=1}^{\mathcal N_m} m_k \cdot X_{kij}
+                \end{align}
+
+            \item Relative kernel mass error $\Delta X_{ij}^\text{rel}$ per collision 
+                (dimensionless):
+                \begin{align}
+                    \Delta X_{ij}^\text{rel} 
+                        &= \sum_{k=1}^{\mathcal N_m} \frac{m_k}{m_i+m_j} \cdot X_{kij}
+                \end{align}
+
+            \item Total kernel error $\Delta X^\text{rel}$
+                (dimensionless as wel):
+                \begin{align}
+                    \Delta X^\text{rel} &= \sqrt{
+                        \sum_{i=1}^{\mathcal N_m}
+                        \sum_{j=1}^{\mathcal N_m}
+                        \big(\Delta X_{ij}^\text{rel}\big)^2
+                    }
+                \end{align}
+
+        \end{enumerate}
+
+        \todo{The last definition is what we will use to classify the "goodness" of our kernel.} 
+
+        \todo{Add table: Kernel error for coag. / frag. / both, 
+        and for various mass axis resolutions.}
+
+    % }}}
+    % Figures {{{ 
+
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{101/Kkij vs k, coag=True, frag=True.pdf}
+            }
+            \caption{ \todo{Add description!} \\ \todo{Add colorbar!} \\ (with correct z-limits!)}
+        \end{figure}
+
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{102/Kkij_gain vs k, coag=True, frag=True.pdf}
+            }
+            \caption{ \todo{Add description!} \\ \todo{Add colorbar!} \\ (with correct z-limits!)}
+        \end{figure}
+        
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{102/Kkij_loss vs k, coag=True, frag=True.pdf}
+            }
+            \caption{ \todo{Add description!} \\ \todo{Add colorbar!} \\ (with correct z-limits!)}
+        \end{figure}
+
+    % }}}
 
 % }}}
 % Analytical Solutions {{{ 
@@ -846,11 +943,7 @@
 
         \clearpage
         \todo{Plot $n(m,t)$ on a linear mass axis, with only coagulation.}
-
-        \clearpage
         \todo{Plot $n(m,t)$ on a linear mass axis, with only fragmentation. (?)}
-
-        \clearpage
         \todo{Plot $n(m,t)$ on a linear mass axis, with constant/linear kernel. (?)}
 
     % }}}
@@ -867,18 +960,104 @@
         \todo{Accuracy} \\
         \todo{Stability, Mass Conservation} \\
 
-        \clearpage
-        \todo{Plot $n(m,t)$ on log. mass/time axis, with only coagulation.} \\
 
         \clearpage
-        \todo{Plot $n(m,t)$ on log. mass/time axis, with only fragmentation.} \\
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{103/mass_distr coag=True frag=False m0=0.pdf}
+            }
+            \caption{\todo{only hit-and-stick coagulation}}
+        \end{figure} 
 
         \clearpage
-        \todo{Plot $n(m,t)$ on log. mass/time axis, with both coagulation \& "naive" fragmentation.}
-        \\
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{103/mass_error coag=True frag=False m0=0.pdf}
+            }
+            \caption{\todo{only hit-and-stick coagulation}}
+        \end{figure} 
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{103/mass_deriv coag=True frag=False m0=0.pdf}
+            }
+            \caption{\todo{only hit-and-stick coagulation}}
+        \end{figure} 
 
         \clearpage
-        \todo{Plot $n(m,t)$ on log. mass/time axis, with both coagulation \& MRN fragmentation.} \\
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{103/mass_distr coag=False frag=True m0=0.pdf}
+            }
+            \caption{\todo{only fragmentation}}
+        \end{figure} 
+
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{103/mass_error coag=False frag=True m0=0.pdf}
+            }
+            \caption{\todo{only fragmentation}}
+        \end{figure} 
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{103/mass_deriv coag=False frag=True m0=0.pdf}
+            }
+            \caption{\todo{only hit-and-stick coagulation}}
+        \end{figure} 
+
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{103/mass_distr coag=False frag=True m0=25.pdf}
+            }
+            \caption{\todo{only fragmentation, "big m0"}}
+        \end{figure} 
+
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{103/mass_error coag=False frag=True m0=25.pdf}
+            }
+            \caption{\todo{only fragmentation, "big m0"}}
+        \end{figure} 
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{103/mass_deriv coag=False frag=True m0=25.pdf}
+            }
+            \caption{\todo{only hit-and-stick coagulation}}
+        \end{figure} 
+
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{103/mass_distr coag=True frag=True m0=0.pdf}
+            }
+            \caption{\todo{"full model": coagulation + fragmentation}}
+        \end{figure} 
+
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{103/mass_error coag=True frag=True m0=0.pdf}
+            }
+            \caption{\todo{"full model": coagulation + fragmentation}}
+        \end{figure} 
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{103/mass_deriv coag=True frag=True m0=0.pdf}
+            }
+          \caption{\todo{"full model": coagulation + fragmentation}}
+        \end{figure} 
+
+        % \clearpage
+        % \todo{Plot $n(m,t)$ on log. mass/time axis, with only coagulation.} \\
+        % \clearpage
+        % \todo{Plot $n(m,t)$ on log. mass/time axis, with only fragmentation.} \\
+        % \clearpage
+        % \todo{Plot $n(m,t)$ on log. mass/time axis, with both coagulation \& "naive" fragmentation.}
+        % \\
+        % \clearpage
+        % \todo{Plot $n(m,t)$ on log. mass/time axis, with both coagulation \& MRN fragmentation.} \\
 
     % }}}
 % Visualization of Numerical Integration (TODO Remove?) {{{ 

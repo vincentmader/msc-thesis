@@ -1,3 +1,8 @@
+\section{"Code / Repository"}
+
+Git repository:
+\url{https://github.com/vincentmader/msc-thesis} % TODO
+
 \section{Abbreviations}
 
     \begin{table}[h!]
@@ -21,6 +26,25 @@
         % \end{center}
     \end{table} \ \\ 
 
+\section{Assumptions}
+
+    \begin{itemize}
+        \item The nebular hypothesis is accurate. 
+        \item The disk formed via gravitational collapse of a giant interstellar gas cloud.
+        \item $q_\text{disk-to-star}=0.01$.
+        \item $q_\text{dust-to-gas}=0.01$.
+        \item Gas mean particle mass $m_g=\mu\cdot m_p$ with $\mu:=2.3$.
+        \item The star behaves like our own Solar System's Sun.
+        \item The star radiates perfectly "isotropic".
+        \item The disk has perfect radial symmetry.
+        \item The disk is "much more wide than tall".
+        \item The gas in the disk behaves "isothermal".
+        \item The gas in the disk is in hydrostatic equilibrium.
+        \item Dust particles are perfectly spherical.
+        \item Dust particles all have density $\rho_s$.
+    \end{itemize}
+
+\clearpage
 \section{Variables}
 
     \begin{table}[h!]
@@ -53,62 +77,54 @@
         \end{tabular}
         % \end{center}
     \end{table} \ \\ 
-    
-\section{Assumptions}
 
-    \begin{itemize}
-        \item The nebular hypothesis is accurate. 
-        \item The disk formed via gravitational collapse of a giant interstellar gas cloud.
-        \item $q_\text{disk-to-star}=0.01$.
-        \item $q_\text{dust-to-gas}=0.01$.
-        \item Gas mean particle mass $m_g=\mu\cdot m_p$ with $\mu:=2.3$.
-        \item The star behaves like our own Solar System's Sun.
-        \item The star radiates perfectly "isotropic".
-        \item The disk has perfect radial symmetry.
-        \item The disk is "much more wide than tall".
-        \item The gas in the disk behaves "isothermal".
-        \item The gas in the disk is in hydrostatic equilibrium.
-        \item Dust particles are perfectly spherical.
-        \item Dust particles all have density $\rho_s$.
-    \end{itemize}
-
-\section{\todo{Move}}
-
-    The Maxwell-Boltzmann distribution function is given by 
-    \begin{equation}
-        f(v)
-        =\left(\frac{m}{2\pi\cdot k_BT}\right)^{3/2}
-        \cdot4\pi v^2\cdot\exp\left(-\frac{mv^2}{2k_BT}\right)
-    \end{equation}
-
-    The most probable dust particle speed can easily be determined by 
-    setting the first derivative of $f$ with respect to $v$ equal to 0:
-    \begin{equation}
-        0\overset{!}{=}\deriv{f}{v}
-    \end{equation}
-    Rearanging for the velocity leads to the expression
-    \begin{equation}
-        \hat{v}=\sqrt{\frac{2k_BT}{m}}
-    \end{equation}
-
-    The RMS speed can be calculated via
     \begin{align}
-        v_\text{RMS}
-        =\sqrt{\overline{v^2}}
-        &=\sqrt{\int\limits_0^\infty v^2\cdot f(v)\ \text{d}v}\\
-        &=\sqrt{\frac{3k_BT}{m}}
+        \rho_g &= \rho_\text{gas} \\
+        \rho_d &= \rho_\text{dust} \\
+        \rho_s &= \rho_\text{solid} \\
     \end{align}
+    \begin{align}
+        \rho_\text{sample} \\
+        \rho_\text{sample}^\text{total} 
+    \end{align}
+    
+% \section{\todo{Move}}
 
-    We're not actually interested in the most probable particle speed.
-    Instead, what we want to look at is the arithmetic mean particle speed.
-    It can be calculated from the integral 
-    \begin{equation}
-        \bar{v}
-        =\int\limits_0^\infty v\cdot f(v)\ \text{d}v
-    \end{equation}
-    and then be expressed as
-    \begin{equation}
-        \bar{v}
-        =\sqrt{\frac{8k_BT}{\pi\cdot m}}
-    \end{equation}
-    \todo{Now with reduced particle mass: See above}
+%     The Maxwell-Boltzmann distribution function is given by 
+%     \begin{equation}
+%         f(v)
+%         =\left(\frac{m}{2\pi\cdot k_BT}\right)^{3/2}
+%         \cdot4\pi v^2\cdot\exp\left(-\frac{mv^2}{2k_BT}\right)
+%     \end{equation}
+
+%     The most probable dust particle speed can easily be determined by 
+%     setting the first derivative of $f$ with respect to $v$ equal to 0:
+%     \begin{equation}
+%         0\overset{!}{=}\deriv{f}{v}
+%     \end{equation}
+%     Rearanging for the velocity leads to the expression
+%     \begin{equation}
+%         \hat{v}=\sqrt{\frac{2k_BT}{m}}
+%     \end{equation}
+
+%     The RMS speed can be calculated via
+%     \begin{align}
+%         v_\text{RMS}
+%         =\sqrt{\overline{v^2}}
+%         &=\sqrt{\int\limits_0^\infty v^2\cdot f(v)\ \text{d}v}\\
+%         &=\sqrt{\frac{3k_BT}{m}}
+%     \end{align}
+
+%     We're not actually interested in the most probable particle speed.
+%     Instead, what we want to look at is the arithmetic mean particle speed.
+%     It can be calculated from the integral 
+%     \begin{equation}
+%         \bar{v}
+%         =\int\limits_0^\infty v\cdot f(v)\ \text{d}v
+%     \end{equation}
+%     and then be expressed as
+%     \begin{equation}
+%         \bar{v}
+%         =\sqrt{\frac{8k_BT}{\pi\cdot m}}
+%     \end{equation}
+%     \todo{Now with reduced particle mass: See above}

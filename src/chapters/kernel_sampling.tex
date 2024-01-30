@@ -1,9 +1,75 @@
+% Introduction to Monte Carlo Sampling {{{
+\clearpage\section{Introduction to Monte Carlo Sampling}
+
+\todo{Before we start: Take a look at simple examples.} \\
+
+    % Monte Carlo Integration in 1D {{{ 
+    \subsection{Monte Carlo Integration in 1D}
+
+        \todo{Consider a function $f$ that is defined on an interval $D\subset\mathbb R$
+        (from $x_\text{min}$ to $x_\text{max}$).} \\
+        \todo{To demonstrate the basic idea of Monte Carlo integration, and without loss of 
+        generality, let us for now assume that the image of $D$ under $f$ follows a Gaussian 
+        distribution.}
+        \begin{equation}
+            f: 
+            D \to \mathbb R, 
+            x \mapsto \frac{1}{\sqrt{2\pi}\sigma}\exp\bigg(\frac{-(x-\mu)^2}{2\sigma^2}\bigg)
+        \end{equation}
+
+        We would now like to calculate an approximate value for the integral 
+        \begin{equation}
+            I = \int\limits_{x_\text{min}}^{x_\text{max}} f(x) \ \text dx
+        \end{equation}
+
+        Sample a total of $\mathcal N_\text{sample} \in \mathbb N$ points from the interval $D$. \\
+
+        \todo{This will be done according to a probability distribution $P(x)$, the definition of 
+        which will be the crucial thing to do. (?)} \\
+
+        With $i \in [1, N_\text{sample}] \cap \mathbb N$, let $x_i$ label the chosen values. \\
+
+    % }}}
+    % Monte Carlo Integration in 2D {{{ 
+    \subsection{Monte Carlo Integration in 2D}
+
+    % }}}
+
+% }}}
 % Motivation {{{ 
 \section{Motivation}
 
-    \todo{The integration of the Smoluchowski equation is numerically expensive.} \\
-    \todo{This is due to the fact that we have to evaluate a sum over the three-dimensional
-    kernel matrix. (in pure hit-and-stick coagulation, only two-dimensional)} \\
+    Consider again the Smoluchowski equation in \cref{eq:discrete_smoluchowski_equation}.
+
+    When only the process of pure hit-and-stick coagulation is included into the model, the 
+    kernel matrix is actually quite sparse. Due to the fact that two particles merge into a 
+    single new one, 
+
+    For higher mass grid resolutions $\mathcal N_m$, 
+    the integration of this differential equation can quickly become numerically expensive.
+    This is due to the fact that we have to evaluate a sum over the three-dimensional
+    kernel matrix. 
+
+    % (in pure hit-and-stick coagulation, only two-dimensional)
+
+
+    As the computational cost of its integration is proportional to the number of terms 
+    in the sum that have to be included, it seems feasible that a Monte Carlo sampling of 
+    the most relevant terms could be of interest. \\
+
+    The idea here is to identify the most "relevant" collision pairs, i.e. index tuples $(i, j)$,
+    where relevance is determined by a specific collision's impact on the overall dust particle 
+    mass distribution. \\
+
+    After having defined a sensible sampling probability distribution $P_{ij}^\text{sample}$
+    we can, in each time step, randomly select the most relevant index pairs $(i, j)$ and 
+    construct a new kernel from that. \\
+
+    The goal here is to decrease the number of terms over which the sum has to be evaluated,
+    while still maintaining acceptable accuracy and stability.
+
+    Note: We do \textit{not} sample $i$ and $j$ separately. Instead, we sample pairs $(i, j)$.
+
 
     \todo{For every mass value, we are interested in finding out how the number of particles 
     carrying that mass is influenced by collisions of particles carrying every possible 
@@ -69,56 +135,32 @@
 
 % }}}
 % Previous Works {{{
-\section{Previous Works}
-
-% }}}
-% Monte Carlo Sampling {{{
-\section{Introduction to Monte Carlo Sampling}
-
-\todo{Before we start: Take a look at simple examples.} \\
-
-    % Monte Carlo Integration in 1D {{{ 
-    \subsection{Monte Carlo Integration in 1D}
-
-        \todo{Consider a function $f$ that is defined on an interval $D\subset\mathbb R$
-        (from $x_\text{min}$ to $x_\text{max}$).} \\
-        \todo{To demonstrate the basic idea of Monte Carlo integration, and without loss of 
-        generality, let us for now assume that the image of $D$ under $f$ follows a Gaussian 
-        distribution.}
-        \begin{equation}
-            f: 
-            D \to \mathbb R, 
-            x \mapsto \frac{1}{\sqrt{2\pi}\sigma}\exp\bigg(\frac{-(x-\mu)^2}{2\sigma^2}\bigg)
-        \end{equation}
-
-        We would now like to calculate an approximate value for the integral 
-        \begin{equation}
-            I = \int\limits_{x_\text{min}}^{x_\text{max}} f(x) \ \text dx
-        \end{equation}
-
-        Sample a total of $\mathcal N_\text{sample} \in \mathbb N$ points from the interval $D$. \\
-
-        \todo{This will be done according to a probability distribution $P(x)$, the definition of 
-        which will be the crucial thing to do. (?)} \\
-
-        With $i \in [1, N_\text{sample}] \cap \mathbb N$, let $x_i$ label the chosen values. \\
-
-    % }}}
-    % Monte Carlo Integration in 2D {{{ 
-    \subsection{Monte Carlo Integration in 2D}
-
-    % }}}
+\clearpage\section{Previous Works}
 
 % }}}
 % Basic Idea {{{ 
 \section{Basic Idea}
 
-    \todo{We want to minimize the cost of integration by only including the most "relevant" 
-    sum terms of the right hand side of [cite Smol. eq.] into the calculation. (Soon define what 
-    relevant means)} \\
-    \todo{We want to sample the most "relevant" collisions, i.e. those that have the largest 
-    effect on the temporal derivative of the particle mass distribution function.} \\
-    \todo{We do \textit{not} sample $i$ and $j$ separately. Instead, we sample pairs $(i, j)$.} \\
+    % Consider again the Smoluchowski equation in \cref{eq:discrete_smoluchowski_equation}.
+    % As the computational cost of its integration is proportional to the number of terms 
+    % in the sum that have to be included, it seems feasible that a Monte Carlo sampling of 
+    % the most relevant terms could be of interest. \\
+
+    % The idea here is to identify the most "relevant" collision pairs, i.e. index tuples $(i, j)$,
+    % where relevance is determined by a specific collision's impact on the overall dust particle 
+    % mass distribution. \\
+
+    % After having defined a sensible sampling probability distribution $P_{ij}^\text{sample}$
+    % we can, in each time step, randomly select the most relevant index pairs $(i, j)$ and 
+    % construct a new kernel from that. \\
+
+    % The goal here is to decrease the number of terms over which the sum has to be evaluated,
+    % while still maintaining acceptable accuracy and stability.
+
+    % Note: We do \textit{not} sample $i$ and $j$ separately. Instead, we sample pairs $(i, j)$.
+
+    % The idea is to try to lower the computational cost of integrating the Smoluchowski 
+    % equation by including only the most "relevant" sum terms on the right hand side of 
 
 % }}}
 % Definition of the Sampling Probability {{{
@@ -216,23 +258,393 @@
     The first case that we will consider will make use of "sampling without returning". Here, a 
     particle pair $(i, j)$ is only allowed to be chosen once per time step.
 
-    \clearpage
     \todo{Plot probability distribution for various times.}
-
-    \clearpage
     \todo{Plot $n(m,t)$ for various sampling densities.}
-
-    \clearpage
     \todo{Plot $\deriv{n}{t}$ against sampling density, for constant mass grid resolution.}
-
-    \clearpage
     \todo{Plot $\deriv{n}{t}$ against mass grid resolution, for constant sampling density.}
 
 % }}}
 % Sampling "with returning" {{{ 
 \section{Sampling "with returning"}
 
-    Now, we will consider the case of "sampling with returning", i.e. we will now allow particle 
-    pairs to be chosen more than once per time step.
+    % Now, we will consider the case of "sampling with returning", i.e. we will now allow particle 
+    % pairs to be chosen more than once per time step.
 
 % }}}
+
+\todo{sampling density} \\
+sample only half of kernel matrix $K_{kij} = K_{kji}$ (only "upper left" half) \\
+
+% \clearpage
+
+% \begin{table}[h!]
+%     \begin{center}
+%     \caption{\todo{error vs. sampling density}}
+%     \begin{tabular}{r r r r r r r}
+%               id 
+%             & $\mathcal N_m$  
+%             & $\mathcal N_\text{sample}$  
+%             & $\rho_\text{sample}$  
+%             & $\rho_\text{sample}^\text{total}$        
+%             & ($\Delta \rho_\text{dust}$)
+%             & $\Delta \rho_\text{dust}^\text{rel}$        
+%             \\
+%             \hline
+%                 0 & & & 0.1 & & x & y \\
+%                 1 & & & 0.2 & & x & y \\
+%                 3 & & & 0.4 & & x & y \\
+%                 3 & & & 0.6 & & x & y \\
+%                 3 & & & 0.8 & & x & y \\
+%                 3 & & & 1.0 & & x & y \\
+%     \end{tabular}
+%     \end{center}
+% \end{table} 
+% \begin{table}[h!]
+%     \begin{center}
+%     \caption{\todo{error vs. mass grid resolution}}
+%     \begin{tabular}{r r r r r r r}
+%               id 
+%             & $\mathcal N_m$  
+%             & $\mathcal N_\text{sample}$  
+%             & $\rho_\text{sample}$  
+%             & $\rho_\text{sample}^\text{total}$        
+%             & ($\Delta \rho_\text{dust}$)
+%             & $\Delta \rho_\text{dust}^\text{rel}$        
+%             \\
+%             \hline
+%                 0 &  25 & & & & x & y \\
+%                 1 &  50 & & & & x & y \\
+%                 3 & 100 & & & & x & y \\
+%                 3 & 200 & & & & x & y \\
+%                 3 & 250 & & & & x & y \\
+%                 3 & 500 & & & & x & y \\
+%     \end{tabular}
+%     \end{center}
+% \end{table} \ \\ 
+
+\todo{Plot eff. sampling density vs. sampling density for various mass grid resolutions.} \\
+\todo{Plot eff. sampling density vs. mass grid resolution for various sampling densities.} \\
+
+\todo{Plot density error vs. mass grid resolution for various sampling densities.} \\
+\todo{Plot density error vs. max. sampling density for various mass grid resolutions.} \\
+\clearpage
+
+
+% \begin{table}[h!]
+%     \begin{center}
+%     \caption{}
+%     \begin{tabular}{r r r r r r}
+%               id 
+%             & $\mathcal N_m$  
+%             & $\mathcal N_\text{sample}$  
+%             & $\rho_\text{sample}$  
+%             & $\rho_\text{sample}^\text{total}$        
+%             & $\Delta \rho$        
+%             \\
+%                 0 & (25) &      & & & x \\
+%                 1 &  50  &      & & & x \\
+%                 2 & 100  &      & & & x \\
+%                 3 & 250  &      & & & x \\
+%                 4 & 500  &      & & & x \\
+%     \end{tabular}
+%     \end{center}
+% \end{table} \ \\ 
+
+
+% % \begin{table}[h!]
+% %     \begin{center}
+% %     \caption{}
+% %     \begin{tabular}{l & l}
+% %         $\mathcal N_m$  
+% %         & $\mathcal N_\text{sample}$  
+% %     \end{tabular}
+% %     \end{center}
+% % \end{table} \ \\ 
+
+% \begin{table}[h!]
+%     \begin{center}
+%     \caption{}
+%     \begin{tabular}{r r}
+%               $\mathcal N_m$  
+%             & $\rho_\text{sample}$        
+%             \\
+%                 25 &  \\
+%                 50 &  \\
+%                100 &  \\
+%                250 &  \\
+%                500 &  \\
+%     \end{tabular}
+%     \end{center}
+% \end{table} \ \\ 
+
+% \begin{table}[h!]
+%     \begin{center}
+%     \caption{}
+%     \begin{tabular}{r r r r r}
+%               id 
+%             & $\mathcal N_m$  
+%             & $\mathcal N_\text{sample}$  
+%             & $\rho_\text{sample}$  
+%             & $\rho_\text{sample}^\text{total}$        
+%             \\
+%                 0 & (25) &      & & \\
+%                 1 &  50  &      & & \\
+%                 2 & 100  &      & & \\
+%                 3 & 250  &      & & \\
+%                 4 & 500  &      & & \\
+%     \end{tabular}
+%     \end{center}
+% \end{table} \ \\ 
+
+% \begin{table}[h!]
+%     \begin{center}
+%     \caption{}
+%     \begin{tabular}{}
+%               $\mathcal N_m$  
+%             & $\mathcal N_\text{sample}$  
+%             & $\rho_\text{sample}$  
+%             & $\rho_\text{mc}^\text{tot}$        
+%             \\
+%                 (25)    & & & \\
+%                  50     & & & \\
+%                 100     & & & \\
+%                 200     & & & \\
+%     \end{tabular}
+%     \end{center}
+% \end{table} \ \\ 
+
+
+
+\clearpage
+\begin{figure}[h!]
+    \makebox[\textwidth]{
+        \includegraphics[width=\paperwidth]{105/coag=True frag=False rho_sample=0.5 P_ij.pdf}
+    }
+    \caption{
+        $P_{ij}^\text{sample}$ for
+        $\rho_\text{sample} = 0.5$,
+        $\mathcal N_m = 50$
+    }
+\end{figure} 
+\clearpage
+\begin{figure}[h!]
+    \makebox[\textwidth]{
+        \includegraphics[width=\paperwidth]{105/coag=True frag=False rho_sample=0.5 S_ij.pdf}
+    }
+    \caption{
+        $\rho_\text{sample} = 0.5$,
+        $\mathcal N_m = 50$
+    }
+\end{figure} 
+\clearpage
+\begin{figure}[h!]
+    \makebox[\textwidth]{
+        \includegraphics[width=\paperwidth]{
+        104/3x2 rho_d vs. m, t, rho_sample, N_m=50, coag=True, frag=False.pdf}
+    }
+    \caption{only hit-and-stick coagulation}
+\end{figure} 
+
+\clearpage
+\begin{figure}[h!]
+    \makebox[\textwidth]{
+        \includegraphics[width=\paperwidth]{105/coag=True frag=False rho_sample=0.5 P_ij.pdf}
+    }
+    \caption{
+        $P_{ij}^\text{sample}$ for
+        $\rho_\text{sample} = 0.5$,
+        $\mathcal N_m = 50$
+    }
+\end{figure} 
+\clearpage
+\begin{figure}[h!]
+    \makebox[\textwidth]{
+        \includegraphics[width=\paperwidth]{105/coag=True frag=True rho_sample=0.5 S_ij.pdf}
+    }
+    \caption{
+        $\rho_\text{sample} = 0.5$,
+        $\mathcal N_m = 50$
+    }
+\end{figure} 
+\clearpage
+\begin{figure}[h!]
+    \makebox[\textwidth]{
+        \includegraphics[width=\paperwidth]{
+        104/3x2 rho_d vs. m, t, rho_sample, N_m=50, coag=True, frag=True.pdf}
+    }
+    \caption{"full model": coagulation + fragmentation}
+\end{figure} 
+
+% \clearpage
+% \begin{figure}[h!]
+%     \makebox[\textwidth]{
+%         \includegraphics[width=\paperwidth]{105/coag=False frag=True rho_sample=0.5 P_ij.pdf}
+%     }
+%     \caption{\todo{}}
+% \end{figure} 
+% \clearpage
+% \begin{figure}[h!]
+%     \makebox[\textwidth]{
+%         \includegraphics[width=\paperwidth]{105/coag=False frag=True rho_sample=0.5 S_ij.pdf}
+%     }
+%     \caption{\todo{what $\rho_\text{sample}$?}}
+% \end{figure} 
+% \clearpage
+% \begin{figure}[h!]
+%     \makebox[\textwidth]{
+%         \includegraphics[width=\paperwidth]{
+%         104/3x2 rho_d vs. m, t, rho_sample, N_m=50, coag=False, frag=True.pdf}
+%     }
+%     \caption{\todo{only fragmentation}}
+% \end{figure} 
+
+
+
+\clearpage\subsection{Accuracy and Stability}
+
+\begin{align}
+    \Delta_\text{stability}(t)=\sum_i \frac{\rho^d_i(t) - \rho^d_i(t=0)}{\rho^d_i(t=0)}
+\end{align}
+\begin{align}
+    \Delta_\text{accuracy}(t)=\sum_i \frac{\rho^d_i(t) - \rho^c_i(t)}{\rho^c_i(t)}
+\end{align}
+
+\begin{figure}[h!]
+    \makebox[\textwidth]{
+        \includegraphics[width=\paperwidth]{106/accuracy_and_stability_vs_sampling_density}
+    }
+    \caption{
+        \todo{Accuracy and Stability for various sampling densities} \\
+        \todo{Stability down to machine precision is given} \\
+    }
+\end{figure}
+
+\todo{how to quantify accuracy?}
+\begin{itemize}
+    \item average over multiple runs
+\end{itemize}
+
+Let $\rho = \rho^\text{dust}$.
+\begin{align}
+    \rho^\text{dust}
+        &= \sum_{i=1}^{\mathcal{N}_m} \rho_i%^\text{dust} 
+    \\
+    \rho_i%^\text{dust}
+        &= n_i \cdot m_i \cdot \Delta m_i 
+\end{align}
+\begin{align}
+    \Delta\rho_\text{A}
+        &= \sqrt{\sum_{i=1}^{{\mathcal N}_m} \big(
+            \Delta\rho_i%^\text{dust}
+        \big)^2} 
+        = \sqrt{\sum_{i=1}^{{\mathcal N}_m} \bigg(
+            \rho_i^\text{sampled} - \rho_i^\text{complete}
+        \bigg)^2} 
+\end{align}
+\begin{align}
+        \rho &= \sum_{i=1}^{\mathcal{N}_m} \rho_i \\
+    \Delta\rho_\text{B} &= \rho - \rho^\text{complete} \\
+\end{align}
+
+% \clearpage
+% \begin{figure}[h!]
+%     \centering
+%     \includegraphics[width=\textwidth]{
+%         3x2 rho_d vs. m, t, rho_sample, N_m=25, enable_fragmentation=False.pdf}
+%     \caption{}
+% \end{figure} 
+% \clearpage
+% \begin{figure}[h!]
+%     \centering
+%     \includegraphics[width=\textwidth]{
+%         3x2 rho_d vs. m, t, rho_sample, N_m=25, enable_fragmentation=True.pdf}
+%     \caption{}
+% \end{figure} 
+
+
+
+\clearpage
+
+
+\begin{figure}[h!]
+    \makebox[\textwidth]{
+        \includegraphics[width=\paperwidth]{107/dMdt vs t vs rho_sample, coag=True, frag=True.pdf}
+    }
+    \caption{
+        temporal derivative (RMS)
+        $\sqrt{ \sum_{i=1}^{\mathcal N_m} \left( \frac{\Delta \rho_i}{\Delta t} \right)^2 }$
+        (full model)
+    }
+\end{figure}
+\begin{figure}[h!]
+    \makebox[\textwidth]{
+        \includegraphics[width=\paperwidth]{107/dMdt vs t vs rho_sample, coag=True, frag=False.pdf}
+    }
+    \caption{
+        temporal derivative (RMS)
+        $\sqrt{ \sum_{i=1}^{\mathcal N_m} \left( \frac{\Delta \rho_i}{\Delta t} \right)^2 }$
+        (pure coagulation)
+    }
+\end{figure}
+% \begin{figure}[h!]
+%     \makebox[\textwidth]{
+%         \includegraphics[width=\paperwidth]{107/dMdt vs t vs rho_sample, coag=False, frag=True.pdf}
+%     }
+%     \caption{only fragmentation}
+% \end{figure}
+
+
+\clearpage
+\begin{figure}[h!]
+    \makebox[\textwidth]{
+        \includegraphics[width=\paperwidth]{109/percentage non-zero kernel, coag=True, frag=True.pdf}
+    }
+    \caption{
+        ratio of non-zero kernel entries over times
+        (full model)
+    }
+\end{figure}
+\begin{figure}[h!]
+    \makebox[\textwidth]{
+        \includegraphics[width=\paperwidth]{109/percentage non-zero kernel, coag=True, frag=False.pdf}
+    }
+    \caption{
+        ratio of non-zero kernel entries over times
+        (pure coagulation)
+    }
+\end{figure}
+% \clearpage
+% \begin{figure}[h!]
+%     \makebox[\textwidth]{
+%         \includegraphics[width=\paperwidth]{109/percentage non-zero kernel, coag=False, frag=True.pdf}
+%     }
+%     \caption{only fragmentation}
+% \end{figure}
+
+\clearpage
+Integrate Smoluchowski equation up to time $t=X?$.
+Using the particle mass distribution function at that point in time, 
+calculate the probability density $P_{ij}^\text{sample}$.
+
+With this probability distribution, sample the kernel multiple times $\mathcal N_L$. % TODO Rename.
+For each time $l$, "perform the summation" to forward the mass distribution by one time step.
+Using that new mass distribution, calculate the numerical temporal derivative
+\begin{equation}
+    \frac{\Delta \rho_i^l}{\Delta t} = \frac{\Delta n_i^l(t)}{\Delta t} \cdot m_i \cdot \Delta m_i
+\end{equation}
+
+Calculate the average temporal derivative
+\begin{equation}
+    \frac{\Delta \rho^\text{avg}_i}{\Delta t} 
+    = \sum_{l=1}^{\mathcal N_L} \frac{\Delta n_i^l(t)}{\Delta t} \cdot m_i \cdot \Delta m_i
+\end{equation}
+
+\todo{Plot $\frac{\rho_i^\text{avg}}{\Delta t}$ vs. $l$ or $\mathcal N_L$.} \\
+\todo{Plot $\frac{\rho_i^\text{avg}}{\Delta t}$ $\rho_\text{sample}$.} \\
+\todo{Plot $\frac{\rho_i^\text{avg}}{\Delta t}$ $\mathcal N_m$.}
+
+
+% Sample kernel using probability from mass distribution.
+% Calculate numerical temporal derivative
+% \todo{Perform $\mathcal N_\text{r}$ runs with .}
+% \todo{Plot }

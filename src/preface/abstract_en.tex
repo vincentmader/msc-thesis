@@ -1,57 +1,174 @@
 \chapter*{Abstract}
-
 \thispagestyle{NoHeader}
 
-The agglomeration of dust particles via a combination of Van der Waals and electrostatic forces
-is believed to play an important role in the early stages of planetesimal formation inside 
-proto-planetary disks. Once large enough, the gravitational influence of these bodies can 
-become strong enough to enable accretion of the surrounding gas (?), and thus, planetary core
-formation. (?) \\
+The Smoluchowski coagulation equation provides a framework for modeling the temporal evolution of 
+a particle group's distribution of masses under the influence of particle collisions and 
+possible merge or fragmentation events. 
+As such, it can be used to study the coagulation of particles in young circumstellar disks,
+and the role dust plays in the early phases of planetary formation. \\
 
-Studies regarding the process of dust coagulation % into larger and larger structures 
-are often based on the Smoluchowski coagulation equation. % TODO Cite
-This integro-differential equation allows the construction of a simplified model for the influence 
-of both coagulation and fragmentation processes onto the distribution of dust particle masses in 
-the disk. \\
+Previous studies of dust particle coagulation built using the Smoluchowski equation have made the 
+simplifying assumption that the individual dust particles can be characterized entirely by the 
+value of their mass (see e.g. 
+    \cite{birnstiel_dullemond_brauer_2010}, 
+    \cite{dullemond_dominik_2004}). 
+This is due to the fact that the numerical integration of the Smoluchowski equation from one 
+time step to the next involves the evaluation of a summation over the coagulation kernel. 
+The inclusion of a second attribute like, for instance \textit{particle porosity}, greatly 
+increases the dimensionality of the kernel, which leads to a significant increase in the 
+computational cost required for the integration. \\
 
-The formulation of a model for the growth of these dust particles has so far been quite limited by
-computational constraints. The inclusion of grain properties other than their mass, like e.g.
-particle porosity, quickly leads to a drastic increase in the computational resources required for
-the numerical integration of the afore-mentioned Smoluchowski equation. \\
+In this thesis we explore the possibility of lowering this computational cost via a stochastic 
+Monte Carlo sampling of the kernel matrix. The central idea is to include only the most 
+relevant sum terms, where relevance is determined by both the rate of a given collision,  
+as well as by the effect it will have on the particle mass distribution function. \\
 
-It is the goal of this thesis to examine the feasibility of utilizing stochastic Monte Carlo 
-sampling of colliding circumstellar dust particle pairs in order to lower the integration's 
-computational cost. \\
+\todo{Stability is ensured down to machine precision.} \\
+\todo{Accuracy suffers from low sampling density values. ?} \\
+\todo{nr. of non-zero kernel entries} \\
+
+\todo{Schluesse/Folgerungen?}
+\todo{Was geht besser?}
+
+% The numerical integration results are 
+% The integrations' properties with regard to stability and accuracy
+% Parameter studies for the influence of 
+
+% \begin{align}
+%     \frac{\text d n}{\text dt} 
+%     = \int\limits_{-\infty}^{\infty} \int\limits_{-\infty}^{\infty}
+%         K(m, m', m'') \cdot n(m') \cdot n(m'') \ \text dm' \ \text dm''
+% \end{align}
+
+% As such, it "is often" used in
+
+% In previous studies using 
+% this equation the assumption has ("often/mostly/so far?") been made that
+% an individual dust particle can be characterized entirely by the value of its mass. \\
+% See e.g. \cite{birnstiel_dullemond_brauer_2010} \cite{dullemond_dominik_2004} \\
+
+% Here, the assumption is made that 
+
+% \begin{equation}
+%     \mathcal O(\mathcal N_m^3)
+%     \cdot
+%     \mathcal O(\mathcal N_p^3)
+% \end{equation}
+
+% poses a challenge to 
+% the ... numerical integration of the Smoluchowski equation, since 
+
+% Previous studies using this ("equation/idea/framework") 
+% have  assumed that 
+
+% Previous studies regarding the temporal evolution of the mass distribution of dust particles 
+% in ("young/early?") proto-planetary disks 
+% using the framework provided by the Smoluchowski coagulation equation
+
+% \ \\
+% The model provided by the Smoluchowski coagulation equation 
+% "suffers from" 
+% large increase in computational cost when introducing additional parameters like e.g. 
+% particle porosity. 
+
+% It requires the evaluation of a "sum".
+
+% The Smoluchowski coagulation equation provides a framework that can be used for modeling the 
+% temporal evolution of the distribution of dust particle masses in proto-planetary disks.
+
+
+
+% The agglomeration of dust particles via a combination of Van der Waals and electrostatic forces
+% is believed to play an important role in early planet formation inside proto-planetary disks. 
+% A commonly used framework for modeling the temporal evolution of the 
+% distribution of dust particle masses is given by the Smoluchowski coagulation equation. \\
+
+% In this work we examine the feasibility of using Monte Carlo sampling of the kernel matrix
+% for lowering the computational cost of the Smoluchowski. 
+% The integration of the equation requires that one, in each time step, 
+% carries out the evaluation of a "high-dimensional" sum. \\
+
+% The idea is to ignore the less relevant collisions,
+% where the relevance of a collision between particles $i$ and $j$ is given by
+% % = \frac{X_{ij}}{ \sum_{i=1}^\mathcal{N_m} \sum_{j=1}^{\mathcal N_m} X_{ij }}
+% \begin{align}
+%     P_{ij} 
+%     \sim W_{ij} \cdot \rho_i \cdot \rho_j
+% \end{align}
+% with
+% \begin{align}
+%     W_{ij} 
+%     = \sum_{k=1}^{\mathcal N_m} m_k \cdot K_{kij}
+% \end{align}
+
+% In this work we attempt to demonstrate a possible 
+% In the context of studies of early planet
+
+
+% proto-planetary disk
+
+% In this work we investigate a possibility of lowering the computational cost of 
+% the Smoluchowski coagulation equation's numerical integration. 
+
+% of using Monte Carlo kernel sampling 
+% to lower the computational cost 
+
+% of colliding dust particle pairs 
+
+% The agglomeration of dust particles via a combination of Van der Waals and electrostatic forces
+% is believed to play an important role in early planet formation inside proto-planetary disks. 
+% Once large enough, the gravitational influence of these bodies can 
+% become strong enough to enable accretion of the surrounding gas (?), and thus, planetary core
+% formation. (?) \\
+
+% Studies regarding the process of dust coagulation % into larger and larger structures 
+% are often based on the Smoluchowski coagulation equation. \todo{[cite]}
+% This integro-differential equation allows the construction of a simplified model for the influence 
+% of both coagulation and fragmentation processes onto the distribution of dust particle masses in 
+% the disk. \\
+
+% The formulation of a model for the growth of these dust particles has so far been quite limited by
+% computational constraints. 
+
+% The integration requires the evaluation of a multi-dimensional sum.
+
+% The inclusion of grain properties other than their mass, like e.g.
+% particle porosity, quickly leads to a drastic increase in the computational resources required for
+% the numerical integration of the afore-mentioned Smoluchowski equation. \\
+
+% It is the goal of this thesis to examine the feasibility of utilizing stochastic Monte Carlo 
+% sampling of colliding circumstellar dust particle pairs in order to lower the integration's 
+% computational cost. \\
 
 % To do this, we define a simple disk model...
 % The probability distribution...
 
-The sampling is done by assigning each collision $(i,j)$ between particles from bins 
-$i$ and $j$ a weight factor given by
-\begin{equation}
-    W_{ij}=
-        \underbrace{
-            \sum_k m_k\cdot\big|K_{kij}\big|
-        }_\text{a)}
-        \cdot
-        \underbrace{
-            N_i \cdot m_i
-            \vphantom{\sum_k m_k\cdot\big|K_{kij}\big|}
-        }_\text{b)}
-        \cdot
-        \underbrace{
-            N_j \cdot m_j
-            \vphantom{\sum_k m_k\cdot\big|K_{kij}\big|}
-        }_\text{c)}
-\end{equation}
-Normalization then leads to the probability distribution
-\begin{equation}
-    P_{ij}=
-        \frac{
-            W_{ij}
-        }{
-            \sum_{i,j} W_{ij}
-        }
-\end{equation}
+% The sampling is done by assigning each collision $(i,j)$ between particles from bins 
+% $i$ and $j$ a weight factor given by
+% \begin{equation}
+%     W_{ij}=
+%         \underbrace{
+%             \sum_k m_k\cdot\big|K_{kij}\big|
+%         }_\text{a)}
+%         \cdot
+%         \underbrace{
+%             N_i \cdot m_i
+%             \vphantom{\sum_k m_k\cdot\big|K_{kij}\big|}
+%         }_\text{b)}
+%         \cdot
+%         \underbrace{
+%             N_j \cdot m_j
+%             \vphantom{\sum_k m_k\cdot\big|K_{kij}\big|}
+%         }_\text{c)}
+% \end{equation}
+% Normalization then leads to the probability distribution
+% \begin{equation}
+%     P_{ij}=
+%         \frac{
+%             W_{ij}
+%         }{
+%             \sum_{i,j} W_{ij}
+%         }
+% \end{equation}
 
-\todo{Results} 
+% \todo{Results} 

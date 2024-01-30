@@ -1,149 +1,74 @@
-% A Single Dust Particle {{{ 
-
-    \assume{Dust particles are perfectly spherical.}
-    \begin{align}
-        m
-            =\rho_s \cdot \frac{4\pi}{3}a^3
-        \ \ \ \ \ \text{and}\ \ \ \ \
-        a
-            =\bigg(\frac{3}{4\pi} \cdot \frac{m}{\rho_s}\bigg)^{1/3}
-    \end{align}
-
-    \assume{Dust particles have density $\rho_s$.} \\
-
-    Building upon prior work done by Birnstiel, Dullemond, \& Brauer % TODO Use Oxford comma?
-    \cite{birnstiel_dullemond_brauer_2010}, we will assume that the volume density of the dust 
-    particles carries a value of
-    $$\rho_s=\SI{1600}{\kilogram\ \meter^{-3}}$$
-    % TODO Increase spacing in `\SI` renders, here & elsewhere.
-
-% }}}
-% The Dust Particle Mass Distribution Function {{{ 
-\clearpage\section{The Dust Particle Mass Distribution Function}
-
-    % Continuous Formulation {{{ 
-    \subsection{Continuous Formulation}
-
-        This function is defined in such a way that, at a given time $t$ and position $\vec r$ 
-        in the disk, the expression
-        \begin{equation}
-            N(\vec r, t)
-                =\int\limits_0^\infty n(m,\vec r, t)\ \dd m
-        \end{equation}
-        denotes the total number of dust particles $N$ per unit volume, i.e. the dust particle
-        number density, at the considered region in the proto-planetary disk. \\
-
-        Furthermore, with this we can define 
-        \begin{equation}
-            \rho_s(\vec r, t)
-                =\int\limits_0^\infty n(m,\vec r, t)\cdot m\ \dd m,
-        \end{equation}
-        which gives us the total dust mass per volume, i.e. the dust mass density, 
-        at that specific point in time and space.
-
-    % }}}
-    % Discretized Formulation {{{ 
-    \subsection{Discretized Formulation}
-
-        Let us introduce the notation
-        \begin{equation}
-            n_i:=n(m_i)
-        \end{equation}
-
-        \todo{The total number of dust particles per unit unit volume sitting in a given bin $i$ is 
-        then calculated by integrating the particle mass distribution function from the lower to 
-        the upper bin boundary:}
-        \begin{align}
-          N_i=\int_{m_{i-1/2}}^{m_{1+1/2}}n(m)\ \dd m
-        \end{align}
-        
-        \todo{The mass density $\rho_i$ in the bin $i$ is given by}
-        \begin{align}
-          \rho_i=\int_{m_{i-1/2}}^{m_{1+1/2}}m\cdot n(m)\ \dd m
-        \end{align}
-        
-        \todo{To arrive at the total mass density independent of particle mass, one has to sum over 
-        all bins:}
-        \begin{align}
-          \rho=\sum_{i=1}^{\mathcal N_m}\rho_i
-        \end{align}
-        % TODO Make approximation here? Need to switch from integral to sum at some point.
-
-    % }}}
-% Initialization {{{ 
-\clearpage\section{Initialization}
-
-    \todo{At the beginning, assume no coagulation has taken place (at all?).} \\
-    \todo{Write about formation of smallest dust grains: From ISM? Formed from gas in disk?} \\
-
-    \todo{All particles have lowest possible mass.} \\
-    \todo{Mass distribution function is initialized as Dirac delta distribution centerd on 
-    "lowest bin".} \\
-
-    \todo{Add plot.}
-
-% }}}
-% }}}
 % Dust Particle Kinematics {{{ 
 \clearpage\section{Dust Particle Kinematics}
-    
-    \todo{This is relevant to us mainly in the context of relative velocity. 
-    (for collision rate)} \\
+
+    The kinematics of dust particles in the disk are relevant to our model
+    because the construction of the coagulation kernel requires the 
+    definition of the collision rates between the dust particle populations 
+    (each encoding a certain particle mass and radius).
+    The collision rates in turn depend on the definition of the
+    relative velocities between the two particles involved in a given collision. \\
 
     We include four processes in the calculation of the relative dust particle velocities, namely 
     the two systematic contributions of radial and azimuthal drift, and the two stochastic 
     contributions of Brownian and turbulent motion. \\
 
-    \todo{Consider a particle suspended in a fluid flow. The ratio between the particle's 
-    characteristic time scale and the characteristic time scale of the fluid flow
-    is often referred to as \textit{Stokes' number}, named after George Gabriel Stokes.} \\
-    % TODO I already talked about this above.
-    % TODO: Write "time scale" or "time-scale" or "timescale"?
-    % TODO Write "Stokes" or "Stokes'"?
+    We will start with the definition of the systematic contributions, then move on to define 
+    the stochastic contributions, and finally combine the four different effects into the 
+    total relative velocity value $\Delta v_{ij}$ for a given pair of particles from 
+    bin $i$ and $j$, respectively. \\
 
-    In our model, it is given by
-    \begin{equation}
-        \text{St}_i=\frac{\rho_s\cdot a_i}{\Sigma_g\cdot\frac{\pi}{2}}
-    \end{equation}
-
-    \todo{maximum drift velocity of a particle}
-    \begin{equation}
-        u_{n}
-        =-\pderiv{P_g}{r}\cdot\frac{E_d}{2\rho_g\Omega_K}
-    \end{equation}
-    \todo{formula for $u_n$ based on work by \cite{weidenschilling_1977}} \\
-    \todo{drift efficiency parameter $E_d$ introduced by \cite{birnstiel_dullemond_brauer_2010}} \\
-
-    \todo{Epstein regime} \\
+    For the definition of the radial and azimuthal velocities, as well as for Brownian motion, 
+    we closely follow the work done by \cite{weidenschilling_1977}, \cite{nakagawa_1986}, 
+    \cite{birnstiel_dullemond_brauer_2010}, and \cite{dullemond_dominik_2004}.
 
     % Radial Drift {{{ 
     \subsection{Radial Drift}
 
-        For the dust, the radial velocity can be modeled as
+        Consider a particle suspended in a fluid flow. The ratio between the particle's 
+        characteristic time scale and the characteristic time scale of the fluid flow
+        is often referred to as \textit{Stokes' number}, named after George Gabriel Stokes. 
+        In our model, it is given by
         \begin{equation}
+            \text{St}_i=\frac{\rho_s\cdot a_i}{\Sigma_g\cdot\frac{\pi}{2}}
+        \end{equation}
+        % \todo{Talk about Stokes' numbers.}
+        % \todo{Epstein regime} \\
+        % TODO "Stokes number" vs. "Stokes' number"
+        % Small particles have small Stokes numbers.
+
+        Following the work done by \cite{birnstiel_dullemond_brauer_2010}, we will model the
+        radial velocity $u_{r,i}$ of particles in the dust population corresponding to 
+        a given mass bin $i$ as
+        \begin{equation}
+            \label{eq:radial_dust_velocity}
             u_{r,i}
             =\frac{u_{g}}{1+\text{St}_i^2}-\frac{2u_{n}}{\text{St}_i+\text{St}_i^{-1}}
         \end{equation}
-        \todo{following work by \cite{birnstiel_dullemond_brauer_2010}} \\
 
-        \todo{Talk about Stokes' numbers.}
-        % TODO "Stokes number" vs. "Stokes' number"
+        Here, the first term in the above equation is the \textit{drag term}. 
+        The gas moves along 
+        the radial axis with a radial velocity $u_g$
+        which we defined in \cref{eq:radial_gas_velocity}.
+        The value of the Stokes number affects 
+        the extent to which the dust particles are coupled to the gas. In the case of a low 
+        Stokes number, the dust is dragged along with the gas. \\
 
-        \todo{first term: drag term}
-            comes from the radial movement of the gas 
-            which moves with a radial velocity of $u_g$
-            Since the dust is coupled to the gas to a certain extend, 
-            the radially moving gas is able to partially drag the dust along. \\
+        The second term is related to the fact that due to the disk's own gas pressure 
+        gradient, the gas in the disk orbits the disk center on a sub-keplerian 
+        trajectory. Heavier particles do not feel this pressure as much and 
+        thus move keplerian. As a result, there is a difference in the radial velocity
+        of the dust particle and the gas through which it moves. Slowed down by the gas, 
+        the particle loses momentum and starts drifting inwards. 
+        The term $u_n$ labels the maximum drift velocity of a particle, which was derived 
+        by \cite{weidenschilling_1977}, and is given by
+        \begin{equation}
+            u_{n}
+            =-\pderiv{P_g}{r}\cdot\frac{E_d}{2\rho_g\Omega_K}
+        \end{equation}
+        Here, the drift efficiency parameter $E_d$ is set to 1 for simplicity. \\
 
-        \todo{second term: radial drift velocity with respect to the gas}
-             gas in a Keplerian disk does in fact move sub-keplerian, 
-             since it feels the force of its own pressure gradient which is usually pointing inwards
-             Larger dust grains do not feel this pressure and move on a keplerian orbit
-             Therefore, from a point of view of a (larger) dust particle, 
-             there exists a constant head wind, 
-             which causes the particle to loose angular momentum and to drift inwards. \\
-
-        \todo{particles of different size are coupled differently to the gas}
+        % \todo{particles of different size are coupled differently to the gas}
+        The relative velocity is then given by
         \begin{equation}
             \Delta v_{ij}^\text{RD}
             =|u_{r,i}-u_{r,j}|
@@ -154,8 +79,9 @@
 
     % }}}
     % Azimuthal Motion {{{ 
-    \clearpage\subsection{Azimuthal Motion}
+    \subsection{Azimuthal Motion}
 
+        Following \cite{birnstiel_dullemond_brauer_2010}, where 
         According to \cite{weidenschilling_1977} and \cite{nakagawa_1986}, the relative azimuthal 
         velocity $\Delta v^\text{AZ}_{ij}$ for gas-dominated drag between a pair of particles 
         $(i, j)$ can be written as
@@ -167,6 +93,7 @@
                 \bigg)
             \bigg|
         \end{equation}
+
     
         For a visualization, see \hyperref[fig:relative_dust_particle_velocities]
         {\cref*{fig:relative_dust_particle_velocities}b}.
@@ -192,12 +119,11 @@
 
     % }}}
     % Turbulent Motion {{{ 
-    \clearpage\subsection{Turbulent Motion}
+    \subsection{Turbulent Motion}
 
         For the calculation of the relative velocity contributions due to turbulent motion, we 
-        adapt the work of \cite{ormel_cuzzi_2007}, \todo{where they followed the procedure
-        outlined below:}
-
+        adapt the work of \cite{ormel_cuzzi_2007}.
+        There, relative velocity $\Delta v^\text{TU}_{ij}$ due to turbulence was defined as
         \begin{equation}
             \Delta v^\text{TU}_{ij} =
             \begin{cases}
@@ -207,7 +133,8 @@
             \end{cases}
         \end{equation}
 
-        \todo{with cases:}
+        For this definition, three different cases have to be handled separately.
+
         \begin{enumerate}
 
             \item Limit of tightly coupled particles (below the Kolmogorov scale) \\
@@ -288,8 +215,6 @@
         For a visualization of the results, see \hyperref[fig:relative_dust_particle_velocities]
         {\cref*{fig:relative_dust_particle_velocities}d}.
 
-        \input{diagrams/relative_velocity.tex}
-
     % }}}
     % Total Relative Velocity {{{ 
     \subsection{Total Relative Velocity}
@@ -309,6 +234,7 @@
         two colliding particles can be seen in \cref{fig:total_relative_dust_particle_velocity}.
 
         \input{diagrams/relative_velocity_total.tex}
+        \input{diagrams/relative_velocity.tex}
 
     % }}}
 
@@ -319,11 +245,11 @@
     % Collision Cross Section {{{ 
     \subsection{Collision Cross Section}
         
-        As already mentioned in (\todo{cite}), in the context of this thesis we will assume the
-        dust particles to possess a perfectly spherical shape. Under this assumption, the cross
-        section $\sigma_{ij}$ for a collision of two dust particles with radii $a_i$ and $a_j$ can
-        be approximated by the area of a circle the radius of which equals the sum of the two
-        particles' radii. \\
+        As was mentioned in \cref{sec:dust_particle_mass_distribution}, in the context of 
+        this thesis we will assume the dust particles to possess a perfectly spherical shape. 
+        Under this assumption, the cross section $\sigma_{ij}$ for a collision of two dust 
+        particles with radii $a_i$ and $a_j$ can be approximated by the area of a circle the 
+        radius of which equals the sum of the two particles' radii. \\
 
         Therefore, the collision cross section can be written as:
         \begin{equation}
@@ -340,10 +266,12 @@
         location in the disk. 
         \begin{equation}                                            % ^ TODO: "considered?"
             R^\text{coll}_{ij}
-                \approx \sigma_{ij} \cdot \Delta v_{ij} \cdot \textcolor{red}{n}
+                \approx \sigma_{ij} \cdot \Delta v_{ij}
         \end{equation}
 
-        \todo{Watch out: Different units! (not 1/second)}
+        Note: The units of this collision rate are not $\text{s}^{-1}$! Instead, this rate is 
+        to be interpreted as a collision rate "per particle density", with units of 
+        $\text{m}^{3} \text{s}^{-1}$.
 
         \input{diagrams/collision_rate.tex}
         % TODO Define `minipage` plot with both coll. cross section & coll. rate.
@@ -440,3 +368,9 @@
     % }}}
 
 % }}}
+
+
+
+        % TODO I already talked about this above.
+        % TODO: Write "time scale" or "time-scale" or "timescale"?
+        % TODO Write "Stokes" or "Stokes'"?

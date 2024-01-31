@@ -19,40 +19,57 @@
 %     \caption{}
 % \end{figure}
 
-\newpage
+% \newpage
+
 
 \begin{figure}[h!]
     \centering
     \begin{minipage}{.5\linewidth}
         \centering
-      	\subfloat[]{
+      	\subfloat[Coagulation Kernel without Cancellation Handling]{
             \label{:a}
-      	  	\includegraphics[width=\linewidth]{34/K_coag_canc.pdf}
+      	  	% \includegraphics[width=\linewidth]{34/K_coag_canc.pdf}
+      	  	\includegraphics[width=\linewidth]{34/error_K_coag_canc.pdf}
       	}
     \end{minipage}%
     \begin{minipage}{.5\linewidth}
         \centering
-      	\subfloat[]{
+      	\subfloat[Coagulation Kernel with Cancellation Handling]{
             \label{:b}
-      	  	\includegraphics[width=\linewidth]{34/K_coag_nocanc.pdf}
+      	  	% \includegraphics[width=\linewidth]{34/K_coag_nocanc.pdf}
+      	  	\includegraphics[width=\linewidth]{34/error_K_coag_nocanc.pdf}
       	}
     \end{minipage}
-    % \begin{minipage}{.5\linewidth}
-    %     \centering
-    %   	\subfloat[]{
-    %         \label{:a}
-    %   	  	\includegraphics[width=\linewidth]{34/K_frag_canc.pdf}
-    %   	}
-    % \end{minipage}%
-    % \begin{minipage}{.5\linewidth}
-    %     \centering
-    %   	\subfloat[]{
-    %         \label{:b}
-    %   	  	\includegraphics[width=\linewidth]{34/K_frag_nocanc.pdf}
-    %   	}
-    % \end{minipage}
-    \caption{Influence of Near-Zero Cancellation Handling on the Mass Error of the
-        Hit-and-Stick Coagulation Kernel}
+    \caption{
+        Influence of Near-Zero Cancellation on the Mass Error of the
+        Coagulation Kernel
+    }
+    \label{}
 \end{figure}
 
-\newpage
+
+% \begin{figure}[h!]
+%     \centering
+%     \end{minipage}
+%     \begin{minipage}{.5\linewidth}
+%         \centering
+%       	\subfloat[]{
+%             \label{:a}
+%       	}
+%     \end{minipage}%
+%     \begin{minipage}{.5\linewidth}
+%         \centering
+%       	\subfloat[]{
+%             \label{:b}
+%       	}
+%     \end{minipage}
+%     \caption{
+%         Kernel Mass Error:
+%         (a) Mass Error of Coagulation Kernel without Cancellation Handling
+%         (b) Mass Error of Coagulation Kernel with Cancellation Handling
+%         (c) Mass Error of Fragmentation Kernel
+%         (d) Mass Error of Total Kernel
+%     }
+% \end{figure}
+
+% \newpage

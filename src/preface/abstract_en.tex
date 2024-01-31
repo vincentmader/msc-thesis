@@ -1,27 +1,40 @@
-\chapter*{Abstract}
+\cleardoublepage\chapter*{Abstract}
 \thispagestyle{NoHeader}
 
-The Smoluchowski coagulation equation provides a framework for modeling the temporal evolution of 
-a particle group's distribution of masses under the influence of particle collisions and 
-possible merge or fragmentation events. 
-As such, it can be used to study the coagulation of particles in young circumstellar disks,
-and the role dust plays in the early phases of planetary formation. \\
-
-Previous studies of dust particle coagulation built using the Smoluchowski equation have made the 
-simplifying assumption that the individual dust particles can be characterized entirely by the 
-value of their mass (see e.g. 
-    \cite{birnstiel_dullemond_brauer_2010}, 
-    \cite{dullemond_dominik_2004}). 
-This is due to the fact that the numerical integration of the Smoluchowski equation from one 
-time step to the next involves the evaluation of a summation over the coagulation kernel. 
-The inclusion of a second attribute like, for instance \textit{particle porosity}, greatly 
-increases the dimensionality of the kernel, which leads to a significant increase in the 
-computational cost required for the integration. \\
-
-In this thesis we explore the possibility of lowering this computational cost via a stochastic 
-Monte Carlo sampling of the kernel matrix. The central idea is to include only the most 
-relevant sum terms, where relevance is determined by both the rate of a given collision,  
-as well as by the effect it will have on the particle mass distribution function. \\
+\textit{Context:}
+A framework for modeling the temporal evolution of the distribution of 
+dust particle masses in proto-planetary disks is given by the Smoluchowski coagulation equation.
+When both associative and dissociative processes are included into the model 
+(i.e. coagulation and fragmentation), the numerical integration of this differential equation 
+requires the evaluation of a double integral over the reaction kernel matrix, which makes this 
+approach numerically costly.
+% This effect is ... inclusion of more 
+% Previous studies regarding the temporal evolution of a proto-planetary disk's 
+% dust mass distribution based on the model given by the Smoluchowski coagulation
+% equation have so far 
+\\ \ \\
+\textit{Aims:}
+The goal of this work is to examine the feasibility of using stochastic Monte Carlo sampling 
+of the kernel matrix in order lower the computational cost of the integration. 
+More specifically, the idea is to sample the most relevant particle collisions.
+\\ \ \\
+\textit{Methods:}
+build disk model \\
+define reaction rates \\
+kernel for coagulation and fragmentation \\
+sampling, define probability density
+parameter studies for various sampling densities and ...
+\\ \ \\
+\textit{Results:}
+quite ok 
+\\ \ \\
+\textit{Conclusions:}
+could be used \\
+could be improved \\
+For studies, especially when particles are not assumed to be characterized by the value of their 
+mass alone. The inclusion of a porosity parameter ... \\
+could be of interese ..?
+\\
 
 \todo{Stability is ensured down to machine precision.} \\
 \todo{Accuracy suffers from low sampling density values. ?} \\

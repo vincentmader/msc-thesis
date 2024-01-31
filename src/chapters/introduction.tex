@@ -1,3 +1,45 @@
+% Intro to Intro - What is this about? {{{ 
+
+The Smoluchowski coagulation equation provides a framework for modeling the temporal evolution of 
+a particle group's distribution of masses under the influence of particle collisions and 
+possible merge or fragmentation events. 
+As such, it can be used to study the coagulation of particles in young circumstellar disks,
+and the role dust plays in the early phases of planetary formation. \\
+
+Previous studies of dust particle coagulation built using the Smoluchowski equation have made the 
+simplifying assumption that the individual dust particles can be characterized entirely by the 
+value of their mass (see e.g. 
+    \cite{birnstiel_dullemond_brauer_2010}, 
+    \cite{dullemond_dominik_2004}). 
+This is due to the fact that the numerical integration of the Smoluchowski equation from one 
+time step to the next involves the evaluation of a summation over the coagulation kernel. 
+The inclusion of a second attribute like, for instance \textit{particle porosity}, greatly 
+increases the dimensionality of the kernel, which leads to a significant increase in the 
+computational cost required for the integration. \\
+
+In this thesis we explore the possibility of lowering this computational cost via a stochastic 
+Monte Carlo sampling of the kernel matrix. The central idea is to include only the most 
+relevant sum terms, where relevance is determined by both the rate of a given collision,  
+as well as by the effect it will have on the particle mass distribution function. \\
+
+As of this writing, the question of how planets come into being is still far from solved. \\
+
+... \\
+
+It is widely accepted that dust plays an important role in early phases of planet formation. \\
+
+This is not the same kind of dust one would find under a couch.
+The dust that can be observed in the expanse between the stars 
+and in proto-planetary disks ... [what kind of dust?] \\
+
+When studying planet formation, it is desired to have 
+a decent model for how the distribution of differently 
+sized dust particles evolves with time. \\
+
+One such model is given by the Smoluchowski coagulation equation, which a large part of this 
+thesis will be built upon. 
+
+% }}}
 % Thesis Structure {{{ 
 \section{Structure of this Thesis}
 
@@ -249,6 +291,7 @@ and conduct a random sampling of all possible collision.
 % }}}
 % Preliminary Notes on Axis Discretization {{{
 \clearpage\section{Preliminary Notes on Axis Discretization}
+\label{sec:preliminary_notes_on_axis_discretization}
 
     Throughout this thesis, we will deal with several physical quantities carrying values that 
     range across many orders of magnitude. Most notably, these are time, distance, and mass. \\
@@ -578,67 +621,91 @@ and conduct a random sampling of all possible collision.
         N(\vec r, t) =\int\limits_0^\infty n(m,\vec r, t)\ \dd m
     \end{equation}
     denotes the total number of dust particles $N$ per unit volume, i.e. the dust particle
-    number density, at the considered region in the proto-planetary disk. \\
-
-    Its relationship to the dust mass volume density $\rho_d$ is given by
+    number density, at the considered region in the proto-planetary disk. 
+    Its relationship to the dust mass volume density $\rho_d$ at a given position $\vec r$ 
+    in the disk is given by
     \begin{equation}
         \label{eq:relationship_between_dust_particle_mass_distribution_and_mass_volume_density}
         % \rho_\text{dust} = 
         \rho_d(\vec r) =\int\limits_0^\infty n(m,\vec r, t)\cdot m\ \dd m
     \end{equation}
 
-    The temporal evolution of the functions $n$, $N$, and $\rho_g$ will be of great interest 
-    throughout this thesis.
-
-    \todo{but $\rho_d$ is constant. (mass conservation)}
+    % The temporal evolution of the functions $n$, $N$, and $\rho_g$ will be of great interest 
+    % throughout this thesis.
 
 % }}}
 % Discretized Formulation {{{ 
 % \subsection{Discretized Formulation}
 
-    Let us introduce the notation
+    Before we can use numerical integration techniques to calculate an approximate solution to 
+    the Smoluchowski coagulation equation, it will be necessary to define an analogous, 
+    but discretized formulation of the expressions we defined above. \\
+
+    Let $m_i$ label the discretized mass axis we already defined in
+    \cref{sec:preliminary_notes_on_axis_discretization}
+    (\todo{specifically $m_i^c$}).
+    As before, the mass grid consists of $\mathcal N_m$ bins, with an lower and upper axis 
+    boundary $m_\text{min}$ and $m_\text{max}$, respectively. The mass "width" of a given bin 
+    at a position $i$ in the grid is labeled $\Delta m_i$. \\
+
+    We will begin with the discretized particle mass distribution functions.
+    For this, let us introduce the notation
     \begin{equation}
-        n_i:=n(m_i)
+        \label{eq:discrete_formulation_of_particle_mass_distribution}
+        n_i := n(m_i)
     \end{equation}
 
-    \todo{The total number of dust particles per unit unit volume sitting in a given bin $i$ is 
+    The total number of dust particles per unit unit volume belonging to a given bin $i$ is 
     then calculated by integrating the particle mass distribution function from the lower to 
-    the upper bin boundary:}
+    the upper bin boundary:
     \begin{align}
-        N_i = \int_{m_{i-1/2}}^{m_{1+1/2}}n(m)\ \dd m \approx n_i \cdot \Delta m_i 
-        \ \ \\textcolor{red}{??}
+        \label{eq:relationship_between_dust_particle_mass_distribution_and_particle_number_density}
+        N_i 
+        &= \int_{m_{i-1/2}}^{m_{1+1/2}}n(m)\ \dd m \\
+        &\approx n_i \cdot \Delta m_i 
+        % \ \ \ \textcolor{red}{??}
     \end{align}
     
-    \todo{The mass density $\rho_i$ in the bin $i$ is given by}
+    The mass density $\rho_i$ in the bin $i$ is given by
     \begin{align}
         \label{eq:relationship_between_discretized_dust_particle_mass_distribution_and_mass_volume_density}
-        \rho_i = \int_{m_{i-1/2}}^{m_{1+1/2}} m \cdot n(m)\ \dd m
+        \rho_i 
+        &= \int_{m_{i-1/2}}^{m_{1+1/2}} m \cdot n(m)\ \dd m \\
+        &\approx n_i \cdot m_i \cdot \Delta m_i 
     \end{align}
     
-    \todo{To arrive at the total mass density independent of particle mass, one has to sum over 
-    all bins:}
+    Each bin in the mass grid contains a certain fraction of the total dust mass density
+    $\rho_d(\vec r)$ at a given point $\vec r$ in space. 
+    Therefore, to arrive at the total mass density independent of particle mass, 
+    one has to sum over all bins:
     \begin{align}
       \rho=\sum_{i=1}^{\mathcal N_m} \rho_i
     \end{align}
     % TODO Make approximation here? Need to switch from integral to sum at some point.
 
+    In the context of this thesis, we will study the temporal evolution of 
+    \todo{but $\rho_d$ is constant. (mass conservation)}
+
 % }}}
 % Initialization of the Dust Mass Distribution {{{ 
 \clearpage\subsection{Initialization of the Dust Mass Distribution}
 
+    Let us label the initial state of the dust particle mass distribution function and particle
+    number density
+    \begin{align}
+        n_0 &:= n(m=m_0, t=0) 
+        \ \ \ \ \text{and}\ \ \ \
+        \\
+        N_0 &:= N(m=m_0, t=0)
+    \end{align}
+    respectively. \\
+
     At the beginning of a given simulation, we will assume all dust particles to share the same 
     mass $m_0$ and the same corresponding radius.
-    Let us define 
-    \begin{equation}
-        n_0 =: n(m=m_0, t=0)
-        \ \ \ \ \text{and}\ \ \ \
-        N_0 =: N(m=m_0, t=0),
-    \end{equation}
-    to denote the initial state of the dust particle mass distribution function and particle
-    number density, respectively. 
-    The appropriate particle mass distribution function for the just mentioned scenario is a 
+    The appropriate particle mass distribution function for the this scenario is a 
     Dirac $\delta$-distribution:
     \begin{equation}
+        \label{eq:dirac_delta_identity}
         n(m, \vec r, t=0) = \delta_D(m-m_0) \cdot n_0  
     \end{equation}
     % Here, the normalization constant $n_0$ is the initial number of particles 
@@ -691,7 +758,7 @@ and conduct a random sampling of all possible collision.
     % \todo{Mass distribution function is initialized as Dirac delta distribution centerd on 
     % "lowest bin".} \\
 
-    \todo{Add plot.}
+    % \todo{Add plot.}
 
 % }}}
 

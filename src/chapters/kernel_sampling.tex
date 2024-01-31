@@ -1,57 +1,41 @@
-% Introduction to Monte Carlo Sampling {{{
-\clearpage\section{Introduction to Monte Carlo Sampling}
-
-\todo{Before we start: Take a look at simple examples.} \\
-
-    % Monte Carlo Integration in 1D {{{ 
-    \subsection{Monte Carlo Integration in 1D}
-
-        \todo{Consider a function $f$ that is defined on an interval $D\subset\mathbb R$
-        (from $x_\text{min}$ to $x_\text{max}$).} \\
-        \todo{To demonstrate the basic idea of Monte Carlo integration, and without loss of 
-        generality, let us for now assume that the image of $D$ under $f$ follows a Gaussian 
-        distribution.}
-        \begin{equation}
-            f: 
-            D \to \mathbb R, 
-            x \mapsto \frac{1}{\sqrt{2\pi}\sigma}\exp\bigg(\frac{-(x-\mu)^2}{2\sigma^2}\bigg)
-        \end{equation}
-
-        We would now like to calculate an approximate value for the integral 
-        \begin{equation}
-            I = \int\limits_{x_\text{min}}^{x_\text{max}} f(x) \ \text dx
-        \end{equation}
-
-        Sample a total of $\mathcal N_\text{sample} \in \mathbb N$ points from the interval $D$. \\
-
-        \todo{This will be done according to a probability distribution $P(x)$, the definition of 
-        which will be the crucial thing to do. (?)} \\
-
-        With $i \in [1, N_\text{sample}] \cap \mathbb N$, let $x_i$ label the chosen values. \\
-
-    % }}}
-    % Monte Carlo Integration in 2D {{{ 
-    \subsection{Monte Carlo Integration in 2D}
-
-    % }}}
-
-% }}}
 % Motivation {{{ 
 \section{Motivation}
 
-    Consider again the Smoluchowski equation in \cref{eq:discrete_smoluchowski_equation}.
+    In the following we will consider the computational complexity of numerically integrating the 
+    model we have built so far, and its dependence on some of the main disk parameters: \\
+
+    For every mass value, we are interested in finding out how the number of particles 
+    carrying that mass is influenced by collisions of particles carrying every possible 
+    combination of mass values. \\
+    As such, the computational complexity is proportional to $\mathcal N_m^3$. \\
+
+    Since this has to be done for each time step, the computational cost of the entire 
+    integration is increased by an additional factor $\mathcal N_t$. \\
+
+    Also, in principle this has to be done separately at each position in the disk. \\
+    In the simplified model used throughout the disk, we assumed spherical symmetry, and 
+    did not spatially resolve the disk along the $z$-axis.
+    As such, in this case the computational complexity is proportional to an
+    additional factor $\mathcal N_r$. \\
+
+    It gets even worse if we want to resolve the disk along all three spatial dimensions. \\
+    Then, there is an additional factor $\mathcal N_\varphi \cdot \mathcal N_z$. \\
+
+    Consider again the Smoluchowski equation in \cref{eq:discrete_smoluchowski_equation}. \\
 
     When only the process of pure hit-and-stick coagulation is included into the model, the 
-    kernel matrix is actually quite sparse. Due to the fact that two particles merge into a 
-    single new one, 
+    kernel matrix $K_{kij}^\text{coag}$ is actually quite sparse, since for given collision the 
+    dust particle mass distribution has to be modified at only very few mass grid points.
+    As we saw in [\todo{cite}], the two-dimensional integral could be collapsed into an 
+    integral over a single variable. \\
 
-    For higher mass grid resolutions $\mathcal N_m$, 
-    the integration of this differential equation can quickly become numerically expensive.
-    This is due to the fact that we have to evaluate a sum over the three-dimensional
-    kernel matrix. 
-
-    % (in pure hit-and-stick coagulation, only two-dimensional)
-
+    The inclusion of fragmentation is what really makes the integration of the Smoluchowski
+    equation numerically expensive. Here, integration will require the evaluation of the 
+    double sum over the kernel matrix. This stems from the fact that the collision of initially 
+    only two particles can lead to the creation of a wide range of particles of different sizes. \\
+    
+    For higher mass grid resolutions $\mathcal N_m$, the integration of this differential equation 
+    can quickly become numerically expensive. \\
 
     As the computational cost of its integration is proportional to the number of terms 
     in the sum that have to be included, it seems feasible that a Monte Carlo sampling of 
@@ -71,22 +55,9 @@
     Note: We do \textit{not} sample $i$ and $j$ separately. Instead, we sample pairs $(i, j)$.
 
 
-    \todo{For every mass value, we are interested in finding out how the number of particles 
-    carrying that mass is influenced by collisions of particles carrying every possible 
-    combination of mass values.} \\
-    \todo{As such, the computational complexity is proportional to $\mathcal N_m^3$}. \\
+    \clearpage
 
-    \todo{Since this has to be done for each time step, the computational cost of the entire 
-    integration is increased by an additional factor $\mathcal N_t$.} \\
 
-    \todo{Also, in principle this has to be done separately at each position in the disk.} \\
-    \todo{In the simplified model used throughout the disk, we assumed spherical symmetry, and 
-    did not spatially resolve the disk along the $z$-axis.}
-    \todo{As such, in this case the computational complexity is proportional to an
-    additional factor $\mathcal N_r$}. \\
-
-    \todo{It gets even worse if we want to resolve the disk along all three spatial dimensions.} \\
-    \todo{Then, there is an additional factor $\mathcal N_\varphi \cdot \mathcal N_z$.} \\
 
     \todo{It may be good enough to only resolve the disk along the radial axis, or even to focus 
     on just a single point in the disk. Even then though, it gets more complicated if one wants 
@@ -136,6 +107,44 @@
 % }}}
 % Previous Works {{{
 \clearpage\section{Previous Works}
+
+% }}}
+% Introduction to Monte Carlo Sampling {{{
+\clearpage\section{Introduction to Monte Carlo Sampling}
+
+\todo{Before we start: Take a look at simple examples.} \\
+
+    % Monte Carlo Integration in 1D {{{ 
+    \subsection{Monte Carlo Integration in 1D}
+
+        \todo{Consider a function $f$ that is defined on an interval $D\subset\mathbb R$
+        (from $x_\text{min}$ to $x_\text{max}$).} \\
+        \todo{To demonstrate the basic idea of Monte Carlo integration, and without loss of 
+        generality, let us for now assume that the image of $D$ under $f$ follows a Gaussian 
+        distribution.}
+        \begin{equation}
+            f: 
+            D \to \mathbb R, 
+            x \mapsto \frac{1}{\sqrt{2\pi}\sigma}\exp\bigg(\frac{-(x-\mu)^2}{2\sigma^2}\bigg)
+        \end{equation}
+
+        We would now like to calculate an approximate value for the integral 
+        \begin{equation}
+            I = \int\limits_{x_\text{min}}^{x_\text{max}} f(x) \ \text dx
+        \end{equation}
+
+        Sample a total of $\mathcal N_\text{sample} \in \mathbb N$ points from the interval $D$. \\
+
+        \todo{This will be done according to a probability distribution $P(x)$, the definition of 
+        which will be the crucial thing to do. (?)} \\
+
+        With $i \in [1, N_\text{sample}] \cap \mathbb N$, let $x_i$ label the chosen values. \\
+
+    % }}}
+    % Monte Carlo Integration in 2D {{{ 
+    \subsection{Monte Carlo Integration in 2D}
+
+    % }}}
 
 % }}}
 % Basic Idea {{{ 
@@ -423,7 +432,8 @@ sample only half of kernel matrix $K_{kij} = K_{kji}$ (only "upper left" half) \
     \caption{
         $P_{ij}^\text{sample}$ for
         $\rho_\text{sample} = 0.5$,
-        $\mathcal N_m = 50$
+        $\mathcal N_m = 50$,
+        $t = $\textcolor{red}{?}
     }
 \end{figure} 
 \clearpage
@@ -433,7 +443,8 @@ sample only half of kernel matrix $K_{kij} = K_{kji}$ (only "upper left" half) \
     }
     \caption{
         $\rho_\text{sample} = 0.5$,
-        $\mathcal N_m = 50$
+        $\mathcal N_m = 50$,
+        $t = $\textcolor{red}{?}
     }
 \end{figure} 
 \clearpage
@@ -442,18 +453,27 @@ sample only half of kernel matrix $K_{kij} = K_{kji}$ (only "upper left" half) \
         \includegraphics[width=\paperwidth]{
         104/3x2 rho_d vs. m, t, rho_sample, N_m=50, coag=True, frag=False.pdf}
     }
-    \caption{only hit-and-stick coagulation}
+    \caption{
+        Temporal Evolution of Dust Particle Mass Distribution 
+        for only hit-and-stick coagulation
+    }
 \end{figure} 
 
+% \cleardoublepage
+
+% \todo{}
+
 \clearpage
+
 \begin{figure}[h!]
     \makebox[\textwidth]{
-        \includegraphics[width=\paperwidth]{105/coag=True frag=False rho_sample=0.5 P_ij.pdf}
+        \includegraphics[width=\paperwidth]{105/coag=True frag=True rho_sample=0.5 P_ij.pdf}
     }
     \caption{
         $P_{ij}^\text{sample}$ for
         $\rho_\text{sample} = 0.5$,
-        $\mathcal N_m = 50$
+        $\mathcal N_m = 50$,
+        $t = $\textcolor{red}{?}
     }
 \end{figure} 
 \clearpage
@@ -463,7 +483,8 @@ sample only half of kernel matrix $K_{kij} = K_{kji}$ (only "upper left" half) \
     }
     \caption{
         $\rho_\text{sample} = 0.5$,
-        $\mathcal N_m = 50$
+        $\mathcal N_m = 50$,
+        $t = $\textcolor{red}{?}
     }
 \end{figure} 
 \clearpage
@@ -472,7 +493,10 @@ sample only half of kernel matrix $K_{kij} = K_{kji}$ (only "upper left" half) \
         \includegraphics[width=\paperwidth]{
         104/3x2 rho_d vs. m, t, rho_sample, N_m=50, coag=True, frag=True.pdf}
     }
-    \caption{"full model": coagulation + fragmentation}
+    \caption{
+        Temporal Evolution of Dust Particle Mass Distribution 
+        for "full model": coagulation + fragmentation
+    }
 \end{figure} 
 
 % \clearpage
@@ -500,7 +524,9 @@ sample only half of kernel matrix $K_{kij} = K_{kji}$ (only "upper left" half) \
 
 
 
-\clearpage\subsection{Accuracy and Stability}
+\clearpage
+\todo{Plot zoomed in on peak at large masses.}
+\subsection{Accuracy and Stability}
 
 \begin{align}
     \Delta_\text{stability}(t)=\sum_i \frac{\rho^d_i(t) - \rho^d_i(t=0)}{\rho^d_i(t=0)}

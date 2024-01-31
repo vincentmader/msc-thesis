@@ -601,7 +601,17 @@ and/or fragmentation in the subsequent chapters. \\
             \makebox[\textwidth]{
                 \includegraphics[width=\paperwidth]{108/2x2 gas density.pdf}
             }
-            \caption{}
+            \caption{
+                \textit{Top left:} 
+                    Radial Profile of the Gas Surface Density $\rho_g(r)$.
+                \textit{Top right:} 
+                    Radial Profile of the Gas Volume Density at the midplane $\rho_g^\text{mid}(r)$.
+                \textit{Bottom left:} 
+                    Radial Profile of the Gas Particle Number Density at the midplane $N_gr$. 
+                    % TODO $N_g^\mid(r)$. ???
+                \textit{Bottom right:}
+                    $z$-Profile of the Gas Volume Density at $r=10\ \text{au}$.
+            }
         \end{figure} 
 
     % }}}
@@ -626,12 +636,17 @@ and/or fragmentation in the subsequent chapters. \\
 % Gas Particle Kinematics {{{ 
 \clearpage\section{Gas Particle Kinematics}
 
+    The radial gas velocity $u_g$ will be relevant for the definition of the relative dust 
+    velocities due to radial particle drift.
+
     % \todo{There are both stochastic and systematic contributions to the gas kinematics.}
 
     % Gas Viscosity {{{ 
     \subsection{Gas Viscosity}
 
-        The kinematic viscosity gas viscosity can be expressed as [\todo{cite}]
+        Before we can define the radial gas velocity, we first have to 
+        focus on the definition of the kinematic gas viscosity.
+        It can be expressed as [\todo{cite}]
         \begin{equation}
             \nu_g = \frac{1}{2} \cdot u_\text{th} \cdot \lambda_\text{mfp}
         \end{equation}

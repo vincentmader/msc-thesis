@@ -1,38 +1,49 @@
-\newpage
+\clearpage
 \vfill
 
 \begin{figure}[h!]
     \centering
     \begin{minipage}{.5\linewidth}
       \centering
-      \subfloat[Relative velocity due to radial Drift]{
+      \subfloat[Relative Velocity $\Delta v_{ij}^\text{RD}$ due to Radial Drift]{
         \label{:a}
         \includegraphics[width=\linewidth]{21/dv_RD.pdf}
       }
     \end{minipage}%
     \begin{minipage}{.5\linewidth}
       \centering
-      \subfloat[Relative velocity due to azimuthal Motion]{
+      \subfloat[Relative Velocity $\Delta v_{ij}^\text{AZ}$ due to Azimuthal Drift]{
         \label{:b}
         \includegraphics[width=\linewidth]{21/dv_AZ.pdf}
       }
     \end{minipage}
     \begin{minipage}{.5\linewidth}
       \centering
-      \subfloat[Relative velocity due to Brownian Motion]{
+      \subfloat[Relative Velocity $\Delta v_{ij}^\text{BR}$ due to Brownian Motion]{
         \label{:c}
         \includegraphics[width=\linewidth]{21/dv_BR.pdf}
       }
     \end{minipage}%
     \begin{minipage}{.5\linewidth}
       \centering
-      \subfloat[Relative velocity due to turbulence]{
+      \subfloat[Relative Velocity $\Delta v_{ij}^\text{TU}$ due to Turbulent Motion]{
         \label{:d}
         \includegraphics[width=\linewidth]{21/dv_TU.pdf}
       }
     \end{minipage}
-    \caption{Relative Dust Particle Velocities due to radial drift (a), azimuthal motion (b), 
-        Brownian motion (c), and turbulence (d).}
+    \caption{Relative Dust Particle Velocities due to 
+        (a) Radial Drift $\Delta v_{ij}^\text{RD}$, 
+        (b) Azimuthal Drift $\Delta v_{ij}^\text{AZ}$, 
+        (c) Brownian Motion $\Delta v_{ij}^\text{BR}$, and 
+        (d) Turbulent Motion $\Delta v_{ij}^\text{TU}$.}
     \label{fig:relative_dust_particle_velocities}
     % TODO Assure consistent capitalization in captions.
 \end{figure} 
+
+% \begin{figure}[h!]
+%     \makebox[\textwidth]{
+%         \includegraphics[width=\paperwidth]{21/dv_all_2x2.pdf}
+%     }
+%     \caption{Total Relative Dust Particle Velocity}
+%     \label{fig:total_relative_dust_particle_velocity}
+% \end{figure}

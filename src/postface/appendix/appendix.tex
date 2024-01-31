@@ -24,8 +24,69 @@ Git repository:
             \hline                  % ^ TODO Do I use this? -> Specify unit system in introduction.
         \end{tabular}
         % \end{center}
-    \end{table} \ \\ 
+    \end{table}
 
+\section{Variables}
+
+    \begin{table}[h!]
+        % \begin{center}
+        % \caption{}
+        \begin{tabular}{|l|l|l|}
+            \hline
+            \textbf{Symbol}     & \textbf{SI Units}     & \textbf{Description}
+            \\ \hline
+            $K(m,m',m'')$      & m$^3$ s$^{-1}$        & Kernel Function
+            \\ \hline
+            $K_{kij}$           & kg m$^3$ s$^{-1}$     & Kernel Matrix, equivalent to 
+                                                          $K(m_k,m_i,m_j) \cdot \Delta m_k$
+            \\ \hline
+            $L_\odot$           & W                     & Solar Luminosity 
+            \\ \hline
+            $L_*$               & W                     & Stellar Luminosity 
+            \\ \hline
+            $M_\odot$           & kg                    & Solar Mass 
+            \\ \hline
+            $M_*$               & kg                    & Stellar Mass 
+            \\ \hline
+            $P_\text{bounce}$   & 1                     & Bouncing Probability
+            \\ \hline
+            $P_\text{frag}$     & 1                     & Fragmentation Probability
+            \\ \hline
+            $P_\text{coag}$     & 1                     & Coagulation Probability
+            \\ \hline
+            $R^\text{coll}_{ij}$& m$^3$ s$^{-1}$        & Dust Particle Collision Rate,
+                                                          normalized to dust density
+            \\ \hline
+            $\text{St}$         & 1                     & Stokes Number 
+            \\ \hline
+            $\rho_s$            & kg m$^{-3}$           & Solid Density of Dust Particles 
+            \\ \hline
+            $\rho_g$            & kg m$^{-3}$           & Mass Volume Density of Gas Particles 
+            \\ \hline
+            $\rho_d$            & kg m$^{-3}$           & Mass Volume Density of Dust Particles 
+            \\ \hline
+            $\rho_s$            & 1                     & Solid Density of Dust Particles 
+            \\ \hline
+            $\sigma_{ij}$       & m$^2$                 & Dust Particle Collision Cross Section,
+            \\ \hline
+            $\rho_\text{sample}$& kg m$^{-3}$           & Monte Carlo Sampling Density
+            \\ \hline
+            $\Delta v_{ij}$     & m s$^{-1}$            & Relative Dust Particle Velocity
+            \\ \hline
+        \end{tabular}
+        % \end{center}
+    \end{table}
+
+    \begin{align}
+        \rho_g &= \rho_\text{gas} \\
+        \rho_d &= \rho_\text{dust} \\
+        \rho_s &= \rho_\text{solid} \\
+    \end{align}
+    \begin{align}
+        \rho_\text{sample} \\
+        \rho_\text{sample}^\text{total} 
+    \end{align}
+    
 \section{Assumptions}
 
     \begin{itemize}
@@ -44,50 +105,6 @@ Git repository:
         \item Dust particles all have density $\rho_s$.
     \end{itemize}
 
-\clearpage
-\section{Variables}
-
-    \begin{table}[h!]
-        % \begin{center}
-        % \caption{}
-        \begin{tabular}{|l|l|l|}
-            \hline
-            \textbf{Symbol}     & \textbf{SI Units}     & \textbf{Description}
-            \\ \hline
-            $L_\odot$           & W                     & Solar Luminosity 
-            \\ \hline
-            $L_*$               & W                     & Stellar Luminosity 
-            \\ \hline
-            $M_\odot$           & kg                    & Solar Mass 
-            \\ \hline
-            $M_*$               & kg                    & Stellar Mass 
-            \\ \hline
-            $P_\text{bounce}$   & -                     & Bouncing Probability
-            \\ \hline
-            $P_\text{frag}$     & -                     & Fragmentation Probability
-            \\ \hline
-            $P_\text{coag}$     & -                     & Coagulation Probability
-            \\ \hline
-            $\text{St}$         & -                     & Stokes Number 
-            \\ \hline
-            $\rho_s$            & kg m$^{-3}$           & Solid Density of Dust Particles 
-            \\ \hline
-            $\rho_g$            & kg m$^{-3}$           & Mass Volume Density of Gas Particles 
-            \\ \hline
-        \end{tabular}
-        % \end{center}
-    \end{table} \ \\ 
-
-    \begin{align}
-        \rho_g &= \rho_\text{gas} \\
-        \rho_d &= \rho_\text{dust} \\
-        \rho_s &= \rho_\text{solid} \\
-    \end{align}
-    \begin{align}
-        \rho_\text{sample} \\
-        \rho_\text{sample}^\text{total} 
-    \end{align}
-    
 % \section{\todo{Move}}
 
 %     The Maxwell-Boltzmann distribution function is given by 

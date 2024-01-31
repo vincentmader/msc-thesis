@@ -1,16 +1,22 @@
+% TODO: Write "time scale" or "time-scale" or "timescale"?
+% TODO Write "Stokes" or "Stokes'"?
+
+
 % Dust Particle Kinematics {{{ 
 \clearpage\section{Dust Particle Kinematics}
 
-    The kinematics of dust particles in the disk are relevant to our model
-    because the construction of the coagulation kernel requires the 
-    definition of the collision rates between the dust particle populations 
-    (each encoding a certain particle mass and radius).
-    The collision rates in turn depend on the definition of the
-    relative velocities between the two particles involved in a given collision. \\
+    The construction of the kernel matrix requires the definition of the rate 
+    at which collision occur between pairs of differently sized particles.
+    Therefore, it is essential to model the kinematics of the dust particles 
+    in an appropriate manner and arrive at an expression for the 
+    relative velocities involved in a given particle collision.
+    These relative velocities will influence both the collision rate as 
+    well as their outcomes, as the fragmentation probability is influenced 
+    by the relative velocity as well. \\
 
-    We include four processes in the calculation of the relative dust particle velocities, namely 
-    the two systematic contributions of radial and azimuthal drift, and the two stochastic 
-    contributions of Brownian and turbulent motion. \\
+    We include four processes in the calculation of the relative dust particle velocities.
+    There are the two systematic contributions of radial and azimuthal drift, 
+    and the two stochastic contributions of Brownian and turbulent motion. \\
 
     We will start with the definition of the systematic contributions, then move on to define 
     the stochastic contributions, and finally combine the four different effects into the 
@@ -81,10 +87,10 @@
     % Azimuthal Motion {{{ 
     \subsection{Azimuthal Motion}
 
-        Following \cite{birnstiel_dullemond_brauer_2010}, where 
-        According to \cite{weidenschilling_1977} and \cite{nakagawa_1986}, the relative azimuthal 
-        velocity $\Delta v^\text{AZ}_{ij}$ for gas-dominated drag between a pair of particles 
-        $(i, j)$ can be written as
+        Building upon the work by \cite{birnstiel_dullemond_brauer_2010}, 
+        \cite{weidenschilling_1977} and \cite{nakagawa_1986}, we will expresse the relative 
+        azimuthal velocity $\Delta v^\text{AZ}_{ij}$ for gas-dominated drag between a pair of 
+        particles $(i, j)$ as
         \begin{equation}
             \Delta v^\text{AZ}_{ij}=\bigg|
                 u_n\cdot\bigg(
@@ -102,28 +108,12 @@
     % Differential Settling {{{ 
     % \subsection{Differential Settling}
     % }}}
-    % Brownian Motion {{{ 
-    \subsection{Brownian Motion}
-
-        Here, we follow the work of \cite{dullemond_dominik_2004}, where the contribution to 
-        relative velocity due to Brownian motion is given by
-        \begin{equation}
-            \Delta v_{ij}^\text{BR}
-            =\sqrt{\frac{8k_BT}{\pi}\cdot\frac{m_i+m_j}{m_i\cdot m_j}}
-        \end{equation}
-        Note that this term will be the largest when both collision partners carry a very low mass.
-        Brownian motion thus favors collisions in which at least one collision partner is a 
-        low-mass particles. This can be seen reflected in 
-        \hyperref[fig:relative_dust_particle_velocities]{
-        \cref*{fig:relative_dust_particle_velocities}c}.
-
-    % }}}
     % Turbulent Motion {{{ 
     \subsection{Turbulent Motion}
 
         For the calculation of the relative velocity contributions due to turbulent motion, we 
-        adapt the work of \cite{ormel_cuzzi_2007}.
-        There, relative velocity $\Delta v^\text{TU}_{ij}$ due to turbulence was defined as
+        adopt the model developed by \cite{ormel_cuzzi_2007}.
+        There, relative velocity $\Delta v^\text{TU}_{ij}$ due to turbulence is defined as
         \begin{equation}
             \Delta v^\text{TU}_{ij} =
             \begin{cases}
@@ -134,11 +124,9 @@
         \end{equation}
 
         For this definition, three different cases have to be handled separately.
-
         \begin{enumerate}
-
             \item Limit of tightly coupled particles (below the Kolmogorov scale) \\
-                See Section 3.4.1 of OC2007, their Eq. 26
+                See Section 3.4.1 of \cite{ormel_cuzzi_2007}, their Eq. 26
                 % \begin{equation}
                 %     \Delta v_{ij}^1 
                 %     = v_g \cdot \sqrt{\frac{t_1 - t_2}{t_1 + t_2} \cdot (\Delta u_1 - \Delta u_2)}
@@ -162,7 +150,7 @@
 
             \item At least one of the particles is not in the tightly coupled regime. \\
                 Both particles have $\text{St} < 1$. \\
-                See Section 3.4.2 of OC2007, their Eq. 28
+                See Section 3.4.2 of \cite{ormel_cuzzi_2007}, their Eq. 28
                 \begin{equation}
                     \Delta v_{ij}^\text{B} = v_g \cdot \sqrt{
                         \text{St}_i \cdot \left[
@@ -197,7 +185,7 @@
 
             \item At least one of the particles is not in the tightly coupled regime. \\ 
                 At least one of the particles has $\text{St} \geq 1$. \\
-                See Section 3.4.3 of OC2007, their Eq. 29
+                See Section 3.4.3 of \cite{ormel_cuzzi_2007}, their Eq. 29
                 \begin{equation}
                     \Delta v_{ij}^\text{C} = v_g \cdot \sqrt{
                         \frac{1}{1+\text{St}_i} + \frac{1}{1+\text{St}_j}
@@ -214,6 +202,22 @@
 
         For a visualization of the results, see \hyperref[fig:relative_dust_particle_velocities]
         {\cref*{fig:relative_dust_particle_velocities}d}.
+
+    % }}}
+    % Brownian Motion {{{ 
+    \subsection{Brownian Motion}
+
+        Here, we follow the work of \cite{dullemond_dominik_2004}, where the contribution to 
+        relative velocity due to Brownian motion is given by
+        \begin{equation}
+            \Delta v_{ij}^\text{BR}
+            =\sqrt{\frac{8k_BT}{\pi}\cdot\frac{m_i+m_j}{m_i\cdot m_j}}
+        \end{equation}
+        Note that this term will be the largest when both collision partners carry a very low mass.
+        Brownian motion thus favors collisions in which at least one collision partner is a 
+        low-mass particles. This can be seen reflected in 
+        \hyperref[fig:relative_dust_particle_velocities]{
+        \cref*{fig:relative_dust_particle_velocities}c}.
 
     % }}}
     % Total Relative Velocity {{{ 
@@ -242,6 +246,8 @@
 % Dust Particle Collisions {{{ 
 \clearpage\section{Dust Particle Collisions}
 
+    \todo{alwats 2-body collisions}
+
     % Collision Cross Section {{{ 
     \subsection{Collision Cross Section}
         
@@ -252,6 +258,9 @@
         radius of which equals the sum of the two particles' radii. \\
 
         Therefore, the collision cross section can be written as:
+        % \begin{equation}
+        %     \sigma(a, a') = \pi \cdot (a + a')^2
+        % \end{equation}
         \begin{equation}
             \sigma_{ij} = \pi \cdot (a_i+a_j)^2
         \end{equation}
@@ -278,41 +287,75 @@
 
     % }}}
     % Collision Outcomes {{{ 
-    \subsection{Collision Outcomes}
+    \clearpage\subsection{Collision Outcomes}
+        % Depending on the relative velocity of the two particles involved in a collision,
+        % we will differentiate between three different collision outcome scenarios:
 
-        Depending on the relative velocity of the two particles involved in a collision,
-        % TODO Note somewhere that it's ALWAYS a two-particle interaction.
-        we will differentiate between three different collision outcome scenarios:
+        Now that we have a description for \textit{how often} collisions between dust particles 
+        will occur in our model, we have to think about how to model \textit{what happens} as a 
+        result of a collision.
+        The different outcome scenarios can be classified into three categories, which are 
+        shortly outlined in the following. 
         \begin{enumerate}
-            \item If the relative velocity is low, the two particles will merge into a single one.
-                \\ (\todo{pure "hit-and-stick" coagulation})
-            \item \todo{Bouncing?}
-            \item If the relative velocity is large enough, the collision will lead to a shattering 
-                (fragmenting) of the two particles.
+            \item \textit{Coagulation:} Here, the two colliding particle merge into a single 
+                  new particle. Mass is conserved, such that the sum of the two initial particles'
+                  masses exactly equals
+                % If the relative velocity is low, the two particles will merge into a single one.
+                % \\ (\todo{pure "hit-and-stick" coagulation})
+            \item \textit{Bouncing:} The two particles collide and bounce off of each other.
+                  No particles are created or destroyed, and no mass is transferred between the 
+                  particles.
+            \item \textit{Fragmentation:} On or both of the particles involved in the collision 
+                  breaks apart into a possibly large number of smaller, less massive particles.
+                  Figuring out how to model the distribution of masses among the newly 
+                  created particles in such a scenario is a problem that we will address in 
+                  [\todo{cite $K_{frag}$}].
+                % If the relative velocity is large enough, the collision will lead to a shattering 
+                % (fragmenting) of the two particles.
         \end{enumerate}
+        Which of these actually occurs as a result of a given collision of course heavily depends 
+        on the details of said collision. \\
 
-        \todo{For each of the three possible outcomes, we will define an associated probability.} \\
-        \todo{Let $P^\text{coag}$, $P^\text{frag}$, and $P^\text{bounce}$
-        label the probabilities that a collision will lead to the respective outcome.} \\
-
-        \todo{The rates at which such events occur are then given by}
-        \begin{align}
-            R^\text{coag}(m,m')   &= R^\text{coll}(m,m') \cdot P^\text{coag}(m,m') \\
-            R^\text{frag}(m,m')   &= R^\text{coll}(m,m') \cdot P^\text{frag}(m,m') \\
-            R^\text{bounce}(m,m') &= R^\text{coll}(m,m') \cdot P^\text{bounce}(m,m')
-        \end{align}
-
-        \todo{In our case: Assume $P^\text{bounce}=0$.}
+        A widely held view [\todo{cite}] is that collisions at low relative velocities could have 
+        a high likelyhood of leading to a merge event, while higher velocities may lead to 
+        bouncing, and still higher velocities would eventually have the effect 
+        of breaking apart the particles involved in the collision. \\
 
         \input{diagrams/collision_outcomes.tex}
 
         \clearpage
 
-        \todo{Threshold value for relative velocity:}
+        For each of the three possible outcomes, one will define an associated probability. \\
+        Let $P^\text{coag}$, $P^\text{frag}$, and $P^\text{bounce}$
+        label the probabilities that a collision will lead to the respective outcome. \\
+
+        The rates at which such events occur are then given by
+        \begin{align}
+            R^\text{coag}_{ij}   &= R^\text{coll}_{ij} \cdot P^\text{coag}_{ij} \\
+            R^\text{frag}_{ij}   &= R^\text{coll}_{ij} \cdot P^\text{frag}_{ij} \\
+            R^\text{bounce}_{ij} &= R^\text{coll}_{ij} \cdot P^\text{bounce}_{ij}
+        \end{align}
+
+        Collisions in the scenario of bouncing do not have an effect on the dust mass distribution
+        among particles. But since a high value of $P_\text{bounce}$ will lead to lower reaction 
+        rates for the other two collision outcomes, the inclusion of bouncing effectively 
+        "slows down" the simulation. \\
+
+        In the context of this thesis, we will not take the effect of bouncing into account, and 
+        only model the influence of coagulation and fragmentation processes. As wuch, we will adopt 
+        a bouncing probability of $P^\text{bounce}=0$. \\
+
+        To help with the decision whether a given collision will end up resulting in 
+        coagulation or fragmentation, the definition of a
+        \textit{threshold value for the relative velocity} makes sense.
+        Adopting the value used in [\todo{cite kees}],
+        we will define the value of $v_\text{threshold}$ as
         \begin{equation}
-            v_\text{threshold}:=\SI{1}{\meter\second^{-1}}
+            v_\text{threshold} := \SI{1}{\meter\second^{-1}}
         \end{equation}
 
+        Assuming a "hard decision boundary", the fragmentation probability $P^\text{frag}_{ij}$ 
+        for a collision involving two particles of masses $m_i$ and $m_j$ could be expressed as
         \begin{equation}
             P^\text{frag}_{ij}
             =
@@ -321,9 +364,10 @@
                 0 & \text{else}
             \end{cases}
         \end{equation}
-        
-        Correction using Maxwell-Boltzmann distribution: 
-        (\cite{stammler_birnstiel_2022})
+
+        A more elegant way though is given by \todo{\cite{stammler_birnstiel_2022}}.
+        Here, a correction using the Maxwell-Boltzmann distribution is made to the 
+        fragmentation probability: 
         \begin{equation}
             x:=\frac{3}{2}\cdot\bigg(
                 \frac{v_\text{frag}}{\Delta v_{ij}}
@@ -333,6 +377,9 @@
         \begin{equation}
             P^\text{frag}_{ij}=(1+x)\cdot e^{-x}
         \end{equation}
+
+        The resulting probability densities for the first method and the second, more sensible 
+        one are displayed in \todo{ref figs}.
 
         \input{diagrams/collision_outcome_probabilities.tex}
 
@@ -368,9 +415,3 @@
     % }}}
 
 % }}}
-
-
-
-        % TODO I already talked about this above.
-        % TODO: Write "time scale" or "time-scale" or "timescale"?
-        % TODO Write "Stokes" or "Stokes'"?

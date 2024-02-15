@@ -1,3 +1,12 @@
+% \clearpage
+
+% \begin{figure}[h!]
+%     \makebox[\textwidth]{
+%         \includegraphics[width=\linewidth]{dust_fragmentation.png}
+%     }
+%     \caption{}
+% \end{figure}
+
 \vfill
 
 \begin{figure}[h!]
@@ -11,7 +20,7 @@
     % \end{minipage}%
     \begin{minipage}{.5\linewidth}
       \centering
-      \subfloat[]{
+      \subfloat[Frag. Prob. Assuming A Hard Decision Boundary]{
         \label{:b}
         \includegraphics[width=\linewidth]{24/fragmentation_probability_from_cutoff_velocity.pdf}
       }
@@ -25,15 +34,16 @@
     % \end{minipage}%
     \begin{minipage}{.5\linewidth}
       \centering
-      \subfloat[]{
+      \subfloat[Correction Using Maxwell-Boltzmann Distribution]{
         \label{:b}
         \includegraphics[width=\linewidth]{24/fragmentation_probability_from_Maxwell-Boltzmann.pdf}
       }
     \end{minipage}
     \caption{
-        Dust Particle Fragmentation Probability $P_{ij}^\text{frag}$.
+        Dust particle fragmentation probability $P_{ij}^\text{frag}$.
         % \todo{Why not a perfect square in 1st case?}
+        \\ % Note: These newlines are for assuring the same vertical position 
+        \  %       for this plot and the other ones (dv_rel_tot, dv_rel multi + coll)
     }
+    \label{fig:fragmentation_probability}
 \end{figure}
-
-\clearpage

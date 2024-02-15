@@ -1,154 +1,325 @@
+After having defined a simple disk model, and from that calculated the reaction rates for 
+coagulation and fragmentation events, we will now focus on the main goal of this thesis: \\
+
+We would like to find out whether it makes sense to utilize stochastic Monte Carlo sampling of the 
+kernel matrix, in order to lower the cost of the Smoluchowski coagulation equation's numerical 
+integration.
+
 % Motivation {{{ 
 \section{Motivation}
 
-    In the following we will consider the computational complexity of numerically integrating the 
-    model we have built so far, and its dependence on some of the main disk parameters: \\
+    Let us first think about why that would even be necessary.
+    The computational cost of integrating the Smoluchowski equation within the context of our 
+    model is affected by a number of the model's parameters: \\
 
-    For every mass value, we are interested in finding out how the number of particles 
-    carrying that mass is influenced by collisions of particles carrying every possible 
-    combination of mass values. \\
-    As such, the computational complexity is proportional to $\mathcal N_m^3$. \\
+    The first of these is given by the mass grid resolution $\mathcal N_m$, i.e. the number of 
+    mass ``bins''. Remember that, in each time-step, we are interested in computing an updated 
+    version of the discretized dust particle mass distribution function, which involves 
+    updating each of its entries. \\
 
-    Since this has to be done for each time step, the computational cost of the entire 
-    integration is increased by an additional factor $\mathcal N_t$. \\
+    For each of these entries $k$, we need to perform a loop over all collision pairs $(i, j)$ that 
+    could potentially lead to a creation or destruction of a particle with mass $m_k$. 
+    Having discretized the mass axis into $\mathcal N_m$ bins, the total number of collisions that
+    we need to consider is given by $\mathcal N_m^2$. \\
 
-    Also, in principle this has to be done separately at each position in the disk. \\
-    In the simplified model used throughout the disk, we assumed spherical symmetry, and 
-    did not spatially resolve the disk along the $z$-axis.
-    As such, in this case the computational complexity is proportional to an
-    additional factor $\mathcal N_r$. \\
+    Since this needs to be done for each value of $k$, the total numerical cost $\mathcal C$ for 
+    forwarding the mass distribution at a given location from one time-step to the next follows the 
+    relationship
+    \begin{equation}
+        \mathcal C = \mathcal O\big( \mathcal N_m^3 \big)
+    \end{equation}
 
-    It gets even worse if we want to resolve the disk along all three spatial dimensions. \\
-    Then, there is an additional factor $\mathcal N_\varphi \cdot \mathcal N_z$. \\
+    When considering only the simple case of pure hit-and-stick coagulation, this cubic 
+    relationship turns into a quadratic one, since we can make use of the criterion of mass 
+    conservation: For each particle mass $m_k$ that could emerge from a collision between 
+    particles with masses $m_i$ and $m_j$, there is only a single value $m_j$ that satisfies the 
+    mass conservation criterion $m_k = m_i + m_j$, and vice versa. In this case, the kernel matrix 
+    does not even have to be cubic, but can be quadratic instead. \\
 
-    Consider again the Smoluchowski equation in \cref{eq:discrete_smoluchowski_equation}. \\
-
-    When only the process of pure hit-and-stick coagulation is included into the model, the 
-    kernel matrix $K_{kij}^\text{coag}$ is actually quite sparse, since for given collision the 
-    dust particle mass distribution has to be modified at only very few mass grid points.
-    As we saw in [\todo{cite}], the two-dimensional integral could be collapsed into an 
-    integral over a single variable. \\
-
-    The inclusion of fragmentation is what really makes the integration of the Smoluchowski
-    equation numerically expensive. Here, integration will require the evaluation of the 
-    double sum over the kernel matrix. This stems from the fact that the collision of initially 
-    only two particles can lead to the creation of a wide range of particles of different sizes. \\
-    
-    For higher mass grid resolutions $\mathcal N_m$, the integration of this differential equation 
-    can quickly become numerically expensive. \\
-
-    As the computational cost of its integration is proportional to the number of terms 
-    in the sum that have to be included, it seems feasible that a Monte Carlo sampling of 
-    the most relevant terms could be of interest. \\
-
-    The idea here is to identify the most "relevant" collision pairs, i.e. index tuples $(i, j)$,
-    where relevance is determined by a specific collision's impact on the overall dust particle 
-    mass distribution. \\
-
-    After having defined a sensible sampling probability distribution $P_{ij}^\text{sample}$
-    we can, in each time step, randomly select the most relevant index pairs $(i, j)$ and 
-    construct a new kernel from that. \\
-
-    The goal here is to decrease the number of terms over which the sum has to be evaluated,
-    while still maintaining acceptable accuracy and stability.
-
-    Note: We do \textit{not} sample $i$ and $j$ separately. Instead, we sample pairs $(i, j)$.
-
+    The inclusion of fragmentation is what makes this more complicated. Here, a wide range of 
+    differently-sized particles could emerge from any given collision, requiring the definition 
+    of a cubic kernel matrix, and leading to the cubic dependence of the numerical cost on the mass 
+    grid resolution.
 
     \clearpage
 
+    Note that up until this point we have only considered the numerical cost of forwarding the mass 
+    distribution a single time-step, at a single location, and assuming the individual dust 
+    particles can be characterized entirely by their mass value alone. \\
+    
+    For the coagulation studies that are done in the context of this thesis, we only consider a 
+    single position in the disk, located at $\vec r = \vec r_0$, defined in 
+    \cref{eq:definition_of_position_of_interest}.
+    A more sophisticated model would of course require the calculation of the mass distribution's 
+    temporal evolution at several different positions in the disk. \\
 
-
-    \todo{It may be good enough to only resolve the disk along the radial axis, or even to focus 
-    on just a single point in the disk. Even then though, it gets more complicated if one wants 
-    to build a detailed model of dust particle coagulation.} \\
-
-    \todo{In the discussion up to this point, we made the assumption that all dust particles are 
-    perfectly spherically, and can thus be characterized entirely by the mass that they carry.} \\
-
-    \todo{This is of course quite simplistic. In reality, dust particles possess much more complex 
-    shapes.}xz    \todo{...}
-    \todo{An illustration of the so-called \textit{dust bunnies} resulting from collisions can be 
-    seen in [cite].} \\
-
-    \todo{A detailed description ... (impossible?)} \\
-    \todo{To at least somewhat include the dynamics of such particles, one can make the assumption 
-    that a dust particle can be characterized by not one, but two attributes: In addition to the 
-    particle mass, we define the \textit{particle porosity}, which gives a (Masz) for the
-    (Packungsdichte) of the particle.} \\
-
-    \todo{Studies including (...) have already been done by [cite].} \\
-
-    \todo{If porosity is included as a second attribute for the dust particles, it is no longer 
-    enough to formulate a three-dimensional matrix for the coagulation kernel. Instead, it 
-    becomes six-dimensional.} \\
-    \todo{The computational complexity increases by an additional factor $\mathcal N_p^3$ (?).}
-
-    \todo{Therefore, the total computational complexity (assuming 3D spatial resolution) 
-    becomes proportional to}
+    If both spatial and temporal discretization are included, the numerical complexity increases by 
+    additional factors. 
+    % Assuming a temporal resolution of $\mathcal N_t$ time-steps, we get
+    % \begin{equation}
+    %     \mathcal C = \mathcal O\big( 
+    %         \mathcal N_m^3 \cdot 
+    %         \mathcal N_t 
+    %     \big)
+    % \end{equation}
+    Adopting cylindrical coordinates and assuming a 
+    radial    resolution $\mathcal N_r$, 
+    azimuthal resolution $\mathcal N_\phi$, 
+    vertical  resolution $\mathcal N_z$, and 
+    temporal  resolution $\mathcal N_t$, 
+    the complexity becomes
     \begin{equation}
-        O\big(
-            \mathcal N_m^3 \cdot \mathcal N_p^3 \cdot 
-            \mathcal N_t   \cdot 
-            \mathcal N_r   \cdot \mathcal N_\varphi \cdot \mathcal N_z
+        \mathcal C = \mathcal O\big( 
+            \mathcal N_m^3 \cdot 
+            \mathcal N_t \cdot 
+            \mathcal N_r \cdot \mathcal N_\phi \cdot \mathcal N_z
         \big)
     \end{equation}
 
-    \todo{The idea of this thesis:} \\
-    \todo{Speed up the integration via stochastic sampling of the coagulation kernel.} \\
-    \todo{In future studies (where porosity is included) this could lead to drastic improvements 
-    in the (integration times) by (excluding less relevant sum terms) (...)} \\
+    % In total, our discretized model requires the 
+    % \\
 
-    \todo{Goals?} \\
-    \todo{Metrics?} \\
-    \todo{Bare minimum: Mass conservation (detailed balance)} \\
-    \todo{Then: Accuracy}
+    % Let us use $k \in [1, \mathcal N_m]$ to index these entries, and let $m_k$ label their
+    % corresponding mass values. 
+    % For each of these, we have to loop over all colliding particle pairs 
+    % $(i, j)$ that could potentially lead to the 
+
+    % In the simple case of pure hit-and-stick coagulation, this is a one-dimensional loop. Due 
+    % to the conservation of mass, for each 
+
+    In the context of this thesis, the dust particles are modeled as perfectly spherical bodies 
+    with a shared solid mass density $\rho_s$. A possible next step for obtaining a more realistic
+    model is given by the inclusion of a \textit{porosity parameter $p$}, which allows a 
+    slightly more detailed description of the dust particles' internal structure, and that 
+    structure's influence on the processes of coagulation, fragmentation, and bouncing. 
+    Studies building upon this idea have already been made, for this see e.g. 
+    \cite{ormel_2006} \cite{katakoa_2017}. \\
+
+    The inclusion of a dust porosity parameter is probably the most significant argument speaking 
+    for a Monte Carlo sampling of the kernel. While the cubic dependency of the numerical cost on 
+    $\mathcal N_m$ is bad enough, the inclusion of porosity makes numerical integration even more 
+    costly. \\
+
+    The reason for this is the following: If porosity is included, the individual dust particles 
+    can not be characterized by a single number alone anymore, instead two are needed. Thus, we 
+    do not have a one-dimensional particle distribution $n(m)$, but a two-dimensional $n(m, p)$.
+    Then, in each time-step and at each location, for each combination of mass and porosity, we 
+    need to find out how the interaction between pairs of particles, each carrying an indiviual 
+    combination of mass and porosity, influence the particle distribution. \\
+
+    This requires the evaluation of a loop over $\mathcal N_m^3 \cdot \mathcal N_p^3$ cases.
+    The total cost becomes 
+    \begin{equation}
+        \mathcal C = \mathcal O\big( 
+            \mathcal N_m^3 \cdot 
+            \mathcal N_p^3 \cdot 
+            \mathcal N_t \cdot 
+            \mathcal N_r \cdot \mathcal N_\phi \cdot \mathcal N_z
+        \big)
+    \end{equation}
+
+    This last equation showcases a behavior that is quite expensive. Consider the following: 
+    If we discretize our mass axis into 100 bins (which is not actually that much), and do the 
+    same for the porosity axis, evaluating the complete sum on the right-hand side of the 
+    Smoluchowski equation would already require the inclusion of
+    \begin{equation}
+        \mathcal N_m^3 \cdot \mathcal N_p^3 = 10^{12}
+    \end{equation}
+    terms. Note that this is for a single time-step, and at a single location in the disk! \\
+
+    To allow studies of dust coagulation in a model including both a mass and porosity parameter,
+    this is much too expensive to finish the simulations in a sensible time span. Thus, a method 
+    for lowering the computational cost would be desirable. 
+    
+    \clearpage
+    A first idea for how to do this could be to include only the most relevant collisions into the 
+    sum over the kernel, such that fewer calculations have to be made. 
+    What exactly we mean by ``relevant collision'' is of course yet to be defined, see
+    \cref{sec:definition_of_the_sampling_probability} for this. \\
+
+    In any case, a Monte Carlo sampling approach for lowering the computational cost seems 
+    sensible, and will be implemented in the following sections.
+
+    % \begin{itemize}
+        % \item The numerical cost of integrating the Smoluchowski coagulation equation 
+        %       within the context of the our model is affected by a number of parameters: 
+        % \item The total cost is given by
+        %     \begin{equation}
+        %         \mathcal O\big(
+        %             \mathcal N_m^3 \cdot % \mathcal N_p^3 \cdot 
+        %             \mathcal N_t   \cdot 
+        %             \mathcal N_r   \cdot \mathcal N_\phi \cdot \mathcal N_z
+        %         \big)
+        %     \end{equation}
+    % \end{itemize}
+
+    % The first of these we shall consider is the mass grid resolution $\mathcal N_m$, which 
+    % labels the number of "bins" in our discretized mass axis. \\
+    % Remember that in each time-step, we are interested in computing an updated version 
+    % for each of the $\mathcal N_m$ entries of the discretized dust particle mass 
+    % distribution function $n_k$.
+    % To do this, we have to find out how the number of particles carrying said mass is influenced 
+    % by collisions of particle pairs carrying every possible combination of mass values, of which 
+    % there are $\mathcal N_m^2$.
+    % % In the discretized Smoluchowski framework, this translates to a 
+    % % summation over the kernel matrix $K_{kij}$. The sum goes over all collisions 
+    % % between particles with masses $m_i$ and $m_j$ leading to a change to the distribution at 
+    % % mass $m_k$, which requires us to sum over all $\mathcal N_m^2$ possible collision. 
+    % As such, the numerical cost of the integration for one time-step is proportional to
+    % $\mathcal N_m^3$. \\
+
+    % In the context of this thesis, we chose to only model the disk along the radial 
+    % axis, and only integrate the Smoluchowski equation at one specific radial location.
+    % For a more complete model, it would of be necessary to resolve the disk spatially in a 
+    % more sophisticated way. Assuming cylindrical coordinates, this lead would lead to an 
+    % inclusion of $\mathcal N_r$, $\mathcal N_\phi$, $\mathcal N_z$ into the numerical cost. \\
+
+    % Since this has to be done for each time-step, the computational cost of the entire 
+    % integration is increased by an additional factor $\mathcal N_t$. \\
+
+    % The inclusion of additional particle parameters, like e.g. dust particle porosity, 
+    % is used [\todo{cite}]
+    % to attain a more realistic model.
+
+    % The inclusion of a porosity parameter $p$ leads to an increase of 
+    % the computational cost of another factor $\mathcal N_p$.
+    % the kernel dimension from $3$ to $6$
+
+    % Due to the high dimensionality of the problem,
+
+    % This would require the evaluation of a six-dimensional sum over the kernel matrix 
+    % encoding coagulation and fragmentation events between particles modeled as 
+    % mass and porosity.
+
+    % each of the $\mathcal N_m$ mass grid bins. \\
+
+    % If we then consider the total cost of the integration over $\mathcal N_t$ steps,
+    % the cost is increased by that factor as well.
+
+    % In the following we will consider the computational complexity of 
+    % numerically integrating 
+    % the Smoluchowski coagulation equation within 
+    % the model we have built so far, as well as 
+    % the complexity's dependence on some of the main model parameters: \\
+
+    % In each time-step, and for each considered location in space,
+    % we need to do a number of things: \\
+
+    % For every mass value, we are interested in finding out how the number of particles 
+    % carrying that mass is influenced by collisions of particles carrying every possible 
+    % combination of mass values. \\
+    % As such, the computational complexity is proportional to $\mathcal N_m^3$. \\
+
+    % It gets even worse if we want to resolve the disk along all three spatial dimensions. \\
+    % Then, there is an additional factor $\mathcal N_\phi \cdot \mathcal N_z$. \\
+
+    % \todo{Therefore, the total computational complexity (assuming 3D spatial resolution) 
+    % becomes proportional to}
+    % \begin{equation}
+    %     O\big(
+    %         \mathcal N_m^3 \cdot \mathcal N_p^3 \cdot 
+    %         \mathcal N_t   \cdot 
+    %         \mathcal N_r   \cdot \mathcal N_\phi \cdot \mathcal N_z
+    %     \big)
+    % \end{equation}
+
+    % Consider again the Smoluchowski equation in \cref{eq:discrete_smoluchowski_equation}. \\
+
+    % When only the process of pure hit-and-stick coagulation is included into the model, the 
+    % kernel matrix $K_{kij}^\text{coag}$ is actually quite sparse, since for given collision the 
+    % dust particle mass distribution has to be modified at only very few mass grid points.
+    % As we saw in [\todo{cite}], the two-dimensional integral could be collapsed into an 
+    % integral over a single variable. \\
+
+    % The inclusion of fragmentation is what really makes the integration of the Smoluchowski
+    % equation numerically expensive. Here, integration will require the evaluation of the 
+    % double sum over the kernel matrix. This stems from the fact that the collision of initially 
+    % only two particles can lead to the creation of a wide range of particles of different sizes. \\
+    
+    % For higher mass grid resolutions $\mathcal N_m$, the integration of this differential equation 
+    % can quickly become numerically expensive. \\
+
+    % As the computational cost of its integration is proportional to the number of terms 
+    % in the sum that have to be included, it seems feasible that a Monte Carlo sampling of 
+    % the most relevant terms could be of interest. \\
+
+    % \todo{It may be good enough to only resolve the disk along the radial axis, or even to focus 
+    % on just a single point in the disk. Even then though, it gets more complicated if one wants 
+    % to build a detailed model of dust particle coagulation.} \\
+
+    % \todo{In the discussion up to this point, we made the assumption that all dust particles are 
+    % perfectly spherically, and can thus be characterized entirely by the mass that they carry.} \\
+
+    % \todo{This is of course quite simplistic. In reality, dust particles possess much more complex 
+    % shapes.}xz    \todo{...}
+    % \todo{An illustration of the so-called \textit{dust bunnies} resulting from collisions can be 
+    % seen in [cite].} \\
+
+    % \todo{A detailed description ... (impossible?)} \\
+    % \todo{To at least somewhat include the dynamics of such particles, one can make the assumption 
+    % that a dust particle can be characterized by not one, but two attributes: In addition to the 
+    % particle mass, we define the \textit{particle porosity}, which gives a (Masz) for the
+    % (Packungsdichte) of the particle.} \\
+
+    % \todo{Studies including (...) have already been done by [cite].} \\
+
+    % \todo{If porosity is included as a second attribute for the dust particles, it is no longer 
+    % enough to formulate a three-dimensional matrix for the coagulation kernel. Instead, it 
+    % becomes six-dimensional.} \\
+    % \todo{The computational complexity increases by an additional factor $\mathcal N_p^3$ (?).}
+
+    % \todo{The idea of this thesis:} \\
+    % \todo{Speed up the integration via stochastic sampling of the coagulation kernel.} \\
+    % \todo{In future studies (where porosity is included) this could lead to drastic improvements 
+    % in the (integration times) by (excluding less relevant sum terms) (...)} \\
+
+    % \todo{Goals?} \\
+    % \todo{Metrics?} \\
+    % \todo{Bare minimum: Mass conservation (detailed balance)} \\
+    % \todo{Then: Accuracy}
 
 % }}}
 % Previous Works {{{
-\clearpage\section{Previous Works}
+\section{Previous Works}
 
-% }}}
-% Introduction to Monte Carlo Sampling {{{
-\clearpage\section{Introduction to Monte Carlo Sampling}
+    Previous studies have already made use of Monte Carlo methods in an attempt to 
+    bring down the numerical cost of the integration of the Smoluchowski equation. \\
 
-\todo{Before we start: Take a look at simple examples.} \\
+    Notable examples for such prior work include e.g. the studies done for the 
+    2006 paper by C. W. Ormel et. al. \cite{ormel_2006}, where a 
+    direct Monte-Carlo simulation method (DSMC) is used, and 
+    the more recent 2023 paper by M. Beutel \cite{beutel_2023},
+    which makes use of a Representative Particle Monte Carlo method (RPMC). \\
 
-    % Monte Carlo Integration in 1D {{{ 
-    \subsection{Monte Carlo Integration in 1D}
-
-        \todo{Consider a function $f$ that is defined on an interval $D\subset\mathbb R$
-        (from $x_\text{min}$ to $x_\text{max}$).} \\
-        \todo{To demonstrate the basic idea of Monte Carlo integration, and without loss of 
-        generality, let us for now assume that the image of $D$ under $f$ follows a Gaussian 
-        distribution.}
-        \begin{equation}
-            f: 
-            D \to \mathbb R, 
-            x \mapsto \frac{1}{\sqrt{2\pi}\sigma}\exp\bigg(\frac{-(x-\mu)^2}{2\sigma^2}\bigg)
-        \end{equation}
-
-        We would now like to calculate an approximate value for the integral 
-        \begin{equation}
-            I = \int\limits_{x_\text{min}}^{x_\text{max}} f(x) \ \text dx
-        \end{equation}
-
-        Sample a total of $\mathcal N_\text{sample} \in \mathbb N$ points from the interval $D$. \\
-
-        \todo{This will be done according to a probability distribution $P(x)$, the definition of 
-        which will be the crucial thing to do. (?)} \\
-
-        With $i \in [1, N_\text{sample}] \cap \mathbb N$, let $x_i$ label the chosen values. \\
-
-    % }}}
-    % Monte Carlo Integration in 2D {{{ 
-    \subsection{Monte Carlo Integration in 2D}
-
-    % }}}
+    % The approach used for this thesis is slightly different, as we wish to 
+    % sample \textit{particle collisions} $(i, j)$.
 
 % }}}
 % Basic Idea {{{ 
 \section{Basic Idea}
+
+    As noted above, the goal here is to reduce the cost of numerically integrating the 
+    Smoluchowski coagulation equation. \\
+
+    The basic idea is to not include all terms in the summation needed for the evaluation 
+    of the Smoluchowski equation's right-hand side. This would lower the cost, as fewer 
+    calculations have to be made. \\
+
+    Instead of including \textit{all} collision pairs, we therefore need to identify the ``most 
+    relevant'' ones.\footnote{
+        It needs to be emphasized that we do \textit{not} sample $i$ and $j$ separately here! 
+        Instead, we sample collision \textit{pairs} $(i, j)$.
+    }
+    Here, relevance is determined by a specific collision's impact on the overall 
+    dust particle mass distribution. \\
+
+    After having defined a sensible sampling probability distribution           
+    $P_{ij}^\text{sample}$ we can, in each time-step, randomly select the most relevant 
+    index pairs $(i, j)$ and construct a new kernel from that.
+    This kernel is then used to forward the mass distribution to the next time-step. \\
+
+    If it works, we should be able to decrease the number of terms over which the sum has
+    to be evaluated, while still maintaining acceptable accuracy and stability.
 
     % Consider again the Smoluchowski equation in \cref{eq:discrete_smoluchowski_equation}.
     % As the computational cost of its integration is proportional to the number of terms 
@@ -160,7 +331,7 @@
     % mass distribution. \\
 
     % After having defined a sensible sampling probability distribution $P_{ij}^\text{sample}$
-    % we can, in each time step, randomly select the most relevant index pairs $(i, j)$ and 
+    % we can, in each time-step, randomly select the most relevant index pairs $(i, j)$ and 
     % construct a new kernel from that. \\
 
     % The goal here is to decrease the number of terms over which the sum has to be evaluated,
@@ -173,116 +344,790 @@
 
 % }}}
 % Definition of the Sampling Probability {{{
-\section{Definition of the Sampling Probability}
+\clearpage\section{Definition of the Sampling Probability}
+\label{sec:definition_of_the_sampling_probability}
 
-    \todo{Our first task will be to recognize proportionalities, before putting it all together.} \\
+    As noted above, it is our goal to identify the most relevant collisions, i.e. those collisions 
+    that lead to the biggest change in the dust particle mass distribution from one time-step to 
+    the next.
+    Having done that, we would like to encode this relevance of the collisions into a probability
+    distribution. \\
 
-    The idea here is to define the sampling probability distribution in such a way that the most 
-    often sampled collisions are those that have the largest effect on the temporal evolution of 
-    the dust particle mass distribution. \\
+    It should be chosen in such a way that the most influential collisions are also those that 
+    possess highest probability of being selected at random using the probability distribution. 
+    For this, we have to take two things into account: 
+    \begin{enumerate}
+        \item First, a certain collision might be deemed ``relevant'' because a large amount of mass
+              is transferred between bins at each time that such a collision occurs.
+        \item Secondly, a collision might also be relevant if only a small amount of mass is
+              transferred at each collision event, but these events happens very frequently.
+    \end{enumerate}
 
-    Therefore, it seems plausible that, all other factors being equal, more frequently occuring 
+    In the following, we will try to encode these two conditions into a sensible probability 
+    distribution. 
+    For this, consider a collision $(i, j)$ between particles with masses $m_i$ and $m_j$. 
+    Let $k$ be the index of a mass bin representing the population of particles with mass $m_k$. \\
+
+    When such a collision $(i, j)$ takes place, the amount of mass that is transferred into
+    a bin $k$ is given by the expression 
+    \begin{equation}
+      \Delta M_{kij} := m_k \cdot K_{kij}
+    \end{equation}
+
+    Also, the total mass transferred between all bins during such a collision is given by the sum 
+    \begin{align}
+        \label{eq:total_mass_being_moved_between_bins_on_collision_ij}
+        \Delta M_{ij} 
+        &:= \sum_{k=1}^{\mathcal N_m} \Delta M_{kij} \\
+        &\ = \sum_{k=1}^{\mathcal N_m} m_k \cdot K_{kij}
+    \end{align}
+    Because no mass is created during collisions, this sum $\Delta M_{ij}$ is equal to 
+    zero.\footnote{ 
+        This is only really true in physical reality.
+        The model discretization and usage of numerical methods introduces an error, 
+        such that this sum will, in fact, \textit{not} be exactly equal to zero. 
+        To assure the conservation of mass, and therefore the stability of the algorithm, it is
+        important to keep this error as small as possible. Therefore, in our implementation we need
+        to make sure that mass is conserved down to machine precision at each collision event.
+        This must also be true when only an incomplete (sampled) version of the kernel is 
+        used. As such, we must ensure that mass is conserved \textit{in detailed balance}.
+    } \\
+
+    To get an idea of the \textit{total net mass} $\Delta M^\text{net}_{ij}$ 
+    that is being moved between bins, we can slightly alter the expression given in 
+    \cref{eq:total_mass_being_moved_between_bins_on_collision_ij} and write 
+    \begin{align}
+        \Delta M^\text{net}_{ij} 
+        &:= \sum_{k=1}^{\mathcal N_m} \big| \Delta M_{kij} \big| \\
+        &\ = \sum_{k=1}^{\mathcal N_m} m_k \cdot \big| K_{kij} \big|
+    \end{align}
+    Defined like this, the back-and-forth movement of mass between bins does not lead to canceling, 
+    and instead we get a measure for the total net transferred mass resulting from a collision
+    $(i, j)$. \\
+
+    Using this definition to quantify a collision's impact on the dust particle mass distribution,
+    we can recognize the first proportionality relationship for our sampling probability
+    $P^\text{sample}_{ij}$:
+    \begin{equation}
+        P_{ij}^\text{sample} \sim \Delta M^\text{net}_{ij}
+    \end{equation}
+
+    \clearpage
+
+    Up until now, the sampling probability of a given collision does not depend on the rate at 
+    which such collisions occur. 
+    It seems plausible though that, all other factors being equal, more frequently occuring 
     collisions should also be sampled more frequently. \\
 
-    As such, we can recognize the proportionality relations
+    To fix this, let us recognize the second proportionality
+    relationship for the sampling probability, which depends directly on the dust particle 
+    collision rate coefficient $R_{ij}^\text{coll}$:
     \begin{equation}
-        P_{ij} \sim R^\text{coll}_{ij}
+        P_{ij}^\text{sample} \sim R^\text{coll}_{ij}
     \end{equation}
-    as well as 
+
+    Remember that the coefficient $R^\text{coll}_{ij}$ does not label an actual 
+    \textit{collision rate} with units of $\text{s}^{-1}$, but actually a collision rate normalized 
+    by dust particle number density with units $\text{m}^{3}\ \text{s}^{-1}$. \\
+
+    Since more collisions will occur at places where there are a lot of particles, the 
+    sampling probability must depend on the number of particles per unit volume as well. 
+    Therefore:
     \begin{align}
-        P_{ij} \sim N_i 
-        \ \ \ \text{and} \ \ \
-        P_{ij} \sim N_j
+        P_{ij}^\text{sample} \sim N_i 
+        \ \ \ \ \text{and} \ \ \ \
+        P_{ij}^\text{sample} \sim N_j
     \end{align}
 
-    \todo{Also:}
+    Additionally, collisions involving high-mass particles will be weighted more significantly 
+    than collisions involving low-mass particles:
     \begin{equation}
-        P_{ij} \sim m_i
-        \ \ \ \text{and} \ \ \
-        P_{ij} \sim m_j
+        P_{ij}^\text{sample} \sim m_i
+        \ \ \ \ \text{and} \ \ \ \
+        P_{ij}^\text{sample} \sim m_j
     \end{equation}
 
-    Also, it makes sense to define this probability distribution in such a way that the collisions 
-    that are most likely to be chosen are those that have the "largest effect" on the particle mass 
-    distribution function. With that, we mean those collisions that lead to the largest transfer of 
-    mass from one bin to another. \\
+    % For a given collision $(i, j)$ between particles with masses $m_i$ and $m_j$, the amount of 
+    % mass that is transferred into the bin 
+
+    % Our first task will be to recognize proportionalities, before putting it all together.
+    % The idea here is to define the sampling probability distribution in such a way that the most 
+    % often sampled collisions are those that have the largest effect on the temporal evolution of 
+    % the dust particle mass distribution. \\
+
+    % Therefore, 
+    % As such, we can recognize a proportionality relation between the dust particle collision 
+    % rate coefficient $R^\text{coll}_{ij}$ and the sampling probability:
+
+    % Also, it makes sense to define this probability distribution in such a way that the collisions 
+    % that are most likely to be chosen are those that have the "largest effect" on the particle mass 
+    % distribution function. With that, we mean those collisions that lead to the largest transfer of 
+    % mass from one bin to another. \\
     
-    We define a \textit{weight matrix} $W_{ij}$ encoding this condition:
-    \begin{equation} 
-        W_{ij}
-            = \sum_{k=1}^{\mathcal N_m} m_k \cdot \big|K_{kij}\big|
-    \end{equation}
+    % We define a \textit{weight matrix} $W_{ij}$ encoding this condition:
+    % \begin{equation} 
+    %     W_{ij}
+    %         = \sum_{k=1}^{\mathcal N_m} m_k \cdot \big|K_{kij}\big|
+    % \end{equation}
 
-    \todo{The total probability distribution is then directly proportional to the product of 
-          the contributions discussed so far:}
+    The total sampling probability distribution is then directly proportional to the product of 
+    the contributions that we discussed so far:
     \begin{equation}
-        P_{ij}
-            \sim W_{ij}\cdot N_i\cdot N_j\cdot m_i\cdot m_j
+        P_{ij}^\text{sample} \sim \Delta M_{ij}^\text{net} \cdot N_i \cdot N_j \cdot m_i \cdot m_j
     \end{equation}
 
     To turn this into an actual probability distribution though, we still have to perform a 
     normalization step, to assure that the sum over all probabilities is equal to one:
     \begin{equation}
-        \sum_{i=1}^{\mathcal N_m}\sum_{j=1}^{\mathcal N_m}P_{ij}
-            \overset{!}{=}1
+        \sum_{i=1}^{\mathcal N_m}\sum_{j=1}^{\mathcal N_m}P_{ij} \overset{!}{=} 1
     \end{equation}
 
-    To do this, we define the sum
+    To do this, we define the two preliminary expressions 
+    \begin{align}
+        F_{ij}^\text{sample} 
+            &:= \Delta M_{ij}^\text{net} \cdot N_i \cdot N_j \cdot m_i \cdot m_j 
+        \ \ \ \ \text{and} \\
+        F^\text{sample} 
+            &:= \sum_{i=1}^{\mathcal N_m} \sum_{j=1}^{\mathcal N_m} \mathcal P_{ij}
+                % \sum_{i=1}^{\mathcal N_m} \sum_{j=1}^{\mathcal N_m}
+               % W_{ij} \cdot N_i \cdot N_j \cdot m_i \cdot m_j
+    \end{align}
+
+    % To do this, we define the sum
+    % \begin{equation}
+    % \end{equation}
+    and, with these, arrive at the normalized probability distribution: 
+    \begin{align}
+        \boxed{
+        P_{ij}^\text{sample} 
+            = \frac{F_{ij}^\text{sample}}{F^\text{sample}} 
+            = \frac{
+                \Delta M_{ij}^\text{net} \cdot N_i \cdot N_j \cdot m_i \cdot m_j
+            }{
+                % \sum_{\tilde i=1}^{\mathcal N_m} \sum_{\tilde j=1}^{\mathcal N_m} 
+                % \Delta M_{\tilde i\tilde j}^\text{net} \cdot N_{\tilde i} \cdot N_{\tilde j} 
+                % \cdot
+                % m_{\tilde i} \cdot m_{\tilde j}
+                \sum_{i'=1}^{\mathcal N_m} \sum_{j'=1}^{\mathcal N_m} 
+                \Delta M_{i'j'}^\text{net} \cdot N_{i'} \cdot N_{j'} 
+                \cdot m_{i'} \cdot m_{j'}
+            }
+        }
+    \end{align}
+
+    This probability distribution is what we will use in the following to construct a randomly
+    sampled kernel. Its definition will always depend on the given dust particle mass 
+    distribution: Depending on 
+    what kind of particles are present at the moment (and the masses they carry), the most 
+    relevant collisions can vary significantly. \\ 
+
+    Note that this sampling will be implemented ``without returning'', i.e. each collision 
+    will only be chosen a single time at most per time-step. \\
+
+    Also, to filter out less relevant collisions, we will implement a threshold probability 
+    value $P^\text{sample}_{min}$ that needs to be reached before a collision is deemed relevant 
+    enough to be sampled. Assuming a mass grid resolution of $\mathcal N_m=100$, we will set this to
     \begin{equation}
-        S
-            := \sum_{i=1}^{\mathcal N_m} \sum_{j=1}^{\mathcal N_m}
-               W_{ij} \cdot N_i \cdot N_j \cdot m_i \cdot m_j
-    \end{equation}
-    and, with this, the normalized probability distribution
-    \begin{equation}
-        P_{ij}
-            = \frac{W_{ij} \cdot N_i \cdot N_j \cdot m_i \cdot m_j}{S}
+        P^\text{sample}_{min} := 10^{-9}
     \end{equation}
 
 % }}}
 % First tests {{{ 
-    \subsection{First Tests (\todo{rename})}
+% \clearpage\section{First Tests}  % TODO Rename
 
-    \todo{Test (also for other sampling methods):}
-    $$K_\text{complete}=K(\mathcal{N}_s=\mathcal{N}_m^2)$$
-
-    Observations:
-    \begin{itemize}
-        \item Equilibrium is reached more slowly \\ 
-            (Makes sense: Some terms are ignored.) \\
-            (\todo{Quantify gain! Plot!})
-        \item There are fluctuations \\ 
-            (Makes sense: Some terms are ignored.)
-        \item For constant sampling density, accuracy increases with mass grid resolution \\
-            (\todo{Quantify gain! Plot!})
-        \item For constant mass grid resolution, accuracy increases with sampling density \\
-            (\todo{Quantify gain! Plot!})
-        \item ...
-    \end{itemize}
+    % \todo{Test (also for other sampling methods):}
+    % $$K_\text{complete}=K(\mathcal{N}_s=\mathcal{N}_m^2)$$
 
 % }}}
 % Sampling "without returning" {{{ 
-\section{Sampling "without returning"}
+% \section{Sampling "without returning"}
 
-    The first case that we will consider will make use of "sampling without returning". Here, a 
-    particle pair $(i, j)$ is only allowed to be chosen once per time step.
-
-    \todo{Plot probability distribution for various times.}
-    \todo{Plot $n(m,t)$ for various sampling densities.}
-    \todo{Plot $\deriv{n}{t}$ against sampling density, for constant mass grid resolution.}
-    \todo{Plot $\deriv{n}{t}$ against mass grid resolution, for constant sampling density.}
+    % The first case that we will consider will make use of "sampling without returning". Here, a 
+    % particle pair $(i, j)$ is only allowed to be chosen once per time-step. \\
+    % \todo{Plot probability distribution for various times.} \\
+    % \todo{Plot $n(m,t)$ for various sampling densities.} \\
+    % \todo{Plot $\deriv{n}{t}$ against sampling density, for constant mass grid resolution.} \\
+    % \todo{Plot $\deriv{n}{t}$ against mass grid resolution, for constant sampling density.} \\
 
 % }}}
 % Sampling "with returning" {{{ 
-\section{Sampling "with returning"}
+% \section{Sampling "with returning"}
 
     % Now, we will consider the case of "sampling with returning", i.e. we will now allow particle 
-    % pairs to be chosen more than once per time step.
+    % pairs to be chosen more than once per time-step.
 
 % }}}
+% Introduction to Monte Carlo Sampling {{{
+% \clearpage\section{Introduction to Monte Carlo Sampling}
 
-\todo{sampling density} \\
-sample only half of kernel matrix $K_{kij} = K_{kji}$ (only "upper left" half) \\
+% \todo{Before we start: Take a look at simple examples.} \\
+
+    % Monte Carlo Integration in 1D {{{ 
+    % \subsection{Monte Carlo Integration in 1D}
+
+    %     \todo{Consider a function $f$ that is defined on an interval $D\subset\mathbb R$
+    %     (from $x_\text{min}$ to $x_\text{max}$).} \\
+    %     \todo{To demonstrate the basic idea of Monte Carlo integration, and without loss of 
+    %     generality, let us for now assume that the image of $D$ under $f$ follows a Gaussian 
+    %     distribution.}
+    %     \begin{equation}
+    %         f: 
+    %         D \to \mathbb R, 
+    %         x \mapsto \frac{1}{\sqrt{2\pi}\sigma}\exp\bigg(\frac{-(x-\mu)^2}{2\sigma^2}\bigg)
+    %     \end{equation}
+
+    %     We would now like to calculate an approximate value for the integral 
+    %     \begin{equation}
+    %         I = \int\limits_{x_\text{min}}^{x_\text{max}} f(x) \ \text dx
+    %     \end{equation}
+
+    %     Sample a total of $\mathcal N_\text{sample} \in \mathbb N$ points from the interval $D$. \\
+
+    %     \todo{This will be done according to a probability distribution $P(x)$, the definition of 
+    %     which will be the crucial thing to do. (?)} \\
+
+    %     With $i \in [1, N_\text{sample}] \cap \mathbb N$, let $x_i$ label the chosen values. \\
+
+    % }}}
+    % Monte Carlo Integration in 2D {{{ 
+    % \subsection{Monte Carlo Integration in 2D}
+
+    % }}}
+
+% }}}
+% Visualizations {{{ 
+
+    % Sampling of the Pure Coagulation Kernel {{{ 
+    \cleardoublepage\section{Sampling of the Pure Coagulation Kernel}
+
+        In \cref{fig:sampled_temporal_evolution_of_mass_distribution_for_only_coag}, the 
+        temporal evolution of the dust particle mass distribution is plotted for 
+        various different values of the sampling density $\rho_\text{sample}$. Here, 
+        only the process of pure hit-and-stick coagulation is included into the kernel. \\
+        % For an analogous plot with the full coagulation+fragmentation model, see 
+        % \cref{fig:sampled_temporal_evolution_of_mass_distribution_for_full_model}. \\
+
+        \textbf{Observation 1:} As can be seen when comparing the plots for different 
+        values of $\rho_\text{sample}$, the accuracy of the integration suffers when 
+        the sampling density is set to low values. This is of course not unexpected,
+        since low sampling densities mean that a lot of possible collisions are neglected,
+        leading to an incomplete picture of the particle collision dynamics. \\
+
+        \textbf{Observation 2:} There are statistical fluctuations in the numerical solutions,
+        such that the numerical solution is much less ``smooth'' as it would be if it were 
+        calculated using the complete kernel matrix.
+        This is to be expected as well, as not all collisions are taken into account 
+        in each time-step, and there exists a certain under- or over-representation 
+        of certain collisions due to the probabilistic nature of the method that is 
+        used for selecting kernel the entries that will be included into the summation. \\
+
+        % \textbf{Observation 3:} For the cases of $\rho_\text{sample} = 0.6$,
+        % $\rho_\text{sample} = 0.7$, and $\rho_\text{sample} = 0.8$, the final state of the mass
+        % distribution takes on a form that looks very much like what we see for the solution 
+        % calculated using the complete kernel. In contrast to that, the first four plots show 
+        % a significantly different final state. \todo{...} \\
+        % One might wonder why that is, but there is a quite simple explanation:
+
+        In \cref{fig:sampling_probability_for_only_coag}, the sampling probability 
+        $P_{ij}^\text{sample}$ is plotted for various points in time throughout the 
+        numerical integration. \cref{fig:nr_of_samples_for_only_coag} on the other 
+        hand attempts to display the number of times $N^\text{sample}_{ij}$ that each 
+        collisions $(i, j)$ was sampled. Since we are implementing a sampling 
+        ``without returning'', this $N^\text{sample}_{ij}$ can only take on a value of 
+        either 0 or 1. \\
+
+        For the sampling density, we adopt a value of $\rho_\text{sample} = 0.5$ here. \\
+
+        \textbf{Observation 3}: Initially, i.e. when forwarding the mass distribution from 
+        the initial state to the next time-step for the first time, only a single entry of 
+        the kernel matrix has to be considered for the summation. This changes as time 
+        progresses, and the number of sampled collisions increases as more and more bins 
+        in the mass distribution carry a non-zero value. \\
+
+        \textbf{Observation 4:} Towards the end of the simulation, the number of sampled 
+        collisions decreases again. In the simple case of hit-and-stick coagulation, on a 
+        discretized mass axis with an upper limit $m_\text{max}$, at the end almost the 
+        entire mass will be contained in the bin corresponding to the largest mass value. 
+        As such, only collisions between particles from these high-mass bins need to be 
+        considered.
+
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{
+                104/3x2 rho_d vs. m, t, rho_sample, N_m=50, coag=True, frag=False.pdf}
+            }
+            \caption{
+                Temporal evolution of the dust particle mass distribution under the influence
+                of (only) pure hit-and-stick coagulation processes for various different 
+                values of the sampling density $\rho_\text{sample}$.
+            }
+            \label{fig:sampled_temporal_evolution_of_mass_distribution_for_only_coag}
+        \end{figure} 
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{105/coag=True frag=False rho_sample=0.5 P_ij.pdf}
+            }
+            \caption{
+                % $P_{ij}^\text{sample}$ for
+                % $\rho_\text{sample} = 0.5$,
+                % $\mathcal N_m = 50$,
+                % $t = $\textcolor{red}{?}
+                Illustration of the collision sampling probability distribution 
+                $P_{ij}^\text{sample}$ for $\rho_\text{sample} = 0.5$. Here, only the process 
+                of pure stick-and-hit coagulation is included into the model.
+            }
+            \label{fig:sampling_probability_for_only_coag}
+        \end{figure} 
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{105/coag=True frag=False rho_sample=0.5 S_ij.pdf}
+            }
+            \caption{
+                % $\rho_\text{sample} = 0.5$,
+                % $\mathcal N_m = 50$,
+                % $t = $\textcolor{red}{?}
+                Illustration of the amount of times $N^\text{sample}_{ij}$ that each collision 
+                $(i,j)$ is sampled, for $\rho_\text{sample} = 0.5$. Here, only the process 
+                of pure stick-and-hit coagulation is included into the model.
+            }
+            \label{fig:nr_of_samples_for_only_coag}
+        \end{figure} 
+    
+    % }}}
+    % Sampling of the Pure Fragmentation Kernel {{{ 
+    % \cleardoublepage\section{Sampling of the Pure Fragmentation Kernel}
+ 
+        % \clearpage
+        % \begin{figure}[h!]
+        %     \makebox[\textwidth]{
+        %         \includegraphics[width=\paperwidth]{105/coag=False frag=True rho_sample=0.5 P_ij.pdf}
+        %     }
+        %     \caption{\todo{}}
+        % \end{figure} 
+        % \clearpage
+        % \begin{figure}[h!]
+        %     \makebox[\textwidth]{
+        %         \includegraphics[width=\paperwidth]{105/coag=False frag=True rho_sample=0.5 S_ij.pdf}
+        %     }
+        %     \caption{\todo{what $\rho_\text{sample}$?}}
+        % \end{figure} 
+        % \clearpage
+        % \begin{figure}[h!]
+        %     \makebox[\textwidth]{
+        %         \includegraphics[width=\paperwidth]{
+        %         104/3x2 rho_d vs. m, t, rho_sample, N_m=50, coag=False, frag=True.pdf}
+        %     }
+        %     \caption{\todo{only fragmentation}}
+        % \end{figure} 
+          
+        % \clearpage
+        % \begin{figure}[h!]
+        %     \centering
+        %     \includegraphics[width=\textwidth]{
+        %         3x2 rho_d vs. m, t, rho_sample, N_m=25, enable_fragmentation=False.pdf}
+        %     \caption{}
+        % \end{figure} 
+        % \clearpage
+        % \begin{figure}[h!]
+        %     \centering
+        %     \includegraphics[width=\textwidth]{
+        %         3x2 rho_d vs. m, t, rho_sample, N_m=25, enable_fragmentation=True.pdf}
+        %     \caption{}
+        % \end{figure} 
+
+    % }}}
+    % Sampling of the Total Kernel {{{ 
+    \cleardoublepage\section{Sampling of the Total Kernel}
+
+        The plots in 
+        \cref{fig:sampled_temporal_evolution_of_mass_distribution_for_full_model},
+        \cref{fig:sampling_probability_for_full_model}, and 
+        \cref{fig:nr_of_samples_for_full_model} display analogous results to 
+        what we saw in 
+        \cref{fig:sampled_temporal_evolution_of_mass_distribution_for_only_coag},
+        \cref{fig:sampling_probability_for_only_coag}, and 
+        \cref{fig:nr_of_samples_for_only_coag}. The difference is that here, 
+        the full model is used, i.e. both coagulation and fragmentation 
+        processes are taken into account when defining the kernel matrix. \\
+
+        We will focus on the plots displaying the mass distribution's temporal 
+        evolution first: \\
+
+        \textbf{Observation 1:} Once again, there are visible fluctuations in the numerical 
+        solution of the particle mass distribution. As one might expect, these decrease in 
+        magnitude when the sampling density is increased. \\
+
+        \textbf{Observation 2:} Even though the accuracy may suffer from low sampling densities,
+        the results shown here can still be seen as a success, as the mass distribution
+        \textit{does} evolve into a structure that visibily resembles the equilibrium that is
+        reached in the ``complete'' solution. This is quite satisfactory, as it shows that the 
+        sampling method could be implemented in a sensible manner. \\
+
+        \textbf{Observation 3:} It might not be obvious at first sight, but the plots showcase
+        another interesting behavior of the solutions resulting from a sampled kernel: 
+        If you look closely, you will notice that the evolution of the mass distribution 
+        progresses much slower towards the equilibrium state if the sampling density is low. 
+        This of course is nothing unexpected: If not all collisions are taken into account,
+        this effectively leads to a lower collision rate, and thus a slower evolution 
+        of the distribution in general. \\
+        % This can be seen most prominently in the first three plots. 
+        % To visualize this more directly, we will take a closer look at
+        % the magnitude of the temporal derivative of the mass distribution in [\todo{ref}]. \\
+
+        % \textbf{Observation 1:} 
+        % Equilibrium is reached 
+        % more slowly
+        % temporal derivative does not go to zero
+
+        \textbf{Observation 4:} 
+        It might not be that easy to recognize, since multiple distributions are plotted on 
+        top of each other, another interesting feature one can notice is the existence 
+        of peak-like structures at the upper end of the mass axis. 
+        This could hint at an under- or over-representation of collisions involving particles 
+        whose masses are close to the upper ``edge'' of the equilibrium state's mass distribution.
+        This might be fixed by adjusting the definition of the sampling probability in a 
+        sensible manner.
+        % This is true 
+        % Since we are 
+        % plotting multiple distributions for different values of $t$ on top of each other, 
+        % this might not be obvious, which why we present this feature in [\todo{ref}].
+        \\
+        
+        Let us now take a look at the figures displaying the distribution of the 
+        sampling probability and the distribution of sampled collisions.
+        Like before, here we adopt a sampling density value of $\rho_\text{sample} = 0.5$. \\
+
+        \textbf{Observation 5:}
+        When comparing the distributions $P^\text{sample}_{ij}$ and $N^\text{sample}_{ij}$
+        with the results from the previous section, we can see that the temporal 
+        evolution behaves very similarly, at least during the early parts of the 
+        simulation. \\
+
+        \textbf{Observation 6:} Once big enough particles could form, allowing the 
+        relative particle velocities to surpass the fragmentation threshold 
+        velocity $v_\text{frag}$, the similarities come to an end. Because the low-mass 
+        bins are ``filled up'' again by collison events leading to particle fragmentation,
+        they will have to be taken into account here, in contrast to what we saw in the 
+        case of pure coagulation. \\
+
+        \textbf{Observation 7:} There exists a ``hole'' or ``gap'' in the sampling probability
+        distribution $P_{ij}^\text{sample}$ for collisions where both particles carry 
+        neither a very large nor a very small mass value. 
+        Thus, towards the end of the simulation, when the equilibrium state begins to 
+        settle in, the most relevant collisions appear to be those containing either 
+        at least one large particke, or only small ones. This reflects the fact that the 
+        particle populations with those two respective sizes are the most prevalent in 
+        the distribution towards the end.
+        % This can be explained by the 
+        % fact that these collisions neither involve relative velocities
+        \\
+
+        % \todo{Plot zoomed in on peak at large masses.}
+
+        % Observations:
+        % \begin{itemize}
+        %     \item Equilibrium is reached more slowly \\ 
+        %         This makes sense: Some terms are ignored. \\
+        %         See plot of temporal derivatives.
+        %         % \todo{Quantify the increase in time! Plot!}
+        %     \item There are fluctuations in the numerical solutions. \\ 
+        %         This makes sense: Some terms are ignored.
+        %     \item For constant sampling density, 
+        %         the accuracy increases with the mass grid resolution \\
+        %         % (\todo{Quantify gain! Plot!})
+        %     \item For constant mass grid resolution, 
+        %         the accuracy increases with the sampling density \\
+        %         % (\todo{Quantify gain! Plot!})
+        %     % \item ...
+        % \end{itemize}
+    
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{
+                104/3x2 rho_d vs. m, t, rho_sample, N_m=50, coag=True, frag=True.pdf}
+            }
+            \caption{
+                Temporal evolution of the dust particle mass distribution under the influence
+                of both coagulation and fragmentation processes for various different 
+                values of the sampling density $\rho_\text{sample}$.
+            }
+            \label{fig:sampled_temporal_evolution_of_mass_distribution_for_full_model}
+        \end{figure} 
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{105/coag=True frag=True rho_sample=0.5 P_ij.pdf}
+            }
+            \caption{
+                Illustration of the collision sampling probability distribution 
+                $P_{ij}^\text{sample}$ for $\rho_\text{sample} = 0.5$. Here, both the process 
+                of coagulation as well as fragmentation are included into the model.
+                % $\mathcal N_m = 50$,
+                % $t = $\textcolor{red}{?}
+            }
+            \label{fig:sampling_probability_for_full_model}
+        \end{figure} 
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{105/coag=True frag=True rho_sample=0.5 S_ij.pdf}
+            }
+            \caption{
+                % $\rho_\text{sample} = 0.5$,
+                % $\mathcal N_m = 50$,
+                % $t = $\textcolor{red}{?}
+                Illustration of the amount of times $N^\text{sample}_{ij}$ that each collision 
+                $(i,j)$ is sampled, for $\rho_\text{sample} = 0.5$. Here, both the process 
+                of coagulation as well as fragmentation are included into the model.
+            }
+            \label{fig:nr_of_samples_for_full_model}
+        \end{figure} 
+
+    % }}}
+% }}}
+% Accuracy and Stability {{{ 
+
+    \clearpage
+    \section{Accuracy and Stability}
+
+    Additionally to the stability error $\Delta_\text{stab}$ that we defined in
+    \cref{eq:definition_of_integration_mass_error_stability}, and which is displayed 
+    again below, the following definition of $\Delta_\text{acc}$ gives an 
+    insight into the accuracy properties of the integration:
+    % We define the stability and accuracy of the algorithm as
+    \begin{align}
+        \Delta_\text{stab}(t)
+            &= \sum_i \frac{\rho^d_i(t) - \rho^d_i(t=0)}{\rho^d_i(t=0)} \\
+        \Delta_\text{acc}(t)
+            &= \sqrt{ \sum_i \left(
+                \frac{\rho^d_i(t) - \rho^c_i(t)}{\rho^c_i(t)}
+            \right)^2 }
+    \end{align}
+    Here, $\rho^c_i(t)$ denotes the fraction of the dust mass volume density 
+    contained in a given bin $i$ when integrating the model 
+    using the \textit{complete} kernel (hence the superfix ``c''). \\
+
+    Instead of comparing the total mass density value summed over all bins with its 
+    initial value at the start of the simulation, in the definition of the accuracy error 
+    we calculate the root-mean-square of the relative deviation (at each mass bin)
+    between the numerical solution arrived at using the sampled kernel, and the complete one. 
+    The evolution of these two quantities with respect to time is displayed in 
+    \cref{fig:stab_and_acc_error}. In green, we have the stability or mass error
+    (where a dashed line signifies a negative value), and in blue we have the accuracy
+    error that we just defined.\footnote{
+        Note that there a missing values in the evolution of the accuracy error,
+        which occur when the mass distribution in the ``complete'' solution contains 
+        zeros. This is the case in the beginning, before coagulation processes can 
+        transfer mass into each bin, and again at near the end, when the lower-mass 
+        bins empty before fragmentation fills them up again. 
+    }
+    \\
+
+    While the stability error could be kept near machine precision for the entirety of the 
+    simulation, the accuracy error is much greater than 1. 
+    This could be explained partly by statistical fluctuations induced by the 
+    stochastic sampling of the kernel, and partly by the effectively lower reaction 
+    rates, causing the mass distribution to ``lag'' behind the solution calculated with 
+    the full kernel. \\
+
+    Since fragmentation process only start to be relevant in the latter parts of the 
+    integration, the statistical fluctuations can be assumed to 
+    effect the accuracy error most significantly at the end as well, whereas the 
+    lower reactions rates might well be the more significant contributor to 
+    the error in the early stages of the simulation. \\
+
+    This is due to the fact that, apart from a possibly slightly slower evolution, 
+    for pure coagulation we can reproduce the results from a complete kernel quite 
+    well even for lower sampling densities. This stems of course from the 
+    sparsity of the kernel for pure hit-and-stick coagulation. \\
+
+    In any case, while the results from the previous pages show a satisfactory 
+    \textit{qualitative} behavior, the accuracy error supplies reasons for 
+    doubting the utility of this method when low deviations from the complete 
+    kernel solution is to be achieved. \\
+
+    Still, it could be shown that the core idea of the method can be used to 
+    reproduce the desired results in at least an approximate fashion. 
+    
+    \begin{figure}[h!]
+        \makebox[\textwidth]{\includegraphics[width=\paperwidth]{
+            106/accuracy_and_stability_vs_sampling_density}
+        }
+        \caption{
+            Accuracy error $\Delta_\text{acc}$ and stability error $\Delta_\text{stab}$ for the 
+            numerical integration of the Smoluchowski coagulation equation for various sampling 
+            densities $\rho_\text{sample}$. 
+            Stability is assured down to machine precision, accuracy on the other hand is 
+            negatively impacted by statistical fluctuations arising from the stochastic 
+            nature of the Monte Carlo method.
+            For the stability error, the dashed line signifies a negative value. \\
+        }
+        \label{fig:stab_and_acc_error}
+    \end{figure}
+    % \todo{how to quantify accuracy?}
+    % \begin{itemize}
+    %     \item average over multiple runs
+    % \end{itemize}
+    
+    % Let $\rho = \rho^\text{dust}$.
+    % \begin{align}
+    %     \rho^\text{dust}
+    %         &= \sum_{i=1}^{\mathcal{N}_m} \rho_i%^\text{dust} 
+    %     \\
+    %     \rho_i%^\text{dust}
+    %         &= n_i \cdot m_i \cdot \Delta m_i 
+    % \end{align}
+    % \begin{align}
+    %     \Delta\rho_\text{A}
+    %         &= \sqrt{\sum_{i=1}^{{\mathcal N}_m} \big(
+    %             \Delta\rho_i%^\text{dust}
+    %         \big)^2} 
+    %         = \sqrt{\sum_{i=1}^{{\mathcal N}_m} \bigg(
+    %             \rho_i^\text{sampled} - \rho_i^\text{complete}
+    %         \bigg)^2} 
+    % \end{align}
+    % \begin{align}
+    %         \rho &= \sum_{i=1}^{\mathcal{N}_m} \rho_i \\
+    %     \Delta\rho_\text{B} &= \rho - \rho^\text{complete} \\
+    % \end{align}
+
+% }}}
+    % Temporal Derivative {{{ 
+    \clearpage
+    
+        \begin{figure}[h!]
+            \makebox[\textwidth]{\includegraphics[width=\paperwidth]{
+                107/dMdt vs t vs rho_sample, coag=True, frag=True.pdf}
+            }
+            \caption{
+                Temporal evolution of the root-mean-square (RMS) of the temporal derivative 
+                of the mass distribution.
+                % $\sqrt{ \sum_{i=1}^{\mathcal N_m} \left( \frac{\Delta \rho_i}{\Delta t} \right)^2 }$
+                Here, both the process of coagulation as well as
+                fragmentation are included into the model. 
+                Note that when sampling is enabled, the temporal derivative does not approach 
+                zero as quickly as when it is disabled.
+                This is most likely due to the stochastic nature of the Monte Carlo sampling
+                method, leading to statistical fluctuations that prevent the mass distribution 
+                from ultimately settling into a true equilibrium state.
+                % Since not all possible particle 
+                % collisions are taken into account when integrating with a sampled kernel,
+                % the magnitude of this temporal derivative increases with the value of the 
+                % sampling density.
+            }
+        \end{figure}
+        \vfill
+        \begin{figure}[h!]
+            \makebox[\textwidth]{\includegraphics[width=\paperwidth]{
+                107/dMdt vs t vs rho_sample, coag=True, frag=False.pdf}
+            }
+            \caption{
+                Temporal evolution of the root-mean-square (RMS) of the temporal derivative 
+                of the mass distribution.
+                % $\sqrt{ \sum_{i=1}^{\mathcal N_m} \left( \frac{\Delta \rho_i}{\Delta t} \right)^2 }$
+                Here, only the process of pure hit-and-stick coagulation
+                is included into the model. Interestingly, here the temporal derivatives 
+                that were arrived at using a sampled kernel initially approach zero much faster 
+                than when using the complete kernel. At some point, also here the temporal 
+                derivative of the ``complete'' solution overtakes the sampled soltions on its 
+                way towards zero.
+                \ \\
+            }
+        \end{figure}
+        % \begin{figure}[h!]
+        %     \makebox[\textwidth]{
+        %         \includegraphics[width=\paperwidth]{107/dMdt vs t vs rho_sample, coag=False, frag=True.pdf}
+        %     }
+        %     \caption{only fragmentation}
+        % \end{figure}
+
+    % }}}
+    % Percentage of Non-Zero Kernel Entries {{{ 
+    
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{\includegraphics[width=\paperwidth]{
+                109/percentage non-zero kernel, coag=True, frag=True.pdf}
+            }
+            \caption{
+                Percentage of non-zero entries in the sampled kernel matrix.
+                Here, both coagulation and fragmentation are included in the model. 
+                If $\rho_\text{sample}=1$, i.e. if all collisions 
+                are taken into account when defining the kernel, this ratio is 
+                approximately 30\%. Since a lot of these collisions are neglected when 
+                a sampled kernel is used, the number 
+                of non-zero kernel entries decreases with lower values of the sampling 
+                density. This is especially true in the beginning, where fragmentation 
+                processes do not yet happen much. As time progresses, more and more 
+                entries of the kernel become relevant. As such, this ratio increases and, 
+                in the end, converges towards the value of the sampling density.
+            }
+            \label{fig:percentage_non_zero_only_coag}
+        \end{figure}
+        \vfill
+        \begin{figure}[h!]
+            \makebox[\textwidth]{\includegraphics[width=\paperwidth]{
+                109/percentage non-zero kernel, coag=True, frag=False.pdf}
+            }
+            \caption{
+                Percentage non-zero entries in the sampled kernel matrix.
+                Here, only the process of pure stick-and-hit coagulation 
+                is included into the model. The number of non-zero entries 
+                increases as time progresses, until there is a steep drop-off when basically 
+                the entire mass has been transferred into the highest-mass 
+                bin. Overall, the number of non-zero kernel entries is much lower 
+                here than in the full model, reflecting the fact that 
+                due to the Dirac $\delta$-function in \cref{eq:definition_of_f_coag}, 
+                the definition of the
+                pure coagulation kernel yields a much sparser matrix than one would have 
+                if fragmentation processes are included, with only approximately 3\% of 
+                the kernel being non-zero for $\rho_\text{sample}=1$.
+            }
+        \end{figure}
+        % \clearpage
+        % \begin{figure}[h!]
+        %     \makebox[\textwidth]{
+        %         \includegraphics[width=\paperwidth]{109/percentage non-zero kernel, coag=False, frag=True.pdf}
+        %     }
+        %     \caption{only fragmentation}
+        % \end{figure}
+
+    % }}} 
+% Other {{{ 
+    
+    % \clearpage
+
+    % Integrate Smoluchowski equation up to time $t=X?$.
+    % Using the particle mass distribution function at that point in time, 
+    % calculate the probability density $P_{ij}^\text{sample}$.
+    
+    % With this probability distribution, sample the kernel multiple times $\mathcal N_L$. 
+    % For each time $l$, "perform the summation" to forward the mass distribution by one time-step.
+    % Using that new mass distribution, calculate the numerical temporal derivative
+    % \begin{equation}
+    %     \frac{\Delta \rho_i^l}{\Delta t} = \frac{\Delta n_i^l(t)}{\Delta t} \cdot m_i \cdot \Delta m_i
+    % \end{equation}
+    
+    % Calculate the average temporal derivative
+    % \begin{equation}
+    %     \frac{\Delta \rho^\text{avg}_i}{\Delta t} 
+    %     = \sum_{l=1}^{\mathcal N_L} \frac{\Delta n_i^l(t)}{\Delta t} \cdot m_i \cdot \Delta m_i
+    % \end{equation}
+    
+    % \todo{Plot $\frac{\rho_i^\text{avg}}{\Delta t}$ vs. $l$ or $\mathcal N_L$.} \\
+    % \todo{Plot $\frac{\rho_i^\text{avg}}{\Delta t}$ $\rho_\text{sample}$.} \\
+    % \todo{Plot $\frac{\rho_i^\text{avg}}{\Delta t}$ $\mathcal N_m$.}
+    % \todo{Plot eff. sampling density vs. sampling density for various mass grid resolutions.} \\
+    % \todo{Plot density error vs. mass grid resolution for various sampling densities.} \\
+    % \todo{Plot density error vs. max. sampling density for various mass grid resolutions.} \\
+    % \todo{? Plot eff. sampling density vs. mass grid resolution for various sampling densities.} \\
+
+% \todo{sampling density} \\
+% sample only half of kernel matrix $K_{kij} = K_{kji}$ (only "upper left" half) \\
 
 % \clearpage
 
@@ -331,12 +1176,9 @@ sample only half of kernel matrix $K_{kij} = K_{kji}$ (only "upper left" half) \
 %     \end{center}
 % \end{table} \ \\ 
 
-\todo{Plot eff. sampling density vs. sampling density for various mass grid resolutions.} \\
-\todo{Plot eff. sampling density vs. mass grid resolution for various sampling densities.} \\
+% \clearpage
 
-\todo{Plot density error vs. mass grid resolution for various sampling densities.} \\
-\todo{Plot density error vs. max. sampling density for various mass grid resolutions.} \\
-\clearpage
+% \clearpage
 
 
 % \begin{table}[h!]
@@ -422,255 +1264,9 @@ sample only half of kernel matrix $K_{kij} = K_{kji}$ (only "upper left" half) \
 %     \end{center}
 % \end{table} \ \\ 
 
-
-
-\clearpage
-\begin{figure}[h!]
-    \makebox[\textwidth]{
-        \includegraphics[width=\paperwidth]{105/coag=True frag=False rho_sample=0.5 P_ij.pdf}
-    }
-    \caption{
-        $P_{ij}^\text{sample}$ for
-        $\rho_\text{sample} = 0.5$,
-        $\mathcal N_m = 50$,
-        $t = $\textcolor{red}{?}
-    }
-\end{figure} 
-\clearpage
-\begin{figure}[h!]
-    \makebox[\textwidth]{
-        \includegraphics[width=\paperwidth]{105/coag=True frag=False rho_sample=0.5 S_ij.pdf}
-    }
-    \caption{
-        $\rho_\text{sample} = 0.5$,
-        $\mathcal N_m = 50$,
-        $t = $\textcolor{red}{?}
-    }
-\end{figure} 
-\clearpage
-\begin{figure}[h!]
-    \makebox[\textwidth]{
-        \includegraphics[width=\paperwidth]{
-        104/3x2 rho_d vs. m, t, rho_sample, N_m=50, coag=True, frag=False.pdf}
-    }
-    \caption{
-        Temporal Evolution of Dust Particle Mass Distribution 
-        for only hit-and-stick coagulation
-    }
-\end{figure} 
-
-% \cleardoublepage
-
-% \todo{}
-
-\clearpage
-
-\begin{figure}[h!]
-    \makebox[\textwidth]{
-        \includegraphics[width=\paperwidth]{105/coag=True frag=True rho_sample=0.5 P_ij.pdf}
-    }
-    \caption{
-        $P_{ij}^\text{sample}$ for
-        $\rho_\text{sample} = 0.5$,
-        $\mathcal N_m = 50$,
-        $t = $\textcolor{red}{?}
-    }
-\end{figure} 
-\clearpage
-\begin{figure}[h!]
-    \makebox[\textwidth]{
-        \includegraphics[width=\paperwidth]{105/coag=True frag=True rho_sample=0.5 S_ij.pdf}
-    }
-    \caption{
-        $\rho_\text{sample} = 0.5$,
-        $\mathcal N_m = 50$,
-        $t = $\textcolor{red}{?}
-    }
-\end{figure} 
-\clearpage
-\begin{figure}[h!]
-    \makebox[\textwidth]{
-        \includegraphics[width=\paperwidth]{
-        104/3x2 rho_d vs. m, t, rho_sample, N_m=50, coag=True, frag=True.pdf}
-    }
-    \caption{
-        Temporal Evolution of Dust Particle Mass Distribution 
-        for "full model": coagulation + fragmentation
-    }
-\end{figure} 
-
-% \clearpage
-% \begin{figure}[h!]
-%     \makebox[\textwidth]{
-%         \includegraphics[width=\paperwidth]{105/coag=False frag=True rho_sample=0.5 P_ij.pdf}
-%     }
-%     \caption{\todo{}}
-% \end{figure} 
-% \clearpage
-% \begin{figure}[h!]
-%     \makebox[\textwidth]{
-%         \includegraphics[width=\paperwidth]{105/coag=False frag=True rho_sample=0.5 S_ij.pdf}
-%     }
-%     \caption{\todo{what $\rho_\text{sample}$?}}
-% \end{figure} 
-% \clearpage
-% \begin{figure}[h!]
-%     \makebox[\textwidth]{
-%         \includegraphics[width=\paperwidth]{
-%         104/3x2 rho_d vs. m, t, rho_sample, N_m=50, coag=False, frag=True.pdf}
-%     }
-%     \caption{\todo{only fragmentation}}
-% \end{figure} 
-
-
-
-\clearpage
-\todo{Plot zoomed in on peak at large masses.}
-\subsection{Accuracy and Stability}
-
-\begin{align}
-    \Delta_\text{stability}(t)=\sum_i \frac{\rho^d_i(t) - \rho^d_i(t=0)}{\rho^d_i(t=0)}
-\end{align}
-\begin{align}
-    \Delta_\text{accuracy}(t)=\sum_i \frac{\rho^d_i(t) - \rho^c_i(t)}{\rho^c_i(t)}
-\end{align}
-
-\begin{figure}[h!]
-    \makebox[\textwidth]{
-        \includegraphics[width=\paperwidth]{106/accuracy_and_stability_vs_sampling_density}
-    }
-    \caption{
-        \todo{Accuracy and Stability for various sampling densities} \\
-        \todo{Stability down to machine precision is given} \\
-    }
-\end{figure}
-
-\todo{how to quantify accuracy?}
-\begin{itemize}
-    \item average over multiple runs
-\end{itemize}
-
-Let $\rho = \rho^\text{dust}$.
-\begin{align}
-    \rho^\text{dust}
-        &= \sum_{i=1}^{\mathcal{N}_m} \rho_i%^\text{dust} 
-    \\
-    \rho_i%^\text{dust}
-        &= n_i \cdot m_i \cdot \Delta m_i 
-\end{align}
-\begin{align}
-    \Delta\rho_\text{A}
-        &= \sqrt{\sum_{i=1}^{{\mathcal N}_m} \big(
-            \Delta\rho_i%^\text{dust}
-        \big)^2} 
-        = \sqrt{\sum_{i=1}^{{\mathcal N}_m} \bigg(
-            \rho_i^\text{sampled} - \rho_i^\text{complete}
-        \bigg)^2} 
-\end{align}
-\begin{align}
-        \rho &= \sum_{i=1}^{\mathcal{N}_m} \rho_i \\
-    \Delta\rho_\text{B} &= \rho - \rho^\text{complete} \\
-\end{align}
-
-% \clearpage
-% \begin{figure}[h!]
-%     \centering
-%     \includegraphics[width=\textwidth]{
-%         3x2 rho_d vs. m, t, rho_sample, N_m=25, enable_fragmentation=False.pdf}
-%     \caption{}
-% \end{figure} 
-% \clearpage
-% \begin{figure}[h!]
-%     \centering
-%     \includegraphics[width=\textwidth]{
-%         3x2 rho_d vs. m, t, rho_sample, N_m=25, enable_fragmentation=True.pdf}
-%     \caption{}
-% \end{figure} 
-
-
-
-\clearpage
-
-
-\begin{figure}[h!]
-    \makebox[\textwidth]{
-        \includegraphics[width=\paperwidth]{107/dMdt vs t vs rho_sample, coag=True, frag=True.pdf}
-    }
-    \caption{
-        temporal derivative (RMS)
-        $\sqrt{ \sum_{i=1}^{\mathcal N_m} \left( \frac{\Delta \rho_i}{\Delta t} \right)^2 }$
-        (full model)
-    }
-\end{figure}
-\begin{figure}[h!]
-    \makebox[\textwidth]{
-        \includegraphics[width=\paperwidth]{107/dMdt vs t vs rho_sample, coag=True, frag=False.pdf}
-    }
-    \caption{
-        temporal derivative (RMS)
-        $\sqrt{ \sum_{i=1}^{\mathcal N_m} \left( \frac{\Delta \rho_i}{\Delta t} \right)^2 }$
-        (pure coagulation)
-    }
-\end{figure}
-% \begin{figure}[h!]
-%     \makebox[\textwidth]{
-%         \includegraphics[width=\paperwidth]{107/dMdt vs t vs rho_sample, coag=False, frag=True.pdf}
-%     }
-%     \caption{only fragmentation}
-% \end{figure}
-
-
-\clearpage
-\begin{figure}[h!]
-    \makebox[\textwidth]{
-        \includegraphics[width=\paperwidth]{109/percentage non-zero kernel, coag=True, frag=True.pdf}
-    }
-    \caption{
-        ratio of non-zero kernel entries over times
-        (full model)
-    }
-\end{figure}
-\begin{figure}[h!]
-    \makebox[\textwidth]{
-        \includegraphics[width=\paperwidth]{109/percentage non-zero kernel, coag=True, frag=False.pdf}
-    }
-    \caption{
-        ratio of non-zero kernel entries over times
-        (pure coagulation)
-    }
-\end{figure}
-% \clearpage
-% \begin{figure}[h!]
-%     \makebox[\textwidth]{
-%         \includegraphics[width=\paperwidth]{109/percentage non-zero kernel, coag=False, frag=True.pdf}
-%     }
-%     \caption{only fragmentation}
-% \end{figure}
-
-\clearpage
-Integrate Smoluchowski equation up to time $t=X?$.
-Using the particle mass distribution function at that point in time, 
-calculate the probability density $P_{ij}^\text{sample}$.
-
-With this probability distribution, sample the kernel multiple times $\mathcal N_L$. % TODO Rename.
-For each time $l$, "perform the summation" to forward the mass distribution by one time step.
-Using that new mass distribution, calculate the numerical temporal derivative
-\begin{equation}
-    \frac{\Delta \rho_i^l}{\Delta t} = \frac{\Delta n_i^l(t)}{\Delta t} \cdot m_i \cdot \Delta m_i
-\end{equation}
-
-Calculate the average temporal derivative
-\begin{equation}
-    \frac{\Delta \rho^\text{avg}_i}{\Delta t} 
-    = \sum_{l=1}^{\mathcal N_L} \frac{\Delta n_i^l(t)}{\Delta t} \cdot m_i \cdot \Delta m_i
-\end{equation}
-
-\todo{Plot $\frac{\rho_i^\text{avg}}{\Delta t}$ vs. $l$ or $\mathcal N_L$.} \\
-\todo{Plot $\frac{\rho_i^\text{avg}}{\Delta t}$ $\rho_\text{sample}$.} \\
-\todo{Plot $\frac{\rho_i^\text{avg}}{\Delta t}$ $\mathcal N_m$.}
-
-
 % Sample kernel using probability from mass distribution.
 % Calculate numerical temporal derivative
 % \todo{Perform $\mathcal N_\text{r}$ runs with .}
 % \todo{Plot }
+
+% }}}

@@ -1,13 +1,18 @@
-In the following we will concern ourselves with the definition of a simple model
-for the proto-planetary disk, as well as for its gas and dust contents. 
-It needs to be said here that due to the complexity of the involved processes and the (literally)
-astronomically large number of particles present in the disk, our model can only ever be 
-a highly simplified approximation to reality. \\
+% Intro {{{ 
 
-Nonetheless, it is our goal to formulate a model which captures a "typical" PPD's most relevant
-properties, in order to allow the study conduction regarding dust particle coagulation 
-and/or fragmentation in the subsequent chapters. \\
+    In the following we will concern ourselves with the definition of a simple model for a 
+    proto-planetary disk. This model should include descriptions for both the gas and dust 
+    contents of the disk as well. \\
 
+    Before we start, it needs to be said here that due to the complexity of the involved processes 
+    and the astronomically large number of particles present in the disk, our model can 
+    only ever be a highly simplified approximation to reality. \\
+    
+    Nonetheless, it is our goal to formulate a model which captures a ``typical'' PPD's most relevant
+    properties, in order to allow the conduction of studies regarding dust particle coagulation 
+    and/or fragmentation in the subsequent chapters.
+
+% }}}
 % Preliminary Definitions and Assumptions {{{
 \section{Preliminary Definitions and Assumptions}
 \label{sec:first_assumptions_about_the_disk}
@@ -15,13 +20,14 @@ and/or fragmentation in the subsequent chapters. \\
 % \begin{enumerate}
 %     \item
         % \assume{} 
-        We will base this model on the aforementioned
-        nebular hypothesis: The origin of the modeled proto-planetary disk is assumed to be
-        found in the collapse of a giant cloud of gas and dust in the interstellar medium.
+        We will base this model on the aforementioned nebular hypothesis: The origin of the modeled
+        proto-planetary disk is assumed to be found in the collapse of a giant interstellar cloud
+        of gas and dust. 
         Having inherited its contents, the disk's elementary and material composition mirror
         that of the interstellar medium. As such, the disk contains mainly molecular hydrogen
-        mono-atomic $\text{H}_2$, to a lesser extent helium $\text{He}$, and small trace amounts 
-        of metals. 
+        $\text{H}_2$, to a lesser extent mono-atomic helium $\text{He}$, and small trace amounts 
+        of metals. \\
+
         % The disk's elementary and material composition equal that 
         % of the interstellar medium, from which it inherited its material contents.
         % \todo{Elements?}
@@ -29,30 +35,32 @@ and/or fragmentation in the subsequent chapters. \\
         % with trace amounts of metals.
         % \assume{Gas mean particle mass (weight?).}
         % TODO Rewrite
-        The mean molecular gas particle mass is given as
+
+        Let $m_p$ label the mass of a single proton, and let us use $\mu$ to denote the mean
+        molecular weight of the gas. Using these definitions, we can then write 
         \begin{equation}
             m_g := \mu\cdot m_p
-        \end{equation}
-        where $m_p$ labels the mass of a single proton, and $\mu$ denotes the mean molecular 
-        weight of the gas particles, which we will set to
-        \begin{equation}
+            \ \ \ \ \ \text{with} \ \ \ \ \
             \mu := 2.3
         \end{equation}
+        to express the mean molecular mass $m_g$ of an individual gas particle. \\
 
     % \item
         % \assume{} 
-        The collapse of the cloud is assumed to have happened sufficiently long ago such
-        that a star has already formed at the center of the disk. 
-        For the studies that will be carried out in the context of this thesis, this star's 
+        The collapse of the interstellar gas cloud is assumed to have happened sufficiently long 
+        ago such that a star could already form from the matter accumulating at the center of the
+        disk. For the studies that will be carried out in the context of this thesis, this star's
         most relevant properties will be its mass $M_*$ as well as its luminosity $L_*$. 
         % \assume{}
-        Both of these properties will be assumed to equal those of our own solar system's Sun. 
+        In the following, both of these properties will be assumed to equal those of our own solar
+        system's Sun.
         Thus, we define
         \begin{align}
-            M_*&:=M_\odot=\SI{1.989e30}{\kg},\ \text{and} \\
-            L_*&:=L_\odot\ =\SI{3.828e26}{\joule\second^{-1}},
+            M_*& := M_\odot = \SI{1.989e30}{\kg}
+            ,\ \text{and} \\
+            L_*& := L_\odot\ = \SI{3.828e26}{\joule~\second^{-1}},
         \end{align}
-        where $M_\odot$ and $L_\odot$ label the solar mass and luminosity, respectively.
+        where $M_\odot$ and $L_\odot$ label the solar mass and luminosity, respectively. \\
         % \todo{What type of star is it? Where in the main sequence is it? How old is it?} 
         % \begin{itemize}
         %     \item G-type main sequence star
@@ -60,15 +68,17 @@ and/or fragmentation in the subsequent chapters. \\
         %           (imprecisely, because its light is actually white)
         % \end{itemize}
         % \todo{The Sun was not as it is today when it formed $\approx$ 4.6 billion years ago.} \\
-        \\
 
     % \item
-        Like in our own solar system, where the Sun is responsible for more than $99.9\%$ of the 
-        total mass in the Solar System, we will assume most of the original gas cloud's mass to be
+        Like in our own Solar System, where the Sun is responsible for more than $99.9~\%$ of the 
+        total mass, we will assume most of the original gas cloud's mass to be
         concentrated inside the star in our model as well, while the disk surrounding it holds only 
         a much smaller fraction of the total mass. 
+
+    \clearpage
+
         Let $M_*$ and $M_\text{disk}$ label the masses of the star and the disk, respectively.
-        The ratio between the two shall be defined as
+        The ratio between the two shall then be defined as
         \begin{equation}
             q_\text{disk-to-star}
                 =\frac{M_\text{disk}}{M_*}  
@@ -78,7 +88,7 @@ and/or fragmentation in the subsequent chapters. \\
     % \clearpage
     % \item
         % \assume{
-        Furthermore, the disk's mass is assumed to be dominated by the contribution 
+        Furthermore, the disk's mass $M_\text{disk}$ is assumed to be dominated by the contribution 
         of circumstellar gas, with only a comparatively tiny contribution of dust particles.
         Let $M_\text{dust}$ and $M_\text{gas}$ label the total mass present in the form of dust 
         and gas, respectively. Since in the context of our model the disk consists entirely out 
@@ -86,36 +96,44 @@ and/or fragmentation in the subsequent chapters. \\
         \begin{equation}
             M_\text{disk} = M_\text{gas} + M_\text{disk}
         \end{equation}
-        The relative abundance between the two particle classes can be encoded into the 
-        dust-to-gas ratio, which we define as
+        The relative abundance between the two particle classes can then be encoded into the 
+        dust-to-gas ratio, which we will define as
         \begin{equation}
             \label{eq:dust-to-gas_ratio}
             q_\text{dust-to-gas}=\frac{M_\text{dust}}{M_\text{gas}}:=0.01
         \end{equation}
 
-        For the gas we will adopt an isothermal model of an ideal gas in hydrostatic equilibrium.
+        To keep things from getting too complicated, we will adopt a relatively straight-forward 
+        description of the circumstellar gas particles. We will assume the validity of the ideal 
+        gas law, and a perfectly isothermal behavior of the gas. 
+        Moreover, let us assume the gas has had enough time to settle into hydrostatic equilibrium,
+        such that the gravitational influence of the star at the disk center is balanced out by 
+        an outward force due to the gas pressure gradient. \\
+
         The isothermal assumption allows us to relate gas pressure $P_g$, 
         gas volume density $\rho_g$, and sound speed $c_s$ via the expression
         \begin{equation}
             \label{eq:isothermal_condition}
             P_g = \rho_g \cdot c_s^2
         \end{equation}
+
         The hydrostatic assumption in turn allows us to express the relationship between 
-        the gas pressure $P_g(r,z)$ and the gas volume density $\rho_g(r,z)$ 
-        % at a position $\vec r=(r,\varphi,z)^T$ (\todo{symmetry, cyl. coords.})
-        as
+        the gas pressure $P_g(r,z)$ and the gas volume density $\rho_g(r,z)$.
+        % at a position $\vec r=(r,\phi,z)^T$ (\todo{symmetry, cyl. coords.})
+        If we let $g_z$ label the acceleration due to gravity along the $z$-axis, 
+        then we can write this relationship as
         \begin{equation}
             \label{eq:hydrostatic_equilibrium}
             \deriv{P_g}{z} = - \rho_g \cdot g_z,  % TODO Why `g_z` and not `g` ?
         \end{equation}
-        where $g_z$ labels the acceleration due to gravity along the $z$-axis. \\
 
+        Both \cref{eq:isothermal_condition} and \cref{eq:hydrostatic_equilibrium} will be useful 
+        in the definition of the radial gas density profiles in
+        \cref{sec:gas_and_dust_density_profiles}.
         % In this simplified model, the gas is assumed to be distributed
         % For the purpose of this thesis, mass $M_\text{gas}$ is assumed to be distributed rad
         % Chemically, the gas distribution is made up 
-
     % \item \assume{ideal gas}
-   
     % \item 
         % Furthermore, we assume the validity of the ideal gas law.
         % To arrive at a simplified model of the complex processes involved in 
@@ -125,69 +143,109 @@ and/or fragmentation in the subsequent chapters. \\
         %     \item The gas behaves isothermal. 
         %     \item The gas is in hydrostatic equilibrium.
         % \end{enumerate}
-
 % \end{enumerate}
-
-    In the context of this simplified model, the modeled disk is assumed to obey 
-    radial symmetry on macroscopic scales. \\
-    
-    Let us now adopt a radially resolved one-dimensional disk model 
-    with an inner and outer disk radius $r_\text{min}$ and $r_\text{max}$, respectively.
-    We will define them as
-    % We will model the disk radially, 
-    % \todo{Consider a disk 
+    These profiles, as well as the profiles of other physical quantities, will be defined on a 
+    radial axis ranging from a lower to an upper boundary, the value of which is given by
     \begin{align}
-        r_\text{min} &= \SI{0.01}{\astronomicalunit}
+        r_\text{min} &= 10^{-2}\ \SI{}{\astronomicalunit}
         \ \ \ \ \text{and} 
         \\
-        r_\text{max} &= \SI{100}{\astronomicalunit}
+        r_\text{max} &= 10^{+2}\ \SI{}{\astronomicalunit}
     \end{align}
-    Along that axis, we will now define the radial dependency of a number of the disk's mos
-    t relevant properties, like gas surface \& volume density, midplane temperature, ...
+    respectively. This radial axis is discretized into $\mathcal N_r$ bins according to the 
+    definition given in \cref{sec:preliminary_notes_on_axis_discretization}. \\
 
-   \todo{Adopt cylindrical coordinates:}
-   \begin{equation}
-       \vec r = (r, \phi, z)^T
-   \end{equation}
+    Along that axis, in the next sections we will now define the radial dependency of some of the
+    disk's properties. Most notably, this includes the definition of radial profiles for the gas 
+    surface \& volume densities. From these, we will then be able to derive the volume density of
+    dust particles, which will be needed for the initialization of the dust particle mass 
+    distribution function. \\
 
-    \todo{The flaring angle is defined as}
+    % \todo{only one location}
+
+    % number of the disk's most 
+    % relevant properties, like gas surface \& volume density, midplane temperature, ... \\
+
+    % Due to the geometry of the disk it makes sense to adopt cylindrical coordinates 
+    % \begin{equation}
+    %     \vec r = (r, \phi, z)^T
+    % \end{equation}
+    % to denote positions in the disk.
+    % In order to keep things simple though, we will not attempt to resolve the disk in all three
+    % spatial dimensions $r$, $\phi$ and $z$. Instead, we will assume that the disk
+    % structure satisfies a radial symmetry, at least on macroscopic scales.
+    % This will allow us to focus mostly on the dependence of the 
+    % disk's properties on the radial distance $r$ from the disk center.
+
+    % To keep things simple, we will not attempt to resolve the disk in all three spatial 
+    % dimensions $r$, $\phi$ and $z$. Instead, we will focus mostly on the dependence of the 
+
+    % In the context of this simplified model, the modeled disk is assumed to obey 
+    % radial symmetry on macroscopic scales. \\
+    
+    % Let us now adopt a radially resolved one-dimensional disk model 
+    % with an inner and outer disk radius $r_\text{min}$ and $r_\text{max}$, respectively.
+    % We will define them as
+    % We will model the disk radially, 
+    % \todo{Consider a disk 
+
+   % \todo{Adopt cylindrical coordinates:}
+   % \begin{equation}
+   %     \vec r = (r, \phi, z)^T
+   % \end{equation}
+
+    % \todo{The flaring angle is defined as}
+    % \begin{equation}
+    %     f := 0.05
+    % \end{equation}
+
+    % Disk is symmetric. \\
+
+    % To keep things simple, we will not attempt to resolve the disk in all three spatial 
+    % dimensions $r$, $\phi$ and $z$. Instead, we will focus mostly on the dependence of the 
+    % disk's features on the distance $r$ to the disk center.
+    % For numerical treatment, this $r$-axis will 
+    % with a lower and upper bound of
+    % \begin{align}
+    %     r_\text{min} = 0.01\ \text{au} 
+    %     \ \ \ \ \text{and} \\
+    %     r_\text{max} = 100\ \text{au}
+    % \end{align}
+    % respectively. \\
+
+    After having defined the spatial distribution of gas and dust in the disk, later on we will 
+    focus on only one specific location in the disk for the rest of this thesis. Adopting 
+    cylindrical coordinates $\vec r = ( r, \phi, z )^T$, we will define the
+    position of interest $\vec r_0$ as
     \begin{equation}
-        f := 0.05
+        \label{eq:definition_of_position_of_interest}
+        \vec r_0 = (r_0, \phi_0, z_0 )^T
+        \ \ \ \ \ \text{with} \ \ \ \ \
+        r_0 := 10~\text{au}
+        \ \ \ \ \ \text{and} \ \ \ \ \
+        z_0 := 0
     \end{equation}
-
-    Disk is symmetric. \\
-
-    To keep things simple, we will not attempt to resolve the disk in all three spatial 
-    dimensions $r$, $\phi$ and $z$. Instead, we will focus mostly on the dependence of the 
-    disk's features on the distance $r$ to the disk center.
-    For numerical treatment, this $r$-axis will be discretized into $\mathcal N_r$ bins,
-    with a lower and upper bound of
-    \begin{align}
-        r_\text{min} = 0.01\ \text{AU} 
-        \ \ \ \ \text{and} \\
-        r_\text{max} = 100\ \text{AU}
-    \end{align}
-    respectively. \\
-
-    After having defined the distribution of gas and dust in the disk, we will focus on one 
-    specific location in the disk for the rest of this thesis. This location shall be location at 
-    a distance of $r=10\ \text{AU}$ from the disk center in the midplane, i.e. $z=0$. Due to 
-    the assumed radial disk symmetry we can neglect the definition of the azimuthal angle $\phi$.
+    % we will define $r = r_0 := 10\ \text{au}$ and $z = z_0 := 0$. 
+    As such, this position of interest is at the midplane, at a distance of $10\ \text{au}$ from 
+    the disk center. Assuming a radial symmetry of the disk's properties on macroscopic scales, the
+    definition of a specific azimuthal angle $\phi$ becomes superfluous here.
+    % Due to 
+    % the assumed radial disk symmetry we can neglect the definition of the azimuthal angle $\phi$.
 
     % \clearpage
     % \begin{enumerate}
     
         % \item The next assumption we will make concerns itself with disk symmetry. For this, let us 
-        %     adopt cylindrical coordinates $(r, \varphi, z)$. In reality, each of the disk's 
-        %     position-dependent properties could best be described by a function $f(r, \varphi, z)$ 
+        %     adopt cylindrical coordinates $(r, \phi, z)$. In reality, each of the disk's 
+        %     position-dependent properties could best be described by a function $f(r, \phi, z)$ 
         %     that depends on all three of these coordinates. \\
     
             % On large scales, we will assume the disk's features to not depend significantly on 
-            % $\varphi$ and $z$. \\
+            % $\phi$ and $z$. \\
             % \todo{Assume perfect radial symmetry?}
     % \end{enumerate}
     
-    \todo{Plot top-down view of the disk.}
+    % \todo{Plot top-down view of the disk.}
     
 % }}}
 % Midplane Temperature {{{ 
@@ -225,7 +283,7 @@ and/or fragmentation in the subsequent chapters. \\
         % \ \ \ \ \ \Rightarrow\ \ \ \ \
         % B_*(r) = \frac{L_*}{4\pi r^2}
     \end{equation}
-    Assuming the star's radiative power output is directed isotropically all directions,
+    Assuming the star's radiative power output is directed isotropically in all directions,
     we can simplify the above and then solve for the radiation flux $B_*(r)$ at 
     a distance $r$ from the star.
     \begin{equation}
@@ -238,12 +296,12 @@ and/or fragmentation in the subsequent chapters. \\
     % "edge" of the disk.
     % the disk where light from the star is scattered into or out of the disk.
     % "boundary" of the disk, where it is scattered. 
-    Let $f$ denote the angle of incidence (flaring angle) of the light onto the disk, and assume
-    that one half of the light is scattered into, the other out of the disk.
-    Then, the radiation flux $B_\text{mid}(r)$ reaching the midplane can be written as
+    Let $f$ denote the angle of incidence. i.e. the ``flaring angle'' of the light onto the disk, and
+    assume that one half of the light is scattered into, the other out of the disk. Then, the
+    radiation flux $B_\text{mid}(r)$ that actually reaches the midplane can be written as
     \begin{equation}
         B_\text{mid}(r) = \frac{f}{2} \cdot B_*(r)
-        \ \ \ \text{with}\ \ \
+        \ \ \ \ \text{with}\ \ \ \
         f := 0.05
     \end{equation}
     % light that reaches them indirectly, via 
@@ -332,6 +390,8 @@ and/or fragmentation in the subsequent chapters. \\
     % }
     % \end{equation}
 
+    The results can be seen visualized in \cref{fig:radial_profile_of_midplane_temperature}.
+
     \input{diagrams/midplane_temperature_profile.tex}
 
     % \begin{itemize}
@@ -344,95 +404,114 @@ and/or fragmentation in the subsequent chapters. \\
 
 % }}}
     % Sound Speed {{{ 
-    \clearpage\subsection{Sound Speed}
+    \clearpage\subsection{Midplane Speed of Sound}
 
         The speed of sound is defined as the speed at which pressure disturbances travel in a 
         given medium. It is given by 
         \begin{equation}
             \label{eq:general_definition_of_sound_speed}
-            c_s := \sqrt{\frac{\partial P}{\partial \rho}}
+            c_s = \sqrt{\frac{\partial P_g}{\partial \rho_g}}
         \end{equation}
-        where $P$ and $\rho$ label the pressure and mass density, respectively. \\
+        where $P_g$ and $\rho_g$ label the gas pressure and the volume density of gas mass, respectively. 
+        % Note that in our case, we have $P=P_g$ and $\rho=\rho_g$. \\
         
-        \assume{As noted before, we assume the gas to behave in an isothermal manner (i.e. the
-        temperature stays constant across time.)} As such, the ideal gas equation of state reads 
-        % A gas can be approximated to be isothermal if the sound wave period is much higher than the (radiative) cooling time of the gas, as any increase in temperature due to compression by the wave will be immediately followed by radiative cooling to the original equilibrium temperature well before the next compression occurs. Many astrophysical situations in the ISM are close to being isothermal, thus the isothermal sound speed is often used. For example, in conditions where temperature and density are independent such as H II regions (where the gas temperature is set by the ionizing star’s spectrum), the gas is very close to isothermal.
+        % \assume{
+        % As noted before, we assume the gas to behave in an isothermal manner (i.e. the
+        % temperature stays constant across time.)
+        % } 
+        As mentioned before in \cref{sec:first_assumptions_about_the_disk}, we will assume the 
+        validity of the ideal gas equation, which reads
+        \begin{equation}
+            \label{eq:ideal_gas_equation}
+            P_g \cdot V = N \cdot k_B \cdot T
+        \end{equation}
+        Here, the number of particles per volume $N / V$ can be written as the ratio $\rho_g / m_g$
+        between mass volume density $\rho_g$ and mean particle mass $m_g$. As such, we can rewrite
+        \cref{eq:ideal_gas_equation} into
         \begin{equation}
             \label{eq:isothermal_ideal_gas_equation_of_state}
-            P = \frac{\rho k_B T}{m_g}
+            P = \frac{\rho_g \cdot k_B \cdot T_\text{mid}}{m_g}
         \end{equation}
+        Note that here we set the temperature $T = T_\text{mid}$, constraining our considerations 
+        to the disk midplane. \\
 
-        Plugging \cref{eq:isothermal_ideal_gas_equation_of_state} into
-        \cref{eq:general_definition_of_sound_speed}, we arrive at the isothermal sound speed
+        % The ideal gas equation in the disk midplane reads 
+        % A gas can be approximated to be isothermal if the sound wave period is much higher than the (radiative) cooling time of the gas, as any increase in temperature due to compression by the wave will be immediately followed by radiative cooling to the original equilibrium temperature well before the next compression occurs. Many astrophysical situations in the ISM are close to being isothermal, thus the isothermal sound speed is often used. For example, in conditions where temperature and density are independent such as H II regions (where the gas temperature is set by the ionizing star’s spectrum), the gas is very close to isothermal.
+
+        Now we can plug \cref{eq:isothermal_ideal_gas_equation_of_state} into
+        \cref{eq:general_definition_of_sound_speed}, and arrive at the isothermal speed of sound
+        as a function of the distance $r$ from the disk center:
         \begin{equation}
-            c_s = \sqrt{\frac{k_BT}{m_g}}
+            c_s(r) = \sqrt{\frac{k_B \cdot T_\text{mid}(r)}{m_g}}
         \end{equation}
 
         % TODO Decide on usage of $P$ vs. $P_g$ and $\rho$ vs. $\rho_g$
+
+        The results can be seen visualized in \cref{fig:radial_profile_of_sound_speed}.
 
         \input{diagrams/sound_speed.tex}
     % }}}
 % Radial Profile of the Gas Density {{{ 
 \clearpage\section{Gas and Dust Density}
+\label{sec:gas_and_dust_density_profiles}
 
     Our next task will be to formulate a simple model for the spatial distribution of the disk's 
     gaseous contents. In this context, we will adopt cylindrical coordinates 
-    $\vec r=(r, \varphi, z)^T$ and define both the surface and volume density profiles along the 
+    $\vec r=(r, \phi, z)^T$ and define both the surface and volume density profiles along the 
     radial axis $r$.
 
     % Radial Profile of the Gas Surface Density {{{ 
     \subsection{Radial Profile of the Gas Surface Density}
 
-        The gas surface density $\Sigma_g(r,\varphi)$ is directly related to the gas volume density
-        $\rho_g(r,\varphi,z)$, and can be derived from it by integrating the volume density from 
+        The gas surface density $\Sigma_g(r,\phi)$ is directly related to the gas volume density
+        $\rho_g(r,\phi,z)$, and can be derived from it by integrating the volume density from 
         $-\infty$ to $+\infty$ along the $z$-axis, i.e. along the axis perpendicular to the disk:
         \begin{equation}
             \label{eq:relationship_between_gas_surface_density_and_gas_volume_density}
-            \Sigma_g(r,\varphi)
-                = \int\limits_{-\infty}^{\infty} \rho_g(r,\varphi,z)\ \dd z
+            \Sigma_g(r,\phi)
+                = \int\limits_{-\infty}^{\infty} \rho_g(r,\phi,z)\ \dd z
         \end{equation}
 
-        As noted before in \cref{sec:first_assumptions_about_the_disk}, % TODO assert citation
-        we will assume the large-scale structure of the disk to be radially symmetric.
-        This is of course quite a substantial simplification 
+        As noted in the context of the definition given in 
+        \cref{eq:definition_of_position_of_interest},
+        we will assume the large-scale structure of the disk to be approximately radially symmetric.
+        This, of course, is quite a substantial simplification 
         that neglects the evolution of the disk structure on macroscopic scales,
         but will have to suffice as a first approximation in the context of this thesis.
         For the density distributions, assuming radial symmetry means that
         \begin{align}
-            \Sigma_g(r, \varphi) 
-                = \Sigma_g(r) 
-            \ \ \ \ \text{and}\ \ \ \
-            % \\
-            \rho_g(r, \varphi) 
-                = \rho_g(r)
+            \Sigma_g(r, \phi) = \Sigma_g(r) 
+            \ \ \ \ \ \text{and}\ \ \ \ \
+            \rho_g(r, \phi) = \rho_g(r)
         \end{align}
+
         Thus, we can simplify 
         \cref{eq:relationship_between_gas_surface_density_and_gas_volume_density} and write:
         \begin{equation}
-            \Sigma_g(r)
-                = \int\limits_{-\infty}^{\infty} \rho_g(r,z)\ \dd z
+            \Sigma_g(r) = \int\limits_{-\infty}^{\infty} \rho_g(r,z)\ \dd z
         \end{equation}
-        
+
         Note that we do not yet have an expression for the gas volume density $\rho_g$ so far.
         Therefore, we cannot derive the surface density $\Sigma_g$ by simply evaluating the above
         integral. Instead, we will go the other way round and make an ansatz for the gas surface
-        density. Then we will be able to derive the volume density from that. 
+        density. Then we will be able to derive the volume density from that. \\
+
         Here, we will 
         follow the work of Brauer, Dullemond, \& Henning \cite{brauer_dullemond_henning_2007}
         % Following the works of \cite{brauer_dullemond_henning_2007}
         % , \cite{andrews_2007}, and \cite{kitamura_2002}, 
-        and make the assumption that the radial profile of the gas surface density can be 
-        approximated by using an inverse power law of the form
+        and make the assumption that the radial profile of the surface density can be 
+        modeled using an inverse power law of the form
         \begin{equation}
             \label{eq:gas_surface_density_profile_inverse_power_law_ansatz}
             \Sigma_g(r) = \Sigma_0\cdot\frac{1}{r^\sigma}
-            \ \ \ \text{with}\ \ \
+            \ \ \ \ \ \text{with}\ \ \ \ \
             \sigma := 0.8
         \end{equation}  % TODO Why 0.8 ?
-        Before we can use this though, we still need to define $\Sigma_0$, which we will do now: \\
-
-        The total gas mass present in the disk is given by $M_\text{gas}$, the numerical value of 
-        which can easily be derived from what we defined in
+        Before we can use this though, we still need to define a value for $\Sigma_0$, 
+        which we will do in the following: 
+        The total gas mass present in the disk is given by $M_\text{gas}$, the exact numerical value 
+        of which can be derived from what we defined in
         \cref{sec:first_assumptions_about_the_disk}. Since the integration of the surface density 
         over the entire disk surface must yield this value, we can formulate the following 
         condition:
@@ -443,7 +522,8 @@ and/or fragmentation in the subsequent chapters. \\
         \end{align}
         % TODO Define r_min and r_max before.
 
-        Since we discretized the radial axis into $\mathcal N_r$ "bins", we can rewrite this as
+        Due to the discretization of the radial axis into $\mathcal N_r$ ``bins'', we can rewrite 
+        this as
         \begin{equation}
             M_\text{gas} = \sum_{i=1}^{\mathcal N_r} \Sigma_g(r_i) \cdot 2\pi r_i \cdot \Delta r_i
         \end{equation}
@@ -457,21 +537,14 @@ and/or fragmentation in the subsequent chapters. \\
                     \sum_{i=1}^{\mathcal N_m} 2\pi r_i^{1-\sigma} \cdot \Delta r_i
                 \right]^{-1},
         \end{equation}
-        which is all we need to formulate the radial profile of the gas surface density.
+        which is all we need to formulate an expression for the radial profile of the gas surface density.
         % TODO Do this with dA instead of 4pi r dr ?
 
     % }}}
     % Radial Profile of the Gas Volume Density {{{ 
     \newpage\subsection{Radial Profile of the Gas Volume Density}
         
-        Consider again a point $\vec r=(r,\phi,z)^T$ in the disk. Let $r = r_0$, which we defined 
-        as $10 \ \text{au}$ in \cref{sec:first_assumptions_about_the_disk}. Also, this point shall 
-        be situated sufficiently close to the midplane as to allow us to write
-        \begin{equation}
-            \label{eq:r_much_bigger_than_z}
-            r\gg z 
-        \end{equation}
-
+        Consider again a point $\vec r=(r,\phi,z)^T$ in the disk. 
         The acceleration due to Newtonian gravity exerted by the star at the disk center 
         on a massive object at position $\vec r$ is given by
         \begin{equation}
@@ -479,8 +552,9 @@ and/or fragmentation in the subsequent chapters. \\
         \end{equation}
 
         Now consider the schematic drawing in
-        \cref{fig:trigonometry_schematic_for_gas_volume_density_plot}.
-        Making use of basic trigonometry, we can write
+        \cref{fig:trigonometry_schematic_for_gas_volume_density_plot}, which we might imagine as 
+        a test mass sitting at a position $\vec r$, with a radial distance $r$ from the star, and 
+        a height $z$ above the midplane. Making use of basic trigonometry, we can write
         \begin{equation}
             g_z = |\vec g| \cdot \sin\theta
         \end{equation}
@@ -499,15 +573,22 @@ and/or fragmentation in the subsequent chapters. \\
                 &= -\rho_g \cdot |\vec g| \cdot \sin\theta \\
                 &= -\rho_g \cdot \frac{GM_*}{r^2+z^2} \cdot\frac{z}{\sqrt{r^2+z^2}} \\
                 &= -\rho_g \cdot z \cdot\frac{GM_*}{ (r^2+z^2)^{\frac{3}{2}} }
-                \label{eq:hydrostatic_equilibrium_with_plugged_in_trigonmetry}
+                \label{eq:hydrostatic_equilibrium_with_plugged_in_trigonometry}
         \end{align}
 
-        Let us now make use of \cref{eq:r_much_bigger_than_z}, which allows us to make 
-        the approximation
+        As defined in \cref{eq:definition_of_position_of_interest}, the position of interest lies 
+        at a distance of $10\ \text{au}$ from the star in the disk midplane. As such, we can safely
+        say that $r\gg z$.
+        % Let $r = r_0$, which we defined 
+        % as $10 \ \text{au}$ in \cref{sec:first_assumptions_about_the_disk}. Also, 
+        % this point shall 
+        % be situated sufficiently close to the midplane as to allow us to write
+        % Let us now make use of \cref{eq:r_much_bigger_than_z}, 
+        This allows us to make the approximation
         \begin{equation}
             \frac{GM_*}{(r^2+z^2)^{3/2}} \approx \frac{GM_*}{r^3} = \Omega_K^2
         \end{equation}
-        and thus, together with \cref{eq:hydrostatic_equilibrium_with_plugged_in_trigonmetry},
+        and thus, together with \cref{eq:hydrostatic_equilibrium_with_plugged_in_trigonometry},
         lets us write
         \begin{equation}
             \deriv{P_g}{z} \approx -\rho_g \cdot z \cdot \Omega_K^2
@@ -516,14 +597,14 @@ and/or fragmentation in the subsequent chapters. \\
         \input{diagrams/force_balance_in_disk_with_hydrostatic_equilibrium.tex}
 
         The second assumption we made about the gas in \cref{sec:first_assumptions_about_the_disk}
-        was that its behavior can be modeled as perfectly isothermal. If we differentiate the 
-        isothermal condition from 
-        \cref{eq:isothermal_condition} with respect to $z$, we get
+        is that its behavior can be modeled as perfectly isothermal. 
+        Consider the isothermal condition given in \cref{eq:isothermal_condition}. If we 
+        differentiate both sides of this equation with respect to $z$, we get
         \begin{equation}
             \deriv{P_g}{z} = \deriv{\rho_g}{z}\cdot c_s^2
         \end{equation}
 
-        Thus, we now have two expressions for $\text dP/\text dz$. Equating both of these and then 
+        Thus, we now have two expressions for $\text dP_g/\text dz$. Equating both of these and then 
         solving for $\text d\rho_g/\text dz$ leads to the following differential equation:
         % TODO Is it an ODE or a PDE ? Should I write `dy/dx` here, or `del y / del x` ?
         \begin{equation}
@@ -543,7 +624,8 @@ and/or fragmentation in the subsequent chapters. \\
         \begin{equation}
             H_p(r) :=\frac{c_s}{\Omega_K}  % TODO Define Kepler frequency.
         \end{equation}
-        is the so-called \textit{pressure scale height} of the disk
+        is the so-called \textit{pressure scale height} of the disk,
+        $\Omega_K$ labels the Kepler frequency,
         % TODO socalled vs so-called
         and
         \begin{equation}
@@ -576,20 +658,28 @@ and/or fragmentation in the subsequent chapters. \\
     % Radial Profile of Dust Volume Density {{{
     \subsection{Radial Profile of the Dust Volume Density}
 
-        After having derived an expression for 
-        the radial profile of 
-        the gas volume density at 
-        the disk midplane % TODO MIDPLANE!!!?
-        in \cref{eq:gas_volume_density_vs_distance_from_star}, 
-        we can use the definition of 
-        the dust-to-gas ratio 
-        in \cref{eq:dust-to-gas_ratio}
-        to obtain 
-        the \textit{dust volume density}, 
-        i.e. the amount of dust mass per unit volume:
+        After having derived an expression for the radial profile of the gas volume density at the 
+        disk midplane % TODO MIDPLANE!!!?
+        in \cref{eq:gas_volume_density_vs_distance_from_star}, we can use the definition of the 
+        dust-to-gas ratio in \cref{eq:dust-to-gas_ratio} to obtain the 
+        \textit{dust volume density}, i.e. the amount of dust mass per unit volume:
         \begin{equation}
             \rho_d(\vec r, t) = q_\text{dust-to-gas} \cdot \rho_g(\vec r, t)
         \end{equation}
+
+        This quantity will be relevant to in the context of the studies of dust coagulation 
+        and fragmentation that will be done later on, where we will model the temporal evolution of
+        the distribution of dust particle masses. If we were to add up all the particles in the 
+        distribution, each mutliplied by the value of its mass, then we would arrive back at this 
+        value of $\rho_d$. \\
+
+        Note that in the highly simplified model used throughout this thesis, we will assume both 
+        $\rho_g$ as well as $\rho_d$ to stay constant under translations in time, as we do not 
+        include the large-scale movement of matter from one region to another in the disk. \\
+
+        Instead, we position ourselves at a position $\vec r_0$ in the disk at a time $t_0$, and
+        only consider the gas and dust densities at that position, and at that point in time,
+        i.e. we focus on $\rho_d(\vec r_0, t_0)$ and $\rho_g(\vec r_0, t_0)$.
 
     % }}}
     % Plots of Density Profiles {{{
@@ -603,14 +693,15 @@ and/or fragmentation in the subsequent chapters. \\
             }
             \caption{
                 \textit{Top left:} 
-                    Radial Profile of the Gas Surface Density $\rho_g(r)$.
+                    Radial profile of the gas surface density $\rho_g(r)$.
                 \textit{Top right:} 
-                    Radial Profile of the Gas Volume Density at the midplane $\rho_g^\text{mid}(r)$.
+                    Radial profile of the gas volume density at the disk midplane $\rho_g^\text{mid}(r)$.
                 \textit{Bottom left:} 
-                    Radial Profile of the Gas Particle Number Density at the midplane $N_gr$. 
+                    Radial profile of the gas particle number density at the disk midplane 
+                    $N_g^\text{mid}(r)$. 
                     % TODO $N_g^\mid(r)$. ???
                 \textit{Bottom right:}
-                    $z$-Profile of the Gas Volume Density at $r=10\ \text{au}$.
+                    $z$-profile of the gas volume density at $r=r_0=10~\text{au}$.
             }
         \end{figure} 
 
@@ -634,10 +725,12 @@ and/or fragmentation in the subsequent chapters. \\
 
 % }}}
 % Gas Particle Kinematics {{{ 
-\clearpage\section{Gas Particle Kinematics}
+    \clearpage\section{Gas Particle Kinematics}
 
-    The radial gas velocity $u_g$ will be relevant for the definition of the relative dust 
-    velocities due to radial particle drift.
+    Let us now attempt to model the kinematics of circumstellar gas particles along the radial 
+    axis. The value of the radial gas velocity $u_g$ impacts the dust kinematics as well, and will
+    later be relevant for the definition of the relative dust velocities due to radial dust 
+    particle drift.
 
     % \todo{There are both stochastic and systematic contributions to the gas kinematics.}
 
@@ -646,13 +739,13 @@ and/or fragmentation in the subsequent chapters. \\
 
         Before we can define the radial gas velocity, we first have to 
         focus on the definition of the kinematic gas viscosity.
-        It can be expressed as [\todo{cite}]
+        It can be expressed as
         \begin{equation}
             \nu_g = \frac{1}{2} \cdot u_\text{th} \cdot \lambda_\text{mfp}
         \end{equation}
 
         We define the absolute value of the thermal velocity to be the mean of the magnitude
-        of the molecular velocity. It is given by [\todo{cite}]
+        of the molecular velocity. It is given by
         \begin{equation}
             u_\text{th} = \sqrt{\frac{8}{\pi}} \cdot c_s
         \end{equation}
@@ -662,8 +755,12 @@ and/or fragmentation in the subsequent chapters. \\
         \begin{equation}
             \lambda_\text{mfp} = \frac{1}{n \cdot \sigma_{\text{H}_2}}
         \end{equation}
-        Here, we follow \cite{birnstiel_dullemond_brauer_2010} and use 
-        $\sigma_{\text{H}_2} = \SI{2e-19}{\meter^2}$ for the collision cross section. \\
+        Here, we follow the 2010 work of Birnstiel, Dullemond, and
+        Brauer \cite{birnstiel_dullemond_brauer_2010} and use a value of
+        \begin{equation}
+            \sigma_{\text{H}_2} = \SI{2e-19}{\meter^2}
+        \end{equation}
+        for the gas particles' collision cross section. \\
 
         % \input{diagrams/thermal_gas_velocity.tex}
 
@@ -673,8 +770,9 @@ and/or fragmentation in the subsequent chapters. \\
 
         % \todo{Plot radial profile of "speed" (thermal + ..?)} \\
 
-        The viscous evolution of the gas disk can be described by the continuity equation 
-        \cite{birnstiel_dullemond_brauer_2010}:
+        According to \cite{birnstiel_dullemond_brauer_2010},
+        the viscous evolution of the gas in the proto-planetary disk can be described by the 
+        continuity equation 
         \begin{equation}
             \pderiv{\Sigma_g}{t}-\frac{1}{r}\pderiv{}{r}\bigg(\Sigma_g \cdot r \cdot u_g\bigg) = S_g
         \end{equation}
@@ -685,8 +783,8 @@ and/or fragmentation in the subsequent chapters. \\
         % TODO: Choose either $uor and $v$ as variable names for velocities.
         %       Be consistent across the entire thesis.
 
-        A solution to this equation is given by \cite{lynden-bell_pringle_1974}, where the 
-        radial velocity of the gas is given by
+        A solution to this equation was given in 1974 by Lynden-Bell and Pringle 
+        \cite{lynden-bell_pringle_1974}, who expressed the radial velocity of the gas as
         \begin{equation}
             \label{eq:radial_gas_velocity}
             u_{g}
@@ -694,6 +792,10 @@ and/or fragmentation in the subsequent chapters. \\
                 \cdot\pderiv{}{r}\bigg(\Sigma_g \cdot \nu_g \cdot \sqrt{r}\bigg)
         \end{equation}
         % TODO: Have I already defined the viscosity somewhere? Else define here.
+
+        We will use this expression to model the radial gas velocity as well. It will be needed for 
+        the definition of the velocities involved in dust kinematics, which are heavily influenced 
+        by the motion of gas in the space surrounding the dust particles.
 
         % \input{diagrams/radial_gas_velocity.tex}
 
@@ -704,4 +806,4 @@ and/or fragmentation in the subsequent chapters. \\
 %     \todo{Rename section? $\to$ "Disk Structure" ?} \\
 %     \todo{Plot disk structure (flaring disk, flaring index)} \\
 %     \todo{What exactly is on the ordinate? ($r$ on the abscissa)} \\
-%     \assume{Disk is radially symmetric: $f(r,\varphi,z)=f(r,z)$ (cylindrical coordinates)} \\
+%     \assume{Disk is radially symmetric: $f(r,\phi,z)=f(r,z)$ (cylindrical coordinates)} \\

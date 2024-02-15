@@ -1,96 +1,154 @@
 % Intro to Intro - What is this about? {{{ 
 
-The Smoluchowski coagulation equation provides a framework for modeling the temporal evolution of 
-a particle group's distribution of masses under the influence of particle collisions and 
-possible merge or fragmentation events. 
-As such, it can be used to study the coagulation of particles in young circumstellar disks,
-and the role dust plays in the early phases of planetary formation. \\
+As of this writing, the mechanisms involved in planetary formation are still far from being fully 
+understood. Accurate modeling of the underlying processes requires an understanding of a wide 
+variety of different sub-fields of the natural sciences, 
+including (but not limited to)
+% making it quite a complex field of study.
+gravitational N-body dynamics,
+thermodynamics and radiative transfer,
+magneto-hydro-dynamics,
+cosmo-chemistry, and 
+coagulation physics. \\
 
-Previous studies of dust particle coagulation built using the Smoluchowski equation have made the 
-simplifying assumption that the individual dust particles can be characterized entirely by the 
-value of their mass (see e.g. 
-    \cite{birnstiel_dullemond_brauer_2010}, 
-    \cite{dullemond_dominik_2004}). 
+Bringing all of these different aspects % (and more) 
+together in a sensible fashion is not easy,
+thus making this quite a complex field of study. 
+We are not helped by the fact that it is basically impossible to directly run experiments 
+on planet formation in the laboratory. Due to the involved scales with respect to e.g. 
+time, distance, mass, and energy,
+studies in the laboratory can only be made when focusing on a very small subset of the 
+questions that we would like to have answered.
+As such, apart from telescope observations, we often have to rely on numerical techniques to gain 
+insight into the respective processes, running simulations based on highly simplified theoretical 
+models. \\
+
+Various frameworks exist for constructing such models for different aspects of the planetary 
+formation process. 
+One such framework, which is of great relevance to the studies done in the context of this thesis,
+is given by the so-called \textit{Smoluchowski coagulation equation}. \\
+
+This equation allows the definition of a model for the temporal evolution of a given particle 
+group's distribution of masses under the influence of particle collisions and subsequent 
+merging and/or fragmentation events. 
+As such, the framework provided by this equation can be used to study the agglomeration of
+particles in young proto-planetary disks. More precisely, we will use this framework to study the 
+evolution of the mass distribution of \textit{circumstellar dust particles},
+% and the role that dust plays in the early phases of 
+% planetary formation. \\
+which are widely believed to play an imporant role in the early phases of planetary core 
+formation. \\
+
+Previous studies of dust particle agglomeration that made use of the framework provided by the 
+Smoluchowski coagulation equation have often made the simplifying assumption that the individual 
+dust particles can be characterized entirely by the value of their mass alone (see e.g. 
+    \cite{dullemond_dominik_2004},
+    \cite{birnstiel_dullemond_brauer_2010}). 
 This is due to the fact that the numerical integration of the Smoluchowski equation from one 
-time step to the next involves the evaluation of a summation over the coagulation kernel. 
+time-step to the next involves the evaluation of a summation over 
+the multi-dimensional \textit{kernel matrix}.
 The inclusion of a second attribute like, for instance \textit{particle porosity}, greatly 
 increases the dimensionality of the kernel, which leads to a significant increase in the 
 computational cost required for the integration. \\
 
-In this thesis we explore the possibility of lowering this computational cost via a stochastic 
-Monte Carlo sampling of the kernel matrix. The central idea is to include only the most 
-relevant sum terms, where relevance is determined by both the rate of a given collision,  
-as well as by the effect it will have on the particle mass distribution function. \\
+In this thesis, we explore the possibility of lowering this computational cost via the 
+utilization of stochastic Monte Carlo sampling of the kernel matrix. The central idea here is 
+to include only the most relevant sum terms, where relevance is determined by both the rate of 
+a given collision,  as well as by the effect that it will have on the particle mass distribution
+function. 
 
-As of this writing, the question of how planets come into being is still far from solved. \\
+% As of this writing, the question of how planets come into being is still far from solved. \\
 
-... \\
+% ... \\
 
-It is widely accepted that dust plays an important role in early phases of planet formation. \\
+% It is widely accepted that dust plays an important role in early phases of planet formation. \\
 
-This is not the same kind of dust one would find under a couch.
-The dust that can be observed in the expanse between the stars 
-and in proto-planetary disks ... [what kind of dust?] \\
+% This is not the same kind of dust one would find under a couch.
+% The dust that can be observed in the expanse between the stars 
+% and in proto-planetary disks ... [what kind of dust?] \\
 
-When studying planet formation, it is desired to have 
-a decent model for how the distribution of differently 
-sized dust particles evolves with time. \\
+% When studying planet formation, it is desired to have 
+% a decent model for how the distribution of differently 
+% sized dust particles evolves with time. \\
 
-One such model is given by the Smoluchowski coagulation equation, which a large part of this 
-thesis will be built upon. 
+% One such model is given by the Smoluchowski coagulation equation, which a large part of this 
+% thesis will be built upon. 
 
 % }}}
 % Thesis Structure {{{ 
 \section{Structure of this Thesis}
 
-The thesis is structured as follows: \\
+The thesis will be structured as follows: To get started, in \cref{sec:prerequisites} we will 
+give a short overview of a number of widely accepted ideas which are related to the origin and 
+formation of proto-planetary disks and the processes related to planet formation within them. \\
 
-We will start by giving a short overview of a number of widely accepted ideas
-related to the origin and formation of planets in \cref{sec:prerequisites}. \\
+Following that, in \cref{sec:preliminary_notes_on_axis_discretization} and 
+\cref{sec:preliminary_notes_on_the_dust_model}, we will lay out a few preliminary notes
+which are related to the discretization of axes, as well as to the method that will be used 
+for modeling the properties of both the individual dust particles, as well as the overall
+distribution of dust particles masses inside the proto-planetary disk. \\
 
-After that, we will continue with the definition of a simplified model for a proto-planetary
-disk in \cref{ch:disk}. The model should include the most relevant properties of both the disk and 
-its gas and dust contents. It will be used to model the dust particle kinematics and define the dust 
-particle collision rates. \\
+Then, we will continue with the definition of a simplified disk model in \cref{ch:disk}. 
+This model should include the most relevant properties of both the disk itself, as well as its 
+gas and dust contents. In the subsequent sections, it will be used to model the dust particle 
+kinematics, and from that define the dust particle collision rates, which will be an essential 
+part of our dust coagulation model. \\
 
 In \cref{ch:smoluchoswki} we will then utilize the Smoluchowski coagulation equation to build a 
-simplified model of the dust particle mass distribution, as well as its temporal evolution under 
-the influence of particle collisions and the following associative/disassociative events. 
-The definition of a dust coagulation model will involve the discretization of the mass axis, 
-the definition of a kernel matrix for both coagulation and fragmentation processes,
-as well as the integration of the Smoluchowski equation. \\
+simple model of the dust particle mass distribution's temporal evolution under 
+the influence of particle collisions and the following associative/dissociative events. 
+The definition of a dust coagulation model will involve 
+% the discretization of the mass axis, 
+the construction of a kernel matrix for both coagulation and fragmentation processes,
+as well as the implementation of a method for numerically integrating the Smoluchowski 
+equation using a 4th order implicit Radau integration scheme. \\
 
-Having constructed the complete kernel matrix, in \cref{ch:sampling} we will focus on the 
-implementation of stochastic Monte Carlo sampling of the kernel. 
-Here the task is to identify the most relevant collisions at a certain point in time,
-define a sensible probability density from that, 
-and conduct a random sampling of all possible collision.
+Having constructed the complete kernel matrix, in \cref{ch:sampling} we will finally focus on 
+the implementation of stochastic kernel sampling using a Monte Carlo method. 
+Here, the task is to identify the most relevant collisions at a given point in time,
+define a sensible probability distribution from that, and conduct a random sampling of all possible 
+collisions. Including only the chosen collisions, a new (incomplete) kernel matrix is then 
+defined in each time-step, with which the numerical integration is subsequently carried out.
 
 % }}}
-% AAAAAAA {{{ 
+% Intro to Planet Formation {{{ 
 \section{Short Introduction to Planet Formation}
 \label{sec:prerequisites}
 
     % The following attempts to provide a brief overview of a number of widely accepted ideas 
-    % that are central to mankind's understanding of the origin and formation of the universe 
+    % that are central to mankind's understanding of the origin and formation of the Universe 
     % and planets within it:
 
-    Directly after the Big Bang, the conditions in the young universe were not favorable for the
+    Directly after the Big Bang, the conditions in the young Universe were not favorable for the
     formation of large-scale structures. Extremely high temperatures prevented the agglomeration 
-    of smaller constituents into more complex particles. \\
+    of smaller particle constituents into more complex structures. \\
 
     Current consensus has it that it took approximately 380.000 years for
     the initial hot quark-gluon plasma to be cooled down sufficiently by 
-    the expansion of the universe to enable 
+    the expansion of the Universe to enable 
     the creation of the first hadronic matter via 
     a combination of multiple quarks into one particle. 
     For us, the most relevant of these quark combinations were of course the proton and the neutron,
-    as they provided the building blocks for the nuclei of the first atoms. \\
-
-    The capture of electrons by these atomic cores lead to the creation of neutral atoms. 
-    The elemental composition of the early universe was dominated by the contribution 
+    as they provided the building blocks for the nuclei of the first atoms. 
+    Subsequently, the capture of electrons by these atomic cores lead to the creation of neutral 
+    atoms. As they make up the most basic elements in the periodic table due to their simple 
+    atomic structure, 
+    the elemental composition of the early Universe was dominated by the contribution 
     of hydrogen present in the form of molecular gas and, to a lesser extent, 
-    helium and trace amounts of metals. 
+    mono-atomic helium. \\
+
+    Apart from trace amounts of metals that were formed mostly via nuclear fusion inside stellar 
+    cores, this statement about the chemical composition of the Universe is still valid today. 
+    % As such, the material make-up of the regions between individual stellar systems is still 
+    % dominated by the contribution of the just mentioned types of matter.
+    Though much less abundant, the presence of these metals is assumed to be essential for the 
+    formation of planets, as they provide the material for a central rocky core. Initially,
+    they are present in forms of dust particles, which are 
+    composed of various materials like silicates, carbon compounds, or ices.
+    % , ices (such as water ice, ammonia ice, methane ice)
+    % A much smaller contribution 
+    % Even though 
+    %  The dust grains in protoplanetary disks are typically composed of various materials, including silicates, carbonaceous compounds, ices (such as water ice, ammonia ice, methane ice), and organic molecules.
 
     % The birthplace of both stars and planets is widely accepted to found in giant 
     % interstellar clouds made up of large amounts of this gas.
@@ -100,7 +158,6 @@ and conduct a random sampling of all possible collision.
     % Large clouds consisting almost entirely ($>99\%$ by mass)
 
     % The results 
-    
 
     % The products of the above-mentioned process can be seen in the large-scale spatial 
     % structure and chemical composition 
@@ -114,10 +171,9 @@ and conduct a random sampling of all possible collision.
 
     % disk around star
 
-
-              % the elemental composition of which
-              % the distribution of which would be 
-              % dominated by hydrogen and, to lesser extent, helium.
+    % the elemental composition of which
+    % the distribution of which would be 
+    % dominated by hydrogen and, to lesser extent, helium.
     
     % \begin{itemize}
     %     % \item 
@@ -131,7 +187,7 @@ and conduct a random sampling of all possible collision.
     %           % as the cores in the subsequent formation of atomic formation.
     %           % into mostly hydrogen and, to a lesser 
     %           % extent, helium lead to the formation of the large scale chemical make-up of the 
-    %           % universe that is still observed today.
+    %           % Universe that is still observed today.
 
     %     % \item formation of molecules ($\text{H}_2$ hydrogen gas)
 
@@ -169,35 +225,35 @@ and conduct a random sampling of all possible collision.
     At first glance, it might not be easy to imagine how such giant objects like planets and 
     even stars can form in the ISM. After all, one might naively say that it consists of mostly
     nothing. From the point of view of a human living on Earth, the interstellar regions of
-    outer space appear to be a near-perfect vacuum. \\
-
+    space appear to be a near-perfect vacuum. 
     Measurements of the the molcular particle number density in the ISM have been made in 
-    previous studies by e.g. \cite{burton_2013}. Here, they showed that the number of particles 
-    per unit volume can range from $\SI{1e16}{\meter^{-3}}$ all the way down to 
-    $\SI{1e3}{\meter^{-3}}$. \\
+    previous studies by e.g. \cite{burton_2013}, where they showed that the number of
+    particles per unit volume can range from approximately $\SI{1e16}{\meter^{-3}}$ all the way 
+    down to $\SI{1e3}{\meter^{-3}}$. \\
 
     The exact value of the particle number density depends of course heavily on the precise 
-    position in the ISM. Nonetheless, a comparison of the mere orders of magnitude involved 
+    location. Nonetheless, a comparison of the mere orders of magnitude involved 
     here demonstrates the huge difference in particle abundances in the ISM when compared to 
-    Earth, where the number of gas molecules inside the atmosphere is approximately 
-    $\SI{1e25}{\meter^{-3}}$.
-    \footnote{Here we assume the validity of the ideal gas law, a sea-level pressure of 
-              $p=\SI{1}{\bar}$, and a temperature of $T=\SI{25}{\celsius}$.}
-    \\
+    Earth, where the number\footnote{Here we assume the validity of the ideal gas law, 
+        a sea-level pressure of $p=\SI{1}{\bar}$, and a temperature of $T=\SI{25}{\celsius}$.}
+    of gas molecules inside the atmosphere is approximately $\SI{1e25}{\meter^{-3}}$. \\
+
+    Under the influence of gravity, the material in the ISM can gather into what is 
+    appropriately called \textit{giant interstellar clouds}.
+    % Over time scales of (\todo{approx. how many years?}), the material in the ISM 
+    % will, under the effect of gravity, gather in giant interstellar clouds. 
+    Examples of such clouds are given by e.g. the Orion Nebula,
+    which can be seen with the naked eye as the ``sword'' in the Orion constellation,
+    or the Eagle Nebula, which hosts the famous \textit{Pillars of Creation}.
+    Measurements of these two can be seen visualized in 
+    \cref{fig:star_forming_regions}. \\
 
     The fact that giant astronomical objects like PPDs, stars, and planets can form from the 
-    material found in the ISM, can be understood more easily if one brings to mind the
-    absolutely enormous scales of both space and time that are involved here. \\
-
-    Over time scales of (\todo{approx. how many years?}), the material in the ISM 
-    will, under the effect of gravity, gather in giant interstellar clouds. Examples for such 
-    clouds are given by e.g. \todo{(examples for clouds)}, measurements of which can be seen 
-    visualized in \todo{(cite figures)}. \\
+    low volume densities of the material found in the ISM, may be understood more easily if one
+    brings to mind the absolutely enormous scales of both space and time that are involved here. \\
 
     % \todo{Images of interstellar gas clouds, star-forming regions.} \\
     % \todo{How big are they? How many light years across, approximately?} \\
-
-    \input{diagrams/star_forming_regions.tex}
 
     % The material making up these clouds can be classified into three main categories:
     % \begin{enumerate}
@@ -212,109 +268,223 @@ and conduct a random sampling of all possible collision.
     %         \todo{Shape: (fractal?)}
     % \end{enumerate}
 
-    Now that we've taken a brief look at the material make-up and particle density of the ISM, 
-    let us turn our attention to the question of how PPDs, stars, and planets can be formed 
-    from the aforementioned clouds of gas and dust.
+    % Now that we've taken a brief look at the material make-up and particle density of the ISM, 
+    % let us turn our attention to the question of how PPDs, stars, and planets can be formed 
+    % from the aforementioned clouds of gas and dust.
+
+    \input{diagrams/star_forming_regions.tex}
 
   % }}}
 % The Nebular Hypothesis {{{ 
 \clearpage\subsection{The Nebular Hypothesis}
 
-    The \textit{nebular hypothesis} is a widely accepted model for explaining the formation and 
-    evolution of not only our own Solar System, but the planetary systems around other stars as 
-    well. 
-
+    But how \textit{do} stars, and the planetary systems surrounding them, form in these regions?
+    One explanation is given by 
+    the so-called \textit{nebular hypothesis}, which provides a widely accepted model for 
+    explaining the formation and evolution of not only our own Solar System, but the planetary 
+    systems around other stars as well. 
     It was postulated independently by Immanuel Kant        % TODO cite
     and Pierre-Simon Laplace                                % TODO cite
     in 1755 and 1796, respectively. \\                      % TODO "independently" is that true?
 
-    The hypothesis is built upon the idea that the formation of proto-planetary disks (and thus 
-    solar systems) can be explained via the gravitational collapse of giant interstellar clouds 
-    of gas and dust. (\todo: Examples for such star-forming regions, see above [cite]) \\
-    \todo{(molecular clouds)}
+    The hypothesis is built upon the idea that the formation of proto-planetary disks, and thus 
+    stellar systems, can be explained via the gravitational collapse of interstellar clouds 
+    of gas and dust. \\
+    % (\todo: Examples for such star-forming regions, see above [cite]) \\
+    % \todo{(molecular clouds)}
 
-    \todo{What is there at the beginning?}
-    \begin{itemize}
-        \item a giant cloud of (mostly) gas in the interstellar medium 
-              (as said before: mostly di-atomic hydrogen, and mono-atomic helium)
-    \end{itemize}
-    \todo{How big is such a cloud?}
-    \begin{itemize}
-        \item ...
-    \end{itemize}
-    \todo{What happens?}
-    \begin{itemize}
-        \item The cloud collapses under its own gravity. \todo{Cause?}
-        \item The cloud posseses a total angular momentum. It is most likely $\neq 0$.
-        \item Therefore, the cloud does not just simply collapse into a single point. 
-              (\todo{...})
-        \item The cloud flattens into a disk.
-        \item The majority of the mass present in the cloud gathers in the center.
-        \item The rest of the mass flattens into a disk orbiting the star 
-              (later: solar system).
-        \item In the center/core, density and temperature increase to a point that nuclear 
-              fusion becomes possible.
-    \end{itemize}
+    Such a collapse may be induced by external influences, like e.g. a shock-wave from a nearby 
+    supernova explosion, or just happen due to an irregular distribution of matter in the cloud, 
+    leading to a graviational instability. \\
 
-    \todo{Result: PPD} \\
-    \todo{Images of PPDs.}
+    When such a cloud falls in on itself, one might naively think that this leads to the 
+    entire matter collapsing into a single point. But since the cloud possesses a total angular 
+    momentum which is most likely $\neq 0$, this does not happen. 
+    Instead, the cloud flattens into a disk-like structure, where gravitational influences
+    are only balanced out along the radial axis by centrifugal forces. 
+    Such a disk will also not continue to flatten into an infinitesimally thin structure.
+    This is due to the non-zero temperatures and the internal gas pressure support along the 
+    $z$-axis, i.e. the axis orthogonal to the disk. \\
+
+    In the center/core of the disk, densities and temperatures may increase to a point that 
+    nuclear fusion becomes possible, and a star can form. 
+    The result is a proto-planetary disk, examples of which can be detected all around our own 
+    location in the Milky Way. Examples of observations of such objects can be seen visualized 
+    in \cref{fig:ppd_alma_observations}.
+
+    % \todo{What is there at the beginning?}
+    % \begin{itemize}
+    %     \item a giant cloud of (mostly) gas in the interstellar medium 
+    %           (as said before: mostly di-atomic hydrogen, and mono-atomic helium)
+    % \end{itemize}
+    % \todo{How big is such a cloud?}
+    % \begin{itemize}
+    %     \item ...
+    % \end{itemize}
+    % \todo{What happens?}
+    % \begin{itemize}
+    %     \item The cloud collapses under its own gravity. \todo{Cause?}
+    %     \item The cloud posseses a total angular momentum. It is most likely $\neq 0$.
+    %     \item Therefore, the cloud does not just simply collapse into a single point. 
+    %           (\todo{...})
+    %     \item The cloud flattens into a disk.
+    %     \item The majority of the mass present in the cloud gathers in the center.
+    %     \item The rest of the mass flattens into a disk orbiting the star 
+    %           (later: solar system).
+    %     \item In the center/core, density and temperature increase to a point that nuclear 
+    %           fusion becomes possible.
+    % \end{itemize}
+
+    % \todo{Result: PPD} \\
+    % \todo{Images of PPDs.} \\
+
+    \vfill
+    \begin{figure}[h!]
+        \centering
+        \begin{minipage}{.5\linewidth}
+            \centering
+            \subfloat[Disk around TW Hydrae \cite{tw_hydrae_alma_2016}]{
+                \label{:a}
+          	  	\includegraphics[width=0.85\linewidth]{eso1611a.jpg}
+          	}
+        \end{minipage}%
+        \begin{minipage}{.5\linewidth}
+            \centering
+            \subfloat[Disk around HL Tauri \cite{hl_tauri_alma_2014}]{
+                \label{:b}
+                \includegraphics[width=0.85\linewidth]{HL_Tau_protoplanetary_disk.jpg}
+          	}
+        \end{minipage}
+        \caption{
+            Observations performed at \textit{Atacama Large Millimeter Array} (ALMA) of 
+            the proto-planetary disk around the stars (a) TW Hydrae and (b) HL Tauri. \\
+            \vspace{2.5mm}
+         }
+        \label{fig:ppd_alma_observations}
+    \end{figure}
 
 % }}}
 % The Road from Dust to Planet {{{ 
 \clearpage\subsection{The Road from Dust to Planet}
 
-    \todo{Evolution over many orders of magnitude.} \\
-    \todo{Start with gas.}
+    In the early stages of planet formation, gravity most likely does not play a dominant role in 
+    particle agglomeration processes. Instead, dust grains composed of the afore-mentioned 
+    materials collide and then stick together mainly 
+    via microphysical processes like van der Waals or Coulomb interactions. 
+    Over time, larger and larger structures form from initially tiny particles, such that
+    the range of dust particles sizes can range from microns up to 
+    millimeter and centimeter sizes, more similar to ``sand and pebbles'' than to grains.
+    \cite{natta_2006} \\
 
-    \todo{Then: dust particles}
-    \begin{itemize}
-        \item How do they form?
-    \end{itemize}
+    % (Ward, William R., 1996). 
+    This process of dust coagulation is not still entirely understood today. For example, 
+    there remains the unanswered question of how exactly it is possible for these aggregates to 
+    continue growing 
+    % into larger and larger structures,
+    without fragmenting into smaller pieces again when collisions with other particles occur.
+    % exactly the early planet cores manage to grow without fragmenting into smaller pieces again at
+    % collisions with other, similarly-sized planetesimals. % (Morbidelli and Raymond, 2016). 
+    Assuming this so-called fragmentation barrier and other barriers can be overcome though, 
+    ever larger structures emerge as particles collide and stick to each other. 
+    From the initial dust particles, fractal-shaped 
+    ``dust bunnies'' form, which themselves over long time-scales may evolve into pebbles. \\
+    % then bigger ones, and 
 
-    \todo{Then: dust agglomerates}
-    \begin{itemize}
-        \item They form via Coulomb and/or Van-der-Waals interactions
-        \item Particles collide and, under the right circumstances, stick together.
-        \item Larger and larger agglomerates form.
-        \item They possess a fractal shape (dust bunnies).
-    \end{itemize}
-    \todo{Image of dust bunnies/fractals.}
+    The presence of these pebbles may at some point allow
+    the formation of large enough structures such that one could reasonably speak of
+    \textit{planetesimals}. 
+    The gravitational influence of these bodies can then become strong enough to 
+    assist in the sticking of smaller grains to the planetesimals, as well as the 
+    accretion of gas. \\
 
-    \todo{Then: pebbles} \\
-    \todo{Then: planetesimals} \\
-    \todo{Then: planetary cores (may start accreting gas)} \\
-    \todo{Then: terrestrial planets} \\
-    \todo{Then: gas giants (outer regions?)} \\
+    Most modern planet formation models assume the initial buildup of a rocky core, which 
+    subsequently may develop into a terrestrial planet, or into a giant planet consisting of a 
+    rocky core surrounded by a large gaseous hull. 
+    % ! Recent planet formation models mostly assume the initial buildup of a central rocky core. 
+    % From this point on, the proto-planet may either develop into a terrestrial planet or into a 
+    % giant planet consisting of a rocky core and a large gaseous hull. 
+    In our own Solar System, the
+    four terrestrial planets 
+    Mercury, Venus, Earth, and Mars
+    are situated closest to the Sun, whereas the four gas giants 
+    Jupiter, Saturn, Uranus, and Neptune 
+    orbit the Sun at much greater distances, 
+    in the outer regions of the Solar System. \\
 
-    \todo{Visualize particle coagulation.}
+    Most likely, this is no coincidence. 
+    As was already mentioned, the greater part of matter in the universe 
+    (and therefore also of most matter in newly formed disks), 
+    consists of light elements like hydrogen and helium. 
+    Because of radiation pressure induced by solar wind, these light elements are pushed outwards 
+    away from the disk center, and accumulate in its outer regions. 
+    Therefore, an accreting planetoid in the outskirts of the disk has 
+    much more gaseous material available for accretion in its vicinity than one positioned close to 
+    the center. \\
+
+    In this thesis, we will focus on the very early stages of the dust coagulation process, 
+    and use the Smoluchowski equation to model the distribution 
+    of dust particle masses as well as its temporal evolution. \\
+
+    % To 
+    % by using the Smoluchowski coagulation equation to 
+    % In this thesis, we will focus on the very early stages of this process. \\
+
+    % \todo{...}
+
+    % \todo{Evolution over many orders of magnitude.} \\
+    % \todo{Start with gas.}
+
+    % \todo{Then: dust particles}
+    % \begin{itemize}
+    %     \item How do they form?
+    % \end{itemize}
+
+    % \todo{Then: dust agglomerates}
+    % \begin{itemize}
+    %     \item They form via Coulomb and/or Van-der-Waals interactions
+    %     \item Particles collide and, under the right circumstances, stick together.
+    %     \item Larger and larger agglomerates form.
+    %     \item They possess a fractal shape (dust bunnies).
+    % \end{itemize}
+    % \todo{Image of dust bunnies/fractals.}
+
+    % \todo{Then: pebbles} \\
+    % \todo{Then: planetesimals} \\
+    % \todo{Then: planetary cores (may start accreting gas)} \\
+    % \todo{Then: terrestrial planets} \\
+    % \todo{Then: gas giants (outer regions?)} \\
+
+    % \todo{Visualize particle coagulation.}
 
 % }}}
 % Preliminary Notes on Axis Discretization {{{
 \clearpage\section{Preliminary Notes on Axis Discretization}
 \label{sec:preliminary_notes_on_axis_discretization}
 
-    Throughout this thesis, we will deal with several physical quantities carrying values that 
-    range across many orders of magnitude. Most notably, these are time, distance, and mass. \\
+    In order to do this, we will have to deal with several physical quantities 
+    that carry values ranging across many orders of magnitude. Most notably, these quantities are 
+    time, distance, and mass. \\
 
-    The Smoluchowski equation serves as the foundation for the coagulation model that we will 
-    build. Since this integro-differential equation has analytical solutions in only a limited 
-    set of cases, it will be necessary to make use of numerical integration techniques to obtain 
-    an approximate solution for the evolution of the dust particle mass distribution in the 
-    considered disk region. Before numerical integration, the axes for the above-mentioned 
-    physical quantities will have to be discretized in an appropriate manner. \\
+    As mentioned earlier, the Smoluchowski coagulation equation serves as the foundation for the 
+    coagulation model 
+    that we will build. Since this integro-differential equation has analytical solutions in 
+    only a limited set of cases, it will be necessary to make use of numerical integration 
+    techniques to obtain an approximate solution for the evolution of the dust particle mass 
+    distribution in the considered disk region. Before numerical integration, the axes for the 
+    above-mentioned physical quantities will have to be discretized in an appropriate manner. \\
 
     As an example, we will here demonstrate how one might do this for the mass axis $m$. 
-    The construction  of a discrete axis for both space (i.e. radial distance $r$ from the 
+    The construction of the discrete axes for both space (i.e. radial distance $r$ from the 
     central star) and time $t$ can then be done entirely analogously. \\
 
-    The continuous range $m$ of particle masses present in the disk is partitioned into a set of 
-    $\mathcal N_m\in\mathbb N$ intervals, which we will refer to as "bins" from this point onwards. 
-    Each of these bins can be uniquely characterized by an index 
+    The continuous range $m$ of particle masses present in the disk is to be partitioned into a 
+    set of $\mathcal N_m\in\mathbb N$ intervals, which we will refer to as ``bins'' from this 
+    point onwards. Each of these bins can be uniquely characterized by an index 
     $i\in[1,\mathcal N_m]\cap\mathbb N$, and assigned a corresponding mass value $m_i^\text{c}$, 
-    which is situated at the \textit{center of the bin} (ergo the superfix "c").\\
+    which is situated at the \textit{center of the bin} (ergo the superfix ``c'').\\
     
     To derive an expression that can be used to calculate the mass values at these bin centers, 
-    let us first define the mass values at the \textit{boundaries of the bin}. To do this,
+    let us first define the mass values at the \textit{boundaries of the bins}. To do this,
     consider a collection of $\mathcal N_m+1$ appropriately spaced grid points $m_i^\text{b}$. 
     The first and last of these values, i.e. the lower and upper boundaries of the discrete mass 
     grid, shall be labeled $m_\text{min}$ and $m_\text{max}$, respectively. \\
@@ -323,11 +493,15 @@ and conduct a random sampling of all possible collision.
     \cref{subsec:axis_discretization_with_linear_scale} and
     \cref{subsec:axis_discretization_with_logarithmic_scale}, we will go into more detail on how 
     exactly the values for $m_i^\text{b}$ and $m_i^\text{c}$ are to be defined when making use of 
-    a linear and logarithmic scaling, respectively. \\
+    a linear and logarithmic scaling, respectively. 
+    If not specified otherwise, throughout this
+    thesis we will always use the logarithmic scaling for the discretization of the axes for mass,
+    distance, and time. Also, we we will mostly be considering the grid values at the bin centers,
+    and for thus for reasons of readibility refrain from including the superfix into the equations. 
     % TODO Assure consistent usage of \text{b} and \text{c}.
 
-    For the moment, a schematic represenation of the continuous mass axis and its discrete analogon
-    can be seen visualized in \cref{fig:continuous_and_discrete_mass_axis} below.
+    % For the moment, a schematic represenation of the continuous mass axis and its discrete analogon
+    % can be seen visualized in \cref{fig:continuous_and_discrete_mass_axis} below.
     % TODO Display `Figure` instead of `fig`.
 
     \input{diagrams/discrete_mass_axis.tex}
@@ -367,7 +541,7 @@ and conduct a random sampling of all possible collision.
                 =\mathcal N_m\cdot\frac{m-m_\text{min}}{m_\text{max}-m_\text{min}}
         \end{equation}
         
-        % Sidenote: In the linearily scaled mass grid, the bin "width" is constant, and independent of the 
+        % Sidenote: In the linearly scaled mass grid, the bin "width" is constant, and independent of the 
         % bin index. This will change once the switch to a logarithmic grid is made! For now though, it is 
         % given by
         % \begin{align}
@@ -382,9 +556,9 @@ and conduct a random sampling of all possible collision.
     \label{subsec:axis_discretization_with_logarithmic_scale}
 
         The procedure for constructing the discretized axis using a logarithmic scaling works quite
-        analogously to what we just saw in the linear case. (The main difference is that we switch
-        out addition/subtraction by multiplication/division, and multiplication/division by
-        exponentiation.)
+        analogously to what we just saw in the linear case. The main difference is that we will 
+        switch out addition/subtraction by multiplication/division, and multiplication/division 
+        by exponentiation.
         \\
 
         As before, let $\mathcal N_m$ label the total number of bins, each of which can be uniquely 
@@ -404,7 +578,7 @@ and conduct a random sampling of all possible collision.
         \end{align}
     
         As in the linear case, the inverse transformation can easily be arrived at by rearranging
-        for the index $i$, which leads to the following expression:
+        for the bin index $i$, which leads to the following expression:
         \begin{align}
             i(m) = \mathcal N_m\cdot \frac{
                 \log(m)-\log(m_\text{min})
@@ -413,7 +587,7 @@ and conduct a random sampling of all possible collision.
             }
         \end{align}
         
-        In contrast to the linear grid, where the "bin width", i.e. the additive offset between bins
+        In contrast to the linear grid, where the ``bin width'', i.e. the additive offset between bins
         \begin{equation}
             \Delta m := m_{i+1} - m_i
         \end{equation}
@@ -433,183 +607,274 @@ and conduct a random sampling of all possible collision.
 \clearpage\section{Preliminary Notes on the Dust Model}
 \label{sec:preliminary_notes_on_the_dust_model}
 
-% A Single Dust Particle {{{ 
+    Let us now turn our attention to the question of how one might model the individual 
+    dust particles present in the proto-planetary disk.
+    Here, it will be necessary to make simplifying assumptions, that obviously cannot 
+    reflect physical reality, but must suffice as an approximate model. \\
 
-    Let us now turn our attention to individual dust particles: \\
+    % The Individual Dust Particles {{{ 
+    \subsection{The Individual Dust Particles}
 
-    % \assume{
-    In the context of this thesis, we will model the individual dust particles as perfectly 
-    spherical bodies of a shared solid density $\rho_s$. This allows us to group the particles 
-    into different classes, each uniquely identified by the particles' mass value $m$.
-    Also, this shape allows us state the following relationship between particle mass and 
-    particle radius $a$:
-    % }
-    \begin{align}
-        m
-            =\rho_s \cdot \frac{4\pi}{3}a^3
-        \ \ \ \ \ \text{and}\ \ \ \ \
-        a
-            =\bigg(\frac{3}{4\pi} \cdot \frac{m}{\rho_s}\bigg)^{1/3}
-    \end{align}
+        % \assume{
+        In the context of this thesis, we will model the individual dust particles as perfectly 
+        spherical bodies, all possessing a shared solid density $\rho_s$. This allows us to 
+        group the particles into different classes, each uniquely identified by the particles' 
+        mass value $m$. \\
 
-    Building upon prior work done by Birnstiel, Dullemond, \& Brauer % TODO Use Oxford comma?
-    \cite{birnstiel_dullemond_brauer_2010}, we will assume that the volume density of the dust 
-    particles carries a value of
-    $$\rho_s=\SI{1600}{\kilogram\ \meter^{-3}}$$
-    % TODO Increase spacing in `\SI` renders, here & elsewhere.
+        Also, this shape allows us state the following relationship between 
+        particle mass $m$ and radius $a$:
+        % }
+        \begin{align}
+            m
+                =\rho_s \cdot \frac{4\pi}{3}a^3
+            \ \ \ \ \ \text{and}\ \ \ \ \
+            a
+                =\bigg(\frac{3}{4\pi} \cdot \frac{m}{\rho_s}\bigg)^{1/3}
+        \end{align}
 
-    \begin{figure}[h!]
-        \centering
-        \begin{minipage}{.5\linewidth}
+        Building upon prior work done in the 2010 paper by Birnstiel, Dullemond \& Brauer 
+        % TODO Use Oxford comma?
+        \cite{birnstiel_dullemond_brauer_2010}, we will assume that the solid density of the dust 
+        particles carries a value of
+        \begin{equation}
+            \rho_s = \SI{1600}{\kilogram~\meter^{-3}}
+        \end{equation}
+        % TODO Increase spacing in `\SI` renders, here & elsewhere.
+
+        In reality, as a result of collisions leading to sticking, these dust particles can 
+        take on very complex, fractal shapes.
+        This complicated structure makes a detailed treatment of large particle numbers 
+        basically impossible. Instead, highly simplified assumptions have to be made,
+        visualizations of which are displayed schematically in 
+        \cref{fig:shapes_of_dust_particles}.
+
+        % In the context of this thesis, we will adopt a minimum and maximum mass value of 
+        % $10^{-4}~\text{kg}$ and $10^{-4}~\text{kg}$
+
+        \vfill
+
+        \begin{figure}[h!]
             \centering
-          	\subfloat[Compact]{
-                \label{:a}
-                \begin{tikzpicture}
-                    \def\R{1}
-                    \draw[fill={black!0!white}] (0, 0) circle (\R);
-                \end{tikzpicture}
-          	}
-        \end{minipage}%
-        \begin{minipage}{.5\linewidth}
-            \centering
-          	\subfloat[Porous (BPCA)]{
-                \label{:b}
-                \begin{tikzpicture}
-                    \def\R{0.2}
-                    \draw[fill={black!0!white}] ( 1*\R, -1*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 2*\R, -1*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 3*\R, -2*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 3*\R, -3*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 4*\R, -4*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 5*\R, -4*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 6*\R, -5*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 7*\R, -4*\R) circle (\R);
+            \begin{minipage}{.5\linewidth}
+                \vspace{1cm}
+                \centering
+              	\subfloat[Compact]{
+                    \label{:a}
+                    \begin{tikzpicture}
+                        \def\R{1}
+                        \draw[fill={black!0!white}] (0, 0) circle (\R);
+                    \end{tikzpicture}
+              	}
+            \end{minipage}%
+            \begin{minipage}{.5\linewidth}
+                \vspace{1cm}
+                \centering
+              	\subfloat[Linear]{
+                    \label{:b}
+                    \begin{tikzpicture}
+                        \def\R{0.2}
+                        \draw[fill={black!0!white}] ( 0*\R,  0*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 1*\R,  1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 2*\R,  1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R,  2*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 4*\R,  3*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 5*\R,  3*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 6*\R,  4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 7*\R,  4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 8*\R,  4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 9*\R,  5*\R) circle (\R);
+                        \draw[fill={black!0!white}] (10*\R,  6*\R) circle (\R);
+                        \draw[fill={black!0!white}] (11*\R,  6*\R) circle (\R);
+                        \draw[fill={black!0!white}] (12*\R,  5*\R) circle (\R);
+                        \draw[fill={black!0!white}] (13*\R,  6*\R) circle (\R);
+                        \draw[fill={black!0!white}] (14*\R,  5*\R) circle (\R);
+                        \draw[fill={black!0!white}] (15*\R,  5*\R) circle (\R);
+                        \draw[fill={black!0!white}] (16*\R,  4*\R) circle (\R);
+                        \draw[fill={black!0!white}] (17*\R,  4*\R) circle (\R);
+                        \draw[fill={black!0!white}] (18*\R,  5*\R) circle (\R);
+                        \draw[fill={black!0!white}] (19*\R,  5*\R) circle (\R);
+                    \end{tikzpicture}
+              	}
+            \end{minipage}
+            \begin{minipage}{.5\linewidth}
+                \vspace{1.5cm}
+                \centering
+              	\subfloat[Porous (BPCA)]{
+                    \label{:b}
+                    \begin{tikzpicture}
+                        \def\R{0.2}
+                        \draw[fill={black!0!white}] ( 1*\R, -1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 2*\R, -1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R, -2*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R, -3*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 4*\R, -4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 5*\R, -4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 6*\R, -5*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 7*\R, -4*\R) circle (\R);
 
-                    \draw[fill={black!0!white}] ( 0*\R,  0*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 0*\R,  1*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 0*\R,  2*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 1*\R,  3*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 1*\R,  4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -1*\R, 0*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -2*\R, 1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -2*\R, 2*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -1*\R, 5*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -1*\R, 6*\R) circle (\R);
 
-                    \draw[fill={black!0!white}] ( 0*\R,  4*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 0*\R,  5*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 0*\R,  6*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 1*\R,  7*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 1*\R,  8*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 2*\R,  8*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -2*\R, 0*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -3*\R, 1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -3*\R, 2*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -2*\R, 5*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -2*\R, 6*\R) circle (\R);
 
-                    \draw[fill={black!0!white}] ( 2*\R,  4*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 3*\R,  4*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 3*\R,  5*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 3*\R,  6*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 4*\R,  6*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -4*\R, 0*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -3*\R, 1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -3*\R, 4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -4*\R, 5*\R) circle (\R);
 
-                    \draw[fill={black!0!white}] ( 0*\R,  0*\R) circle (\R);
-                    \draw[fill={black!0!white}] (-1*\R, -1*\R) circle (\R);
-                    \draw[fill={black!0!white}] (-2*\R, -2*\R) circle (\R);
-                    \draw[fill={black!0!white}] (-3*\R, -3*\R) circle (\R);
-                    \draw[fill={black!0!white}] (-4*\R, -3*\R) circle (\R);
-                    \draw[fill={black!0!white}] (-4*\R, -2*\R) circle (\R);
-                \end{tikzpicture}
-          	}
-        \end{minipage}
-        \begin{minipage}{.5\linewidth}
-            \centering
-          	\subfloat[Fractal (BCCA)]{
-                \label{:a}
-                \begin{tikzpicture}
-                    \def\R{0.2}
-                    \draw[fill={black!0!white}] ( 1*\R, -1*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 2*\R, -1*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 3*\R, -2*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 3*\R, -3*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 4*\R, -4*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 5*\R, -4*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 6*\R, -5*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 7*\R, -4*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 8*\R, -4*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 8*\R, -3*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 9*\R, -2*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 8*\R, -1*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 8*\R,  0*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 7*\R,  1*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 6*\R,  2*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 7*\R, -5*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 6*\R, -5*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 5*\R, -5*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 6*\R, -6*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 7*\R, -6*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 7*\R, -7*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 7*\R, -8*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -2*\R, 0*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -3*\R, 1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -3*\R, 2*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( -3*\R, 4*\R) circle (\R);
 
-                    \draw[fill={black!0!white}] ( 6*\R, -8*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 5*\R, -8*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 5*\R, -9*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 4*\R, -9*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 3*\R, -9*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 3*\R, -10*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 3*\R, -11*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 2*\R,  0*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R,  1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R,  2*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R,  4*\R) circle (\R);
 
-                    \draw[fill={black!0!white}] ( 0*\R,  0*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 0*\R,  1*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 0*\R,  2*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 1*\R,  3*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 1*\R,  4*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 2*\R,  4*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 3*\R,  4*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 3*\R,  5*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 3*\R,  6*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 4*\R,  0*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 5*\R,  1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 4*\R,  2*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 4*\R,  4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R,  1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R,  2*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R,  3*\R) circle (\R);
 
-                    \draw[fill={black!0!white}] ( 0*\R,  0*\R) circle (\R);
-                    \draw[fill={black!0!white}] (-1*\R, -1*\R) circle (\R);
-                    \draw[fill={black!0!white}] (-2*\R, -2*\R) circle (\R);
-                    \draw[fill={black!0!white}] (-3*\R, -3*\R) circle (\R);
-                    \draw[fill={black!0!white}] (-4*\R, -3*\R) circle (\R);
-                    \draw[fill={black!0!white}] (-4*\R, -2*\R) circle (\R);
-                    \draw[fill={black!0!white}] (-4*\R,  0*\R) circle (\R);
-                    \draw[fill={black!0!white}] (-4*\R,  1*\R) circle (\R);
-                \end{tikzpicture}
-          	}
-        \end{minipage}%
-        \begin{minipage}{.5\linewidth}
-            \centering
-          	\subfloat[Linear]{
-                \label{:b}
-                \begin{tikzpicture}
-                    \def\R{0.2}
-                    \draw[fill={black!0!white}] ( 0*\R,  0*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 1*\R,  1*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 2*\R,  1*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 3*\R,  2*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 4*\R,  3*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 5*\R,  3*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 6*\R,  4*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 7*\R,  4*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 8*\R,  4*\R) circle (\R);
-                    \draw[fill={black!0!white}] ( 9*\R,  5*\R) circle (\R);
-                    \draw[fill={black!0!white}] (10*\R,  6*\R) circle (\R);
-                    \draw[fill={black!0!white}] (11*\R,  6*\R) circle (\R);
-                    \draw[fill={black!0!white}] (12*\R,  6*\R) circle (\R);
-                    \draw[fill={black!0!white}] (13*\R,  6*\R) circle (\R);
-                    \draw[fill={black!0!white}] (14*\R,  5*\R) circle (\R);
-                    \draw[fill={black!0!white}] (15*\R,  5*\R) circle (\R);
-                    \draw[fill={black!0!white}] (16*\R,  4*\R) circle (\R);
-                    \draw[fill={black!0!white}] (17*\R,  4*\R) circle (\R);
-                    \draw[fill={black!0!white}] (18*\R,  5*\R) circle (\R);
-                    \draw[fill={black!0!white}] (19*\R,  5*\R) circle (\R);
-                \end{tikzpicture}
-          	}
-        \end{minipage}
-        \caption{
-            \todo{in reality, fractals [image!]} \\ 
-            \todo{in our case, spheres}
-        }
-        \label{}
-    \end{figure}
+                        \draw[fill={black!0!white}] ( 0*\R,  0*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 0*\R,  1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 0*\R,  2*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 1*\R,  3*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 1*\R,  4*\R) circle (\R);
 
+                        \draw[fill={black!0!white}] ( 0*\R,  4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 0*\R,  5*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 0*\R,  6*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 1*\R,  7*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 1*\R,  8*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 2*\R,  8*\R) circle (\R);
+
+                        \draw[fill={black!0!white}] ( 2*\R,  4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R,  4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R,  5*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R,  6*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 4*\R,  6*\R) circle (\R);
+
+                        \draw[fill={black!0!white}] ( 0*\R,  0*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-1*\R, -1*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-2*\R, -2*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-3*\R, -3*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-4*\R, -3*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-4*\R, -2*\R) circle (\R);
+                        \draw[fill={black!0!white}] (1*\R, 1*\R) circle (\R);
+
+                        \draw[fill={black!0!white}] (5*\R, -1*\R) circle (\R);
+                        \draw[fill={black!0!white}] (4*\R, -1*\R) circle (\R);
+                        \draw[fill={black!0!white}] (5*\R, -2*\R) circle (\R);
+                        \draw[fill={black!0!white}] (6*\R, -2.5*\R) circle (\R);
+                        \draw[fill={black!0!white}] (7*\R, -3*\R) circle (\R);
+
+                    \end{tikzpicture}
+              	}
+                \vspace{1cm}
+            \end{minipage}%
+            \begin{minipage}{.5\linewidth}
+                \vspace{1.5cm}
+                \centering
+              	\subfloat[Fractal (BCCA)]{
+                    \label{:a}
+                    \begin{tikzpicture}
+                        \def\R{0.2}
+                        \draw[fill={black!0!white}] ( 1*\R, -1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 2*\R, -1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R, -2*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R, -3*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 4*\R, -4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 5*\R, -4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 6*\R, -5*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 7*\R, -4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 8*\R, -4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 8*\R, -3*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 9*\R, -2*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 8*\R, -1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 8*\R,  0*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 7*\R,  1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 6*\R,  2*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 7*\R, -5*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 6*\R, -5*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 5*\R, -5*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 6*\R, -6*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 7*\R, -6*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 7*\R, -7*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 7*\R, -8*\R) circle (\R);
+
+                        \draw[fill={black!0!white}] ( 6*\R, -8*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 5*\R, -8*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 5*\R, -9*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 4*\R, -9*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R, -9*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R, -10*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R, -11*\R) circle (\R);
+
+                        \draw[fill={black!0!white}] ( 7*\R, -8*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 8*\R, -8*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 8*\R, -9*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 7*\R, -9*\R) circle (\R);
+
+                        \draw[fill={black!0!white}] ( 0*\R,  0*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 0*\R,  1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 0*\R,  2*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 1*\R,  3*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 1*\R,  4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 2*\R,  4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R,  4*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R,  5*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 3*\R,  6*\R) circle (\R);
+
+                        \draw[fill={black!0!white}] ( 0*\R,  0*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-1*\R, -1*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-2*\R, -2*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-3*\R, -3*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-4*\R, -3*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-4*\R, -2*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-4*\R,  0*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-4*\R,  1*\R) circle (\R);
+
+                        \draw[fill={black!0!white}] (-5*\R, -4*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-4*\R, -4*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-4*\R, -5*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-5*\R, -6*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-5*\R, -7*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-5*\R, -8*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-4*\R, -9*\R) circle (\R);
+
+                        \draw[fill={black!0!white}] ( 0*\R, -1*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 0*\R, -2*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 0*\R, -3*\R) circle (\R);
+                        \draw[fill={black!0!white}] ( 1*\R, -3*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-1*\R, -3*\R) circle (\R);
+                        \draw[fill={black!0!white}] (-1*\R, -2*\R) circle (\R);
+                    \end{tikzpicture}
+              	}
+                \vspace{1cm}
+            \end{minipage}
+            \caption{
+                Schematic drawing of different models for types of dust particle structure. % \\
+                % \todo{in reality, fractals [image!]} \\ 
+                % \todo{in our case, spheres}
+                % \todo{!!!}
+            }
+            \label{fig:shapes_of_dust_particles}
+        \end{figure}
 
 % }}}
-% Continuous Formulation {{{ 
+% The Dust Particle Mass Distribution Function {{{ 
 \clearpage\subsection{The Dust Particle Mass Distribution Function}
 \label{sec:dust_particle_mass_distribution}
 
@@ -622,42 +887,41 @@ and conduct a random sampling of all possible collision.
     \end{equation}
     denotes the total number of dust particles $N$ per unit volume, i.e. the dust particle
     number density, at the considered region in the proto-planetary disk. 
-    Its relationship to the dust mass volume density $\rho_d$ at a given position $\vec r$ 
-    in the disk is given by
+    Its relationship to the mass volume density $\rho_d$ of the dust at a given position 
+    $\vec r$ in the disk is given by
     \begin{equation}
         \label{eq:relationship_between_dust_particle_mass_distribution_and_mass_volume_density}
         % \rho_\text{dust} = 
-        \rho_d(\vec r) =\int\limits_0^\infty n(m,\vec r, t)\cdot m\ \dd m
+        \rho_d(\vec r, t) =\int\limits_0^\infty n(m,\vec r, t)\cdot m\ \dd m
     \end{equation}
 
     % The temporal evolution of the functions $n$, $N$, and $\rho_g$ will be of great interest 
     % throughout this thesis.
 
-% }}}
-% Discretized Formulation {{{ 
 % \subsection{Discretized Formulation}
 
     Before we can use numerical integration techniques to calculate an approximate solution to 
     the Smoluchowski coagulation equation, it will be necessary to define an analogous, 
     but discretized formulation of the expressions we defined above. \\
 
-    Let $m_i$ label the discretized mass axis we already defined in
-    \cref{sec:preliminary_notes_on_axis_discretization}
-    (\todo{specifically $m_i^c$}).
-    As before, the mass grid consists of $\mathcal N_m$ bins, with an lower and upper axis 
-    boundary $m_\text{min}$ and $m_\text{max}$, respectively. The mass "width" of a given bin 
+    Let $m_i$ label the mass values along the discretized mass axis we defined in
+    \cref{sec:preliminary_notes_on_axis_discretization}.
+    Specifically, with this we mean the mass values $m_i^c$ at the bin centers, and onwards 
+    from here we will do so everywhere in this thesis, if not otherwise specified. 
+    As before, the number of bin is labeled $\mathcal N_m$, with an lower and upper axis 
+    boundary $m_\text{min}$ and $m_\text{max}$, respectively. The mass ``width'' of a given bin 
     at a position $i$ in the grid is labeled $\Delta m_i$. \\
 
-    We will begin with the discretized particle mass distribution functions.
+    We will begin with the discretized particle mass distribution function.
     For this, let us introduce the notation
     \begin{equation}
         \label{eq:discrete_formulation_of_particle_mass_distribution}
         n_i := n(m_i)
     \end{equation}
 
-    The total number of dust particles per unit unit volume belonging to a given bin $i$ is 
-    then calculated by integrating the particle mass distribution function from the lower to 
-    the upper bin boundary:
+    The total number of dust particles per unit unit volume corresponding to a given bin $i$ 
+    is then calculated by integrating the particle mass distribution function from the lower 
+    to the upper bin boundary:
     \begin{align}
         \label{eq:relationship_between_dust_particle_mass_distribution_and_particle_number_density}
         N_i 
@@ -666,43 +930,44 @@ and conduct a random sampling of all possible collision.
         % \ \ \ \textcolor{red}{??}
     \end{align}
     
-    The mass density $\rho_i$ in the bin $i$ is given by
+    The mass density $\rho_i$, i.e. the dust mass per unit volume belonging to a bin $i$ is 
+    then given by
     \begin{align}
-        \label{eq:relationship_between_discretized_dust_particle_mass_distribution_and_mass_volume_density}
         \rho_i 
         &= \int_{m_{i-1/2}}^{m_{1+1/2}} m \cdot n(m)\ \dd m \\
         &\approx n_i \cdot m_i \cdot \Delta m_i 
     \end{align}
     
-    Each bin in the mass grid contains a certain fraction of the total dust mass density
-    $\rho_d(\vec r)$ at a given point $\vec r$ in space. 
-    Therefore, to arrive at the total mass density independent of particle mass, 
-    one has to sum over all bins:
+    Since each bin in the mass grid contains only a fraction of the total dust mass density
+    $\rho_d(\vec r)$ at a given point $\vec r$ in space, we have to sum over all bins
+    to arrive at the total mass density independent of particle mass:
     \begin{align}
-      \rho=\sum_{i=1}^{\mathcal N_m} \rho_i
+        \label{eq:relationship_between_discretized_dust_particle_mass_distribution_and_mass_volume_density}
+        \rho_d = \sum_{i=1}^{\mathcal N_m} \rho_i
     \end{align}
-    % TODO Make approximation here? Need to switch from integral to sum at some point.
 
-    In the context of this thesis, we will study the temporal evolution of 
-    \todo{but $\rho_d$ is constant. (mass conservation)}
+    Studying the temporal evolution of the functions $n_i$, $N_i$, and $\rho_i$ will be 
+    one of this thesis' main goals.
+    % \todo{but $\rho_d$ is constant. (mass conservation)}
 
 % }}}
-% Initialization of the Dust Mass Distribution {{{ 
-\clearpage\subsection{Initialization of the Dust Mass Distribution}
+% Initialization of the Dust Particle Mass Distribution {{{ 
+\clearpage\subsection{Initialization of the Dust Particle Mass Distribution}
 
-    Let us label the initial state of the dust particle mass distribution function and particle
-    number density
+    Before the temporal evolution of the dust mass distribution can be addressed, it is of 
+    course necessary to define initial conditions. For this, let us label the initial state 
+    of the dust particle mass distribution function as well as the particle number density
     \begin{align}
-        n_0 &:= n(m=m_0, t=0) 
-        \ \ \ \ \text{and}\ \ \ \
-        \\
-        N_0 &:= N(m=m_0, t=0)
+        n_0 &:= n(m=m_0, \vec r=\vec r_0, t=0) 
+        \ \ \ \ \ \text{and} \\
+        N_0 &:= N(m=m_0, \vec r=\vec r_0, t=0)
     \end{align}
-    respectively. \\
+    respectively. Here, $\vec r_0$ labels the position in the disk where the simulation takes
+    place. \\
 
     At the beginning of a given simulation, we will assume all dust particles to share the same 
     mass $m_0$ and the same corresponding radius.
-    The appropriate particle mass distribution function for the this scenario is a 
+    The appropriate particle mass distribution function for the this scenario is given by a 
     Dirac $\delta$-distribution:
     \begin{equation}
         \label{eq:dirac_delta_identity}
@@ -716,28 +981,31 @@ and conduct a random sampling of all possible collision.
     \cref{eq:relationship_between_dust_particle_mass_distribution_and_mass_volume_density}
     leads to
     \begin{align}
-        \rho_d(\vec r) 
-            &= \int\limits_{-\infty}^\infty n(m, \vec r, t) \cdot m\ \text dm \\
-            &= \int\limits_{-\infty}^\infty \delta_D(m-m_0) \cdot n_0 \cdot m\ \text dm \\
+        \rho_d(\vec r, t=0) 
+            &= \int\limits_0^\infty n(m, \vec r, t=0) \cdot m\ \text dm \\
+            &= \int\limits_0^\infty \delta_D(m-m_0) \cdot n_0 \cdot m\ \text dm \\
             &= N_0 \cdot m_0
     \end{align}
     This reflects the fact that we initially want to have $N_0$ particles per unit volume, each 
     carrying a mass of value $m_0$. \\
 
-    Implementing this numerically means defining a vector of length $\mathcal N_m$, consisting of 
-    $\mathcal N_m-1$ zeros and a single non-zero entry.
-    We have to define a discretized analogon of the above.
+    Now we would like to define a discretized analogon of the above.
+    To do this, we can use the Kronecker $\delta$-function to define list of numbers with length
+    $\mathcal N_m$, consisting of $\mathcal N_m-1$ zeros, and a single non-zero value $n_0$ as the 
+    first entry.
     \begin{equation}
         n_i(t=0) = \delta_{ij} \cdot n_0
+        \ \ \ \ \ \text{where } \ \ \ \ \ 
+        j=0
     \end{equation}
-    Plugging this back into 
+    Plugging this definition into 
     \cref{eq:relationship_between_discretized_dust_particle_mass_distribution_and_mass_volume_density}
     yields
     \begin{align}
         \rho_d 
             &= \sum_{i=1}^{\mathcal N_m} n_i \cdot m_i \cdot \Delta m_i \\
-            &= \sum_{i=1}^{\mathcal N_m} \delta_{ij} \cdot n_0 \cdot m_i \cdot \Delta m_i \\
-            &= \cdot n_0 \cdot m_j \cdot \Delta m_j
+            &= \sum_{i=1}^{\mathcal N_m} \delta_{i0} \cdot n_0 \cdot m_i \cdot \Delta m_i \\
+            &= \cdot n_0 \cdot m_0 \cdot \Delta m_0
     \end{align}
 
     % \begin{equation}
@@ -745,8 +1013,8 @@ and conduct a random sampling of all possible collision.
     % \end{equation}
 
     If not specified otherwise, the initial particle mass will be set to $m_0 = m_c^1$ for the
-    remainder of this thesis. This is the mass value at the center of the first ("smallest") bin 
-    in the discrete mass grid.
+    remainder of this thesis. This is the mass value at the center of the first (``smallest'') bin 
+    in the discretized mass axis.
 
     % that no coagulation or fragmentation 
     % has taken place so far
@@ -809,7 +1077,7 @@ and conduct a random sampling of all possible collision.
 % The coagulation model is defined in \cref{ch:smoluchoswki}.
 % In \cref{ch:sampling}, we implement stochastic sampling of collision pairs,
 % to lower the number of kernel matrix terms that one has to sum over in 
-% each time step.
+% each time-step.
 % Before we will start with the definition of the disk, the following attempts to provide 
 % a brief overview over ...
 % The thesis will be structured in the following way:
@@ -829,15 +1097,15 @@ and conduct a random sampling of all possible collision.
 
 % Directly after the Big Bang, the conditions were not given for large-scale structure formation.
 
-% The universe was too hot for large structure formation in the times immediately 
+% The Universe was too hot for large structure formation in the times immediately 
 % following the Big Bang. 
-% As the quark-gluon plasma cooled down with the expansion of the universe, 
+% As the quark-gluon plasma cooled down with the expansion of the Universe, 
 
 % the formation of first hadrons (proton, neutron) from their quark "components/consituents",
 % then 
  
 % Immediately after the Big Bang
-% After the Big Bang, the universe was filled with a hot quark-gluon plasma [cite].
+% After the Big Bang, the Universe was filled with a hot quark-gluon plasma [cite].
 
 % For the first [\todo{?}] after the Big Ban
 
@@ -913,25 +1181,25 @@ and conduct a random sampling of all possible collision.
 
 % \section{000}
 
-% Immediately after the Big Bang the early universe was much too hot 
+% Immediately after the Big Bang the early Universe was much too hot 
 % to allow the formation of particles as large as what one might find 
 % on Earth today.
 
-% But with the expansion of the universe 
-% the universe cooled up enough to ...
+% But with the expansion of the Universe 
+% the Universe cooled up enough to ...
 
 % From the "quark-gluon" plasma formed
 
 % After the Big Bang, ...
-% It took the universe ... to cool down sufficiently to allow the formation of 
+% It took the Universe ... to cool down sufficiently to allow the formation of 
 
-% When the universe had cooled down sufficiently to allow the formation of atoms
-% After the Big Bang, the universe hot 
+% When the Universe had cooled down sufficiently to allow the formation of atoms
+% After the Big Bang, the Universe hot 
 
 % % \section{000}
 % \begin{itemize}
-%     \item Big Bang, hot universe, "quark-plasma"
-%     \item universe cools down
+%     \item Big Bang, hot Universe, "quark-plasma"
+%     \item Universe cools down
 %     \item sufficiently to allow the condensation of matter into larger structures
 %     \item atoms (hydrogen), molecules (H$_2$)
 %     \item star formation, fusion into heavier elements
@@ -966,7 +1234,7 @@ and conduct a random sampling of all possible collision.
 %     \todo{Even before the invention of telescopes, with the naked eye alone...} \\
 %     \todo{Several bright objects could be distinguished from the rest of the night sky} \\
 %     \todo{Distinguish planets from stars, they exhibit relative motion ("planetes").} \\
-%     \todo{Ptolemai: Earth as center of the universe.} \\
+%     \todo{Ptolemai: Earth as center of the Universe.} \\
 %     \todo{Copernicus: Sun as center of the Solar System.} \\
 %     \todo{Kepler: Kepler's laws, ellipsoid trajectories.} \\
 %     \todo{Newton: law of gravitation.} \\

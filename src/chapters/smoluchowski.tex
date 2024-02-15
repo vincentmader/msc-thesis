@@ -1,17 +1,7 @@
-% \begin{itemize}
-%     \item Commonly used: Smoluchowski equation.
-%     \item In each time step (and for each location in the disk), we determine how the dust
-%         particle population of a certain size is influenced by collision of particles pairs 
-%         carrying all possible combinations of mass values.
-%     \item In the case of "pure" (hit-and-stick) coagulation
-%     \item
-% \end{itemize}
-
-
-
 % Intro {{{ 
 
-Now we will focus on the definition of a model for dust particle coagulation. \\
+In the following, we will focus on the definition of a model for describing the 
+processes involved in dust particle coagulation. \\
 
 Adopting the formalism that was outlined in \cref{sec:dust_particle_mass_distribution},
 we would like to study the behavior of the particle mass distribution function $n(m)$
@@ -20,12 +10,13 @@ under the influence of particle collisions. Both associative and dissociative pr
 
 % }}}
 % The Smoluchowski Equation {{{ 
-\section{The Smoluchowski Equation}
+\section{The Smoluchowski Coagulation Equation}
 
-    The centerpiece of the coagulation model that this thesis is built upon is provided by 
-    the following integro-differential population balance equation:
+    The centerpiece of the dust coagulation model that this thesis is built upon is provided 
+    by the following integro-differential population balance equation:
     \begin{equation}
         \label{eq:continuous_smoluchowski_equation}
+        \boxed{
         \pderiv{n}{t}(m)
             =
                 \int\limits_0^\infty
@@ -35,24 +26,27 @@ under the influence of particle collisions. Both associative and dissociative pr
                 \cdot n(m'')
                 \ \dd m'
                 \ \dd m''
+        }
     \end{equation}
 
-    This so-called \textit{Smoluchowski coagulation equation} provides a mathematical framework 
-    that can used to model the process of particle aggregation, or \textit{coagulation}, 
-    into larger and larger structures. It finds applications in a wide range of physical 
-    and biological contexts. \\ % todo (examples?) \\
+    This it the so-called \textit{Smoluchowski coagulation equation}, which provides a 
+    mathematical framework that can be used to model the process of particle aggregation, 
+    or \textit{coagulation}, into larger and larger structures. \\
 
     The equation is named after the Polish physicist Marian Smoluchowski, due to his treatment 
-    of the equation in 1916 \cite{smoluchowski_1916}. \\
+    of the equation in his 1916 paper \cite{smoluchowski_1916}. 
+    It finds applications in a wide range of physical and biological contexts. \\ 
+    % todo (examples?) \\
 
-    In it, the term $K(m, m', m'')$ labels the so-called \textit{coagulation kernel}. 
-    Into it, we will encode the information about how the number of particles with mass $m$ 
-    changes with time under the influence of collisions between particles with masses 
-    $m'$ and $m''$. \\
+    In the Smoluchowski coagulation equation, the term $K(m, m', m'')$ labels the so-called
+    \textit{coagulation kernel}. 
+    This is a function that we will use to encode the information about how the number of 
+    particles with mass $m$ changes with time under the influence of collisions between 
+    particles with masses $m'$ and $m''$. \\
 
     The effects of both coagulation and fragmentation processes can be defined in separate 
-    kernel functions, that are then added to acquire the total kernel. We will define 
-    these function in \cref{sec:coagulation_kernel} and \cref{sec:fragmentation_kernel},
+    kernel functions, that are subsequently added to acquire the total kernel. We will define 
+    these functions separately in \cref{sec:coagulation_kernel} and \cref{sec:fragmentation_kernel},
     respectively.
 
     % \todo{ODE or PDE?} \\
@@ -71,15 +65,17 @@ under the influence of particle collisions. Both associative and dissociative pr
     % }}}
 
 % }}}
-    % Discretized Formulation {{{ 
-    \newpage\subsection{Discretized Formulation}
+    % Discretized Formulation of the Smoluchowski Coagulation Equation {{{ 
+    \newpage\subsection{Discretized Formulation of the Smoluchowski Equation}
 
         To discretize the Smoluchowski coagulation equation, we need to define discretized 
         analogons for both the particle mass distribution function and its temporal derivative, 
-        as well as write the integral on the right-hand side as a sum. 
-        We assume the particle mass axis from $m_\text{min}$ to $m_\text{max}$ has been
-        discretized into a grid $m_k$ consisting of $\mathcal N_m$ bins, and defined 
-        according to \cref{sec:preliminary_notes_on_axis_discretization}. \\
+        as well as write the integral on the right-hand side of the equation as a sum. \\
+
+        Here we will assume that the particle mass axis from $m_\text{min}$ to $m_\text{max}$ 
+        has been discretized into a grid $m_k$ consisting of $\mathcal N_m$ bins, and defined 
+        according to what was outlined in \cref{sec:preliminary_notes_on_axis_discretization}, 
+        where we layed out a method for axis discretization. \\
 
         For the mass distribution $n(m)$, we use the notation $n_k := n(m_k)$ as defined in
         \cref{eq:discrete_formulation_of_particle_mass_distribution}.
@@ -92,8 +88,8 @@ under the influence of particle collisions. Both associative and dissociative pr
         interchangeably with the finite difference notation from above, since we will basically 
         always be talking about the numerical solution anyways. \\
 
-        Additionally to the above, we have to replace the integral over the particle mass axis 
-        with a discrete sum.
+        Additionally, we have to replace the integral over the particle mass axis 
+        with a discrete sum:
         \begin{equation}
             \int_0^\infty \dd m' \to \sum_{i=1}^{\mathcal N_m} \Delta m_i
             \ \ \ \ \text{and}\ \ \ \
@@ -114,7 +110,9 @@ under the influence of particle collisions. Both associative and dissociative pr
         \cref{eq:relationship_between_dust_particle_mass_distribution_and_particle_number_density}
         and define the discrete \textit{kernel matrix}
         \begin{equation}
-            K_{kij} := K(m_k,m_i,m_j) \cdot \Delta m_k
+            \boxed{
+                K_{kij} := K(m_k,m_i,m_j) \cdot \Delta m_k
+            }
         \end{equation}
 
         With these two relationships, we are able to rewrite the equation and
@@ -127,50 +125,78 @@ under the influence of particle collisions. Both associative and dissociative pr
                 \approx \sum_{i=1}^{\mathcal N_m}\sum_{j=1}^{\mathcal N_m} K_{kij}\cdot N_i\cdot N_j
             }
         \end{equation}
-    
-        \todo{Note: $N$ instead of $n$}
+
+        Here, it makes sense to bring attention to the fact that in the discretized Smoluchowski
+        coagulation equation, we do not make use of the notation $n_k = n(m_k)$ for the dust
+        particle mass distribution function. \\
+
+        Instead, the equation is expressed in terms of the 
+        number of particles $N_k = N(m_k)$, which labels the number of particles (per unit volume) 
+        in a given bin characterized by an index $k$.
 
     % }}}
 % The Kernel {{{ 
 \clearpage\section{The Kernel}
-
     % Intro {{{ 
+    
+        In the following sections, we will focus on the definition of the kernel functions 
+        for both pure coagulation, as well as pure fragmentation. These two functions can 
+        then be added later to arrive at the total kernel function. \\
 
-    In the following, we will factorize the kernel into two separate terms:
-    \begin{equation}
-        K(m,m',m'') = R(m',m'') \cdot X(m,m',m'') 
-    \end{equation}
+        For both of these cases, we will first consider the definition on the continuous 
+        mass axis, and then implement the analogous definition using a mass axis 
+        that was discretized according to \cref{sec:preliminary_notes_on_axis_discretization}. 
+        Before we do that though, it will make sense to think about how the kernel function can be 
+        decomposed and factorized in several different ways, the first of which 
+        is detailed in the following section. 
 
-    The idea behind this distinction is the following: 
-    \begin{enumerate}
-        \item The first term $R(m',m'')$ is used to encode information about 
-            \textit{how often collision events occur} per unit time between a given
-            pair of particles carrying the masses $m'$ and $m''$. \\
-            (\todo{It is defined as in [cite], separately for coagulation and fragmentation})
-        \item In contrast to that, the second term $X(m,m',m'')$ helps us understand 
-            \textit{how this affects the number of particles} carrying a mass value $m$ under any
-            such collision, i.e. it gives information about how matter is redistributed onto the
-            range of possible masses.
-            (\todo{for each collision})
-    \end{enumerate}
+        % \todo{(only use "upper left" half of the matrix)}
 
-    % \todo{Talk about units! (not 1/second)} \\
-
-    \todo{Kernel symmetry:} 
-    \begin{itemize}
-        \item \todo{(only use "upper left" half of the matrix)}
-    \end{itemize}
-
-    % \clearpage
-    % \todo{...} \\
-
-    % \todo{The second term, on the other hand, will be used to encode how the initial masses 
-    % $m'$ and $m''$ are then distributed onto the range of particles resulting from such a 
-    % collision, each carrying a mass of value $m$.} \\
-
-% }}}
+    % }}}
+    % Decomposition into Collision Rate and Collision Details {{{ 
+    \subsection{Decomposition into Collision Rate and Collision Details}
+    
+        We can factorize the kernel into two separate terms, given by
+        \begin{equation}
+            K(m, m', m'') = R(m', m'') \cdot X(m, m', m'') 
+        \end{equation}
+    
+        The idea behind this distinction is the following: 
+        \begin{enumerate}
+    
+            \item The first term $R(m',m'')$ is the reaction rate coefficient. It is used to 
+                encode the information about \textit{how often collision events occur}
+                per unit time, involving a given pair of particles carrying the masses $m'$ 
+                and $m''$.
+    
+            \item In contrast to that, the second term $X(m,m',m'')$ helps us understand 
+                \textit{how this affects the number of particles} carrying a mass value $m$ 
+                under any such collisions, i.e. it gives information about how matter is 
+                redistributed onto the range of possible masses as the result of a given 
+                collision.
+    
+        \end{enumerate}
+    
+        % \todo{The second term, on the other hand, will be used to encode how the initial masses 
+        % $m'$ and $m''$ are then distributed onto the range of particles resulting from such a 
+        % collision, each carrying a mass of value $m$.} \\
+    
+        For the detailed definition of the first term $R(m', m'')$, 
+        see \cref{sec:definition_of_reaction_rate_coefficient}. The second term $X(m, m', m'')$
+        will be defined in the process of kernel construction in 
+        \cref{sec:coagulation_kernel} and \cref{sec:fragmentation_kernel}.
+        % For the detailed definition of the first term $R(m', m'')$, 
+        % see \cref{sec:definition_of_reaction_rate_coefficient}. The second term $X(m, m', m'')$
+        % will be defined in the process of the construction of the coagulation kernel in 
+        % \cref{sec:coagulation_kernel} and the fragmentation kernel in 
+        % \cref{sec:fragmentation_kernel}.
+        All of these definitions will be made separately for the two cases of coagulation and
+        fragmentation. 
+    
+    % }}}
     % Physical Units {{{ 
     % \subsection{Physical Units (\todo{Is this section needed?})}
+    % \todo{Talk about units! (not 1/second)} \\
     % }}}
     % Discretization {{{ 
     % \subsection{Discretization}
@@ -184,12 +210,37 @@ under the influence of particle collisions. Both associative and dissociative pr
         % \end{equation}
 
     % }}}
-    % Decomposition into Gain and Loss Terms {{{ 
-    \subsection{Decomposition into Gain and Loss Terms}
+    % Decomposition into Coagulation and Fragmentation Kernel {{{ 
+    \subsection{Decomposition into Coagulation and Fragmentation Kernel}
 
-        We could also decompose the kernel $K(m,m',m'')$ into a negative and a 
-        positive contribution, which in the following we will address as the \textit{loss} and 
-        \textit{gain} term $L$ and $G$, respectively:
+        As was just mentioned, we will define two separate kernels to describe the influence 
+        of both collisions leading to coagulation as well as fragmentation events, respectively:
+        \begin{align}
+            K^\text{coag}(m,m',m'') &= R^\text{coag}(m',m'') \cdot X^\text{coag}(m,m',m'') \\
+            K^\text{frag}(m,m',m'') &= R^\text{frag}(m',m'') \cdot X^\text{frag}(m,m',m'')
+        \end{align}
+
+        After having done this, we can add these two sub-kernels to arrive at the total kernel:
+        \begin{equation}
+            X(m,m',m'') = X^\text{coag}(m,m',m'') + X^\text{frag}(m,m',m'')
+        \end{equation}
+
+        For completeness, it should be said that we could add another sub-kernel 
+        $K^\text{bounce}$ to the sum, for collisions leading to particle bouncing events.
+        We might as well neglect this though, since bouncing does not affect the dust particle mass 
+        distribution in any way, and therefore we can set
+        \begin{equation}
+            K^\text{bounce}(m,m',m'') 
+            = R^\text{bounce}(m',m'') \cdot \underbrace{X^\text{bounce}(m,m',m'')}_{=0}
+        \end{equation}
+
+    % }}}
+    % Decomposition into Gain and Loss Term {{{ 
+    \clearpage\subsection{Decomposition into Gain and Loss Term}
+
+        We can also decompose the kernel $K(m,m',m'')$ into a negative and a positive 
+        contribution, which in the following we will address as the \textit{loss} and 
+        \textit{gain} components $L$ and $G$ of the kernel, respectively:
         \begin{equation}
             K(m,m',m'') = L(m, m', m'') + G(m, m', m'') 
         \end{equation}
@@ -197,7 +248,8 @@ under the influence of particle collisions. Both associative and dissociative pr
         %     K(m,m',m'') = R(m',m'') \cdot \bigg[G(m, m', m'') + L(m, m', m'')\bigg]
         % \end{equation}
 
-        We will define these two terms as follows:
+        For both sticking and fragmentation, it is possible to establish the following 
+        general definition for these two components:
         \begin{align}
             \label{eq:definition_of_kernel_gain_and_loss}
             L(m, m', m'') 
@@ -205,6 +257,11 @@ under the influence of particle collisions. Both associative and dissociative pr
             G(m, m', m'') 
                 &:= +R(m',m'') \cdot f(m, m', m'') 
         \end{align}
+        This definition (or one that is analogous to it) was also used in previous studies 
+        of the dust coagulation process, see e.g. \cite{dullemond_dominik_2004},
+        \cite{birnstiel_dullemond_brauer_2010}, \cite{okuzumi_2009}. 
+        It will hopefully become clear in the following sections why it makes sense to adopt this 
+        definition, and why it is presented in the form that is shown here.
 
         % \todo{The two separate Dirac distributions in the square brackets relate to the symmetry 
         % of the kernel, which satisfies the following relationship.} \\
@@ -298,46 +355,26 @@ under the influence of particle collisions. Both associative and dissociative pr
         % (\todo{Define $f_{kij}$})
 
     % }}}
-    % Decomposition into Coagulation and Fragmentation Kernel {{{ 
-    \subsection{Decomposition into Coagulation and Fragmentation Kernel}
-
-        As mentioned above [where?], we will define two separate kernels to describe the influence 
-        of both collisions leading to coagulation as well as fragmentation events, respectively:
-        \begin{align}
-            K^\text{coag}(m,m',m'') &= R^\text{coag}(m',m'') \cdot X^\text{coag}(m,m',m'') \\
-            K^\text{frag}(m,m',m'') &= R^\text{frag}(m',m'') \cdot X^\text{frag}(m,m',m'')
-        \end{align}
-
-        After having done this, we can add these two sub-kernels to arrive at the total kernel:
-        \begin{equation}
-            X(m,m',m'') = X^\text{coag}(m,m',m'') + X^\text{frag}(m,m',m'')
-        \end{equation}
-
-        For completeness, it should be said that we could add another sub-kernel 
-        $K^\text{bounce}$ to the sum, for collisions leading to particle bouncing events.
-        We might as well neglect this though, since bouncing does not affect the dust particle mass 
-        distribution in any way, and therefore we can set
-        \begin{equation}
-            K^\text{bounce}(m,m',m'') 
-            = R^\text{bounce}(m',m'') \cdot \underbrace{X^\text{bounce}(m,m',m'')}_{=0}
-        \end{equation}
-
-    % }}}
     % Definition of the Kernel Mass Error {{{ 
     \subsection{Definition of the Kernel Mass Error}
 
-        Here, it makes sense to distinguish between various definitions:
+        The coagulation framework that is given by the Smoluchowski equation and is 
+        used throughout this work provides an easy method for expressing the mass 
+        conservation error of the discretized kernel function. 
+        It can be used to get a first look at the stability properties of the algorithm, 
+        without actually running the integration scheme. It makes sense to distinguish 
+        between a few different error definitions here:
 
         \begin{enumerate}
 
-            \item Kernel mass error $\Delta K_{ij}$ per second (and per density!)
-                (given in \SI{}{\kilogram\ \meter^3\ \second^{-1}}): 
+            \item Kernel mass error $\Delta K_{ij}$ per second (and per density!),
+                given in \SI{}{\kilogram\ \meter^3\ \second^{-1}}: 
                 \begin{align}
                     \Delta K_{ij} &= \sum_{k=1}^{\mathcal N_m} m_k \cdot K_{kij}
                 \end{align}
 
-            \item Kernel mass error $\Delta X_{ij}$ per collision 
-                (given in \SI{}{\kilogram}): 
+            \item Kernel mass error $\Delta X_{ij}$ per collision, 
+                given in \SI{}{\kilogram}: 
                 \begin{align}
                     \Delta X_{ij}
                         = \frac{\Delta K_{ij}}{R^\text{coll}_{ij}}
@@ -351,22 +388,22 @@ under the influence of particle collisions. Both associative and dissociative pr
                         &= \sum_{k=1}^{\mathcal N_m} \frac{m_k}{m_i+m_j} \cdot X_{kij}
                 \end{align}
 
-            \item Total kernel error $\Delta X^\text{rel}$
-                (dimensionless as wel):
-                \begin{align}
-                    \Delta X^\text{rel} &= \sqrt{
-                        \sum_{i=1}^{\mathcal N_m}
-                        \sum_{j=1}^{\mathcal N_m}
-                        \big(\Delta X_{ij}^\text{rel}\big)^2
+            \item Total relative kernel mass error $\Delta X^\text{rel}$
+                (also dimensionless):
+                \begin{equation}
+                    \boxed{
+                        \Delta X^\text{rel} = \sqrt{
+                            \sum_{i=1}^{\mathcal N_m}
+                            \sum_{j=1}^{\mathcal N_m}
+                            \big(\Delta X_{ij}^\text{rel}\big)^2
+                        }
                     }
-                \end{align}
+                \end{equation}
 
         \end{enumerate}
 
-        \todo{The last definition is what we will use to classify the "goodness" of our kernel.} 
-
-        \todo{Add table: Kernel error for coag. / frag. / both, 
-        and for various mass axis resolutions.}
+        The last definition is what we will use to classify the properties of our 
+        kernel implementations regarding the conservation of mass during collisions.
 
     % }}}
 
@@ -378,38 +415,40 @@ under the influence of particle collisions. Both associative and dissociative pr
     % Definition {{{ 
 
     Consider a collision between two particles with $m'$ and $m''$. 
-    In the case of pure "hit-and-stick" coagulation, 
+    In the case of pure ``hit-and-stick'' coagulation, 
     % To understand the definition of the two terms $G$ and $L$, 
-    we assume that the particles merge as a result of the collison. \\
+    we assume that these particles will merge as a result of the collison. \\
 
     If the coagulation kernel is defined in the right manner, then the integration of 
-    the Smoluchowski equation should lead to the removal of one particle from the 
-    mass distribution for each of the masses $m'$ and $m''$, while inserting a 
-    \textit{new} particle in the distribution at $m=m_\text{tot}=m'+m''$. \\
+    the Smoluchowski equation should, for each collision, lead to the removal of one 
+    particle from the mass distribution for each of the masses $m'$ and $m''$. At the same 
+    time, a \textit{new} particle has to be inserted into the distribution at 
+    $m=m_\text{tot}=m'+m''$. \\
 
     To implement this, we can define the positive and negative 
-    contributions to the kernel in terms of the gain $G$ and loss $L$:
+    components of the kernel in terms of the gain $G$ and loss $L$ as follows:
     \begin{align}
         \label{eq:definition_of_coagulation_kernel_gain_and_loss}
         L^\text{coag}(m, m', m'') 
             &:= -R(m',m'') \cdot \frac{1}{2} \bigg[\delta_D(m-m')+\delta_D(m-m'')\bigg] \\
         G^\text{coag}(m, m', m'') 
             &:= +R(m',m'') \cdot \frac{1}{2} \cdot \delta_D(m-m'-m'')
-            \ \ \ \ \ \todo{1/2?}
     \end{align}
 
     This formulation is equivalent to \cref{eq:definition_of_kernel_gain_and_loss},
     only that now we defined 
     \begin{equation}
+        \label{eq:definition_of_f_coag}
         f^\text{coag}(m,m',m'') = \frac{1}{2} \cdot \delta_D(m-m'-m'')
     \end{equation}
 
-    \todo{not one particle, but one particle per mass ??? nice! ???} \\
+    The reason for the presence of a factor $1/2$ will become clear at the end of this 
+    section. \\
 
-    The loss term $L$ assures that exactly one particle is removed from the mass 
-    distribution for each of the collision partners' mass value.
-    The gain term makes sure that a single particle is inserted into the 
-    mass distribution at $m=m'+m''$. \\
+    The loss term $L$ assures that, for each collision, exactly one particle is removed 
+    from the mass distribution for each of the collision partners' mass value.
+    The gain term on the other hand makes sure that a single particle is inserted into the 
+    mass distribution at $m = m' + m''$. \\
 
 %     \todo{The question is: How does the number of particles with mass $m$ change?} \\
 
@@ -441,7 +480,7 @@ under the influence of particle collisions. Both associative and dissociative pr
     \end{align}
 
     If we plug this into \cref{eq:continuous_smoluchowski_equation}, we get the 
-    continuous Smoluchowski equation for pure "hit-and-stick" coagulation:
+    continuous Smoluchowski equation for pure ``hit-and-stick'' coagulation:
     \begin{align}
         \pderiv{n}{t}(m)
             &=
@@ -465,11 +504,15 @@ under the influence of particle collisions. Both associative and dissociative pr
                 \ \dd m'
                 \ \dd m''
     \end{align}
-    To make this rather space-consuming equation a bit more manageable, we can 
-    pull apart the expression into a separate integrals for each of the three 
-    sum terms in the kernel. Then we can make use of the identity for the Dirac 
-    $\delta$-distribution defined in \cref{eq:dirac_delta_identity} and collapse 
-    one of the two integrals over the mass axis. 
+
+    To make this rather space-consuming equation a bit more manageable, we can pull apart the
+    expression into a separate integral for each of the three sum terms in the kernel. \\
+
+    Then we can make use of the identity for the Dirac $\delta$-distribution we already discussed
+    in \cref{eq:dirac_delta_identity} and collapse one of the two integrals over the mass axis. \\
+
+    \clearpage
+    This leads to
     % \begin{align}
     %     \pderiv{n}{t}(m)
     %         =
@@ -510,39 +553,39 @@ under the influence of particle collisions. Both associative and dissociative pr
     % \end{align}
     \begin{align}
         \pderiv{n}{t}(m)
-            =
-                &\int\limits_0^\infty
-                R(m',m-m') \cdot \frac{1}{2}
+            = &
+                +\frac{1}{2} \int\limits_0^\infty
+                R(m', m-m') 
                 \cdot n(m')
                 \cdot n(m-m')
                 \ \dd m'
             \\ &
-                -
-                \int\limits_0^\infty
-                R(m,m') \cdot \frac{1}{2}
+                -\frac{1}{2} \int\limits_0^\infty
+                R(m, m') 
                 \cdot n(m)
                 \cdot n(m')
                 \ \dd m'
             \\ &
-                -
-                \int\limits_0^\infty
-                \int\limits_0^\infty
-                R(m,m') \cdot \frac{1}{2}
+                -\frac{1}{2} \int\limits_0^\infty
+                R(m, m') 
                 \cdot n(m)
                 \cdot n(m')
                 \ \dd m'
     \end{align}
 
-    Note that here we are making use of the symmetry $R(m,m')=R(m',m)$. It is irrelevant whether 
-    particle $a$ hits particle $b$ or particle $b$ hits particle $a$. We regard these two 
-    scenarios as the same event. \\
+    Note that here we performed a renaming of $m'' \to m'$ and $\text dm'' \to \text dm'$, 
+    and made use of the symmetry $R(m, m') = R(m', m)$: It is irrelevant whether particle $a$ 
+    hits particle $b$ or particle $b$ hits particle $a$. We regard these two scenarios as the 
+    same event. \\
  
-    We can further simplify the expression combining the last two terms into a single integral:
+    We can now further simplify the expression combining the last two terms into a single 
+    integral, which allows us to get rid of one of the two factors $1/2$:
     \begin{align}
         \boxed{\pderiv{n}{t}(m)
-            =
+            =   
+                \frac{1}{2} \cdot
                 \int\limits_0^\infty
-                R(m',m-m') \cdot \frac{1}{2}
+                R(m',m-m')
                 \cdot n(m')
                 \cdot n(m-m')
                 \ \dd m'
@@ -555,8 +598,15 @@ under the influence of particle collisions. Both associative and dissociative pr
             }
     \end{align}
 
-    \todo{Explain: Why can I go from upper bound $\infty$ to upper bound $m$, then $m/2$?} \\
-    \todo{Now define on discretized mass axis (needed for numerical integration)} \\
+    Due to the symmetry $i \leftrightarrow j$, we can get rid of the other factor $1/2$ as well,
+    if we want to. To achieve this, we will rewrite the integral as
+    \begin{equation}
+        \frac{1}{2} \int\limits_0^\infty \text dm'
+        \to 
+        \int\limits_0^{m/2} \text dm'
+    \end{equation}
+    We will make use of this in the numerical implementation later on, in order to avoid
+    performing any unneeded computations. 
 
     % \todo{Total Smoluchowski equation for coagulation:}
     % \begin{align}
@@ -576,34 +626,38 @@ under the influence of particle collisions. Both associative and dissociative pr
     % TODO Use multi-line equations here, no duplicate numbering! (both here and elsewhere)
 
     % }}}
-    % Discretization of the Kernel {{{ 
-    \subsection{Discretization of the Kernel}
+    % Discretization of the Coagulation Kernel {{{ 
+    \subsection{Discretization of the Coagulation Kernel}
 
-        Now we wish to implement the numerical analogon of the described model to allow 
+        Having defined the coagulation kernel on a continuous mass axis,
+        we now wish to implement the numerical analogon of the described model to allow 
         numerical simulations of the dust mass distribution's temporal evolution. \\
 
-        Even in a highly simplified scenario, where only hit-and-stick coagulation is included, the 
-        definition of the kernel $K_{kij}$ is not at all trivial. To assure both the consistency and 
-        accuracy of the algorithm, one has to take care of two separate problems, namely:
+        Even in a highly simplified scenario, where only hit-and-stick coagulation is included, 
+        the definition of the kernel $K_{kij}$ is not at all trivial. To assure both the 
+        stability and the accuracy of the algorithm, one has to take care of two separate 
+        problems, namely:
         \begin{enumerate}
-            \item The conservation of mass \textit{has} to be assured, otherwise the numerical solution can 
-                not be assumed to remain stable for long. In the case of hit-and-stick coagulation, this 
-                means that for every pair of colliding particles, a single new particle has to be created. 
-                At the same time, the two initial particles have to be removed from the distribution. 
-                During this process, the total mass should remain unaffected down to machine precision.
-            \item When using a logarithmically spaced grid for the discretized mass axis, it can not be 
-                assumed that after a collision of two dust particles with masses $m_i$ and $m_j$ the 
-                resulting particle will carry a mass $m_k=m_i+m_j$ whose value can be mapped trivially onto 
-                the grid. In general, the corresponding index will not be an integer, and instead lie 
-                between somewhere between the two neighboring grid points with indices $k$ and $k+1$.
-                Therefore, the result of the merging of $m_i$ and $m_j$ has to be divided in some sensible 
-                way between these two neighboring bins.
+            \item The conservation of mass \textit{has} to be assured, otherwise the numerical      
+                solution can not be assumed to remain stable for long. In the case of hit-and-stick 
+                coagulation, this means that for every pair of colliding particles, a single new 
+                particle has to be created. At the same time, the two initial particles have to be 
+                removed from the distribution. During this process, the total mass should remain 
+                unaffected down to machine precision.
+            \item When using a logarithmically spaced grid for the discretized mass axis, it can 
+                not be assumed that after a collision of two dust particles with masses $m_i$ and 
+                $m_j$ the resulting particle will carry a mass $m_k=m_i+m_j$ whose value can be 
+                mapped trivially onto the grid. In general, the corresponding index will not be an 
+                integer, and instead lie between somewhere between the two neighboring grid points 
+                with indices $k$ and $k+1$.
+                Therefore, the result of the merging of $m_i$ and $m_j$ has to be divided in some 
+                sensible way between these two neighboring bins.
         \end{enumerate}
 
-        \todo{What then is $f^{coag}_{kij}$? (Define here or elsewhere?) 
-        (with canc. handling \& Kovetz-Olund)} \\
+        % \todo{What then is $f^{coag}_{kij}$? (Define here or elsewhere?) 
+        % (with canc. handling \& Kovetz-Olund)} \\
 
-        \todo{See next section [cite] for how to do this.}
+        In the following section, we will outline a method for assuring these conditions.
 
     % }}}
     % The Kovetz-Olund Algorithm {{{ 
@@ -612,28 +666,30 @@ under the influence of particle collisions. Both associative and dissociative pr
         An elegant way for solving the two problems listed above is given in the 1969 paper
         by Kovetz \& Olund \cite{kovetz_olund_1969}, where they used the following procedure:
         \begin{enumerate}
-            \item The hit-and-stick coagulation kernel is split into two parts. 
-                (\todo{as we did above})
+            \item The hit-and-stick coagulation kernel is split into two parts, as we did above.
                 The first is the \textit{gain} of particles in bin $k$ due to the collision of 
                 particles from the bins $i$ and $j$. The second is the \textit{loss} of particles 
                 from bin $k$ due to collisions of particles in bin $k$ with particles from any 
-                other bin $j$.
-            
-                Using this separation into gain \& loss, the dust particle mass distribution's
-                temporal derivative can be expressed in the following form:
+                other bin $j$. 
+                Using this separation into gain \& loss terms (as well as the discrete 
+                formalism for the Smoluchowski equation), the dust particle mass 
+                distribution's temporal derivative can be expressed in the following form:
                 \begin{equation}
                     \pderiv{N_k}{t}
                         = \sum_{i=0}^{\mathcal N_m} \sum_{j=0}^{\mathcal N_m}
                             K_{kij}^\text{gain}\cdot N_i\cdot N_j
                         - \sum_{j=0}^{\mathcal N_m} K_{kj}^\text{loss} \cdot N_k\cdot N_j
                 \end{equation}
-                In other words, the total kernel [from above, cite eq.] can be written as
+                % \todo{what is $K^\text{gain/loss}$?} \todo{Why double sum here?} \\
+                In other words, the total kernel can be written as
                 \begin{equation}
                     K_{kij} = K_{kij}^\text{gain} - K_{ij}^\text{loss}\cdot\delta_{ki}
                 \end{equation}
                 Splitting the kernel like this into a gain \& a loss term is a quite general
                 approach, and can be used in more complex scenarios as well (including e.g.
-                particle fragmentation processes).
+                particle fragmentation processes). In our case, here the loss component is given by 
+                the coagulation rate coefficent $R_{ij}^\text{coag}$, and the gain component 
+                will shortly be defined from it.
             \item For the scenario of pure hit-and-stick coagulation, a unique discretization
                 of the kernel can be defined such that both the number of particles and the
                 conservation of total mass are handled correctly. To do this, consider a
@@ -647,302 +703,392 @@ under the influence of particle collisions. Both associative and dissociative pr
                 for each pair of colliding particles. Using the definitions from above, this
                 condition can be expressed as follows:
                 \begin{equation}
+                    \label{eq:kovetz_olund_particle_conservation}
                     K_{\bar k,ij}^\text{gain} + K_{\bar k+1,ij}^\text{gain}
                     \overset{!}{=} K_{ij}^\text{loss}
                 \end{equation}
             \item The second condition is that of mass conservation, which can be written as:
                 \begin{equation}
+                    \label{eq:kovetz_olund_mass_conservation}
                     m_{\bar k} \cdot K_{\bar k,ij}^\text{gain}
                     + m_{\bar k+1} \cdot K_{\bar k+1,ij}^\text{gain}
                     \overset{!}{=} (m_i+m_j) \cdot K_{ij}^\text{loss}
                 \end{equation}
-            \item Now, to map the resulting particle's mass onto two neighboring bins, let us    
-                define a parameter $\varepsilon$ such that
+            \item Now, in order to map the resulting particle's mass onto the two 
+                neighboring bins, let us define a parameter $\varepsilon$ such that
                 \begin{align}
+                    \label{eq:definition_of_kovetz_olund_epsilon_parameter}
                     K_{\bar k,ij}^\text{gain}
                         &=K_{ij}^\text{loss} \cdot (1-\varepsilon),\ \text{and}\\
                     K_{\bar k+1,ij}^\text{gain}
                         &=K_{ij}^\text{loss} \cdot \varepsilon
                 \end{align}
-                This assures that [equation from pt 3] is satisfied. If we now plug this
-                definition into [equation from pt 4] and solve for $\varepsilon$, we
-                arrive at
+                This assures that \cref{eq:kovetz_olund_particle_conservation} is satisfied. 
+                If we now plug these definitions into \cref{eq:kovetz_olund_mass_conservation} 
+                and solve for $\varepsilon$, we arrive at
                 \begin{equation}
                     \varepsilon
                         :=\frac{m_i+m_j-m_{\bar k}}{m_{\bar k+1}-m_{\bar k}}
                 \end{equation}
         \end{enumerate}
-        This is the Kovetz-Olund algorithm \cite{kovetz_olund_1969}, and it was also used in subsequent 
-        coagulation studies by e.g. \cite{brauer_dullemond_henning_2007} and 
-        \cite{birnstiel_dullemond_brauer_2010}.
+        This is the Kovetz-Olund algorithm \cite{kovetz_olund_1969}, which is frequently used 
+        in studies of dust coagulation in proto-planetary disks, see e.g.
+        \cite{brauer_dullemond_henning_2007} and \cite{birnstiel_dullemond_brauer_2010}.
     
     % }}}
     % Near-Zero Cancellation Handling {{{ 
     \clearpage\subsection{Near-Zero-Cancellation Handling}
+    \label{sec:near_zero_cancellation_handling}
     
         When using floating-point numbers following the representation defined
         by the IEEE-754 standard, it can occur that
         \begin{equation}
-          a+b=a
+          a + b = a
           \ \ \ \ \ \text{for} \ \ \ \ \
           b\neq0
         \end{equation}
         Typically, this happens when
         \begin{equation}
-            |b|<\varepsilon_m\cdot|a|
+            |b| < \varepsilon_m \cdot |a|
         \end{equation}
-        Here, $\varepsilon_m$ labels the \textit{machine precision}.
-        \todo{Add: How big is $\varepsilon_m$ for an f32, how big for an f64?}\\
+        Here, $\varepsilon_m$ labels the \textit{machine precision}, which can be used to give 
+        an upper bound on the relative approximation error that may happen in floating point 
+        arithmetic due to rounding. For 64bit floats, this value is approximately given by
+        \begin{equation}
+            \varepsilon_{f64} \approx 10^{-16}
+        \end{equation}
         
-        Let $i$ and $j$ once again be the indices used to label two colliding particles. Additionally, 
-        assume now that particle $i$ is \textit{much smaller} than particle $j$.\\
+        Let $i$ and $j$ once again be the indices used to label two colliding particles. 
+        Without loss of generalization, let us assume that particle $i$ is 
+        \textit{much smaller} than particle $j$. \\
         
         The detailed balance approach from above requires the removal of both the big and the small 
-        particle from the mass distribution, followed by the re-insertion of a new particle carrying the 
-        initial pair's combined mass. This new particle would then have a mass which is nearly identical 
-        to that of the bigger one of the original two particles, it would be only a tiny bit heavier.\\
+        particle from the mass distribution, followed by the re-insertion of a new particle 
+        carrying the initial pair's combined mass. This new particle would then have a mass which 
+        is nearly identical to that of the bigger one of the original two particles, it would be 
+        only a tiny bit heavier.\\
         
-        In the approach defined above this would mean that $\bar k=j$, i.e. the resulting particle will 
-        reside in the same bin as the larger original one. Also, it would follow that 
+        In the approach defined above this would mean that $\bar k=j$, i.e. the resulting particle 
+        will reside in the same bin as the larger original one. Also, it would follow that 
         $\varepsilon\ll1$.\\
         
         Let us now take a look at the particle mass distribution in the bin $\bar k$ and, more 
-        specifically, by how much it changes from one timestep to the next. For this particular pair of 
-        $i$ and $\bar k=j$, we can write:
+        specifically, by how much it changes from one timestep to the next. For this particular 
+        pair of $i$ and $\bar k=j$, we can write:
         \begin{equation}
             \pderiv{n_{\bar k}}{t}
                 =K_{\bar k,i\bar k}^{\text{gain}}\cdot n_i\cdot n_{\bar k}
                 -K_{\bar ki}^{\text{loss}}\cdot n_i\cdot n_{\bar k}
         \end{equation}
-        Plugging in [equation from above] leads to
+        Plugging in \cref{eq:definition_of_kovetz_olund_epsilon_parameter} leads to
         \begin{equation}
+            \label{eq:cancellation_handling_eq_1}
             \pderiv{n_{\bar k}}{t}
                 =(1-\varepsilon)K_{\bar ki}^{\text{loss}}\cdot n_i\cdot n_{\bar k}
                 -K_{\bar ki}^{\text{loss}}\cdot n_i\cdot n_{\bar k}
         \end{equation}
         Here, the two terms almost cancel each other out. What remains is a contribution which is 
-        proportional to $\varepsilon$.\\
+        proportional to $\varepsilon$. But if $\varepsilon$ is small enough, then the 
+        double-precision accuracy of the 64-bit floating point representation will lead to a
+        breakdown of the algorithm. \\
         
-        If $\varepsilon$ is small enough, the double-precision accuracy of the floating point 
-        representation will lead to breakdown of the method.\\
-        \todo{rewrite this sentence, copied almost exactly from Kees}\\
+        It is relatively easy though to identify the particle pairs $(i,j)$ for which the scenario 
+        detailed above will occur. Let $i$ (without loss of generality) be the index of the larger 
+        one of the two colliding masses. Cancellation may then occur when the resulting $k$ is 
+        equal to $j$.\\
         
-        It is relatively easy to identify the particle pairs $(i,j)$ for which the scenario detailed 
-        above will occur. Let $i$ (without loss of generality) be the index of the larger one of the two 
-        colliding masses. Cancellation may then occur when the resulting $k$ is equal to $j$.\\
-        
-        In that case, we carry out the subtraction in [previous equation] analytically, and write:
+        In that case, we analytically carry out the subtraction in 
+        \cref{eq:cancellation_handling_eq_1}, and write:
         \begin{equation}
             \pderiv{n_{\bar k}}{t}
-                =-\varepsilon K_{\bar ki}^{\text{loss}}\cdot n_i\cdot n_{\bar k}
+                = -\varepsilon K_{\bar ki}^{\text{loss}}\cdot n_i\cdot n_{\bar k}
         \end{equation}
-        \todo{Elaborate on this, see "Dust Evolution with Binning Methods"}
 
-        The results can be seen in [\todo{ref}].
+        % \todo{Elaborate on this, see "Dust Evolution with Binning Methods"} \\
 
-        \input{diagrams/cancellation_handling_for_coagulation_kernel.tex}
-
-    % }}}
-    % Pure Hit-and-Stick Coagulation Kernel on a Linear Mass Axis{{{ 
-    % \cleardoublepage
-    \subsection{Visualization of Coagulation Kernel on a Linear Mass Axis}
-
-        \todo{Plot pure coagulation kernel on linear mass axis for various values of $k$.} \\
-
-        \begin{figure}[h!]
-            \makebox[\textwidth]{
-                \includegraphics[width=\paperwidth]{112/euler_explicit_integration_on_linear_mass_axis.pdf}
-            }
-            \caption{ 
-                \todo{} 
-            }
-        \end{figure}
-
-        \clearpage
-        \begin{figure}[h!]
-            \makebox[\textwidth]{
-                \includegraphics[width=\paperwidth]{101/Kkij vs k, coag=True, frag=False.pdf}
-            }
-            \caption{ 
-                Matrix Layers of the Kernel for Pure Hit-and-Stick Coagulation on a Linear Mass Axis.
-                The Mass Axis ranges from \todo{$m_\text{min}$} to \todo{$m_\text{max}$} and 
-                is discretized into \todo{$\mathcal N_m$} bins.
-                \ \\
-                \todo{Add colorbar!} (with correct z-limits!)
-            }
-        \end{figure}
-
-    % }}}
-    % Pure Hit-and-Stick Coagulation Kernel {{{ 
-    \subsection{Visualization of Coagulation Kernel on a Logarithmic Mass Axis}
-
-        \todo{Plot number of non-zero kernel entries vs. $k$, and give total non-zero entries.} \\
-
-        \todo{Plot pure coagulation kernel on logarithmic mass axis for various values of $k$.}
-
-        \clearpage
-        \begin{figure}[h!]
-            \makebox[\textwidth]{
-                \includegraphics[width=\paperwidth]{102/Kkij_gain vs k, coag=True, frag=False.pdf}
-            }
-            \caption{ 
-                Matrix Layers of the Gain Component of the Kernel for Pure Hit-and-Stick Coagulation 
-                on a Logarithmic Mass Axis.
-                The Mass Axis ranges from \todo{$m_\text{min}$} to \todo{$m_\text{max}$} and 
-                is discretized into \todo{$\mathcal N_m$} bins.
-                \ \\
-                \todo{Add colorbar!} (with correct z-limits!)
-            }
-        \end{figure}
-
-        \clearpage
-        \begin{figure}[h!]
-            \makebox[\textwidth]{
-                \includegraphics[width=\paperwidth]{102/Kkij_loss vs k, coag=True, frag=False.pdf}
-            }
-            \caption{ 
-                Matrix Layers of the Loss Component of the Kernel for Pure Hit-and-Stick Coagulation 
-                on a Logarithmic Mass Axis.
-                The Mass Axis ranges from \todo{$m_\text{min}$} to \todo{$m_\text{max}$} and 
-                is discretized into \todo{$\mathcal N_m$} bins.
-                \ \\
-                \todo{Add colorbar!} (with correct z-limits!)
-            }
-        \end{figure}
+        The effect that this corrected has on the kernel mass error can be seen visualized 
+        in \cref{fig:effect_of_cancellation_handling_on_kernel_mass_error}.
 
     % }}}
 
 % }}}
 % Definition of the Fragmentation Kernel {{{ 
-\section{Definition of the Fragmentation Kernel}
+\clearpage\section{Definition of the Fragmentation Kernel}
 \label{sec:fragmentation_kernel}
 
-    As before in the case of hit-and-stick coagulation, in the case of particle 
-    fragmentation we also separate the kernel function into a positive "gain" 
-    component $G$ and a negative "loss" component $L$.
+    Let us now focus on the definition of the kernel matrix for dust particle fragmentation 
+    processes. As before, where we considered the simpler case of pure hit-and-stick coagulation,
+    in the case of fragmentation we also separate the kernel function into a positive gain 
+    component $G$ and a negative loss component $L$. \\
+
+    These two kernel components can be expressed as
     \begin{align}
         L^\text{coag}(m, m', m'') 
             &:= -R(m',m'') \cdot \frac{1}{2} \bigg[\delta_D(m-m')+\delta_D(m-m'')\bigg] \\
         G^\text{coag}(m, m', m'') 
-            &:= +R(m',m'') \cdot \frac{1}{2} \cdot f(m,m',m'')
+            &:= +R(m',m'') \cdot \frac{1}{2} \cdot f^\text{frag}(m,m',m'')
     \end{align}
 
-    The loss term is identical to that we defined for the case of pure coagulation in
-    \cref{eq:definition_of_coagulation_kernel_gain_and_loss}.
-    If two particles with masses $m$ and $m'$ collide, these two particles "disappear"
-    from the distribution. At their place, new particles have to be added.
+    Here, it should be noted that the loss term is exactly identical to what we defined for pure
+    hit-and-stick coagulation in \cref{eq:definition_of_coagulation_kernel_gain_and_loss}.
+    If two particles with masses $m$ and $m'$ collide, then these two particles ``disappear''
+    from the distribution. \\ 
 
-    The important distinction between the coagulation and fragmentation kernel functions lies 
-    in the definition of the gain term. It looks very similar to coagulation, but here we have 
-    the function $f(m,m',m'')$ in the integral instead of the Dirac distribution 
-    $\delta_D(m-m'-m'')$ we had before. \\
+    Replacing them, new particles will then have to be added to be distribution, under the strict 
+    criterion of mass conservation. How this is implemented can be controlled via the definition 
+    of the gain term or, more specifically, via the definition of the function 
+    $f^\text{frag}(m, m', m'')$.
+    The big distinction between the kernels for coagulation and fragmentation lies 
+    in the way that this function is defined. \\
 
-    If two masses fuse, there is only a single possible mass value that can result from 
-    that, without breaking mass conservation.
-    In fragmentation, this is different.
-    If two particles collide, they can in principle fragment into a whole range of 
-    differently sized particles, as long as mass is conserved. \\
+    In the scenario of pure hit-and-stick coagulation, it is given by a Dirac $\delta$ function,
+    which allows us to reduce the double integral in the Smoluchowski equation (or double sum, in 
+    the discrete case) into an integral/sum over a single axis. That is be very different here,
+    and a reduction of the double integral will not be possible. This is why the numerical 
+    cost of modeling fragmentation processes is significantly higher than if one were to only 
+    consider pure coagulation. \\
 
-    This function $f$ will allow us to define the manner in which a collision's total mass 
-    is distributed onto a possibly large number of newly created particles. Once again, there is 
-    the criterion of mass conservation. It will be important to make sure that mass is 
-    conserved exactly down to $f64$ machine precision, as even small mass errors will 
-    accumulate over the large time scales we plan on running the simulation for.
-    The sum of the newly created particles' masses should be exactly equal to that of 
-    the original colliding particles. \\
+    The reasoning behind the different definitions of the functions $f^\text{coag}$ and
+    $f^\text{frag}$ is the following: If two particles merge into one, then (without breaking mass
+    conservation) there is only a single possible mass value that can result from that. 
+    
+    In the case of fragmentation though, this is not true. 
+    If two particles collide, they could in principle fragment into a whole range of 
+    differently-sized particles, as long as mass is conserved. \\
 
-    \todo{That's where the computational cost comes from!} \\
-    \todo{How to model the distribution of particle masses resulting from a fragmentation event?} \\
-    \todo{Many small ones, only a few bigger ones.} \\
-    \todo{Different approaches [cite]}
+    % The function $f^\text{coag}(m, m', m'')$ allows us to define the manner in which a collision's 
+    % total mass is distributed onto a possibly large number of newly created particles. Once again, 
+    % there is the criterion of mass conservation. It will be important to make sure that mass is 
+    % conserved exactly down to the machine precision of 64-bit floating point numbers, 
+    % as even small mass errors will accumulate over the large time scales we plan on running 
+    % the simulation for. The sum of the newly created particles' masses should be exactly equal to 
+    % that of the original colliding particles. \\
+
+    In the following, we will attempt to define the function $f^\text{frag}$ in a sensible fashion.
+    As we did before in other contexts, here as well we will adopt a shorthand index notation,
+    defined by 
+    \begin{equation}
+        f^\text{frag}_{kij} := f^\text{frag}(m_k, m_i, m_j)
+    \end{equation}
+
+    There are of course various different approaches for how one might do this.
+
+    % \todo{That's where the computational cost comes from!} \\
+    % \todo{How to model the distribution of particle masses resulting from a fragmentation event?} \\
+    % \todo{Many small ones, only a few bigger ones.} \\
+    % \todo{Different approaches [cite]}
 
     % \todo{Smol. eq. looks very similar to coag., but $f$ instead of $\delta_D$, can't "reduce".} \\
 
     % Modeling the Mass Distribution Resulting from a Fragmentation Event {{{ 
     \subsection{Modeling the Resulting Mass Distribution}
+    \label{sec:modeling_the_mass_distribution_resulting_from_fragmentation}
 
-        An extremely simplified first approach for modeling particle fragmentation 
-        could be derived from the assumption that, as a result of a collision,
-        the entire mass involved in the collision is distributed among new 
-        particles whose mass equals that corresponding to the lowest bin on the 
-        discrete mass axis. The entire mass is converted into tiny particles. 
-        One can imagine this as "complete pulverization". \\
-        \todo{rename? how about complete annhiltation lool} \\
+        An extremely simplified first approach for modeling the distribution of dust particle
+        masses resulting from a collision event with subsequent particle fragmentation could 
+        be derived from the
+        naive assumption that, as a result of a collision, the entire mass involved in the
+        collision is transferred into a single bin with index $k$. \\
 
-        % \todo{Naive: Move all masses to the bin corresponding to lowest mass} \\
-        % \todo{i.e.: total "pulverization"} \\
+        This is of course not a very sophisticated definition, but was used as a first 
+        approach in the process of building and testing the model for this thesis in 
+        computer code.
 
-        If we assume all mass involved in the collision is to be transferred to the 
-        "lowest bin", we can implement this by setting $k=0$ and defining
+        \clearpage
+
+        An implementation of this simple approach could be achieved via the definition of
         \begin{equation}
             f^\text{frag}_{kij} = \frac{m_i + m_j}{m_k}
         \end{equation}
+
+        If, for example, we assume that the entire mass involved in the collision is to be
+        transferred to the lowest-mass bin, i.e. the entire mass is converted into tiny particles,
+        we would simply have to set $k=1$ (the index of the first bin in the mass grid).
+        This might be imagined as ``complete pulverization'' of the colliding particles.
+
+        % \todo{rename? how about complete annhiltation lool} \\
+        % \todo{Naive: Move all masses to the bin corresponding to lowest mass} \\
+        % \todo{i.e.: total "pulverization"} \\
+
         % \todo{Include $\theta_H$ ?}
 
     % }}}
     % The MRN distribution {{{ 
-    \clearpage
     \subsection{The MRN Distribution}
+    \label{sec:the_mrn_distribution}
         
-        A different approach that might be a little bit more sophisticated is given by 
-        Mathis, Rumpl, and Nordsieck in their 1977 paper \cite{mathis_rumpl_nordsieck_1977}.
+        A different method, which presents a bit more sophisticated approach, was given by 
+        Mathis, Rumpl, and Nordsieck in their 1977 paper \cite{mathis_rumpl_nordsieck_1977}. \\
+
         There, the distribution of masses resulting from a collision of two dust particles 
-        is modeled \\
-        \todo{via an inverse power law} \\
-        \todo{with exponent $q = - 11/6$}
-        \todo{$? \sim m^q$} ($N$ or $n$ ??) \\
+        is modeled making use of an inverse power law with exponent $q := - 11/6$. \\
+        % \todo{$? \sim m^q$} ($N$ or $n$ ??) \\
 
         We will implement it as follows:
         \begin{equation}
             f^\text{frag}_{kij} = \frac{m_i + m_j}{m_k} \cdot \xi_{kij}
         \end{equation}
-        where $\xi_{kij}$ labels the fraction of $m_\text{tot} = m_i + m_j$ that "lands" in 
-        a given bin $k$. It is defined as 
+        Here, $\xi_{kij}$ labels the fraction of the total mass $m_\text{tot} = m_i + m_j$ that 
+        is transferred into a given bin $k$ as a result of the collision. 
+        This fraction shall be defined as 
         \begin{equation}
             \xi_{kij} := \frac{m_k^q}{S}
         \end{equation}
-        with $q=-\frac{11}{6}$ and
+        with the normalization factor
         \begin{equation}
             S := \sum_{k_\text{min}}^{k_\text{max}} m_k^q % \cdot \Delta m_k
         \end{equation}
 
-        \todo{Elaborate, explain, cite!}
+        % \todo{Elaborate, explain, cite!}
 
     % }}}
-    % Cancellation {{{ 
+
+% }}}
+% The Kernel (Plots) {{{
+\clearpage\section{Visualization of Kernel Matrices}
+    
+    On the following pages, we display a few visualizations of the kernel matrices we just 
+    defined, plus a few short explanations for why they look the way that they do.
+
+    % Coagulation Kernel on Linear Mass Axis {{{ 
+    \subsection{Coagulation Kernel on Linear Mass Axis}
+    \label{sec:coagulation_kernel_on_linear_mass_axis}
+
+        To get started, we will first consider the definition of the kernel matrix 
+        for pure hit-and-stick coagulation, defined on a mass axis using linear scaling.
+        This is probably the simplest case one might think of in this context. \\
+
+        The kernel matrix is shown in \cref{fig:K_coag_ij_vs_k_on_linear_mass_axis} for 
+        various values of $k$, the value of which we use to index the different particle 
+        masses that could result from a given collision.
+        The negative component $L^\text{coag}_{kij}$ and the positive component 
+        $G^\text{coag}_{kij}$ are drawn in different colors, namely blue and red, respectively. \\
+
+        Let us try to understand why the plot looks the way it does: \\
+
+        \textbf{Observation 1:} The displayed matrix is symmetric along the diagonal, meaning 
+        it stays invariant under transformations $i \to j$ and $j \to i$. This is due to the 
+        fact that we do not care whether a particle $a$ collides with a particle $b$, or a 
+        particle $b$ collides with a particle $a$. These two scenarios describe the same
+        event. \\
+
+        \textbf{Observation 2:} The kernel loss (shown in blue) is visualized as two 
+        straight lines. For the moment, let us focus on the vertical one: If a collision involving 
+        a particle with mass $m_k$ occurs, then we will have to remove one particle from the 
+        distribution at that bin $k$. This explains the vertical line's horizontal position at 
+        $j = k$. In addition to the particle characterized by index $k$, such a collision could 
+        involve any other particle mass, which explains why the loss component looks like a line, 
+        instead of a point. An analogous reasoning can be made for the horizontal line. \\
+
+        \textbf{Observation 3:} Even though we just mentioned that a given particle could 
+        collide with particles from \textit{any other} mass bin, this is only true in principle. 
+        As can be seen in the plot, the blue lines do not end at the edges of the kernel matrix, 
+        but much earlier instead. This is due to the fact that we have to ensure the conservation 
+        of mass over time. Consider two particles with masses $m_i$ and $m_j$. If their masses 
+        do not satisfy the conditions $m_i + m_j < m_\text{max}$, then the collision and subsequent 
+        merging will require the creation of a particle that can not be represented in the mass 
+        grid, which would lead to a loss of mass. 
+        In reality, mass can of course move out of the considered range, but we will not allow it 
+        to do that in order to be able to better assert the algorithms mass conservation properties.
+        As such, we can expect a ``traffic jam'' of dust mass accumulating in the highest-mass bin.
+        \\
+
+        \textbf{Observation 4:} The positive component (shown in red) follows a diagonal line. 
+        This represents the influence of the mass conservation criterion for newly created 
+        particles, which must satisfy the condition $m_\text{tot} = m_i + m_j$. 
+        Therefore, $m_i = m_\text{tot} - m_j$, which can be interpreted as a linear function 
+        of the kind ``$y = c - x$'', and leads to the representation as a diagonal
+        downward-sloped line. \\
+
+    % }}}
+    % Coagulation Kernel on Linear Mass Axis (Plot) {{{ 
     \clearpage
 
         \begin{figure}[h!]
-            \centering
-            \begin{minipage}{.5\linewidth}
-                \centering
-              	\subfloat[Fragmentation Kernel]{
-                    \label{:a}
-              	  	\includegraphics[width=\linewidth]{34/error_K_frag.pdf}
-              	}
-            \end{minipage}%
-            \begin{minipage}{.5\linewidth}
-                \centering
-              	\subfloat["Full" Kernel: Coagulation + Fragmentation]{
-                    \label{:b}
-              	  	\includegraphics[width=\linewidth]{34/error_K_tot.pdf}
-              	}
-            \end{minipage}
-            \caption{Kernel Mass Error for
-                (a) Fragmentation Kernel
-                (b) Total Kernel
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{101/Kkij vs k, coag=True, frag=False.pdf}
             }
-            \label{}
+            \caption{ 
+                Matrix layers of the kernel for pure hit-and-stick coagulation on a linear mass 
+                axis with 
+                lower mass grid boundary $m_\text{min}=10^{-6}\ \text{kg}$, 
+                upper mass grid boundary $m_\text{min}=10^{-2}\ \text{kg}$, 
+                mass grid resolution $\mathcal N_m=100$, and 
+                collision rate coefficent $R_{ij}^\text{coll} := 1\ \text{m}^3\ \text{s}^{-1}$.
+            }
+            \label{fig:K_coag_ij_vs_k_on_linear_mass_axis}
         \end{figure}
 
     % }}}
-    % Visualization of Fragmentation Kernel {{{ 
-    \clearpage\subsection{Visualization of Fragmentation Kernel}
+    % Coagulation Kernel on Logarithmic Mass Axis {{{ 
+    \subsection{Coagulation Kernel on Logarithmic Mass Axis}
 
-        \todo{Plot number of non-zero kernel entries vs. $k$, and give total non-zero entries.} \\
+        Next, we will define the coagulation kernel again, but making use of a logarithmic 
+        scaling for the discretized mass axis instead. \\
 
-        \todo{Plot pure fragmentation kernel on linear mass axis for various values of $k$.} \\
-        \todo{Plot pure fragmentation kernel on logarithmic mass axis for various values of $k$.}
+        The results can be seen visualized in \cref{fig:K_coag_gain_ij_vs_k_on_log_mass_axis} 
+        and \cref{fig:K_coag_loss_ij_vs_k_on_log_mass_axis}. Note that due to the logarithmic
+        representation, here we need to plot gain and loss components separately. \\
+
+        \textbf{Observation 1:} The negative ``loss'' component (shown in blue) is quite similar to 
+        what we already saw in \cref{fig:K_coag_ij_vs_k_on_linear_mass_axis} for the case of a 
+        linearly discretized mass axis. A difference is given by the extension of the blue lines, 
+        which reach much further towards the edge of the kernel matrix than they did before.
+        This can be explained by the logarithmic scaling. \\
+
+        \textbf{Observation 2:} In contrast to the linear case, here the positive ``gain''
+        component (shown in red) is not represented as a linear diagonal, but an 
+        inverse power relation. This can be explained by the logarithmic scaling as well. 
+
+        \textbf{Observation 3:} The majority of the kernel's entries carry a value of zero,
+        with only about $3 \%$ of the entries being non-zero. 
+        (Here, a mass grid resolution of $\mathcal N_m$ was used.)
+       
+    % }}}
+    % Fragmentation Kernel on Logarithmic Mass Axis {{{ 
+    \subsection{Fragmentation Kernel on Logarithmic Mass Axis}
+
+        The positive and negative components of the kernel matrix for modeling pure 
+        dust particle fragmentation can be seen in 
+        \cref{fig:K_frag_gain_ij_vs_k_on_log_mass_axis} and 
+        \cref{fig:K_frag_loss_ij_vs_k_on_log_mass_axis}, respectively. \\
+
+        % Let us first tackle the similarities, before talking about 
+        % the differences to what we saw in the case of the coagulation kernel on a 
+        % logarithmically discretized mass axis. \\
+
+        \textbf{Observation 1:} The negative ``loss'' component of the fragmentation kernel 
+        looks quite similar to what we saw in the case of the coagulation kernel on a 
+        logarithmically discretized mass axis. A difference can be noticed at the edges 
+        of the kernel though. While the collisions of high-mass particles had to be 
+        ignored in the case of hit-and-stick coagulation, we can include these collisons
+        here. This can be explained by the fact that the particles resulting from a 
+        collision+fragmentation event are \textit{always} smaller (and thus less massive) than 
+        the original colliding particles. As such, no mass loss can occur here due to a 
+        newly created particle's mass not being represented in the mass grid. \\
+
+        \textbf{Observation 2:} The number of non-zero kernel entries is much, much higher 
+        here than it was in the case of stick-and-hit coagulation. Here, about $30 \%$ of the 
+        kernel's entries carry non-zero values. This can be explained by 
+        the fact that a merge event always leads to the creation of exactly one new particle 
+        from the two original ones, whereas this is not the case in fragmentation. 
+        There, possibly very many new particles could be created as a result of a collision,
+        and the mass distribution of newly created particles is modeled via the inverse power 
+        law given by the MRN distribution (for details see \cref{sec:the_mrn_distribution}). \\
+
+        \textbf{Observation 3:} Another thing one might notice is the existence of a 
+        diagonal feature, for the kernel entries with $i=j$. In the plot, it can be seen as a
+        bright line going from top right to top left. This is the same feature we could already see 
+        in the relative velocity plot in \cref{fig:total_relative_dust_particle_velocity}, 
+        as well as the plot of the collision rate coefficent in 
+        \hyperref[fig:collision_cross_section_and_rate_coefficient]
+        {\cref*{fig:collision_cross_section_and_rate_coefficient}b}.
+        The feature can be explained by the fact that a pair of particles $(i,j)$ has a lower 
+        chance of colliding, if $i = j$. Since same-sized particles also experience similar 
+        kinematics, here the relative velocity is close to zero, which leads to a low 
+        collision rate, and thus smaller values of the kernel entries. 
+
+        % \todo{Plot pure fragmentation kernel on linear mass axis for various values of $k$.} \\
 
         % \clearpage
         % \begin{figure}[h!]
@@ -953,84 +1099,208 @@ under the influence of particle collisions. Both associative and dissociative pr
         % \end{figure}
 
     % }}}
-    % Visualization of Total Kernel {{{ 
-        \subsection{Visualization of Total Kernel}
+    % Total Kernel on Logarithmic Mass Axis {{{ 
+    \clearpage
+    \subsection{Total Kernel on Logarithmic Mass Axis}
+        
+        Now, we add the two kernel matrices $K_{kij}^\text{frag}$ and $K_{kij}^\text{coag}$
+        to construct the total kernel, for the full model including both associative and 
+        dissociative processes. \\
 
-            \todo{Plot number of non-zero kernel entries vs. $k$, and give total non-zero entries.}
-    
-            % \clearpage
-            % \begin{figure}[h!]
-            %     \makebox[\textwidth]{
-            %         \includegraphics[width=\paperwidth]{101/Kkij vs k, coag=True, frag=True.pdf}
-            %     }
-            %     \caption{ \todo{Add description!} \\ \todo{Add colorbar!} \\ (with correct z-limits!)}
-            % \end{figure}
+        Its gain and loss components can be seen visualized in 
+        \cref{fig:K_tot_gain_ij_vs_k_on_log_mass_axis} and 
+        \cref{fig:K_tot_loss_ij_vs_k_on_log_mass_axis}, respectively. \\
 
-            \clearpage
-            \begin{figure}[h!]
-                \makebox[\textwidth]{
-                    \includegraphics[width=\paperwidth]{102/Kkij_gain vs k, coag=False, frag=True.pdf}
-                }
-                \caption{ 
-                    Matrix Layers of the Gain Component of the Kernel for Pure Fragmentation 
-                    on a Logarithmic Mass Axis.
-                    The Mass Axis ranges from \todo{$m_\text{min}$} to \todo{$m_\text{max}$} and 
-                    is discretized into \todo{$\mathcal N_m$} bins.
-                    \ \\
-                    \todo{Add colorbar!} (with correct z-limits!)
-                }
-            \end{figure}
+        % \textbf{Observation 1}: \\
 
-            \clearpage
-            \begin{figure}[h!]
-                \makebox[\textwidth]{
-                    \includegraphics[width=\paperwidth]{102/Kkij_loss vs k, coag=False, frag=True.pdf}
-                }
-                \caption{ 
-                    Matrix Layers of the Loss Component of the Kernel for Pure Fragmentation 
-                    on a Logarithmic Mass Axis.
-                    The Mass Axis ranges from \todo{$m_\text{min}$} to \todo{$m_\text{max}$} and 
-                    is discretized into \todo{$\mathcal N_m$} bins.
-                    \ \\
-                    \todo{Add colorbar!} (with correct z-limits!)
-                }
-            \end{figure}
+        % visualization of the total kernel \\
+        % visualization of the total kernel \\
+        % visualization of the total kernel \\
+        % visualization of the total kernel \\
+        % defined on a discrete mass axis using logarithmic scaling \\
+        % shown for various values of $k$ \\
 
-            \clearpage
-            \begin{figure}[h!]
-                \makebox[\textwidth]{
-                    \includegraphics[width=\paperwidth]{102/Kkij_gain vs k, coag=True, frag=True.pdf}
-                }
-                \caption{ 
-                    Matrix Layers of the Gain Component of the Complete Kernel for 
-                    both Coagulation and Fragmentation on a Logarithmic Mass Axis.
-                    The Mass Axis ranges from \todo{$m_\text{min}$} to \todo{$m_\text{max}$} and 
-                    is discretized into \todo{$\mathcal N_m$} bins.
-                    \ \\
-                    \todo{Add colorbar!} (with correct z-limits!)
-                }
-            \end{figure}
-            
-            \clearpage
-            \begin{figure}[h!]
-                \makebox[\textwidth]{
-                    \includegraphics[width=\paperwidth]{102/Kkij_loss vs k, coag=True, frag=True.pdf}
-                }
-                \caption{ 
-                    Matrix Layers of the Loss Component of the Complete Kernel for 
-                    both Coagulation and Fragmentation on a Logarithmic Mass Axis.
-                    The Mass Axis ranges from \todo{$m_\text{min}$} to \todo{$m_\text{max}$} and 
-                    is discretized into \todo{$\mathcal N_m$} bins.
-                    \ \\
-                    \todo{Add colorbar!} (with correct z-limits!)
-                }
-            \end{figure}
+        % \todo{Plot number of non-zero kernel entries vs. $k$, and give total non-zero entries.} 
+
+    % }}}
+    % Kernel Mass Error {{{ 
+    \subsection{Kernel Mass Error}
+        In \cref{fig:effect_of_cancellation_handling_on_kernel_mass_error} and
+        \cref{fig:kernel_error_for_frag_and_total} we display the dimensionless kernel 
+        error, i.e. the relative mass deviation resulting from a single collision,
+        for various different scenarios. \\
+
+        First, \cref{fig:effect_of_cancellation_handling_on_kernel_mass_error} shows the
+        influence of near-zero cancellation handling on the error of the kernel 
+        for pure coagulation
+        (for implementation see \cref{sec:near_zero_cancellation_handling}). \\ 
+
+        As the visualization shows, the mass error per collision of the coagulation 
+        kernel can actually be decreased significantly via the inclusion of a procedure 
+        for handling near-zero cancellation in floating point arithmetics. \\ 
+
+        An additional error is introduced though by the inclusion of fragmentation, 
+        as can be seen in \hyperref[fig:kernel_error_for_frag_and_total]
+        {\cref*{fig:kernel_error_for_frag_and_total}a}. Here, it is not possible 
+        to use the same procedure to get rid of this error, as no obvious cases of
+        cancellation occur. \\
+
+        The error of the total kernel is then shown in 
+        \hyperref[fig:kernel_error_for_frag_and_total]
+        {\cref*{fig:kernel_error_for_frag_and_total}b}. \\
+
+        All of these (dimensionless/relative) errors could be kept on the order of $10^{-12}$.
+
+    % }}}
+    % Coagulation Kernel on Logarithmic Mass Axis (Plot) {{{ 
+        
+        \cleardoublepage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{102/Kkij_gain vs k, coag=True, frag=False.pdf}
+            }
+            \caption{ 
+                Matrix layers of the positive kernel component for pure hit-and-stick 
+                coagulation on a logarithmic mass axis,
+                with 
+                lower mass grid boundary $m_\text{min}=10^{-15}\ \text{kg}$, 
+                upper mass grid boundary $m_\text{min}=10^{-8}\ \text{kg}$, and
+                mass grid resolution $\mathcal N_m=100$.
+            }
+            \label{fig:K_coag_gain_ij_vs_k_on_log_mass_axis}
+        \end{figure}
+
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{102/Kkij_loss vs k, coag=True, frag=False.pdf}
+            }
+            \caption{ 
+                Matrix layers of the negative kernel component for pure hit-and-stick 
+                coagulation on a logarithmic mass axis,
+                with 
+                lower mass grid boundary $m_\text{min}=10^{-15}\ \text{kg}$, 
+                upper mass grid boundary $m_\text{min}=10^{-8}\ \text{kg}$, and
+                mass grid resolution $\mathcal N_m=100$.
+            }
+            \label{fig:K_coag_loss_ij_vs_k_on_log_mass_axis}
+        \end{figure}
+
+    % }}}
+    % Fragmentation Kernel on Logarithmic Mass Axis {{{ 
+
+        \cleardoublepage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{102/Kkij_gain vs k, coag=False, frag=True.pdf}
+            }
+            \caption{ 
+                Matrix layers of the positive kernel component for pure fragmentation
+                on a logarithmic mass axis,
+                with 
+                lower mass grid boundary $m_\text{min}=10^{-15}\ \text{kg}$, 
+                upper mass grid boundary $m_\text{min}=10^{-8}\ \text{kg}$, and
+                mass grid resolution $\mathcal N_m=100$.
+            }
+            \label{fig:K_frag_gain_ij_vs_k_on_log_mass_axis}
+        \end{figure}
+
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{102/Kkij_loss vs k, coag=False, frag=True.pdf}
+            }
+            \caption{ 
+                Matrix layers of the negative kernel component for pure fragmentation
+                on a logarithmic mass axis,
+                with 
+                lower mass grid boundary $m_\text{min}=10^{-15}\ \text{kg}$, 
+                upper mass grid boundary $m_\text{min}=10^{-8}\ \text{kg}$, and
+                mass grid resolution $\mathcal N_m=100$.
+            }
+            \label{fig:K_frag_loss_ij_vs_k_on_log_mass_axis}
+        \end{figure}
+
+    % }}}
+    % Total Kernel on Logarithmic Mass Axis (Plot) {{{ 
+
+        \cleardoublepage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{102/Kkij_gain vs k, coag=True, frag=True.pdf}
+            }
+            \caption{ 
+                Matrix layers of the positive kernel component for both coagulation and 
+                fragmentation on a logarithmic mass axis,
+                with 
+                lower mass grid boundary $m_\text{min}=10^{-15}\ \text{kg}$, 
+                upper mass grid boundary $m_\text{min}=10^{-8}\ \text{kg}$, and
+                mass grid resolution $\mathcal N_m=100$.
+            }
+            \label{fig:K_tot_gain_ij_vs_k_on_log_mass_axis}
+        \end{figure}
+        
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{102/Kkij_loss vs k, coag=True, frag=True.pdf}
+            }
+            \caption{ 
+                Matrix layers of the negative kernel component for both coagulation and fragmentation on a logarithmic mass axis,
+                with 
+                lower mass grid boundary $m_\text{min}=10^{-15}\ \text{kg}$, 
+                upper mass grid boundary $m_\text{min}=10^{-8}\ \text{kg}$, and
+                mass grid resolution $\mathcal N_m=100$.
+            }
+            \label{fig:K_tot_loss_ij_vs_k_on_log_mass_axis}
+        \end{figure}
+
+    % }}}
+    % Old Plots {{{ 
+        
+        % \clearpage
+        % \begin{figure}[h!]
+        %     \makebox[\textwidth]{
+        %         \includegraphics[width=\paperwidth]{101/Kkij vs k, coag=True, frag=True.pdf}
+        %     }
+        %     \caption{ \todo{Add description!} \\ \todo{Add colorbar!} \\ (with correct z-limits!)}
+        % \end{figure}
+
+% }}}
+    % Kernel Mass Error (Plot) {{{ 
+
+    \input{diagrams/cancellation_handling_for_coagulation_kernel.tex}
+
+    % }}}
+    % Cancellation {{{ 
+
+        \begin{figure}[h!]
+            \centering
+            \begin{minipage}{.5\linewidth}
+                \centering
+              	\subfloat[Fragmentation kernel]{
+                    \label{:a}
+              	  	\includegraphics[width=\linewidth]{34/error_K_frag.pdf}
+              	}
+            \end{minipage}%
+            \begin{minipage}{.5\linewidth}
+                \centering
+              	\subfloat[``Full'' kernel: coagulation + fragmentation]{
+                    \label{:b}
+              	  	\includegraphics[width=\linewidth]{34/error_K_tot.pdf}
+              	}
+            \end{minipage}
+            \caption{Dimensionless mass error $\Delta X_{ij}$ for
+                (a) Fragmentation kernel, and
+                (b) Total kernel.
+            }
+            \label{fig:kernel_error_for_frag_and_total}
+        \end{figure}
+
+        % \todo{Add table: Kernel error for coag. / frag. / both, and for various mass axis resolutions.}
 
     % }}}
 
-% }}}
-% Kernel Visualizations {{{
-% \clearpage\section{Kernel Visualizations}
 % }}}
 % Analytical Solutions {{{ 
 \newpage\section{Analytical Solutions}
@@ -1038,45 +1308,75 @@ under the influence of particle collisions. Both associative and dissociative pr
     Analytical solutions to the Smoluchowski coagulation equation exist if, and only if the kernel
     takes on one of the following three forms:
     \begin{enumerate}
-        \item constant kernel
-            $$K=1$$
-        \item linear kernel
-            $$K=m_1+m_2$$
-        \item quadratic kernel
-            $$K=m_1\cdot m_2$$
+        \item Constant kernel:
+            \begin{equation}
+                K(m, m', m'') = A_1
+            \end{equation}
+        \item Linear kernel:
+            \begin{equation}
+                K(m, m', m'') = A_2 \cdot (m' + m'')
+            \end{equation}
+        \item Quadratic kernel:
+            \begin{equation}
+                K(m, m', m'') = A_3 \cdot (m' \cdot m'')
+            \end{equation}
     \end{enumerate}
-    \todo{Rewrite with $m$, $m'$, and $m''$.} \\
-    \todo{Rewrite with $K$ and $X$. Take which?}
+
+    Here, the three numbers $A_1$, $A_2$, and $A_3$ are constants. 
+    The analytical solutions in these cases are discussed in detail 
+    in the 1990 paper written by K. Ohtsuki \cite{ohtsuki_1990}.
 
     % Constant Kernel {{{ 
     \subsection{Constant Kernel}
 
-    \todo{Constant Kernel:} (general enough?)
-    \begin{equation}
-        K(m, m', m'')
-            = 1
-    \end{equation}
+    % \todo{Constant Kernel:} (general enough?)
+    % \begin{equation}
+    %     K(m, m', m'')
+    %         = 1
+    % \end{equation}
 
-    \todo{Smoluchowski equation with constant kernel:}
+    When making use of the constant kernel, the Smoluchowski reads
     \begin{equation}
         \pderiv{n}{t}(m)
             = 
                 \int\limits_0^\infty \int\limits_0^\infty
                 n(m') \cdot n(m'')
                 \ \dd m' \ \dd m''
+        \label{eq:smoluchowski_with_constant_kernel}
+    \end{equation}
+    
+    With the initial condition given by 
+    \begin{align}
+        n_1(t=0) &= n_0 
+        \ \ \ \ \ \text{and} \\
+        n_k(t=0) &= 0 
+        \ \ \ \ \ \text{for } k>1
+    \end{align}
+    the solution to \cref{eq:smoluchowski_with_constant_kernel} is 
+    given by \cite{smoluchowski_1916} \cite{ohtsuki_2017}
+    \begin{equation}
+        n_k(\tau) = n_0 \cdot g^2 \cdot (1-g)^{k-1}
+    \end{equation}
+    with 
+    \begin{equation}
+        g = (1+\tau/2)^{-1}
+    \end{equation}
+    where the normalized time is given by 
+    \begin{equation}
+        \tau = \frac{A_1 \cdot \rho \cdot t}{m_\text{min}}
     \end{equation}
 
     % }}}
     % Linear Kernel {{{ 
     \subsection{Linear Kernel}
 
-    \todo{Linear Kernel:} (general enough?)
-    \begin{equation}
-        K(m, m', m'')
-            = m' + m''
-    \end{equation}
+    % \todo{Linear Kernel:} (general enough?)
+    % \begin{equation}
+    %     K(m, m', m'')
+    %         = m' + m''
+    % \end{equation}
 
-    \todo{Smoluchowski equation with linear kernel:}
+    The Smoluchowski equation with a linear kernel can be written as
     \begin{equation}
         \pderiv{n}{t}(m)
             = 
@@ -1084,19 +1384,43 @@ under the influence of particle collisions. Both associative and dissociative pr
                 (m' + m'') \cdot
                 n(m') \cdot n(m'')
                 \ \dd m' \ \dd m''
+        \label{eq:smoluchowski_with_linear_kernel}
     \end{equation}
+
+    Let $\overline m_0$ label the average dust particle mass at time $t=0$.
+    With the initial condition 
+    \begin{equation}
+        n(m, t=0) = C \cdot e^{-\lambda m}
+    \end{equation}
+    where 
+    \begin{align}
+        C = \frac{N_0}{\overline m_0}
+        \ \ \ \ \ \text{and} \ \ \ \ \
+        \lambda = \frac{1}{\overline m_0}
+    \end{align}
+    the solution to \cref{eq:smoluchowski_with_linear_kernel} according to
+    \cite{safronov_1963}, \cite{safronov_1972} is given by 
+    \begin{equation}
+        n(m, \tau) = \frac{N_0 \cdot g}{m \cdot \sqrt{1-g}} \cdot e^{-\lambda \cdot m(2-g)}
+        \cdot I_1 \cdot 2\lambda m \sqrt{1-g}
+    \end{equation}
+    with
+    \begin{equation}
+        g = e^{-\tau}
+    \end{equation}
+    where $I_1$ is the modified Bessel function and $\tau = A_2 \rho_g t$ is the normalized time.
 
     % }}}
     % Quadratic Kernel {{{ 
     \subsection{Quadratic Kernel}
 
-    \todo{Quadratic Kernel:} (general enough?)
-    \begin{equation}
-        K(m, m', m'')
-            = m' \cdot m''
-    \end{equation}
+    % \todo{Quadratic Kernel:} (general enough?)
+    % \begin{equation}
+    %     K(m, m', m'')
+    %         = m' \cdot m''
+    % \end{equation}
 
-    \todo{Smoluchowski equation with quadratic kernel:}
+    For the quadratic kernel, the Smoluchowski equation reads
     \begin{equation}
         \pderiv{n}{t}(m)
             = 
@@ -1104,13 +1428,29 @@ under the influence of particle collisions. Both associative and dissociative pr
                 (m' \cdot m'') \cdot
                 n(m') \cdot n(m'')
                 \ \dd m' \ \dd m''
+        \label{eq:smoluchowski_with_quadratic_kernel}
     \end{equation}
+
+    A solution to this equation is derived by in the work by \cite{wattis_2006}, 
+    where they give it as 
+    \begin{equation}
+        n_k(t) \sim \begin{cases} 
+            \frac{ 1 }{ \sqrt{2\pi} \cdot k^{5/2}\cdot t } \cdot \exp[-k(t-1-\log(t))]
+            & \text{for } t < t_c
+            \\
+            \frac{ 1 }{ \sqrt{2\pi} \cdot k^{5/2}\cdot t }
+            & \text{for } t \geq t_c
+        \end{cases}
+    \end{equation}
+
+    Here, $t_c$ labels a critical time value, at which the behavior of the evolution changes.
+    In \cite{wattis_2006}, it is be shown that this is actually the \textit{gelation time}.
 
     % }}}
 
 % }}}
 % Numerical Integration {{{
-\newpage\section{Numerical Integration}
+\section{Numerical Integration}
 
     Let us now take a look at how to use numerical integration of the discretized 
     Smoluchowski coagulation equation to arrive at an approximate solution for the temporal 
@@ -1138,6 +1478,7 @@ under the influence of particle collisions. Both associative and dissociative pr
 
         The total mass arror accumulated over the course of the integration is then given by
         \begin{equation}
+            \label{eq:definition_of_integration_mass_error_stability}
             \Delta_\text{stab} =\frac{\rho_f^d - \rho_i^d}{\rho_i^d}
         \end{equation}
 
@@ -1158,8 +1499,9 @@ under the influence of particle collisions. Both associative and dissociative pr
         The numerical integration introduces an error though, which ideally should be kept at machine precision. % TODO Rewrite this.
 
     % }}}
-    % Explicit Euler Scheme {{{ 
-    \subsection{Explicit Euler Scheme}
+    % Explicit Euler Integration Scheme {{{ 
+    \subsection{Explicit Euler Integration Scheme}
+    \label{sec:explicit_euler}
 
         A naive approach for solving the Smoluchowski equation numerically is given by the simple 
         explicit Euler integration scheme, which we will briefly address here. Assuming a constant 
@@ -1187,7 +1529,7 @@ under the influence of particle collisions. Both associative and dissociative pr
             \Delta t
                 &=t_m-t_{m-1}
         \end{align}
-        which, in turn, can be used to define the 1st order foward finite difference
+        which, in turn, can be used to define the 1st order forward finite difference
         \begin{equation}
             \text{FFD}
                 =\frac{\Delta n_k}{\Delta t}
@@ -1209,7 +1551,6 @@ under the influence of particle collisions. Both associative and dissociative pr
                 K_{kij}\cdot n_i\cdot n_j
         \end{equation}
         
-        % TODO Be consistent: "time step" or "time-step" ?
         This can now be used an approximate value for the change in $n_k$ from one time-step to 
         the next, i.e.
         \begin{equation}
@@ -1223,73 +1564,205 @@ under the influence of particle collisions. Both associative and dissociative pr
             \end{split}
         \end{equation}
         
-        % TODO Cite CFL ?
-        % TODO Add CFL to abbreviations
-        In order to ensure stability of the numerical integration, the step size needs to respect the 
-        Courant-Friedrichs-Lewy (CFL) criterion, which provides an upper limit for the values that 
-        $\Delta t$ can take on \cite{courant_friedrichs_lewy_1928}.\\
-        
-        \todo{Formulate CFL criterion for Smoluchowski equation.}
+        In order to ensure stability of the numerical integration, the step size needs to respect 
+        the Courant-Friedrichs-Lewy (CFL) criterion, which provides an upper limit for the values 
+        that $\Delta t$ can take on \cite{courant_friedrichs_lewy_1928}. \\
 
-        \todo{Plot $n(m,t)$ on a linear mass axis, with only coagulation.}
-        \todo{Plot $n(m,t)$ on a linear mass axis, with only fragmentation. (?)}
-        \todo{Plot $n(m,t)$ on a linear mass axis, with constant/linear kernel. (?)}
+        A discussion regarding the formulation of the CFL criterion in the context of the 
+        Smoluchowski coagulation equation is given by e.g. \cite{laibe_lombart_2021}.
+        
+        % \todo{Formulate CFL criterion for Smoluchowski equation.} \\
+        % \todo{Plot $n(m,t)$ on a linear mais axis, with only coagulation.} \\
+        % \todo{Plot $n(m,t)$ on a linear mass axis, with only fragmentation. (?)} \\
+        % \todo{Plot $n(m,t)$ on a linear mass axis, with constant/linear kernel. (?)}
 
     % }}}
-    % Implicit Radau Scheme {{{ 
-    \subsection{Implicit Radau Scheme}
+    % Implicit Radau Integration Scheme {{{ 
+    \clearpage\subsection{Implicit Radau Integration Scheme}
 
-        \todo{Runge-Kutta scheme} \\
-        \todo{Here, 4th order (correct?)} \\
+        Since we would like to study the temporal evolution of the dust particle mass 
+        distribution with particle masses ranging over multiple orders of magnitude, it makes 
+        sense to use a logarithmic scaling for the mass axis discretization. \\
 
-        \todo{Built upon `scipy` Python library 
-        (more specifically, `scipy.integrate.solve\_ivp` function)} \\
-        \todo{Implemented by my supervisor Prof. Dr. Cornelis P. Dullemond [cite?]} \\
+        Similarly, because we want to follow the mass distribution's temporal evolution
+        over very long time-spans, the temporal axis will be discretized using a 
+        logarithmic scaling as well. \\
 
-        \todo{Accuracy} \\
-        \todo{Stability, Mass Conservation} \\
+        This means that the difference in time $\Delta t$ from a step to the next will not 
+        stay constant over time, and instead satisfies the relationship 
+        \begin{equation}
+            \Delta t \sim t
+        \end{equation}
+
+        Due to this, we must be careful not to disrespect the CFL criterion, which places 
+        an upper limit on the step size $\Delta t$. Choosing a larger value would lead to 
+        a breakdown of the algorithm, since stability would no longer be assured. \\
+
+        To deal with that problem, it makes sense to make use of an implicit integration scheme. \\
+
+        For the studies made in the context of this thesis, here we chose to utilize 
+        a 4th-order Radau integration scheme. This scheme belongs to a class of 
+        implicit Runge-Kutta methods that can be used for solving initial value problems. \\
+
+        An implementation of this algorithm is given in the `scipy` Python library. More 
+        specifically, we make use of the `scipy.integrate.solve\_ivp` function.
+
+        % Due to the wide range of orders of magnitude needed for describing 
+
+        % We use an implicit 4th-order Radau integration scheme.
+
+        % The Radau integration scheme is a numerical integration method 
+
+        % \todo{Runge-Kutta scheme} \\
+        % \todo{Here, 4th order (correct?)} \\
+
+        % \todo{Built upon `scipy` Python library 
+        % (more specifically, `scipy.integrate.solve\_ivp` function)} \\
+        % \todo{Implemented by my supervisor Prof. Dr. Cornelis P. Dullemond [cite?]} \\
+
+        % \todo{Accuracy} \\
+        % \todo{Stability, Mass Conservation} \\
 
     % }}}
 
 % }}}
-% Visualization of Numerical Integration {{{ 
+% Numerical Integration (Plots) {{{ 
+\section{Visualization of Integration Results}
 
-    \clearpage\subsection{Visualization of Integration with Pure Coagulation}
+    Having defined the disk model, the kernel matrix, and the integration scheme, now it 
+    is the time to integrate the Smoluchowski coagulation equation. \\ 
 
+    This is done for several different cases, namely: 
+    \begin{enumerate}
+        \item Pure coagulation (on a lin. mass axis)
+        \item Pure coagulation (on a log. mass axis)
+        \item Pure fragmentation (on a log. mass axis)
+        \item Full model of coagulation \textit{and} fragmentation (on a log. mass axis)
+    \end{enumerate}
+
+    The results are displayed in the following sections.
+
+    % Pure Coagulation on Linear Mass Axis {{{ 
+    \subsection{Pure Coagulation on Linear Mass Axis}
+
+        As an introduction, let us start with a very simple first example: The numerical 
+        integration of the Smoluchowski coagulation equation is to be carried out making 
+        use of the kernel matrix that we defined in 
+        \cref{sec:coagulation_kernel_on_linear_mass_axis}, i.e. with only pure 
+        hit-and-stick coagulation processes being included into the model.
+        For the definition of the discretized mass axis, we make use of a linear scaling 
+        here. For the integration, we use the simple forward Euler method that was 
+        described in \cref{sec:explicit_euler}. \\
+
+        For simplicity, the reaction rate coefficent is set to 1 here, as we're only 
+        interesting in getting a qualitative first view on the evolution of the 
+        mass distribution, which we initialize with all particles sharing an initial mass 
+        value of $m_0 = 1\ \text{kg}$. The total mass volume density contained in the 
+        distribution is set to $\rho^d=1\ \text{kg} \text{m}^{-3}$ as well. \\
+
+        \textbf{Observation 1:} As we would expect in the case of pure coagulation, the
+        distribution of particle masses shifts towards higher mass values as time progress. \\
+
+        \textbf{Observation 2:} The height of the graph stays relatively constant over time. 
+        This is due to the fact that here we are not plotting the number of particles per bin 
+        against the mass values corresponding to each bin, but instead the fraction of the 
+        total mass volume density in each bin. This representation thus gives an intuitive 
+        first insight into the mass conservation properties of the algorithm. \\
+
+        \textbf{Observation 3:} Though not shown here (since the plot would not look very
+        interesting), the total mass contained in the distribution is conserved exactly here.
+        The mass error is equal to zero, which stems from the more simple numerical 
+        treatment that can be done when using a linearly scaled mass axis. This exact conservation 
+        of mass will be lost once the switch to a logarithmic scaling is made. \\
+
+        \textbf{Observation 4:} As described by the CFL criterion, the usage of an explicit 
+        Euler algorithm will lead to a breakdown of the method when the time-steps become too 
+        large. This can be observed when increasing the size of the time-step $\Delta t$,
+        but is not yet the case in the displayed simulation run.
+
+        \vfill
+
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{112/euler_explicit_integration_on_linear_mass_axis.pdf}
+            }
+            \caption{ 
+                Temporal evolution of the dust particle mass distribution under the 
+                influence of only pure hit-and-stick coagulation. Here, the mass axis 
+                was discretized making use of a linear scaling. \\ \
+            }
+        \end{figure}
+
+        % \clearpage
+
+    % }}}
+    % Pure Coagulation on Logarithmic Mass Axis {{{ 
+    \cleardoublepage\subsection{Pure Coagulation on Logarithmic Mass Axis}
+    \label{sec:integration_results_pure_coagulation_on_log_mass_axis}
+
+        As before, we start with all mass being concentrated in the lowest bin, i.e. all 
+        particles possessing the same small mass value. As the simulation progresses, more 
+        and more particle collsions occur. In this model, 100 \% of collisions lead to a 
+        merging of the two particles. \\
+
+        As such, the particles in the disk grow larger and larger, while the number of particles 
+        becomes smaller and smaller. \\
+
+        At some point, the upper boundary of the discretized mass axis is reached. This can be 
+        seen on the right side of \cref{fig:temporal_evolution_of_mass_dist_for_pure_coagulation},
+        where more and more particles gather in the highest-mass bin, and a peak is formed. \\
+
+        The stability properties of numerical integration with only pure coagulation
+        are quite good. As we can see in 
+        \cref{fig:temporal_evolution_of_stability_mass_error_for_pure_coagulation},
+        the unitless relative mass error stays consistently on the order of $10^{-15}$. \\
+        
+        As such, mass conservation is assured down to machine precision here.
+
+        \vfill
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{103/mass_error coag=True frag=False m0=0.pdf}
+            }
+            \caption{
+                % For the definition of the error, see 
+                % \cref{eq:definition_of_integration_mass_error_stability}.
+                Relative mass error (stability error) 
+                $\Delta_\text{stab}(t) = \frac{ \rho_d(t) - \rho_d(t=0) }{ \rho_d(t=0) }$ 
+                of the numerical integration as a function of time. Here,
+                only the process of pure coagulation is included in the model. \\
+            }
+            \label{fig:temporal_evolution_of_stability_mass_error_for_pure_coagulation}
+        \end{figure} 
+        \clearpage
         \begin{figure}[h!]
             \makebox[\textwidth]{
                 \includegraphics[width=\paperwidth]{103/mass_distr coag=True frag=False m0=0.pdf}
             }
             \caption{
                 Temporal evolution of the dust particle mass distribution under the 
-                influence of pure "hit-and-stick" coagulation. \\
-                \ \\
-                \todo{$\mathcal N_m = XXX$}
+                influence of only pure coagulation. 
             }
+            \label{fig:temporal_evolution_of_mass_dist_for_pure_coagulation}
         \end{figure} 
-        \clearpage
-        \begin{figure}[h!]
-            \makebox[\textwidth]{
-                \includegraphics[width=\paperwidth]{103/mass_error coag=True frag=False m0=0.pdf}
-            }
-            \caption{
-                Mass Error of Numerical Integration as a Function of Time. For the error 
-                definition see [\todo{cite}]. In the visualized simulation the model 
-                includes only pure hit-and-stick coagulation.
-            }
-        \end{figure} 
+        \vfill
         \begin{figure}[h!]
             \makebox[\textwidth]{
                 \includegraphics[width=\paperwidth]{103/mass_deriv coag=True frag=False m0=0.pdf}
             }
             \caption{
-                Root Mean Squared Temporal Derivative as a Function of Time
-                for the Full Model with only Pure Hit-and-Stick Coagulation enabled.
+                Root-mean-squared (RMS) temporal derivative of the dust particle mass distribution 
+                as a function of time. Here, only the process of pure coagulation is 
+                included into the model. \\
             }
+            \label{fig:rms_temporal_derivative_of_mass_dist_for_pure_coagulation}
         \end{figure} 
 
+    % }}}
+    % Pure Fragmentation on Linear Mass Axis {{{ 
     % \clearpage\subsection{Pure Fragmentation}
 
+    %     \vfill
     %     \begin{figure}[h!]
     %         \makebox[\textwidth]{
     %             \includegraphics[width=\paperwidth]{103/mass_distr coag=False frag=True m0=0.pdf}
@@ -1322,76 +1795,166 @@ under the influence of particle collisions. Both associative and dissociative pr
     %         }
     %     \end{figure} 
 
-    \clearpage\subsection{Visualization of Integration with Pure Coagulation}
+    % }}}
+    % Pure Fragmentation on Logarithmic Mass Axis {{{ 
+    \cleardoublepage\subsection{Pure Fragmentation on Logarithmic Mass Axis}
+    \label{sec:pure_fragmentation_on_log_mass_axis}
 
+        Next, we will consider the scenario in which particle fragmentation is included into 
+        the model, but coagulation is not. In this case, it makes sense to not initialize the 
+        particle mass distribution as a Dirac $\delta$-function centered on the lowest-mass 
+        bin, but choose a larger initial mass for the particles instead.
+        Otherwise, we would not see anything happen at all in 
+        \cref{fig:temporal_evolution_of_mass_dist_for_pure_coagulation}, where the particle 
+        mass distribution is shown at various points in time. \\
+
+        The behavior is what one might expect. Initially, we have larger particles, which 
+        are shattered on collision with another particle, such that the mass is 
+        redistributed into the lower-mass bins. \\
+
+        As we can see in
+        \cref{fig:temporal_evolution_of_stability_mass_error_for_pure_fragmentation},
+        the inclusion of fragmentation processes into the model leads to the 
+        introduction of a mass error, which increases with time. \\
+
+        If we were to run the simulation for longer time-spans, this error would 
+        continue to grow, without any boundary in sight. This can be explained by 
+        the utilization of a logarithmically scaled mass axis. \\
+
+        Even if the mass error per collision is just a tiny number, it can become 
+        arbitrarily large, as it is amplified by the size of the time-step $\Delta t$,
+        which itself increases with time.
+
+        \vfill
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{103/mass_error coag=False frag=True m0=25.pdf}
+            }
+            \caption{
+                % For the definition of the error, see 
+                % \cref{eq:definition_of_integration_mass_error_stability}. 
+                Relative mass error (stability error) 
+                $\Delta_\text{stab}(t) = \frac{ \rho_d(t) - \rho_d(t=0) }{ \rho_d(t=0) }$ 
+                of the numerical integration as a function of time. Here,
+                only the process of pure fragmentation is included in the model. \\
+            }
+            \label{fig:temporal_evolution_of_stability_mass_error_for_pure_fragmentation}
+        \end{figure} 
+        \clearpage
         \begin{figure}[h!]
             \makebox[\textwidth]{
                 \includegraphics[width=\paperwidth]{103/mass_distr coag=False frag=True m0=25.pdf}
             }
             \caption{
                 Temporal evolution of the dust particle mass distribution under the 
-                influence of pure fragmentation, with the initial mass distribution centered 
-                not on bin 0 like in the other runs, but on bin \todo{XXX} instead. \\
-                \ \\
-                \todo{$\mathcal N_m = XXX$} 
+                influence of only pure fragmentation.
+                Here, the initial mass distribution is centered 
+                not on the first bin like in the other runs, but on one corresponding a 
+                higher mass value.
             }
+            \label{fig:temporal_evolution_of_mass_dist_for_pure_fragmentation}
         \end{figure} 
-        \clearpage
-        \begin{figure}[h!]
-            \makebox[\textwidth]{
-                \includegraphics[width=\paperwidth]{103/mass_error coag=False frag=True m0=25.pdf}
-            }
-            \caption{
-                Temporal evolution of the dust particle mass distribution 
-                with only Fragmentation enabled. (\todo{big $m_0$})
-                \ \\
-                \todo{$\mathcal N_m = XXX$} 
-            }
-        \end{figure} 
+        \vfill
         \begin{figure}[h!]
             \makebox[\textwidth]{
                 \includegraphics[width=\paperwidth]{103/mass_deriv coag=False frag=True m0=25.pdf}
             }
             \caption{
-                Root Mean Squared Temporal Derivative as a Function of Time
-                for the Full Model with only Fragmentation enabled.
+                Root-mean-squared (RMS) temporal derivative of the dust particle mass distribution 
+                as a function of time. Here, only the process of fragmentation is included into 
+                the model. \\
             }
+            \label{fig:rms_temporal_derivative_of_mass_dist_for_pure_fragmentation}
         \end{figure} 
 
-    \clearpage\subsection{Visualization of Integration with Full Model}
-        % Full Model: Coagulation + Fragmentation
+    % }}}
+    % Full Model {{{ 
+    \cleardoublepage\subsection{Full Model}
 
-        \begin{figure}[h!]
-            \makebox[\textwidth]{
-                \includegraphics[width=\paperwidth]{103/mass_distr coag=True frag=True m0=0.pdf}
-            }
-            \caption{
-                Temporal evolution of the dust particle mass distribution 
-                with the full coagulation + fragmentation model included.\\
-                \ \\
-                \todo{$\mathcal N_m = XXX$} 
-            }
-        \end{figure} 
-        \clearpage
+        Let us now take a look at the full model, where the processes of both coagulation and 
+        fragmentation are included into the kernel matrix. The temporal evolution of the dust 
+        particle mass distribution is displayed in
+        \cref{fig:temporal_evolution_of_mass_dist_for_full_model}. \\
+
+        At the beginning, this evolution behaves very similarly to what we saw in the case of 
+        pure hit-and-stick coagulation in
+        \cref{sec:integration_results_pure_coagulation_on_log_mass_axis}.
+
+        As a consequence of collisions between the initially very low-mass particles, 
+        larger bodies are formed via the merging of smaller ones. As such, the low-mass bins 
+        are emptied, and the mass contained within them is transferred into bins encoding 
+        more massive particles. \\
+
+        As the coagulation process goes on, larger and larger particles form. Eventually,
+        some of them may become large enough that the relative velocity between them and 
+        some of the other particles surpasses the fragmentation threshold velocity 
+        $v_\text{frag}$. \\
+
+        Here, the observed behavior changes. After having emptied by the sticking process, 
+        low-mass bins get filled up again. As associative and dissociative processes work 
+        against each other, at some point the particle mass distribution function reaches 
+        an equilibrium. \\
+
+        When the equilibrium is reached, the temporal derivative of the mass distribution 
+        function goes to zero. This can be seen visualized in 
+        \cref{fig:rms_temporal_derivative_of_mass_dist_for_full_model}, where we plot 
+        the root-mean-square of the mass distribution's temporal derivative vector as a 
+        function of time. \\
+
+        In addition, the relative mass error of the integration that we defined in 
+        \cref{eq:definition_of_integration_mass_error_stability} is plotted in 
+        \cref{fig:temporal_evolution_of_stability_mass_error_for_full_model}. \\
+
+        The increase of the error towards the end of the time-span over which we 
+        integrate is introduced because of the inclusion of dust particle 
+        fragmentation processes into the kernel, as was discussed in
+        \cref{sec:pure_fragmentation_on_log_mass_axis}.
+
+        \vfill
         \begin{figure}[h!]
             \makebox[\textwidth]{
                 \includegraphics[width=\paperwidth]{103/mass_error coag=True frag=True m0=0.pdf}
             }
             \caption{
-                Temporal Evolution of the Numerical Integration's Mass Error. For the error 
-                definition see [\todo{cite}]. In the visualized simulation the full model 
-                containing both coagulation and fragmentation processes is included.
+                % Temporal Evolution of the Numerical Integration's Mass Error. For the error 
+                % definition see [\todo{cite}]. In the visualized simulation the full model 
+                % containing both coagulation and fragmentation processes is included.
+                Relative mass error (stability error) 
+                $\Delta_\text{stab}(t) = \frac{ \rho_d(t) - \rho_d(t=0) }{ \rho_d(t=0) }$ 
+                of the numerical integration as a function of time. Here,
+                both coagulation and fragmentation processes are 
+                included in the model. \\
+                % For the definition of the error, see 
+                % \cref{eq:definition_of_integration_mass_error_stability}.
             }
+            \label{fig:temporal_evolution_of_stability_mass_error_for_full_model}
         \end{figure} 
+        \clearpage
+        \begin{figure}[h!]
+            \makebox[\textwidth]{
+                \includegraphics[width=\paperwidth]{103/mass_distr coag=True frag=True m0=0.pdf}
+            }
+            \caption{
+                Temporal evolution of the dust particle mass distribution under the 
+                influence of both coagulation and fragmentation processes.
+            }
+            \label{fig:temporal_evolution_of_mass_dist_for_full_model}
+        \end{figure} 
+        \vfill
         \begin{figure}[h!]
             \makebox[\textwidth]{
                 \includegraphics[width=\paperwidth]{103/mass_deriv coag=True frag=True m0=0.pdf}
             }
             \caption{
-                Root Mean Squared Temporal Derivative as a Function of Time
-                for the Full Model with both Coagulation and Fragmentation enabled.
+                Root-mean-squared (RMS) temporal derivative of the dust particle mass distribution 
+                as a function of time. Here, both the process of coagulation and fragmentation is 
+                included into the model.
             }
+            \label{fig:rms_temporal_derivative_of_mass_dist_for_full_model}
         \end{figure} 
+
+    % }}}
+    % Old {{{ 
 
         % \clearpage
         % \todo{Plot $n(m,t)$ on log. mass/time axis, with only coagulation.} \\
@@ -1403,14 +1966,14 @@ under the influence of particle collisions. Both associative and dissociative pr
         % \clearpage
         % \todo{Plot $n(m,t)$ on log. mass/time axis, with both coagulation \& MRN fragmentation.} \\
 
-    % TODO Add these plots to chapters about kernel definition?
+        % TODO Add these plots to chapters about kernel definition?
+        % \clearpage
+        % \todo{Plot temporal evolution of mass distribution function for pure coagulation 
+        % (on log. axis)}
+        % \clearpage
+        % \todo{Plot temporal evolution of mass distribution function for only fragmentation 
+        % (on log. axis)}
 
-    % \clearpage
-    % \todo{Plot temporal evolution of mass distribution function for pure coagulation 
-    % (on log. axis)}
-
-    % \clearpage
-    % \todo{Plot temporal evolution of mass distribution function for only fragmentation 
-    % (on log. axis)}
+    % }}}
 
 % }}}

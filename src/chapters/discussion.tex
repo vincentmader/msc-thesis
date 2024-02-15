@@ -1,11 +1,180 @@
-\todo{Achievements: (What was demonstrated?)}
-\begin{itemize}
-    \item \todo{Stability: Detailed balance!}
-    \item \todo{Accuracy: Difference to solution with complete kernel, and standard deviation}
-\end{itemize}
+For this thesis, we set ourselves the goal of attempting to shed light on the feasibility of
+lowering the computational cost of the Smoluchoswki equation's numerical integration
+via the utilization of stochastic Monte Carlo sampling of the kernel matrix. Specifically, 
+the goal was to identify the most relevant particle collisions, and only include these into the 
+summation over the kernel matrix. \\
 
-\todo{Future improvements:}
-\begin{itemize}
-    \item GPU acceleration
-    \item Rewrite in C or Rust
-\end{itemize}
+Before we could start on that, a number of preliminary definitions had to be made. To be able to 
+study the evolution of the distribution of dust particle masses in a proto-planetary disk, it was 
+of course necessary to define a disk model, which we did in \cref{ch:disk}. Here, we defined the 
+disk's main attributes, which include the spatial distribution of gas and dust within it. 
+Our next point of attention was then given by the task of formulating a model for the gas and dust
+kinematics, which later on allowed us to define the rate of collisions between differently-sized 
+dust particles, as well as velocity-dependent probabilities for the collision outcomes. This 
+concluded the first part of this thesis. \\
+
+The second part of the thesis focused on the definition of a model for circumstellar dust particle
+interaction. In \cref{ch:smoluchoswki}, we adopted the formalism given by the Smoluchoswki 
+coagulation equation, which provides a method for calculating the temporal evolution of the 
+distribution of dust particle masses under the influence of collisions with other particles. Before 
+this temporal evolution behavior could be determined via the numerical integration of the 
+Smoluchoswki coagulation equation, it was necessary to build a discretized analogon to the model we 
+discussed so far, which included the construction of the kernel matrices for both dust coagulation 
+and fragmentation processes. 
+Using a 4th order implicit Radau integration scheme, findings from earlier works rearding the 
+temporal evolutions of the dust particle mass
+distribution could be reproduced. \\
+
+After having spent a lot of time on preparatory work, in \cref{ch:sampling} it was finally 
+possible to start with the third part of
+the thesis, in which studies regarding a sampling of the kernel were made. The idea here was to 
+include only the most ``relevant'' dust particle collisions into the coagulation model, leading to a 
+reduction of terms that need to be considered in the sum evaluation that is done on the
+right-hand side of the discretized Smoluchoswki equation. Relevance here is 
+determined by the impact that a given collision has on the particle mass distribution. 
+Only these most relevant collisions were then used to construct a new, incomplete kernel matrix,
+which was then used to forward the mass distribution by one time-step via the integration of the 
+Smoluchoswki coagulation equation. \\
+
+For this, a sensible sampling probability distribution had to be defined. The approach used here 
+for the definition is quite straightforward, and could be improved on by future works attempting 
+to use this type of Monte Carlo method. 
+
+\clearpage
+
+To quantify the quality of the results we arrived at using the Monte Carlo sampling method, it 
+probably makes sense to 
+focus on three main metrics. These are given by the \textit{stability}, the \textit{accuracy}, 
+as well as the \textit{numerical cost} of the algorithm. \\
+
+As already mentioned, the first of these could be ensured in a satisfactory manner.
+In the case of pure stick-and-hit coagulation, with the help of the method provided by the 
+Kovetz-Olund algorithm, as well as the implementation of a method for handling near-zero
+cancellation in floating arithmetics, the total mass error of the integration 
+could be ensured down to machine precision. \\
+
+When fragmentation processes were included into the model, an additional error was introduced.
+Still, for the simulations done in the context of this thesis, where the dust 
+particle mass distribution function enters an equilibrium after a few hundred years,
+the relative mass error of the integration could be kept well below 1, growing no larger 
+than $10^{-12}$. \\
+
+This is true both when the complete/unsampled kernel was used, as well as when large parts of the 
+kernel were neglected in the evaluation of the double sum for the numerical integration. As such,
+we can confidently say that mass conservation in detailed balance could be ensured. \\
+
+Now, with regards to accuracy of the algorithm:
+Even when parts of the kernel are left out when evaluating the sum on the right-hand side of 
+the discretized Smoluchowski coagulation equation, the general behavior of the mass distribution 
+under time can approximately be reproduced. When both coagulation and fragmentation are included, 
+the distribution does eventually evolve into the expected equilibrium state. \\
+
+It must be noted though, 
+that fluctuations arising from the stochastic nature of the method keep the distribution's temporal 
+derivative well above zero. As one might expect, the magnitude of these fluctuations depends on the 
+value of the sampling density. \\
+
+Also, since leaving out some of the collisions effectively leads to a 
+lower total collision rate, the evolution progresses more slowly for lower sampling densities. \\
+
+Both of these effects negatively impact the accuracy of the numerical solutions derived from a 
+sampled kernel, when compared to the complete one. \\
+% As such, there exists a trade-off between accuracy and numerical cost. \\
+
+Because a lower sampling density leads to a larger accuracy error, the question of whether the
+sampling approach examined in this thesis should be used likely cannot be answered in a definitive 
+way.
+Instead, whether it makes sense to use this collision sampling approach depends on the specific 
+requirements that are imposed on the computational resources, as well as the desired accuracy, 
+since there is a trade-off between these two quantities. \\
+
+When the dust particles are described as entities whose only 
+property is the value of their mass, this sampling approach might only really make sense for very 
+high grid resolutions, or when only an approximate, first look at the results is desired. \\
+
+If, on the other hand, more attributes (like e.g. particle porosity) are included into the model, 
+the utility value of this method could increase. \\
+
+As the amount of noise in the kernel may be expected to grow faster with the dimensionality of the 
+problem than the number of relevant kernel entries, for studies of more sophisticated models
+including additional particle attributes, it may well be worthwhile to consider this approach.
+
+% \begin{itemize}
+        % it cannot be stated clearly whether or not the 
+    % \item Whether it makes sense to use the collision sampling approach depends on the specific 
+    %     requirements that are imposed on the computational resources, as well as the desired 
+    %     accuracy.
+    % \item What can be said though, is that the effectiveness of this approach will likely increase
+    %     with the dimensionality of the problem, due to the Monte Carlo nature of the method.
+    % \item The inclusion of a dust particle porosity parameter, which in conventional methods would 
+    %     lead to a large increase in the numerical cost of the algorithm, could be facilitated 
+    %     by using this stochastic sampling.
+    % \item An illustrative reasoning for this is given by the fact that the amount of \textit{noise}
+    %     in the kernel, i.e. the number of kernel entries that are largely irrelevant to the 
+    %     temporal evolution of the mass distribution, grows faster than the number of entries 
+    %     that cannot simply be ignored.
+% \end{itemize}
+
+
+% \begin{itemize}
+%     \item Whether or not a sampling approach like the one presented in this thesis is utilized,
+%         it likely makes sense to \todo{...}
+% \end{itemize}
+
+
+% The results:
+% \begin{itemize}
+
+%     \item three main metrics: stability, accuracy, numerical cost
+%     \item trade-off between them (accuracy vs. numerical cost)
+
+%     \item in the context of the simulations we ran 
+%           we managed to assure detailed balance of mass transfer between bins, 
+%           which means mass conservation, and thus stability of the algorithm,
+%           down to the machine precision (of 64 bit floating point number)
+
+%     \item equilibrium is reached, though more slowly than with the complete kernel.
+%           this makes sense, since not all terms are included
+
+%     \item as one might expect, using Monte Carlo sampling leads to an introduction of noise into 
+%           the numerical solutions
+%     \item noise increases if sampling density is decreased
+%     \item there is a peak in the distribution at high values of the dust particle mass.
+%           it appears and disappears.
+%           it would be good to get rid of it.
+
+%     \item maybe define a different sampling probability distribution,
+%           to focus more on high-mass bins.
+%     \item maybe always include some bins? (non-probabilistic / hybrid approach)
+% \end{itemize}
+
+% Shortcomings:
+% \begin{itemize}
+%     \item
+% \end{itemize}
+
+% Next steps / Improvements:
+% \begin{itemize}
+%     \item
+% \end{itemize}
+
+% Future works / Outlook:
+% \begin{itemize}
+%     \item relevant especially when including porosity
+%     \item do not sample by probability,
+%         instead ignore all kernel entries with $K_{kij} = 0$,
+%         instead ignore all kernel entries with $K_{kij} < ?$
+% \end{itemize}
+
+
+% \todo{Achievements: (What was demonstrated?)}
+% \begin{itemize}
+%     \item \todo{Stability: Detailed balance!}
+%     \item \todo{Accuracy: Difference to solution with complete kernel, and standard deviation}
+% \end{itemize}
+
+% \todo{Future improvements:}
+% \begin{itemize}
+%     \item GPU acceleration
+%     \item Rewrite in C or Rust
+% \end{itemize}

@@ -2,16 +2,51 @@
 
 \thispagestyle{NoHeader}
 
+\begin{otherlanguage}{german}
+
 \textit{Kontext:}
+Die Smoluchowski-Koagulationsgleichung stellt ein Modell zur Verfügung, das zur Bestimmung der 
+zeitlichen Entwicklung der Verteilung von Staubteilchenmassen in protoplanetaren Scheiben verwendet 
+werden kann. Wenn sowohl Koagulations- als auch Fragmentierungsprozesse berücksichtigt werden, dann 
+erfordert die numerische Integration dieser Gleichung die Auswertung eines Doppelintegrals über die 
+Reaktionskernel-Matrix, wodurch dieser Ansatz aus numerischer Sicht recht aufwendig wird.
 \\ \ \\
-
 \textit{Ziele:}
+Das Ziel dieser Arbeit ist es zu untersuchen, ob sich die Nutzung von stochastischem 
+Monte Carlo Sampling anbietet, um die numerischen Kosten der Integration zu senken.
+Genauer gesagt ist hier die Idee, nur die relevantesten Staubteilchen-Kollisionen 
+bei der Aufsummierung mit zu berücksichtigen.
+Relevanz wird hierbei durch den Einfluss einer gegebenen Kollision auf die Massenverteilung der 
+Staubteilchen bestimmt.
 \\ \ \\
-
 \textit{Methoden:}
+Nach der Definition eines vereinfachten Scheibenmodells bestimmen wir die Reaktionsrate sowie die 
+Reaktionskernel-Matrix für sowohl Koagulations- als auch Fragmentierungsprozesse.
+Die Integration der Smoluchowski-Gleichung wird mithilfe eines impliziten
+Radau-Integrationsverfahrens vierter Ordnung durchgeführt. 
+Mit einer geeigneten Wahrscheinlichkeitsverteilung wird dann das stochastische Sampling der 
+Kernel-Matrix vollzogen. Parameterstudien der Sampling-Dichte werden sowohl für den 
+einfacheren Fall der reinen Koagulation, als auch unter Einbezug von Fragmentierung gemacht.
 \\ \ \\
-
 \textit{Ergebnisse:}
+Das allgemeine Verhalten der zeitlichen Entwicklung der Massenverteilung kann reproduziert werden, 
+auch wenn weite Teile des Kernels vernachlässigt werden. Wenn sowohl Koagulation als auch 
+Fragmentierung einbezogen sind, nähert sich die numerische Lösung nach einigen hundert Jahren dem
+erwarteten Gleichgewichtszustand an. Es muss jedoch angemerkt werden, dass aufgrund statistischer
+Schwankungen, die aus der Sampling-Methode resultieren, die zeitliche Ableitung der Verteilung weit 
+über Null bleibt. Dies, sowie die effektiv niedrigeren Kollisionsraten, führt zu einem Verlust an 
+Genauigkeit. Die Stabilität des Algorithmus in Bezug auf Massenerhaltung konnte bis auf $10^{-12}$ 
+sichergestellt werden.
 \\ \ \\
-
 \textit{Schlüsse:}
+Ob es sinnvoll ist, den in dieser Thesis erprobten Ansatz des Kernel Samplings zu verwenden, 
+hängt vermutlich von den spezifischen Anforderungen an die Rechenressourcen sowie der gewünschten 
+Genauigkeit ab, da ein Kompromiss zwischen den beiden gefunden werden muss. 
+Wenn bei der Modellierung der Staubteilchen mehr als nur ein Attribut berücksichtigt wird 
+(e.g. Masse und Porosität), dann könnte die Anwendung dieser Methode mehr Sinn machen.
+Es kann davon ausgegangen werden, dass der Anteil an vernachlässigbaren Einträgen in der
+Kernel-Matrix mit der Dimensionalität des Problems schneller anwächst als die Zahl der relevanten
+Einträge. Für detailliertere Studien, die zusätzliche Partikeleigenschaften einschließen, 
+könnte es sich deshalb durchaus lohnen, diesen Ansatz zu verfolgen.
+
+\end{otherlanguage}

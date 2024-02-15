@@ -8,10 +8,34 @@
 %     \label{fig:total_relative_dust_particle_velocity}
 % \end{figure}
 
+% \begin{figure}[h!]
+%     \makebox[\textwidth]{
+%         \includegraphics[width=\paperwidth]{21/dv_tot_lin+log.pdf}
+%     }
+%     \caption{Total Relative Dust Particle Velocity $\Delta v_{ij}^\text{tot}$}
+%     \label{fig:total_relative_dust_particle_velocity}
+% \end{figure}
+
 \begin{figure}[h!]
-    \makebox[\textwidth]{
-        \includegraphics[width=\paperwidth]{21/dv_tot_lin+log.pdf}
+    \centering
+    \begin{minipage}{.5\linewidth}
+        \centering
+      	\subfloat[$\Delta v_{ij}^\text{tot}$ with Linear Color Scale]{
+            \label{:a}
+            \includegraphics[width=\linewidth]{21/dv_tot_lin.pdf}
+      	}
+    \end{minipage}%
+    \begin{minipage}{.5\linewidth}
+        \centering
+      	\subfloat[$\Delta v_{ij}^\text{tot}$ with Logarithmic Color Scale]{
+            \label{:b}
+            \includegraphics[width=\linewidth]{21/dv_tot_log.pdf}
+      	}
+    \end{minipage}
+    \caption{
+        Total relative dust particle velocity $\Delta v_{ij}^\text{tot}$.
+        \\ % Note: These newlines are for assuring the same vertical position 
+        \  %       for this plot and those on the following pages, (dv_rel multi + coll)
     }
-    \caption{Total Relative Dust Particle Velocity $\Delta v_{ij}^\text{tot}$}
     \label{fig:total_relative_dust_particle_velocity}
 \end{figure}

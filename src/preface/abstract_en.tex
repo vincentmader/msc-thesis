@@ -2,46 +2,121 @@
 \thispagestyle{NoHeader}
 
 \textit{Context:}
-A framework for modeling the temporal evolution of the distribution of 
-dust particle masses in proto-planetary disks is given by the Smoluchowski coagulation equation.
-When both associative and dissociative processes are included into the model 
-(i.e. coagulation and fragmentation), the numerical integration of this differential equation 
-requires the evaluation of a double integral over the reaction kernel matrix, which makes this 
-approach numerically costly.
+The Smoluchowski coagulation equation provides a framework that can be used for modeling the 
+temporal evolution of the mass distribution of dust particles in proto-planetary disks.
+When both coagulation and fragmentation processes are taken into account,
+% When both associative and dissociative processes are included into the model 
+% (i.e. coagulation and fragmentation), 
+numerical integration requires the evaluation of a double integral over the 
+reaction kernel matrix, which makes this approach quite numerically costly.
 % This effect is ... inclusion of more 
 % Previous studies regarding the temporal evolution of a proto-planetary disk's 
 % dust mass distribution based on the model given by the Smoluchowski coagulation
 % equation have so far 
 \\ \ \\
 \textit{Aims:}
-The goal of this work is to examine the feasibility of using stochastic Monte Carlo sampling 
-of the kernel matrix in order lower the computational cost of the integration. 
-More specifically, the idea is to sample the most relevant particle collisions.
+The goal of this work is to examine the feasibility of utilizing stochastic Monte Carlo sampling 
+of the kernel matrix in order to lower the integration's computational cost.
+More specifically, the idea is to sample the most relevant dust particle collisions,
+where relevance is determined by a given collision's impact on the dust particle mass distribution.
 \\ \ \\
 \textit{Methods:}
-build disk model \\
-define reaction rates \\
-kernel for coagulation and fragmentation \\
-sampling, define probability density
-parameter studies for various sampling densities and ...
+Using a simplified disk model, we define the reaction rates and kernel matrix for 
+both coagulation and fragmentation processes. The Smoluchowski equation is then numerically 
+integrated using a 4th order implicit Radau integration scheme.
+% using either the complete kernel 
+% or an incomplete, sampled one. 
+An appropriate sampling probability distribution is defined, 
+% with which the kernel is then sampled.
+with which an incomplete kernel matrix is constructed.
+Parameter studies of the sampling density 
+% $\rho_\text{sample}$ 
+% as well as the mass grid resolution 
+% $\mathcal N_m$ 
+are made for both the simple case of pure hit-and-stick coagulation, as well as with 
+fragmentation included into the model.
+% as well as for the case where fragmentation processes are included into the model.
+% For this, \todo{two different definitions of the sampling probabilit}
+% sampling, define probability density
+% parameter studies for various sampling densities and ...
 \\ \ \\
 \textit{Results:}
-quite ok 
+The general behavior of the mass distribution's temporal evolution can be reproduced, even if 
+parts of the kernel are neglected.
+When both coagulation and fragmentation are included, the numerical solution after a few hundred 
+years resembles the expected equilibrium state.
+% Even when parts of the kernel are left out when evaluating the sum on the right-hand side of 
+% the discretized Smoluchowski coagulation equation, the general behavior of the mass distribution 
+% under time can approximately be reproduced. 
+It must be noted though, that
+due to statistical fluctuations arising from the sampling method, the distribution's temporal 
+derivative stays well above zero. This, as well as the effectively lower collisions rates,
+leads to a loss with regards to accuracy. The stability of the algorithm with regards to mass 
+conservation could be ensured down to $10^{-12}$.
+% As one might expect, the magnitude of these fluctuations depends on the 
+% value of the sampling density. Since leaving out some of the collisions effectively leads to a 
+% lower total collision rate, the evolution progress more slowly for lower sampling densities. 
+% During the integration, stability is kept well below 1, \todo{at around $10^{-12}$}. 
+% \todo{Accuracy when compared to the complete solution suffers greatly.}
+% We use quotation marks 
+% here, because it needs to be noted that fluctuations arising from the stochastic nature of the 
+% Monte Carlo method prevent the temporal derivative from going to zero. 
+% of the mass distribution 
+% As one might expect, stochastic Monte Carlo sampling of the kernel matrix 
+% When we do not include the entire kernel, 
+% When not the entire 
+% Several key observations could be made: Stochastic kernel sampling leads to 
+% probabilistically
+% The inclusion of 
+% stability assured
+% quite ok 
 \\ \ \\
 \textit{Conclusions:}
-could be used \\
-could be improved \\
-For studies, especially when particles are not assumed to be characterized by the value of their 
-mass alone. The inclusion of a porosity parameter ... \\
-could be of interese ..?
-\\
+Whether it makes sense to use this collision sampling approach probably depends on the specific 
+requirements that are imposed on the computational resources, as well as the desired accuracy, since 
+there is a trade-off between the two. 
+If the dust particles are modeled as possessing more than one attribute (e.g. mass and porosity),
+% When the dust particles are described as entities whose only 
+% property is their mass, \todo{might only make sense for very high grid resolutions,} 
+% or when only an approximate, first look at the results is desired.
+% If more attributes, like e.g. particle porosity, are included into the model, 
+the utility value of this method could increase.
+As the amount of noise in the kernel can be expected to grow faster with the dimensionality of the 
+problem than the number of relevant kernel entries, for studies of more sophisticated models
+including additional particle attributes, it may well be worthwhile to consider this approach.
 
-\todo{Stability is ensured down to machine precision.} \\
-\todo{Accuracy suffers from low sampling density values. ?} \\
-\todo{nr. of non-zero kernel entries} \\
+% due to the higher dimensionality of the problem. 
 
-\todo{Schluesse/Folgerungen?}
-\todo{Was geht besser?}
+% It may well be that this specific method finds it uses mainly in cases where a first look at the 
+% results of a given simulation is desired. 
+% For studies where detailed 
+
+% If, on the other hand, other particle attributes, like e.g. porosity are included into the model,
+% we expect this approach 
+
+% There is a trade-off between accuracy and numerical cost.
+
+% \todo{Stability is ensured down to machine precision.} \\
+% \todo{Accuracy suffers from low sampling density values. ?} \\
+% \todo{nr. of non-zero kernel entries} \\
+
+% \todo{Schluesse/Folgerungen?}
+% \todo{Was geht besser?}
+
+    % \item 
+    % \item Because a lower sampling density lead to a larger accuracy error,
+    %     the question of whether the sampling approach used in this thesis should be 
+    %     used likely cannot be answered in a definitive way.
+    %     % it cannot be stated clearly whether or not the 
+    % \item 
+    % \item What can be said though, is that the effectiveness of this approach will likely increase
+    %     with the dimensionality of the problem, due to the Monte Carlo nature of the method.
+    % \item The inclusion of a dust particle porosity parameter, which in conventional methods would 
+    %     lead to a large increase in the numerical cost of the algorithm, could be facilitated 
+    %     by using this stochastic sampling.
+    % \item An illustrative reasoning for this is given by the fact that the amount of \textit{noise}
+    %     in the kernel, i.e. the number of kernel entries that are largely irrelevant to the 
+    %     temporal evolution of the mass distribution, grows faster than the number of entries 
 
 % The numerical integration results are 
 % The integrations' properties with regard to stability and accuracy
@@ -98,8 +173,8 @@ could be of interese ..?
 
 % In this work we examine the feasibility of using Monte Carlo sampling of the kernel matrix
 % for lowering the computational cost of the Smoluchowski. 
-% The integration of the equation requires that one, in each time step, 
-% carries out the evaluation of a "high-dimensional" sum. \\
+% The integration of the equation requires that one, in each time-step, 
+% carries out the evaluation of a ``high-dimensional'' sum. \\
 
 % The idea is to ignore the less relevant collisions,
 % where the relevance of a collision between particles $i$ and $j$ is given by

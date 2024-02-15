@@ -319,7 +319,7 @@ integration.
     This kernel is then used to forward the mass distribution to the next time-step. \\
 
     If it works, we should be able to decrease the number of terms over which the sum has
-    to be evaluated, while still maintaining acceptable accuracy and stability.
+    to be evaluated, while still maintaining acceptable accuracy and stability. \\
 
     % Consider again the Smoluchowski equation in \cref{eq:discrete_smoluchowski_equation}.
     % As the computational cost of its integration is proportional to the number of terms 
@@ -341,6 +341,66 @@ integration.
 
     % The idea is to try to lower the computational cost of integrating the Smoluchowski 
     % equation by including only the most "relevant" sum terms on the right hand side of 
+
+    This basic idea is illustrated in \cref{fig:sampled_kernel_homogenous_probability}, where a 
+    comparison between ``full'' and sampled kernel is displayed.
+    Note that here, as a first example we are using a homogenous sampling probability.
+    Since not all collision are relevant to the same extent for the evolution of the
+    dust particle mass distribution, in the next section we will define a non-homogenous,
+    more sensible sampling density. \\
+
+    It should also be noted that we the displayed kernel matrix is symmetric around the 
+    diagonal. This is only relevant for visualization though, and does not mean that the
+    terms on the lower right of the matrix are actually defined as non-zero values.
+    We can safely set them to zero, due to the symmetry $i\leftrightarrow j$ with regards
+    to the particles partaking in a given collision. 
+
+% }}}
+% Sampled Kernel {{{ 
+
+\begin{figure}[h!]
+    \centering
+    \begin{minipage}{.5\linewidth}
+        \centering
+      	\subfloat[Positive component of total kernel]{
+            \label{:a}
+      	  	\includegraphics[width=\linewidth]{93/K_gain.pdf}
+      	}
+    \end{minipage}%
+    \begin{minipage}{.5\linewidth}
+        \centering
+      	\subfloat[Negative component of total kernel]{
+            \label{:b}
+      	  	\includegraphics[width=\linewidth]{93/K_loss.pdf}
+      	}
+    \end{minipage}
+    \begin{minipage}{.5\linewidth}
+        \centering
+      	\subfloat[Positive component of sampled kernel]{
+            \label{:a}
+      	  	\includegraphics[width=\linewidth]{93/S_gain.pdf}
+      	}
+    \end{minipage}%
+    \begin{minipage}{.5\linewidth}
+        \centering
+      	\subfloat[Negative component of sampled kernel]{
+            \label{:b}
+      	  	\includegraphics[width=\linewidth]{93/S_loss.pdf}
+      	}
+    \end{minipage}
+    \caption{
+        Illustration of the basic idea for kernel sampling: Only a fraction of the total
+        number of possible particle collision is taken into account when defining the 
+        kernel matrix. This number is determined by the sampling density $\rho_\text{sample}$,
+        which is set to $1/2$ here. 
+        The kernel is plotted for $k=40$ on a mass grid with resolution $\mathcal N_m=100$.
+        Note that here, we are using a homogenous probability distribution for the collision 
+        sampling. Since not all collisions are relevant for the temporal derivative of the 
+        dust particle mass distribution to the same extent, we will define a non-homogenous
+        probability distribution in the next section.
+    }
+    \label{fig:sampled_kernel_homogenous_probability}
+\end{figure} 
 
 % }}}
 % Definition of the Sampling Probability {{{

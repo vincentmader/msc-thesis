@@ -35,8 +35,9 @@ under the influence of particle collisions. Both associative and dissociative pr
 
     The equation is named after the Polish physicist Marian Smoluchowski, due to his treatment 
     of the equation in his 1916 paper \cite{smoluchowski_1916}. 
-    It finds applications in a wide range of physical and biological contexts. \\ 
-    % todo (examples?) \\
+    It finds applications in a wide range of scientific contexts.
+    An example would be given by the modeling of aerosol particles growth in the atmosphere,
+    but the equation can also be used in biological or chemical contexts, among others. \\
 
     In the Smoluchowski coagulation equation, the term $K(m, m', m'')$ labels the so-called
     \textit{coagulation kernel}. 
@@ -145,7 +146,8 @@ under the influence of particle collisions. Both associative and dissociative pr
 
         For both of these cases, we will first consider the definition on the continuous 
         mass axis, and then implement the analogous definition using a mass axis 
-        that was discretized according to \cref{sec:preliminary_notes_on_axis_discretization}. 
+        that was discretized according to \cref{sec:preliminary_notes_on_axis_discretization}. \\
+
         Before we do that though, it will make sense to think about how the kernel function can be 
         decomposed and factorized in several different ways, the first of which 
         is detailed in the following section. 
@@ -753,7 +755,7 @@ under the influence of particle collisions. Both associative and dissociative pr
         \end{equation}
         Here, $\varepsilon_m$ labels the \textit{machine precision}, which can be used to give 
         an upper bound on the relative approximation error that may happen in floating point 
-        arithmetic due to rounding. For 64bit floats, this value is approximately given by
+        arithmetic due to rounding. For 64-bit floats, this value is approximately given by
         \begin{equation}
             \varepsilon_{f64} \approx 10^{-16}
         \end{equation}
@@ -793,9 +795,12 @@ under the influence of particle collisions. Both associative and dissociative pr
         breakdown of the algorithm. \\
         
         It is relatively easy though to identify the particle pairs $(i,j)$ for which the scenario 
-        detailed above will occur. Let $i$ (without loss of generality) be the index of the larger 
-        one of the two colliding masses. Cancellation may then occur when the resulting $k$ is 
-        equal to $j$.\\
+        detailed above will occur. 
+        If $i$ is the index of the larger one of the two colliding masses, then cancellation may 
+        occur when the resulting $k$ is equal to $j$. \\
+        % Let $i$ (without loss of generality) be the index of the larger 
+        % one of the two colliding masses. Cancellation may then occur when the resulting $k$ is 
+        % equal to $j$.\\
         
         In that case, we analytically carry out the subtraction in 
         \cref{eq:cancellation_handling_eq_1}, and write:
@@ -806,8 +811,8 @@ under the influence of particle collisions. Both associative and dissociative pr
 
         % \todo{Elaborate on this, see "Dust Evolution with Binning Methods"} \\
 
-        The effect that this corrected has on the kernel mass error can be seen visualized 
-        in \cref{fig:effect_of_cancellation_handling_on_kernel_mass_error}.
+        The effect that this correction has on the kernel mass error $\Delta X_{ij}^\text{coag}$ 
+        can be seen visualized in \cref{fig:effect_of_cancellation_handling_on_kernel_mass_error}.
 
     % }}}
 
@@ -841,16 +846,16 @@ under the influence of particle collisions. Both associative and dissociative pr
     The big distinction between the kernels for coagulation and fragmentation lies 
     in the way that this function is defined. \\
 
-    In the scenario of pure hit-and-stick coagulation, it is given by a Dirac $\delta$ function,
+    In the scenario of pure hit-and-stick coagulation, it is given by a Dirac $\delta$-function,
     which allows us to reduce the double integral in the Smoluchowski equation (or double sum, in 
-    the discrete case) into an integral/sum over a single axis. That is be very different here,
+    the discrete case) into an integral/sum over a single axis. That is very different here,
     and a reduction of the double integral will not be possible. This is why the numerical 
     cost of modeling fragmentation processes is significantly higher than if one were to only 
     consider pure coagulation. \\
 
     The reasoning behind the different definitions of the functions $f^\text{coag}$ and
     $f^\text{frag}$ is the following: If two particles merge into one, then (without breaking mass
-    conservation) there is only a single possible mass value that can result from that. 
+    conservation) there is only a single possible mass value that can result from that. \\
     
     In the case of fragmentation though, this is not true. 
     If two particles collide, they could in principle fragment into a whole range of 
@@ -939,6 +944,10 @@ under the influence of particle collisions. Both associative and dissociative pr
             S := \sum_{k_\text{min}}^{k_\text{max}} m_k^q % \cdot \Delta m_k
         \end{equation}
 
+        Here, we define $k_\text{min}=1$, and set $k_\text{max}$ to the index corresponding
+        to $m_\text{tot} = m_i + m_j$. Note that this is a somewhat arbitrary definition, and 
+        one could also use $\text{max}(m_i, m_j)$ for the upper mass boundary instead.
+
         % \todo{Elaborate, explain, cite!}
 
     % }}}
@@ -956,6 +965,7 @@ under the influence of particle collisions. Both associative and dissociative pr
 
         To get started, we will first consider the definition of the kernel matrix 
         for pure hit-and-stick coagulation, defined on a mass axis using linear scaling.
+        Also, for the time being the reaction rate coefficent is set to 1.
         This is probably the simplest case one might think of in this context. \\
 
         The kernel matrix is shown in \cref{fig:K_coag_ij_vs_k_on_linear_mass_axis} for 
@@ -987,7 +997,7 @@ under the influence of particle collisions. Both associative and dissociative pr
         of mass over time. Consider two particles with masses $m_i$ and $m_j$. If their masses 
         do not satisfy the conditions $m_i + m_j < m_\text{max}$, then the collision and subsequent 
         merging will require the creation of a particle that can not be represented in the mass 
-        grid, which would lead to a loss of mass. 
+        grid, which would effectively lead to a loss of mass. 
         In reality, mass can of course move out of the considered range, but we will not allow it 
         to do that in order to be able to better assert the algorithms mass conservation properties.
         As such, we can expect a ``traffic jam'' of dust mass accumulating in the highest-mass bin.
@@ -1038,11 +1048,12 @@ under the influence of particle collisions. Both associative and dissociative pr
 
         \textbf{Observation 2:} In contrast to the linear case, here the positive ``gain''
         component (shown in red) is not represented as a linear diagonal, but an 
-        inverse power relation. This can be explained by the logarithmic scaling as well. 
+        inverse power relation. This can be explained by the logarithmic scaling as well. \\
 
         \textbf{Observation 3:} The majority of the kernel's entries carry a value of zero,
         with only about $3 \%$ of the entries being non-zero. 
         (Here, a mass grid resolution of $\mathcal N_m$ was used.)
+        This will be different if fragmentation is included.
        
     % }}}
     % Fragmentation Kernel on a Logarithmic Mass Axis {{{ 
@@ -1324,7 +1335,8 @@ under the influence of particle collisions. Both associative and dissociative pr
 
     Here, the three numbers $A_1$, $A_2$, and $A_3$ are constants. 
     The analytical solutions in these cases are discussed in detail 
-    in the 1990 paper written by K. Ohtsuki \cite{ohtsuki_1990}.
+    in the 1990 paper written by K. Ohtsuki \cite{ohtsuki_1990}, as well as
+    the 2006 paper by J. Wattis \cite{wattis_2006}.
 
     % Constant Kernel {{{ 
     \subsection{Constant Kernel}
@@ -1347,10 +1359,10 @@ under the influence of particle collisions. Both associative and dissociative pr
     
     With the initial condition given by 
     \begin{align}
-        n_1(t=0) &= n_0 
-        \ \ \ \ \ \text{and} \\
-        n_k(t=0) &= 0 
-        \ \ \ \ \ \text{for } k>1
+        n_1(t=0) = n_0 
+        \ \ \ \ \ &\text{and} \\
+        n_k(t=0) = 0 
+        \ \ \ \ \ &\text{for } k>1
     \end{align}
     the solution to \cref{eq:smoluchowski_with_constant_kernel} is 
     given by \cite{smoluchowski_1916} \cite{ohtsuki_2017}
@@ -1717,7 +1729,7 @@ under the influence of particle collisions. Both associative and dissociative pr
         \cref{fig:temporal_evolution_of_stability_mass_error_for_pure_coagulation},
         the unitless relative mass error stays consistently on the order of $10^{-15}$. \\
         
-        As such, mass conservation is assured down to machine precision here.
+        As such, we can say that mass conservation is assured down to machine precision here.
 
         \vfill
         \begin{figure}[h!]
@@ -1810,7 +1822,8 @@ under the influence of particle collisions. Both associative and dissociative pr
 
         The behavior is what one might expect. Initially, we have larger particles, which 
         are shattered on collision with another particle, such that the mass is 
-        redistributed into the lower-mass bins. \\
+        redistributed into the lower-mass bins. Since there is no coagulation here, the mass stays 
+        in these low-mass bins and no large particles can be formed. \\
 
         As we can see in
         \cref{fig:temporal_evolution_of_stability_mass_error_for_pure_fragmentation},
@@ -1878,8 +1891,7 @@ under the influence of particle collisions. Both associative and dissociative pr
 
         At the beginning, this evolution behaves very similarly to what we saw in the case of 
         pure hit-and-stick coagulation in
-        \cref{sec:integration_results_pure_coagulation_on_log_mass_axis}.
-
+        \cref{sec:integration_results_pure_coagulation_on_log_mass_axis}. 
         As a consequence of collisions between the initially very low-mass particles, 
         larger bodies are formed via the merging of smaller ones. As such, the low-mass bins 
         are emptied, and the mass contained within them is transferred into bins encoding 

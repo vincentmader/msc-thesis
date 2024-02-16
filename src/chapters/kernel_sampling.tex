@@ -586,10 +586,17 @@ integration.
     what kind of particles are present at the moment (and the masses they carry), the most 
     relevant collisions can vary significantly. \\ 
 
-    Note that this sampling will be implemented ``without returning'', i.e. each collision 
-    will only be chosen a single time at most per time-step. \\
+    \cleardoublepage
 
-    Also, to filter out less relevant collisions, we will implement a threshold probability 
+    Note that this sampling will be implemented ``without returning'', i.e. each collision 
+    will only be chosen a single time at most per time-step. 
+    An alternative method would of course be given by the implementatin of a method
+    that allows duplicate sampling, i.e. sampling ``with returning''. This would require 
+    the definition of a normalization, e.g. by dividing the kernel matrix $K_{kij}$ by 
+    the sampling probability $P^\text{sample}_{ij}$.
+    This approach is not pursued in this thesis, but could be in a future study. \\
+
+    To filter out less relevant collisions, we will implement a threshold probability 
     value $P^\text{sample}_\text{min}$ that needs to be reached before a collision is deemed 
     relevant enough to be sampled. Assuming a mass grid resolution of $\mathcal N_m=100$, we will 
     set this to
@@ -664,7 +671,7 @@ integration.
 % Visualizations {{{ 
 
     % Sampling of the Pure Coagulation Kernel {{{ 
-    \cleardoublepage\subsection{Sampling of the Pure Coagulation Kernel}
+    \subsection{Sampling of the Pure Coagulation Kernel}
 
         In \cref{fig:sampled_temporal_evolution_of_mass_distribution_for_only_coag}, the 
         temporal evolution of the dust particle mass distribution is plotted for 
@@ -849,10 +856,11 @@ integration.
         % temporal derivative does not go to zero
 
         \textbf{Observation 4:} 
-        It might not be that easy to recognize, since multiple distributions are plotted on 
-        top of each other, another interesting feature one can notice is the existence 
+        % It might not be that easy to recognize, since multiple distributions are plotted on 
+        % top of each other, 
+        Another interesting feature one can notice is the existence 
         of peak-like structures at the upper end of the mass axis, which are present even 
-        at for larger values of the sampling density.
+        for larger values of the sampling density.
         This could hint at an under- or over-representation of collisions involving particles 
         whose masses are close to the upper ``edge'' of the equilibrium state's mass distribution.
         It might be fixed by adjusting the definition of the sampling probability in a 

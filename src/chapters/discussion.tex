@@ -39,26 +39,30 @@ Smoluchoswki coagulation equation. \\
 For this, a sensible sampling probability distribution had to be defined. The approach used here 
 for the definition is quite straightforward, and could be improved on by future works attempting 
 to use this type of Monte Carlo method. 
+Here, one possible improvement could be given by adjusting 
+the sampling density in such a way that the appearance of peak-like structures at the high-mass 
+end of the equilibrium distribution can be suppressed. Another suggestion for an improvement would 
+be the implementation of a sampling method that allows duplicate selection of collisions, with the 
+definition of an appropriate normalization.
 
 \clearpage
 
 To quantify the quality of the results we arrived at using the Monte Carlo sampling method, it 
-probably makes sense to 
+makes sense to 
 focus on three main metrics. These are given by the \textit{stability}, the \textit{accuracy}, 
 as well as the \textit{numerical cost} of the algorithm. \\
 
-As already mentioned, the first of these could be ensured in a satisfactory manner.
+As we discussed earlier, the first of these could be ensured in a satisfactory manner.
 In the case of pure stick-and-hit coagulation, with the help of the method provided by the 
 Kovetz-Olund algorithm, as well as the implementation of a method for handling near-zero
 cancellation in floating arithmetics, the total mass error of the integration 
-could be ensured down to machine precision. \\
+could be ensured down to machine precision of 64-bit floating point number operations. \\
 
 When fragmentation processes were included into the model, an additional error was introduced.
 Still, for the simulations done in the context of this thesis, where the dust 
 particle mass distribution function enters an equilibrium after a few hundred years,
 the relative mass error of the integration could be kept well below 1, growing no larger 
-than $10^{-12}$. \\
-
+than $10^{-12}$. 
 This is true both when the complete/unsampled kernel was used, as well as when large parts of the 
 kernel were neglected in the evaluation of the double sum for the numerical integration. As such,
 we can confidently say that mass conservation in detailed balance could be ensured. \\
@@ -72,8 +76,7 @@ the distribution does eventually evolve into the expected equilibrium state. \\
 It must be noted though, 
 that fluctuations arising from the stochastic nature of the method keep the distribution's temporal 
 derivative well above zero. As one might expect, the magnitude of these fluctuations depends on the 
-value of the sampling density. \\
-
+value of the sampling density. 
 Also, since leaving out some of the collisions effectively leads to a 
 lower total collision rate, the evolution progresses more slowly for lower sampling densities. \\
 

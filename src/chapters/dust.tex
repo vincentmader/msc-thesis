@@ -98,8 +98,8 @@
         {\cref*{fig:relative_dust_particle_velocities}a}.
 
     % }}}
-    % Azimuthal Motion {{{ 
-    \subsection{Azimuthal Motion}
+    % Azimuthal Drift {{{ 
+    \subsection{Azimuthal Drift}
 
         The azimuthal relative velocities of differently-sized dust particles are induced in a 
         similar way to the radial drift. The extent to which dust particles are coupled to the gas 
@@ -225,7 +225,7 @@
         \end{equation}
         with the viscosity parameter set to $\alpha := 10^{-3}$. 
         For a visualization of the results, see \hyperref[fig:relative_dust_particle_velocities]
-        {\cref*{fig:relative_dust_particle_velocities}d}.
+        {\cref*{fig:relative_dust_particle_velocities}c}.
 
     % }}}
     % Brownian Motion {{{ 
@@ -243,7 +243,7 @@
         Brownian motion thus favors collisions in which at least one collision partner is a 
         low-mass particles. This can be seen reflected in 
         \hyperref[fig:relative_dust_particle_velocities]{
-        \cref*{fig:relative_dust_particle_velocities}c}.
+        \cref*{fig:relative_dust_particle_velocities}d}.
 
     % }}}
     % Total Relative Velocity {{{ 
@@ -287,7 +287,7 @@
     In the context of this thesis, these collisions are assumed to always be two-body 
     interactions. The probability of three or more dust particles colliding at the exact same time
     is so small, that the occurance rate of three-body interactions can be neglected entirely.
-    Thus, we can safely assume the particle collisions to be two-particle interactions.
+    Thus, we can safely assume the particle collisions to be interactions of two particles only.
 
     % \todo{alwats 2-body collisions}
     % Such collisions are always two-body collisions. The occurrance rate of three-body interactions (where by chance three dust particles collide with each other at the same time) is so tiny that it is absolutely negligible. If two particles with masses m1
@@ -324,7 +324,9 @@
         $R^\text{coll}_{ij}$, which is given as the product of the corresponding collision 
         cross section and the two colliding particles' relative velocity: 
         \begin{equation}
-            R^\text{coll}_{ij} \approx \sigma^\text{coll}_{ij} \cdot \Delta v_{ij}
+            R^\text{coll}_{ij} 
+            = R^\text{coll}(m_i,m_j) 
+            \approx \sigma^\text{coll}_{ij} \cdot \Delta v_{ij}
         \end{equation}
 
         Note: The units of this collision rate coefficent are \textit{not} $\text{s}^{-1}$! 
@@ -384,7 +386,7 @@
         certain outcome to occur, one might imagine that collisions at low relative velocities have 
         a high likelyhood of leading to a merge event. Higher velocity values may lead to 
         bouncing, and still higher velocities would eventually have the effect 
-        of breaking apart the particles involved in the collision, i.e. fragmentation \\
+        of breaking apart the particles involved in the collision, i.e. fragmentation. \\
 
         For each of these three possible outcomes, we will define an associated probability 
         distribution, each of which depends on the mass values of the two particles participating 
@@ -398,7 +400,6 @@
         The rates at which such reactions occur can then described by the 
         \textit{reaction rate coefficients}, which we shall label 
         $R_{ij}^\text{coag}$, $R_{ij}^\text{frag}$, and $R_{ij}^\text{bounce}$. 
-
         They are defined as 
         \begin{align}
             R^\text{coag}_{ij}   &= R^\text{coll}_{ij} \cdot P^\text{coag}_{ij} \\
@@ -419,7 +420,7 @@
         \end{equation}
 
         To help with the decision whether a given collision ends up resulting in coagulation or
-        fragmentation, the definition of a \textit{threshold value for the relative velocity} makes 
+        fragmentation, the definition of a \textit{threshold value} for the relative velocity makes 
         sense. Adopting the value used by Dullemond and Dominik in their 2003 paper 
         \cite{dullemond_dominik_2023}, we will define the value of $v_\text{frag}$ as
         \begin{equation}
@@ -438,7 +439,7 @@
             P^\text{frag}_{ij}
             =
             \begin{cases}
-                1 & \text{if}\ \Delta v_{ij} >= v_\text{frag}\\
+                1 & \text{if}\ \Delta v_{ij} \geq v_\text{frag}\\
                 0 & \text{else}
             \end{cases}
         \end{equation}
@@ -458,8 +459,9 @@
             P^\text{frag}_{ij}=(1+x)\cdot e^{-x}
         \end{equation}
 
-        The resulting probability distributions for the first method and the second, more sensible 
-        one, are displayed in \cref{fig:fragmentation_probability}.
+        The resulting probability distributions for the first method and the second, more
+        sophisticated one, are displayed in \cref{fig:fragmentation_probability}.
+        For our coagulation studies, we will make use of the second method.
 
         \input{diagrams/collision_outcome_probabilities.tex}
 

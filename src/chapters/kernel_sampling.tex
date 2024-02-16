@@ -5,8 +5,10 @@ We would like to find out whether it makes sense to utilize stochastic Monte Car
 kernel matrix, in order to lower the cost of the Smoluchowski coagulation equation's numerical 
 integration.
 
+\section{Introduction}
+
 % Motivation {{{ 
-\section{Motivation}
+\subsection{Motivation}
 
     Let us first think about why that would even be necessary.
     The computational cost of integrating the Smoluchowski equation within the context of our 
@@ -280,7 +282,7 @@ integration.
 
 % }}}
 % Previous Works {{{
-\section{Previous Works}
+\subsection{Previous Works}
 
     Previous studies have already made use of Monte Carlo methods in an attempt to 
     bring down the numerical cost of the integration of the Smoluchowski equation. \\
@@ -295,8 +297,11 @@ integration.
     % sample \textit{particle collisions} $(i, j)$.
 
 % }}}
+
+\section{Kernel Sampling}
+
 % Basic Idea {{{ 
-\section{Basic Idea}
+\subsection{Basic Idea}
 
     As noted above, the goal here is to reduce the cost of numerically integrating the 
     Smoluchowski coagulation equation. \\
@@ -396,15 +401,15 @@ integration.
         The kernel is plotted for $k=40$ on a mass grid with resolution $\mathcal N_m=100$.
         Note that here, we are using a homogenous probability distribution for the collision 
         sampling. Since not all collisions are relevant for the temporal derivative of the 
-        dust particle mass distribution to the same extent, we will define a non-homogenous
-        probability distribution in the next section.
+        dust particle mass distribution to the same extent, we will define a more sensible 
+        non-homogenous probability distribution in the next section.
     }
     \label{fig:sampled_kernel_homogenous_probability}
 \end{figure} 
 
 % }}}
 % Definition of the Sampling Probability {{{
-\clearpage\section{Definition of the Sampling Probability}
+\clearpage\subsection{Definition of the Sampling Probability}
 \label{sec:definition_of_the_sampling_probability}
 
     As noted above, it is our goal to identify the most relevant collisions, i.e. those collisions 
@@ -585,10 +590,11 @@ integration.
     will only be chosen a single time at most per time-step. \\
 
     Also, to filter out less relevant collisions, we will implement a threshold probability 
-    value $P^\text{sample}_{min}$ that needs to be reached before a collision is deemed relevant 
-    enough to be sampled. Assuming a mass grid resolution of $\mathcal N_m=100$, we will set this to
+    value $P^\text{sample}_\text{min}$ that needs to be reached before a collision is deemed 
+    relevant enough to be sampled. Assuming a mass grid resolution of $\mathcal N_m=100$, we will 
+    set this to
     \begin{equation}
-        P^\text{sample}_{min} := 10^{-9}
+        P^\text{sample}_\text{min} := 10^{-9}
     \end{equation}
 
 % }}}
@@ -658,7 +664,7 @@ integration.
 % Visualizations {{{ 
 
     % Sampling of the Pure Coagulation Kernel {{{ 
-    \cleardoublepage\section{Sampling of the Pure Coagulation Kernel}
+    \cleardoublepage\subsection{Sampling of the Pure Coagulation Kernel}
 
         In \cref{fig:sampled_temporal_evolution_of_mass_distribution_for_only_coag}, the 
         temporal evolution of the dust particle mass distribution is plotted for 
@@ -800,7 +806,7 @@ integration.
 
     % }}}
     % Sampling of the Total Kernel {{{ 
-    \cleardoublepage\section{Sampling of the Total Kernel}
+    \cleardoublepage\subsection{Sampling of the Total Kernel}
 
         The plots in 
         \cref{fig:sampled_temporal_evolution_of_mass_distribution_for_full_model},
@@ -845,10 +851,11 @@ integration.
         \textbf{Observation 4:} 
         It might not be that easy to recognize, since multiple distributions are plotted on 
         top of each other, another interesting feature one can notice is the existence 
-        of peak-like structures at the upper end of the mass axis. 
+        of peak-like structures at the upper end of the mass axis, which are present even 
+        at for larger values of the sampling density.
         This could hint at an under- or over-representation of collisions involving particles 
         whose masses are close to the upper ``edge'' of the equilibrium state's mass distribution.
-        This might be fixed by adjusting the definition of the sampling probability in a 
+        It might be fixed by adjusting the definition of the sampling probability in a 
         sensible manner.
         % This is true 
         % Since we are 
@@ -952,7 +959,7 @@ integration.
 % Accuracy and Stability {{{ 
 
     \clearpage
-    \section{Accuracy and Stability}
+    \subsection{Accuracy and Stability}
 
     Additionally to the stability error $\Delta_\text{stab}$ that we defined in
     \cref{eq:definition_of_integration_mass_error_stability}, and which is displayed 
@@ -1056,7 +1063,71 @@ integration.
     % \end{align}
 
 % }}}
-    % Temporal Derivative {{{ 
+% Temporal Derivative 1 {{{ 
+
+    % \clearpage
+
+    % As we saw previously, if we sample the collisions and construct an incomplete kernel 
+    % from only the sampled collisions, then statistical noise is introduced into the solution 
+    % for the mass distribution and its temporal derivative. \\
+
+    % This (numerical) temporal derivative is given by 
+    % \begin{equation}
+    %     \frac{\partial \rho_i}{\partial t} \approx \frac{\rho_i(t+\Delta t) - \rho_i(t)}{\Delta t}
+    % \end{equation}
+
+    % We would like to know whether, if we sample often enough, the statistical noise 
+    % gets canceled out and the mass distribution approaches the real solution.
+    % Here, we use the word ``real'' to denote the solution we would arrive at if all 
+    % collisions were taken into account. \\
+
+    % To get an insight into that question, we will use the unsampled/complete kernel 
+    % to integrate the Smoluchowski equation 
+    % up until the point where the mass distribution has entered an equilibrium state. \\
+
+    % Of course 
+    % we never \textit{really} enter the equilibrium state even when integrating with 
+    % the complete kernel, since the temporal derivative stays well above zero there 
+    % as well. \todo{what is its value?} \\
+
+    % Anyhow, we will take the mass distribution at the end of the integration, and use it to 
+    % define the sampling probability $P_{ij}^\text{sample}$. With that, we construct a sampled 
+    % kernel, and integrate the Smoluchowski equation for one time-step. \\
+
+    % This allows us to calculate the temporal derivative for the ``full'' solution.
+
+    % If done correctly, this temporal derivative 
+
+    % with enough sampling this temporal derivative 
+
+
+
+
+    % There is statistical noise in the solution calculated with the sampled, and thus incomplete kernel.
+
+    % \begin{equation}
+    %     X = \frac{\partial N}{\partial t}
+    % \end{equation}
+
+    % With this mass distribution, sample the kernel. 
+
+    % If we do this repeatedly, we would hope that the averaged temporal derivative 
+
+
+    % \begin{itemize}
+    %     % \item examine whether temporal derivative approaches zero when sampling very often
+    %     \item Integrate Smoluchowski coagulation equation using the full kernel up until the equilibrium is reached
+    %     \item
+    %     \item
+    %     \item
+    % \end{itemize}
+
+    % \begin{equation}
+        
+    % \end{equation}
+
+% }}}
+    % Temporal Derivative 2 {{{ 
     \clearpage
     
         \begin{figure}[h!]

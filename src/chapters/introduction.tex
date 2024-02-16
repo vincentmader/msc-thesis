@@ -24,9 +24,9 @@ insight into the respective processes, running simulations based on highly simpl
 models. \\
 
 Various frameworks exist for constructing such models for different aspects of the planetary 
-formation process. 
-One such framework, which is of great relevance to the studies done in the context of this thesis,
-is given by the so-called \textit{Smoluchowski coagulation equation}. \\
+formation process. One such framework, which is of especially great relevance to the studies done 
+in the context of this thesis, is given by the so-called 
+\textit{Smoluchowski coagulation equation}. \\
 
 This equation allows the definition of a model for the temporal evolution of a given particle 
 group's distribution of masses under the influence of particle collisions and subsequent 
@@ -40,7 +40,8 @@ which are widely believed to play an imporant role in the early phases of planet
 formation. \\
 
 Previous studies of dust particle agglomeration that made use of the framework provided by the 
-Smoluchowski coagulation equation have often made the simplifying assumption that the individual 
+Smoluchowski coagulation equation have often based the definition of a dust model on the 
+simplifying assumption that the individual 
 dust particles can be characterized entirely by the value of their mass alone (see e.g. 
     \cite{dullemond_dominik_2004},
     \cite{birnstiel_dullemond_brauer_2010}). 
@@ -143,7 +144,7 @@ defined in each time-step, with which the numerical integration is subsequently 
     % dominated by the contribution of the just mentioned types of matter.
     Though much less abundant, the presence of these metals is assumed to be essential for the 
     formation of planets, as they provide the material for a central rocky core. Initially,
-    they are present in forms of dust particles, which are 
+    they are present in the form of dust particles, which are 
     composed of various materials like silicates, carbon compounds, or ices.
     % , ices (such as water ice, ammonia ice, methane ice)
     % A much smaller contribution 
@@ -301,12 +302,12 @@ defined in each time-step, with which the numerical integration is subsequently 
     entire matter collapsing into a single point. But since the cloud possesses a total angular 
     momentum which is most likely $\neq 0$, this does not happen. 
     Instead, the cloud flattens into a disk-like structure, where gravitational influences
-    are only balanced out along the radial axis by centrifugal forces. 
+    are balanced out along the radial axis by centrifugal forces. 
     Such a disk will also not continue to flatten into an infinitesimally thin structure.
     This is due to the non-zero temperatures and the internal gas pressure support along the 
     $z$-axis, i.e. the axis orthogonal to the disk. \\
 
-    In the center/core of the disk, densities and temperatures may increase to a point that 
+    At the center of the disk, densities and temperatures may increase to a point that 
     nuclear fusion becomes possible, and a star can form. 
     The result is a proto-planetary disk, examples of which can be detected all around our own 
     location in the Milky Way. Examples of observations of such objects can be seen visualized 
@@ -356,8 +357,8 @@ defined in each time-step, with which the numerical integration is subsequently 
           	}
         \end{minipage}
         \caption{
-            Observations performed at \textit{Atacama Large Millimeter Array} (ALMA) of 
-            the proto-planetary disk around the stars (a) TW Hydrae and (b) HL Tauri. \\
+            Infrared/radio observations performed at \textit{Atacama Large Millimeter Array} (ALMA) 
+            of the proto-planetary disks around the stars (a) TW Hydrae and (b) HL Tauri. \\
             \vspace{2.5mm}
          }
         \label{fig:ppd_alma_observations}
@@ -417,12 +418,11 @@ defined in each time-step, with which the numerical integration is subsequently 
     consists of light elements like hydrogen and helium. 
     Because of radiation pressure induced by solar wind, these light elements are pushed outwards 
     away from the disk center, and accumulate in its outer regions. 
-    Therefore, an accreting planetoid in the outskirts of the disk has 
-    much more gaseous material available for accretion in its vicinity than one positioned close to 
-    the center. \\
+    Therefore, an accreting planetoid in the outskirts of the disk will have much more gaseous
+    material available for accretion in its vicinity than one positioned close to the center. \\
 
     In this thesis, we will focus on the very early stages of the dust coagulation process, 
-    and use the Smoluchowski equation to model the distribution 
+    and use the Smoluchowski coagulation equation to model the distribution 
     of dust particle masses as well as its temporal evolution. \\
 
     % To 
@@ -562,7 +562,7 @@ defined in each time-step, with which the numerical integration is subsequently 
         \\
 
         As before, let $\mathcal N_m$ label the total number of bins, each of which can be uniquely 
-        identified by an index $i\in\mathcal[1,\mathcal N_m+1]$. Once again, we will first define 
+        identified by an index $i\in\mathcal[1,\mathcal N_m]$. Once again, we will first define 
         an expression for the grid points sitting directly on the lower boundary of each bin. When
         making use of a logarithmic scaling, these values are given by
         \begin{equation}
@@ -573,8 +573,7 @@ defined in each time-step, with which the numerical integration is subsequently 
         linear case, here we are not using the arithmetic mean though, but the geometric mean
         instead:
         \begin{align}
-            m_i^\text{c}
-                =\sqrt{m_i\cdot m_{i+1}}
+            m_i^\text{c} =\sqrt{m_i^b\cdot m_{i+1}^b}
         \end{align}
     
         As in the linear case, the inverse transformation can easily be arrived at by rearranging
@@ -589,7 +588,7 @@ defined in each time-step, with which the numerical integration is subsequently 
         
         In contrast to the linear grid, where the ``bin width'', i.e. the additive offset between bins
         \begin{equation}
-            \Delta m := m_{i+1} - m_i
+            \Delta m := m_{i+1}^b - m_i^b
         \end{equation}
         is the same for all bins, in the logarithmic grid this is not the case. Instead, what stays
         constant here is the \textit{relative} mass increase from one bin to the next:\footnote{This
@@ -646,7 +645,11 @@ defined in each time-step, with which the numerical integration is subsequently 
         This complicated structure makes a detailed treatment of large particle numbers 
         basically impossible. Instead, highly simplified assumptions have to be made,
         visualizations of which are displayed schematically in 
-        \cref{fig:shapes_of_dust_particles}.
+        \cref{fig:shapes_of_dust_particles}. \\
+
+        As mentioned earlier, we will base our model on 
+        the simplest of these cases, shown in \hyperref[fig:shapes_of_dust_particles]
+        {\cref*{fig:shapes_of_dust_particles}a}. 
 
         % In the context of this thesis, we will adopt a minimum and maximum mass value of 
         % $10^{-4}~\text{kg}$ and $10^{-4}~\text{kg}$
@@ -879,7 +882,7 @@ defined in each time-step, with which the numerical integration is subsequently 
 \label{sec:dust_particle_mass_distribution}
 
     The concept of the \textit{dust particle mass distribution function} $n(m, \vec r, t)$ 
-    lies at the heart of the dust coagulation model that was built for this thesis. 
+    lies at the heart of the dust coagulation model that is built for this thesis. 
     This function is defined in such a way that, at a given time $t$ and position $\vec r$ 
     in the disk, the expression
     \begin{equation}

@@ -16,12 +16,12 @@ Das Ziel dieser Arbeit ist es zu untersuchen, ob sich die Nutzung von stochastis
 Monte Carlo Sampling anbietet, um die numerischen Kosten der Integration zu senken.
 Genauer gesagt ist hier die Idee, nur die relevantesten Staubteilchen-Kollisionen 
 bei der Aufsummierung mit zu berücksichtigen.
-Relevanz wird hierbei durch den Einfluss einer gegebenen Kollision auf die
-Entwicklung der Massenverteilung der Staubteilchen bestimmt.
+Relevanz wird hierbei durch den Einfluss einer gegebenen Kollision auf die Massenverteilung der 
+Staubteilchen bestimmt.
 \\ \ \\
 \textit{Methoden:}
 Nach der Definition eines vereinfachten Scheibenmodells bestimmen wir die Reaktionsrate sowie die 
-Reaktionskernel-Matrizen für sowohl Koagulations- als auch Fragmentierungsprozesse.
+Reaktionskernel-Matrix für sowohl Koagulations- als auch Fragmentierungsprozesse.
 Die Integration der Smoluchowski-Gleichung wird mithilfe eines impliziten
 Radau-Integrationsverfahrens vierter Ordnung durchgeführt. 
 Mit einer geeigneten Wahrscheinlichkeitsverteilung wird dann das stochastische Sampling der 
@@ -43,10 +43,10 @@ Ob es sinnvoll ist, den in dieser Thesis erprobten Ansatz des Kernel Samplings z
 hängt vermutlich von den spezifischen Anforderungen an die Rechenressourcen sowie der gewünschten 
 Genauigkeit ab, da ein Kompromiss zwischen den beiden gefunden werden muss. 
 Wenn bei der Modellierung der Staubteilchen mehr als nur ein Attribut berücksichtigt wird 
-(e.g. Masse und Porosität), dann könnte die Anwendung dieser Methode an Zweckmäßigkeit gewinnen.
+(e.g. Masse und Porosität), dann könnte die Anwendung dieser Methode mehr Sinn machen.
 Es kann davon ausgegangen werden, dass der Anteil an vernachlässigbaren Einträgen in der
 Kernel-Matrix mit der Dimensionalität des Problems schneller anwächst als die Zahl der relevanten
 Einträge. Für detailliertere Studien, die zusätzliche Partikeleigenschaften einschließen, 
-könnte es sich deshalb durchaus als sinnvoll erweisen, diesen Ansatz zu verfolgen.
+könnte es sich deshalb durchaus lohnen, diesen Ansatz zu verfolgen.
 
 \end{otherlanguage}

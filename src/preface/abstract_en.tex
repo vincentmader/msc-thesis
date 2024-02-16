@@ -18,12 +18,11 @@ reaction kernel matrix, which makes this approach quite numerically costly.
 The goal of this work is to examine the feasibility of utilizing stochastic Monte Carlo sampling 
 of the kernel matrix in order to lower the integration's computational cost.
 More specifically, the idea is to sample the most relevant dust particle collisions,
-where relevance is determined by a given collision's impact on the evolution of the 
-dust particle mass distribution.
+where relevance is determined by a given collision's impact on the dust particle mass distribution.
 \\ \ \\
 \textit{Methods:}
-After the construction of a simplified disk model, we define the reaction rates and kernel matrices
-for both coagulation and fragmentation processes. The Smoluchowski equation is then numerically 
+Using a simplified disk model, we define the reaction rates and kernel matrix for 
+both coagulation and fragmentation processes. The Smoluchowski equation is then numerically 
 integrated using a 4th order implicit Radau integration scheme.
 % using either the complete kernel 
 % or an incomplete, sampled one. 
@@ -50,8 +49,7 @@ years resembles the expected equilibrium state.
 % the discretized Smoluchowski coagulation equation, the general behavior of the mass distribution 
 % under time can approximately be reproduced. 
 It must be noted though, that
-due to statistical fluctuations arising from the stochastic nature of the sampling method, 
-the distribution's temporal 
+due to statistical fluctuations arising from the sampling method, the distribution's temporal 
 derivative stays well above zero. This, as well as the effectively lower collisions rates,
 leads to a loss with regards to accuracy. The stability of the algorithm with regards to mass 
 conservation could be ensured down to $10^{-12}$.
@@ -74,7 +72,7 @@ conservation could be ensured down to $10^{-12}$.
 % quite ok 
 \\ \ \\
 \textit{Conclusions:}
-Whether it makes sense to use this collision sampling approach likely depends on the specific 
+Whether it makes sense to use this collision sampling approach probably depends on the specific 
 requirements that are imposed on the computational resources, as well as the desired accuracy, since 
 there is a trade-off between the two. 
 If the dust particles are modeled as possessing more than one attribute (e.g. mass and porosity),
@@ -83,8 +81,8 @@ If the dust particles are modeled as possessing more than one attribute (e.g. ma
 % or when only an approximate, first look at the results is desired.
 % If more attributes, like e.g. particle porosity, are included into the model, 
 the utility value of this method could increase.
-As the amount of ``noise'' in the kernel can be expected to grow faster with the dimensionality of 
-the problem than the number of relevant kernel entries, for studies of more sophisticated models
+As the amount of noise in the kernel can be expected to grow faster with the dimensionality of the 
+problem than the number of relevant kernel entries, for studies of more sophisticated models
 including additional particle attributes, it may well be worthwhile to consider this approach.
 
 % due to the higher dimensionality of the problem. 

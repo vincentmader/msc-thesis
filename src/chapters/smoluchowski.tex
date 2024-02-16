@@ -950,8 +950,8 @@ under the influence of particle collisions. Both associative and dissociative pr
     On the following pages, we display a few visualizations of the kernel matrices we just 
     defined, plus a few short explanations for why they look the way that they do.
 
-    % Coagulation Kernel on a Linear Mass Axis {{{ 
-    \subsection{Coagulation Kernel on a Linear Mass Axis}
+    % Coagulation Kernel on Linear Mass Axis {{{ 
+    \subsection{Coagulation Kernel on Linear Mass Axis}
     \label{sec:coagulation_kernel_on_linear_mass_axis}
 
         To get started, we will first consider the definition of the kernel matrix 
@@ -1001,7 +1001,7 @@ under the influence of particle collisions. Both associative and dissociative pr
         downward-sloped line. \\
 
     % }}}
-    % Coagulation Kernel on a Linear Mass Axis (Plot) {{{ 
+    % Coagulation Kernel on Linear Mass Axis (Plot) {{{ 
     \clearpage
 
         \begin{figure}[h!]
@@ -1020,8 +1020,8 @@ under the influence of particle collisions. Both associative and dissociative pr
         \end{figure}
 
     % }}}
-    % Coagulation Kernel on a Logarithmic Mass Axis {{{ 
-    \subsection{Coagulation Kernel on a Logarithmic Mass Axis}
+    % Coagulation Kernel on Logarithmic Mass Axis {{{ 
+    \subsection{Coagulation Kernel on Logarithmic Mass Axis}
 
         Next, we will define the coagulation kernel again, but making use of a logarithmic 
         scaling for the discretized mass axis instead. \\
@@ -1045,8 +1045,8 @@ under the influence of particle collisions. Both associative and dissociative pr
         (Here, a mass grid resolution of $\mathcal N_m$ was used.)
        
     % }}}
-    % Fragmentation Kernel on a Logarithmic Mass Axis {{{ 
-    \subsection{Fragmentation Kernel on a Logarithmic Mass Axis}
+    % Fragmentation Kernel on Logarithmic Mass Axis {{{ 
+    \subsection{Fragmentation Kernel on Logarithmic Mass Axis}
 
         The positive and negative components of the kernel matrix for modeling pure 
         dust particle fragmentation can be seen in 
@@ -1099,9 +1099,9 @@ under the influence of particle collisions. Both associative and dissociative pr
         % \end{figure}
 
     % }}}
-    % Total Kernel on a Logarithmic Mass Axis {{{ 
+    % Total Kernel on Logarithmic Mass Axis {{{ 
     \clearpage
-    \subsection{Total Kernel on a Logarithmic Mass Axis}
+    \subsection{Total Kernel on Logarithmic Mass Axis}
         
         Now, we add the two kernel matrices $K_{kij}^\text{frag}$ and $K_{kij}^\text{coag}$
         to construct the total kernel, for the full model including both associative and 
@@ -1499,8 +1499,8 @@ under the influence of particle collisions. Both associative and dissociative pr
         The numerical integration introduces an error though, which ideally should be kept at machine precision. % TODO Rewrite this.
 
     % }}}
-    % Explicit Euler Integration {{{ 
-    \subsection{Explicit Euler Integration }
+    % Explicit Euler Integration Scheme {{{ 
+    \subsection{Explicit Euler Integration Scheme}
     \label{sec:explicit_euler}
 
         A naive approach for solving the Smoluchowski equation numerically is given by the simple 
@@ -1577,8 +1577,8 @@ under the influence of particle collisions. Both associative and dissociative pr
         % \todo{Plot $n(m,t)$ on a linear mass axis, with constant/linear kernel. (?)}
 
     % }}}
-    % Implicit Radau Integration {{{ 
-    \clearpage\subsection{Implicit Radau Integration }
+    % Implicit Radau Integration Scheme {{{ 
+    \clearpage\subsection{Implicit Radau Integration Scheme}
 
         Since we would like to study the temporal evolution of the dust particle mass 
         distribution with particle masses ranging over multiple orders of magnitude, it makes 
